@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Ninos</string>
+    <string name="home">Home</string>
+    <string name="add">Add</string>
+    <string name="challenge">Challenge</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="network_down">No network connection!</string>
+    <string name="faceboook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="error_message">Something wrong, Please try later!</string>
+    <string name="follow">Follow</string>
+
+    <array name="patterns">
+        <item>@drawable/pattern</item>
+        <item>@drawable/pattern_1</item>
+        <item>@drawable/pattern_2</item>
+        <item>@drawable/pattern_3</item>
+        <item>@drawable/pattern_4</item>
+        <item>@drawable/pattern_5</item>
+        <item>@drawable/pattern_6</item>
+        <item>@drawable/pattern_7</item>
+        <item>@drawable/pattern_8</item>
+        <item>@drawable/pattern_9</item>
+        <item>@drawable/pattern_10</item>
+    </array>
+
+    <string-array name="colors">
+        <item>#20c997</item>
+        <item>#22b8cf</item>
+        <item>#ff6b6b</item>
+        <item>#cc5de8</item>
+        <item>#329af0</item>
+        <item>#845ef7</item>
+        <item>#51cf66</item>
+        <item>#f06595</item>
+        <item>#fcc419</item>
+        <item>#94d82d</item>
+    </string-array>
+</resources>

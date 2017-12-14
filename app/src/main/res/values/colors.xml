@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@android:color/white</color>
+    <color name="colorPrimaryDark">@color/silver</color>
+    <color name="colorAccent">#20c997</color>
+
+    <color name="grey">#adb5bd</color>
+    <color name="red_gmail">#d14836</color>
+    <color name="blue_facebook">#475993</color>
+    <color name="clouds">#ecf0f1</color>
+    <color name="silver">#bdc3c7</color>
+    <color name="midnight_blue">#2c3e50</color>
+    <color name="grape">#cc5de8</color>
+    <color name="teal">#20c997</color>
+    <color name="green">#51cf66</color>
+</resources>

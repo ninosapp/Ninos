@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.ninos.activities.ProfileActivity">
+
+    <com.ninos.views.DiagonalCutLayout
+        android:id="@+id/diagonal_cut_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pattern_13" />
+    </com.ninos.views.DiagonalCutLayout>
+
+
+    <com.ninos.views.FontTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/diagonal_cut_layout"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/margin4dp"
+        android:text="Sumanth"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:fontValue="RobotoMono-Regular.ttf" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_follow"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv_name"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/margin8dp"
+        android:text="@string/follow"
+        android:textColor="@android:color/white"
+        android:theme="@style/BaseButtonTheme" />
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_follow"
+        android:layout_marginTop="@dimen/margin8dp"
+        android:padding="@dimen/margin8dp">
+
+        <LinearLayout
+            android:id="@+id/ll_posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="150"
+                android:textColor="@color/midnight_blue"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posts"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="48dp"
+            android:layout_toEndOf="@+id/ll_posts"
+            android:tint="@color/grey"
+            app:srcCompat="@drawable/ic_circle" />
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="36dp"
+            android:layout_toEndOf="@+id/ll_followers"
+            android:tint="@color/grey"
+            app:srcCompat="@drawable/ic_circle" />
+
+        <LinearLayout
+            android:id="@+id/ll_followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.2k"
+                android:textColor="@color/midnight_blue"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="followers"
+                android:textColor="@color/grey" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9.6k"
+                android:textColor="@color/midnight_blue"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="following"
+                android:textColor="@color/grey" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
