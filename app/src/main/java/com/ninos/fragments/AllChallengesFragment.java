@@ -19,27 +19,12 @@ import com.ninos.adapters.QuizAdapter;
 
 public class AllChallengesFragment extends BaseFragment {
 
-    public static final String APP_NAME = "APP_NAME";
     private BaseActivity mBaseActivity;
     private View cl_home;
-    private String mAppName;
-
-    public static AllChallengesFragment newInstance(String appName) {
-        AllChallengesFragment allChallengesFragment = new AllChallengesFragment();
-
-        Bundle args = new Bundle();
-        args.putString(APP_NAME, appName);
-        allChallengesFragment.setArguments(args);
-        return allChallengesFragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mAppName = getArguments().getString(APP_NAME);
-        }
     }
 
     @Override
