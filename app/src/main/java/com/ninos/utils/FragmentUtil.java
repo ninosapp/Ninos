@@ -44,7 +44,7 @@ public class FragmentUtil {
 
             FragmentManager fM = baseActivity.getSupportFragmentManager();
             FragmentTransaction fT = fM.beginTransaction();
-            fT.replace(R.id.frame_layout, fragment, fragmentName).addToBackStack(fragmentName);
+            fT.replace(R.id.frame_layout, fragment, fragmentName).addToBackStack(null);
             fT.commit();
         } catch (Exception e) {
             baseActivity.logError(e);

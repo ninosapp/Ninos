@@ -2,6 +2,7 @@ package com.ninos.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,11 +12,11 @@ import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.AllChallengesFragment;
 import com.ninos.fragments.ChallengesFragment;
-import com.ninos.utils.FragmentUtil;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView iv_home, iv_challenges;
+    private Fragment allChallengeFragment, challengeFragment;
 
     @Override
 
@@ -33,7 +34,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         iv_home = findViewById(R.id.iv_home);
         iv_challenges = findViewById(R.id.iv_challenges);
 
-        FragmentUtil.replaceFragment(this, new AllChallengesFragment());
+        allChallengeFragment = new AllChallengesFragment();
+        challengeFragment = new ChallengesFragment();
+
+        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+        fts.replace(R.id.frame_layout, allChallengeFragment);
+        fts.commit();
     }
 
     @Override
@@ -46,13 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 iv_home.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
                 iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
 
-                Fragment fragment = FragmentUtil.getFragment(this, AllChallengesFragment.class.getSimpleName());
-
-                if (!(fragment instanceof AllChallengesFragment)) {
-                    fragment = new AllChallengesFragment();
-                }
-
-                FragmentUtil.replaceFragment(this, fragment);
+                displayAllChallengeFragment();
                 break;
             case R.id.fl_add:
                 break;
@@ -60,14 +60,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
                 iv_home.setColorFilter(ContextCompat.getColor(this, R.color.grey));
 
-                Fragment challengeFragment = FragmentUtil.getFragment(this, ChallengesFragment.class.getSimpleName());
-
-                if (!(challengeFragment instanceof ChallengesFragment)) {
-                    challengeFragment = new ChallengesFragment();
-                }
-
-                FragmentUtil.replaceFragment(this, challengeFragment);
+                displayChallengeFragment();
                 break;
         }
+    }
+
+    private void displayAllChallengeFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (allChallengeFragment.isAdded()) { // if the fragment is already in container
+            ft.show(allChallengeFragment);
+        } else {
+            ft.add(R.id.frame_layout, allChallengeFragment);
+        }
+
+        if (challengeFragment.isAdded()) {
+            ft.hide(challengeFragment);
+        }
+        ft.commit();
+    }
+
+    private void displayChallengeFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (challengeFragment.isAdded()) {
+            ft.show(challengeFragment);
+        } else {
+            ft.add(R.id.frame_layout, challengeFragment);
+        }
+
+        if (allChallengeFragment.isAdded()) {
+            ft.hide(allChallengeFragment);
+        }
+        ft.commit();
     }
 }
