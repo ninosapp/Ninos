@@ -1,0 +1,18 @@
+[
+  {
+    "outputType": {
+      "type": "APK"
+    },
+    "apkInfo": {
+      "type": "MAIN",
+      "splits": [],
+      "versionCode": 1
+    },
+    "path": "prdRelease-1.0.apk",
+    "properties": {
+      "packageId": "com.ninos",
+      "split": "",
+      "minSdkVersion": "17"
+    }
+  }
+]

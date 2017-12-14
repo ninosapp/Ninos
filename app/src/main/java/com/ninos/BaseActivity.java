@@ -1,7 +1,6 @@
 package com.ninos;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
@@ -29,7 +28,6 @@ public class BaseActivity extends AppCompatActivity {
                 snackbar.dismiss();
             }
         });
-        snackbar.setActionTextColor(Color.WHITE);
         snackbar.show();
     }
 
@@ -54,14 +52,12 @@ public class BaseActivity extends AppCompatActivity {
             Log.w(TAG, "Internet connection not available.");
             mSnackbar = Snackbar
                     .make(view, getResources().getString(R.string.network_down), Snackbar.LENGTH_INDEFINITE)
-                    .setActionTextColor(Color.WHITE)
                     .setAction(getResources().getString(R.string.dismiss), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             mSnackbar.dismiss();
                         }
                     });
-            mSnackbar.setActionTextColor(Color.WHITE);
             mSnackbar.show();
         } catch (Exception e) {
             Log.e(TAG, "showNetworkDownSnackBar() - " + e.toString(), e);

@@ -55,6 +55,7 @@
                 android:id="@+id/btn_fb_login"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
+                android:clickable="false"
                 android:drawableStart="@drawable/ic_facebook"
                 android:text="@string/faceboook"
                 android:textColor="@android:color/white"

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@android:color/white</color>
     <color name="colorPrimaryDark">@color/silver</color>
-    <color name="colorAccent">#20c997</color>
+    <color name="colorAccent">#048eff</color>
 
     <color name="grey">#adb5bd</color>
     <color name="red_gmail">#d14836</color>
@@ -13,4 +13,6 @@
     <color name="grape">#cc5de8</color>
     <color name="teal">#20c997</color>
     <color name="green">#51cf66</color>
+    <color name="divider_color">#F7F7F7</color>
+    <color name="dark_grey">#909090</color>
 </resources>

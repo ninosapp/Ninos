@@ -9,6 +9,15 @@
     <string name="google">Google</string>
     <string name="error_message">Something wrong, Please try later!</string>
     <string name="follow">Follow</string>
+    <string name="dummy_text">A garden to walk in and immensity to dream in what more could he ask? a few flowers at his feet and above himthe stars</string>
+    <string name="applause">Applause</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
+    <string name="playservice_error">Google Play Services error.</string>
+    <string name="child_name">Child Name</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="enter_child_name">Enter child name</string>
+    <string name="select_dob">Select date of birth</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
