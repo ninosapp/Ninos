@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.activities.ProfileActivity;
+import com.ninos.listeners.OnLoadMoreListener;
 
 /**
  * Created by smeesala on 6/30/2017.
@@ -28,7 +29,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<String> {
     private Activity mActivity;
     private TypedArray typedArray;
 
-    public ChallengeAdapter(Activity activity) {
+    public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+        super(recyclerView, onLoadMoreListener);
         mActivity = activity;
         typedArray = activity.getResources().obtainTypedArray(R.array.patterns);
     }

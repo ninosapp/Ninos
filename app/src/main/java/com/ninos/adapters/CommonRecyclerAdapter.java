@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.ninos.R;
+import com.ninos.listeners.OnLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,13 +248,6 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
 
     public void onBindFooterView(RecyclerView.ViewHolder genericHolder) {
         ((ProgressViewHolder) genericHolder).progressBar.setIndeterminate(true);
-    }
-
-    /**
-     * Listener to load more data
-     */
-    public interface OnLoadMoreListener {
-        void onLoadMore();
     }
 
     /**

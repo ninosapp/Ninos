@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.ChallengeAdapter;
+import com.ninos.listeners.OnLoadMoreListener;
 
 /**
  * Created by FAMILY on 04-12-2017.
  */
 
-public class ChallengesFragment extends BaseFragment {
+public class ChallengesFragment extends BaseFragment implements OnLoadMoreListener {
 
     public static final String APP_NAME = "APP_NAME";
     private BaseActivity mBaseActivity;
@@ -60,7 +61,7 @@ public class ChallengesFragment extends BaseFragment {
             final RecyclerView recyclerView = view.findViewById(R.id.challenge_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            final ChallengeAdapter challengeAdapter = new ChallengeAdapter(getActivity());
+            final ChallengeAdapter challengeAdapter = new ChallengeAdapter(getActivity(), recyclerView, this);
 
             recyclerView.setAdapter(challengeAdapter);
 
@@ -72,5 +73,10 @@ public class ChallengesFragment extends BaseFragment {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
         }
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 }

@@ -23,6 +23,7 @@ android {
             buildConfigField 'String', 'USER_PATH_FMT', '"/dvl/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/dvl"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
+            buildConfigField 'String', 'AWS_IDENTITY_POOL ', '"us-east-1:c2f5f165-2cc7-450b-a3fb-e213e34d8e31"'
             versionName "i$appVersionName"
         }
 
@@ -30,6 +31,7 @@ android {
             buildConfigField 'String', 'USER_PATH_FMT', '"/prd/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/prd"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
+            buildConfigField 'String', 'AWS_IDENTITY_POOL ', '"us-east-1:c2f5f165-2cc7-450b-a3fb-e213e34d8e31"'
             versionName "$appVersionName"
         }
     }
@@ -58,12 +60,12 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
 
         debug {
-            minifyEnabled true
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
@@ -85,6 +87,16 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    implementation 'com.amazonaws:aws-android-sdk-core:2.2.+'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.+'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
+
+    implementation 'pub.devrel:easypermissions:1.1.1'
+    implementation 'com.zhihu.android:matisse:0.4.3'
+
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
