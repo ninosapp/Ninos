@@ -93,8 +93,6 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
 
     implementation 'pub.devrel:easypermissions:1.1.1'
-    implementation 'com.zhihu.android:matisse:0.4.3'
-
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 

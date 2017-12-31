@@ -18,6 +18,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (accessToken == null) {
             intent = new Intent(this, LoginActivity.class);
         } else {
+
             intent = new Intent(this, MainActivity.class);
         }
 

@@ -32,9 +32,17 @@ import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.IntroAdapter;
 import com.ninos.adapters.IntroPageTransformer;
+import com.ninos.listeners.RetrofitService;
+import com.ninos.models.UserCheckResponse;
+import com.ninos.reterofit.RetrofitInstance;
+import com.ninos.utils.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, GoogleApiClient.OnConnectionFailedListener {
@@ -127,15 +135,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
 
                             if (user != null) {
-                                Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
-                                intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
-                                intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
-                                intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
-                                startActivity(intent);
-                                finish();
+
+                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                service.userCheck(user.getUid()).enqueue(new Callback<UserCheckResponse>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
+                                        if (response.body() != null) {
+
+                                            UserCheckResponse userCheckResponse = response.body();
+
+                                            if (userCheckResponse != null && userCheckResponse.getSuccess()) {
+                                                PreferenceUtil.setAccessToken(LoginActivity.this, userCheckResponse.getToken());
+                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                                finish();
+                                            } else {
+                                                Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
+                                                intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
+                                                intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
+                                                intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UserCheckResponse> call, Throwable t) {
+
+                                    }
+                                });
                             }
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

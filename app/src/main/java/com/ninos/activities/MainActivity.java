@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,6 +24,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     private final int RC_STORAGE_PERM = 4531;
+    private final int REQUEST_CODE_CHOOSE = 4532;
     private ImageView iv_home, iv_challenges;
     private Fragment allChallengeFragment, challengeFragment;
 
@@ -34,8 +34,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar_main = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar_main);
+//        Toolbar toolbar_main = findViewById(R.id.toolbar_main);
+//        setSupportActionBar(toolbar_main);
 
         findViewById(R.id.fl_home).setOnClickListener(this);
         findViewById(R.id.fl_add).setOnClickListener(this);
@@ -79,7 +79,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @AfterPermissionGranted(RC_STORAGE_PERM)
     private void addFile() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
+            Intent intent = new Intent(this, FilePickerActivity.class);
+            startActivity(intent);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }

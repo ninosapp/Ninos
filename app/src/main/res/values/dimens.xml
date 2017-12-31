@@ -4,4 +4,5 @@
     <dimen name="margin8dp">16dp</dimen>
     <dimen name="margin6dp">6dp</dimen>
     <dimen name="margin4dp">4dp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
 </resources>

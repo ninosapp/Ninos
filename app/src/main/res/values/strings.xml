@@ -20,6 +20,8 @@
     <string name="select_dob">Select date of birth</string>
     <string name="rationale_storage">This app needs External Storage permission to select photos and videos.</string>
     <string name="rationale_storage_ask_again">This app needs External Storage permission to select photos and videos. Open the app settings screen to modify app permissions.</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
