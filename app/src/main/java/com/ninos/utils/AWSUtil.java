@@ -22,7 +22,7 @@
 //                context,
 //                BuildConfig.AWS_IDENTITY_POOL, // Identity Pool ID
 //                Regions.US_EAST_1 // Region
-//        );
+//        );a
 //
 //        setAmazonS3Client(credentialsProvider);
 //    }

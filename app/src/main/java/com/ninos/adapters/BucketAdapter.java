@@ -1,9 +1,8 @@
 package com.ninos.adapters;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.fragments.ImagePickFragment;
 import com.ninos.models.Bucket;
-import com.ninos.models.MediaObject;
 import com.ninos.utils.BitmapDecoderUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by FAMILY on 30-12-2017.
@@ -47,52 +43,22 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
         bucketHolder.bindData(getItem(position));
     }
 
-    private List<MediaObject> initImages(String bucket) {
-
-        List<MediaObject> mOs = new ArrayList<>();
-
-        try {
-
-            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-            String searchParams = "bucket_display_name = \"" + bucket + "\"";
-            Cursor cursor = baseActivity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
-                    searchParams, null, orderBy + " DESC");
-
-
-            if (cursor != null && cursor.moveToFirst()) {
-
-                do {
-                    String filePath = cursor.getString(1);
-                    int id = cursor.getInt(0);
-
-                    MediaObject mO = new MediaObject(id, filePath);
-
-                    mOs.add(mO);
-                } while (cursor.moveToNext());
-
-                cursor.close();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return mOs;
-    }
-
     public enum Type {
         IMAGES,
         VIDEOS
     }
 
-    private class BucketHolder extends RecyclerView.ViewHolder {
+    private class BucketHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_bucket;
         ImageView iv_image;
+        View place_holder_view;
 
         BucketHolder(View view) {
             super(view);
             tv_bucket = view.findViewById(R.id.tv_bucket);
             iv_image = view.findViewById(R.id.iv_image);
+            place_holder_view = view.findViewById(R.id.place_holder_view);
+            place_holder_view.setOnClickListener(this);
         }
 
         void bindData(Bucket bucket) {
@@ -105,6 +71,14 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
                         .load(bucket.getPath())
                         .into(iv_image);
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            Bucket bucket = getItem(getAdapterPosition());
+            FragmentTransaction fts = baseActivity.getSupportFragmentManager().beginTransaction();
+            fts.replace(R.id.fl_file_pick, ImagePickFragment.newInstance(bucket.getBucketName()), ImagePickFragment.class.getSimpleName());
+            fts.commit();
         }
 
         private class ImageTask extends AsyncTask<String, Void, Bitmap> {

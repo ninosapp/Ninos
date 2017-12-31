@@ -3,6 +3,7 @@ package com.ninos.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,6 +28,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private final int REQUEST_CODE_CHOOSE = 4532;
     private ImageView iv_home, iv_challenges;
     private Fragment allChallengeFragment, challengeFragment;
+    private boolean doubleBackToExit;
+    private View cl_home;
 
     @Override
 
@@ -34,13 +37,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Toolbar toolbar_main = findViewById(R.id.toolbar_main);
-//        setSupportActionBar(toolbar_main);
-
         findViewById(R.id.fl_home).setOnClickListener(this);
         findViewById(R.id.fl_add).setOnClickListener(this);
         findViewById(R.id.fl_challenges).setOnClickListener(this);
 
+        cl_home = findViewById(R.id.cl_home);
         iv_home = findViewById(R.id.iv_home);
         iv_challenges = findViewById(R.id.iv_challenges);
 
@@ -140,6 +141,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case RC_STORAGE_PERM:
                 addFile();
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (challengeFragment.isVisible()) {
+            iv_home.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
+            iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
+
+            displayAllChallengeFragment();
+        } else if (!doubleBackToExit) {
+            doubleBackToExit = true;
+            showToast(R.string.app_exit_msg);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExit = false;
+                }
+            }, 2000);
+        } else {
+            finish();
         }
     }
 }

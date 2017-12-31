@@ -22,6 +22,7 @@
     <string name="rationale_storage_ask_again">This app needs External Storage permission to select photos and videos. Open the app settings screen to modify app permissions.</string>
     <string name="images">Images</string>
     <string name="videos">Videos</string>
+    <string name="app_exit_msg">Press back again to exit TaskPad app.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

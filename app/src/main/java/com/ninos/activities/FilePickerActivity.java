@@ -1,41 +1,28 @@
 package com.ninos.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.ninos.BaseActivity;
 import com.ninos.R;
-import com.ninos.adapters.FilePickerAdapter;
+import com.ninos.fragments.BucketFragment;
+import com.ninos.fragments.ImagePickFragment;
 
 public class FilePickerActivity extends BaseActivity {
+
+    private BucketFragment bucketFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_picker);
+        bucketFragment = new BucketFragment();
 
-        Toolbar toolbar_file_picker = findViewById(R.id.toolbar_file_picker);
-        toolbar_file_picker.setTitle(R.string.app_name);
-        toolbar_file_picker.setTitleTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-        setSupportActionBar(toolbar_file_picker);
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
-        }
-
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new FilePickerAdapter(this, getSupportFragmentManager()));
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+        fts.replace(R.id.fl_file_pick, bucketFragment);
+        fts.commit();
     }
 
     @Override
@@ -52,6 +39,14 @@ public class FilePickerActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        FragmentManager manager = getSupportFragmentManager();
+
+        if (manager.findFragmentById(R.id.fl_file_pick) instanceof ImagePickFragment) {
+            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+            fts.replace(R.id.fl_file_pick, bucketFragment);
+            fts.commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
