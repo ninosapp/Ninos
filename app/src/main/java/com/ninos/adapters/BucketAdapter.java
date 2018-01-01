@@ -1,7 +1,6 @@
 package com.ninos.adapters;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +13,8 @@ import com.bumptech.glide.Glide;
 import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
+import com.ninos.fragments.VideoPickFragment;
 import com.ninos.models.Bucket;
-import com.ninos.utils.BitmapDecoderUtil;
 
 /**
  * Created by FAMILY on 30-12-2017.
@@ -63,38 +62,26 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
 
         void bindData(Bucket bucket) {
             tv_bucket.setText(bucket.getBucketName());
-
-            if (Type.IMAGES.equals(type)) {
-                new ImageTask().execute(bucket.getPath());
-            } else {
-                Glide.with(baseActivity)
-                        .load(bucket.getPath())
-                        .into(iv_image);
-            }
+            Glide.with(baseActivity)
+                    .load(bucket.getPath())
+                    .into(iv_image);
         }
 
         @Override
         public void onClick(View view) {
             Bucket bucket = getItem(getAdapterPosition());
             FragmentTransaction fts = baseActivity.getSupportFragmentManager().beginTransaction();
-            fts.replace(R.id.fl_file_pick, ImagePickFragment.newInstance(bucket.getBucketName()), ImagePickFragment.class.getSimpleName());
+
+            Fragment fragment;
+
+            if (type.equals(Type.IMAGES)) {
+                fragment = ImagePickFragment.newInstance(bucket.getBucketName());
+            } else {
+                fragment = VideoPickFragment.newInstance(bucket.getBucketName());
+            }
+
+            fts.add(R.id.fl_file_pick, fragment);
             fts.commit();
-        }
-
-        private class ImageTask extends AsyncTask<String, Void, Bitmap> {
-
-            @Override
-            protected Bitmap doInBackground(String... values) {
-                String path = values[0];
-
-                Bitmap thumb = BitmapDecoderUtil.decodeBitmapFromFile(path);
-                return thumb;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                iv_image.setImageBitmap(bitmap);
-            }
         }
     }
 }

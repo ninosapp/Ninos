@@ -27,14 +27,15 @@ public class BitmapDecoderUtil {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
+        int maxSize = 120;
 
-        if (height > 180 || width > 180) {
+        if (height > maxSize || width > maxSize) {
 
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 
-            while ((halfHeight / inSampleSize) > 180
-                    && (halfWidth / inSampleSize) > 180) {
+            while ((halfHeight / inSampleSize) > maxSize
+                    && (halfWidth / inSampleSize) > maxSize) {
                 inSampleSize *= 2;
             }
         }

@@ -9,6 +9,7 @@ import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.BucketFragment;
 import com.ninos.fragments.ImagePickFragment;
+import com.ninos.fragments.VideoPickFragment;
 
 public class FilePickerActivity extends BaseActivity {
 
@@ -41,7 +42,7 @@ public class FilePickerActivity extends BaseActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
 
-        if (manager.findFragmentById(R.id.fl_file_pick) instanceof ImagePickFragment) {
+        if (manager.findFragmentById(R.id.fl_file_pick) instanceof ImagePickFragment || manager.findFragmentById(R.id.fl_file_pick) instanceof VideoPickFragment) {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
             fts.replace(R.id.fl_file_pick, bucketFragment);
             fts.commit();

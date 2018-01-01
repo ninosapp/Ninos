@@ -12,46 +12,37 @@ import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.models.MediaObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by FAMILY on 31-12-2017.
+ * Created by FAMILY on 01-01-2018.
  */
 
-public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
+public class VideoPickAdapter extends CommonRecyclerAdapter<MediaObject> {
     private BaseActivity baseActivity;
-    private List<MediaObject> selectedMedia;
-    private ISetImageSelected iSetImageSelected;
+    private MediaObject selectedMedia;
+    private View selectedView;
 
-    public ImagePickAdapter(BaseActivity baseActivity, ISetImageSelected iSetImageSelected) {
+    public VideoPickAdapter(BaseActivity baseActivity) {
         this.baseActivity = baseActivity;
-        this.iSetImageSelected = iSetImageSelected;
-        selectedMedia = new ArrayList<>();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateBasicItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_media, parent, false);
-        return new ImagePickHolder(view);
+        return new VideoPickHolder(view);
     }
 
     @Override
     public void onBindBasicItemView(RecyclerView.ViewHolder genericHolder, int position) {
-        ImagePickHolder imagePickHolder = (ImagePickHolder) genericHolder;
+        VideoPickHolder imagePickHolder = (VideoPickHolder) genericHolder;
         imagePickHolder.bindData(getItem(position));
     }
 
-    public interface ISetImageSelected {
-        void updateCount(int count);
-    }
-
-    private class ImagePickHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class VideoPickHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv_image;
         RelativeLayout rl_selected;
 
-        ImagePickHolder(View view) {
+        VideoPickHolder(View view) {
             super(view);
             iv_image = view.findViewById(R.id.iv_image);
             rl_selected = view.findViewById(R.id.rl_selected);
@@ -64,7 +55,7 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
                     .load(mediaObject.getPath())
                     .into(iv_image);
 
-            if (selectedMedia.contains(mediaObject)) {
+            if (selectedMedia != null && selectedMedia.equals(mediaObject)) {
                 rl_selected.setVisibility(View.VISIBLE);
             } else {
                 rl_selected.setVisibility(View.GONE);
@@ -75,15 +66,19 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
         public void onClick(View view) {
             MediaObject mediaObject = getItem(getAdapterPosition());
 
-            if (selectedMedia.contains(mediaObject)) {
-                rl_selected.setVisibility(View.GONE);
-                selectedMedia.remove(mediaObject);
+            if (selectedView != null) {
+                selectedView.setVisibility(View.GONE);
+            }
+
+            if (selectedMedia != null && selectedMedia == mediaObject) {
+                selectedMedia = null;
             } else {
-                selectedMedia.add(mediaObject);
+                selectedMedia = mediaObject;
+                selectedView = rl_selected;
                 rl_selected.setVisibility(View.VISIBLE);
             }
 
-            iSetImageSelected.updateCount(selectedMedia.size());
+
         }
     }
 }

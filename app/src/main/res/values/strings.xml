@@ -23,6 +23,9 @@
     <string name="images">Images</string>
     <string name="videos">Videos</string>
     <string name="app_exit_msg">Press back again to exit TaskPad app.</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_count">(%d) Select</string>
+    <string name="select">Select</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

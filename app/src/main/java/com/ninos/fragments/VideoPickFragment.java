@@ -1,6 +1,5 @@
 package com.ninos.fragments;
 
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,31 +20,31 @@ import android.widget.TextView;
 
 import com.ninos.BaseActivity;
 import com.ninos.R;
-import com.ninos.adapters.ImagePickAdapter;
+import com.ninos.adapters.VideoPickAdapter;
 import com.ninos.models.MediaObject;
 
 /**
- * Created by FAMILY on 29-12-2017.
+ * Created by FAMILY on 01-01-2018.
  */
 
-public class ImagePickFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, ImagePickAdapter.ISetImageSelected {
+public class VideoPickFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
 
     private static final int URL_LOADER = 1;
     private final static String BUCKET_NAME = "BUCKET_NAME";
     private BaseActivity mBaseActivity;
     private View cl_home;
-    private ImagePickAdapter imagePickAdapter;
+    private VideoPickAdapter videoPickAdapter;
     private String bucketName;
     private TextView tv_select_count;
 
-    public static ImagePickFragment newInstance(String bucketName) {
-        ImagePickFragment imagePickFragment = new ImagePickFragment();
+    public static VideoPickFragment newInstance(String bucketName) {
+        VideoPickFragment videoPickFragment = new VideoPickFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(BUCKET_NAME, bucketName);
-        imagePickFragment.setArguments(bundle);
+        videoPickFragment.setArguments(bundle);
 
-        return imagePickFragment;
+        return videoPickFragment;
     }
 
     @Override
@@ -89,15 +88,14 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
             final RecyclerView recyclerView = view.findViewById(R.id.bucket_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            imagePickAdapter = new ImagePickAdapter(mBaseActivity, this);
+            videoPickAdapter = new VideoPickAdapter(mBaseActivity);
 
-            recyclerView.setAdapter(imagePickAdapter);
+            recyclerView.setAdapter(videoPickAdapter);
 
             getLoaderManager().initLoader(URL_LOADER, null, this);
 
             view.findViewById(R.id.tv_cancel).setOnClickListener(this);
             tv_select_count = view.findViewById(R.id.tv_select_count);
-            tv_select_count.setText(String.format(getString(R.string.select_count), 0));
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
@@ -107,11 +105,11 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+            String orderBy = MediaStore.Video.Media.DATE_TAKEN;
             String searchParams = "bucket_display_name = \"" + bucketName + "\"";
 
             return new CursorLoader(getContext(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                     null,
                     searchParams,
                     null,
@@ -134,7 +132,7 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        imagePickAdapter.addItem(mO);
+                        videoPickAdapter.addItem(mO);
                     }
                 });
 
@@ -156,10 +154,5 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
                 mBaseActivity.onBackPressed();
                 break;
         }
-    }
-
-    @Override
-    public void updateCount(int count) {
-        tv_select_count.setText(String.format(getString(R.string.select_count), count));
     }
 }
