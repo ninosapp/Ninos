@@ -26,6 +26,9 @@
     <string name="cancel">Cancel</string>
     <string name="select_count">(%d) Select</string>
     <string name="select">Select</string>
+    <string name="loading_image_upload">Uploading image...</string>
+    <string name="s_people">%s people</string>
+    <string name="s_comments">%s comments</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

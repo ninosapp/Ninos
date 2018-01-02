@@ -1,6 +1,7 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private View cl_home;
     private QuizAdapter quizAdapter;
     private ChallengeAdapter challengeAdapter;
+    private RetrofitService service;
     private int from = 0, size = 10;
 
     @Override
@@ -77,34 +79,37 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             challenge_list.setAdapter(challengeAdapter);
 
-            for (int i = 0; i < 10; i++) {
-                challengeAdapter.addItem("Sumanth " + i);
-            }
-
             String accessToken = PreferenceUtil.getAccessToken(getContext());
-            RetrofitService service = RetrofitInstance.createService(RetrofitService.class, accessToken);
+            service = RetrofitInstance.createService(RetrofitService.class, accessToken);
 
-            service.getPosts(from, size).enqueue(new Callback<PostResponse>() {
-                @Override
-                public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                    if (response.isSuccessful()) {
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PostResponse> call, Throwable t) {
-                    logError(t.getMessage());
-                }
-            });
+            getPosts();
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
         }
     }
 
+    private void getPosts() {
+        service.getPosts(from, size).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    challengeAdapter.removeItem(null);
+                    challengeAdapter.addItems(response.body().getPostInfo());
+                    from = from + size;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                logError(t.getMessage());
+            }
+        });
+    }
+
     @Override
     public void onLoadMore() {
         challengeAdapter.addItem(null);
+        getPosts();
     }
 }

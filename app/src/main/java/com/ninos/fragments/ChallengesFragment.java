@@ -66,9 +66,6 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
             recyclerView.setAdapter(challengeAdapter);
 
 
-            for (int i = 0; i < 10; i++) {
-                challengeAdapter.addItem("Sumanth " + i);
-            }
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);

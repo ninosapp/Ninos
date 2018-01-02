@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
     private BaseActivity baseActivity;
-    private List<MediaObject> selectedMedia;
+    private List<String> selectedMedia;
     private ISetImageSelected iSetImageSelected;
 
     public ImagePickAdapter(BaseActivity baseActivity, ISetImageSelected iSetImageSelected) {
@@ -41,6 +41,10 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
     public void onBindBasicItemView(RecyclerView.ViewHolder genericHolder, int position) {
         ImagePickHolder imagePickHolder = (ImagePickHolder) genericHolder;
         imagePickHolder.bindData(getItem(position));
+    }
+
+    public List<String> getSelectedMedia() {
+        return selectedMedia;
     }
 
     public interface ISetImageSelected {
@@ -64,7 +68,7 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
                     .load(mediaObject.getPath())
                     .into(iv_image);
 
-            if (selectedMedia.contains(mediaObject)) {
+            if (selectedMedia.contains(mediaObject.getPath())) {
                 rl_selected.setVisibility(View.VISIBLE);
             } else {
                 rl_selected.setVisibility(View.GONE);
@@ -75,11 +79,11 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
         public void onClick(View view) {
             MediaObject mediaObject = getItem(getAdapterPosition());
 
-            if (selectedMedia.contains(mediaObject)) {
+            if (selectedMedia.contains(mediaObject.getPath())) {
                 rl_selected.setVisibility(View.GONE);
-                selectedMedia.remove(mediaObject);
+                selectedMedia.remove(mediaObject.getPath());
             } else {
-                selectedMedia.add(mediaObject);
+                selectedMedia.add(mediaObject.getPath());
                 rl_selected.setVisibility(View.VISIBLE);
             }
 

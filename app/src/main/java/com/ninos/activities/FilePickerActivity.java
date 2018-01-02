@@ -10,6 +10,9 @@ import com.ninos.R;
 import com.ninos.fragments.BucketFragment;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.VideoPickFragment;
+import com.ninos.utils.AWSClient;
+
+import java.util.List;
 
 public class FilePickerActivity extends BaseActivity {
 
@@ -48,6 +51,26 @@ public class FilePickerActivity extends BaseActivity {
             fts.commit();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public void setSelectedImages(List<String> selectedImages) {
+        if (selectedImages.size() > 0) {
+            for (String path : selectedImages) {
+                AWSClient awsClient = new AWSClient(this, "ksjbakjsdfbadkjs", path);
+                awsClient.awsInit();
+                awsClient.uploadImage();
+            }
+        } else {
+            finish();
+        }
+    }
+
+    public void setSelectedVideo(String selectedVideo) {
+        if (selectedVideo == null) {
+            finish();
+        } else {
+
         }
     }
 }

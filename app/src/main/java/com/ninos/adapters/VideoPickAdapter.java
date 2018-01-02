@@ -38,6 +38,16 @@ public class VideoPickAdapter extends CommonRecyclerAdapter<MediaObject> {
         imagePickHolder.bindData(getItem(position));
     }
 
+    public String getSelectedMedia() {
+        String path = null;
+
+        if (selectedMedia != null) {
+            path = selectedMedia.getPath();
+        }
+
+        return path;
+    }
+
     private class VideoPickHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv_image;
         RelativeLayout rl_selected;

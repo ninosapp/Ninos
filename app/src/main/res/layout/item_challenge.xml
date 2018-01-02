@@ -46,10 +46,10 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_created_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="May 06,2017"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -92,6 +92,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin16dp"
@@ -114,18 +115,18 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_clap"
-                    android:tint="#F48FB1" />
+                    android:tint="#F48FB1"
+                    app:srcCompat="@drawable/ic_clap" />
 
                 <TextView
+                    android:id="@+id/tv_claps_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="19 people"
-                    android:textColor="#A1A1A1"
+                    android:text="@string/s_people"
+                    android:textColor="@color/grey40"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -133,19 +134,19 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/margin8dp"
                     android:layout_marginStart="@dimen/margin8dp"
-                    android:src="@drawable/ic_comment"
-                    android:tint="#80CBC4" />
+                    android:tint="#80CBC4"
+                    app:srcCompat="@drawable/ic_comment" />
 
                 <TextView
+                    android:id="@+id/tv_comments_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="200 comments"
-                    android:textColor="#A1A1A1"
+                    android:text="@string/s_comments"
+                    android:textColor="@color/grey40"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>

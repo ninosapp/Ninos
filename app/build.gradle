@@ -20,6 +20,7 @@ android {
 
     productFlavors {
         dvl {
+            buildConfigField 'String', 'ams_challenge_bucket', '"ninos-dev-challenge"'
             buildConfigField 'String', 'USER_PATH_FMT', '"/dvl/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/dvl"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
@@ -28,6 +29,7 @@ android {
         }
 
         prd {
+            buildConfigField 'String', 'ams_challenge_bucket', '"ninos-dev-challenge"'
             buildConfigField 'String', 'USER_PATH_FMT', '"/prd/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/prd"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
@@ -88,9 +90,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    implementation 'com.amazonaws:aws-android-sdk-core:2.2.+'
-    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.+'
-    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.2.4'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.4'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.4'
 
     implementation 'pub.devrel:easypermissions:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.4.0'

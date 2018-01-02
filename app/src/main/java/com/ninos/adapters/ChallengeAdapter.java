@@ -18,21 +18,25 @@ import android.widget.TextView;
 import com.ninos.R;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.listeners.OnLoadMoreListener;
+import com.ninos.models.PostInfo;
+import com.ninos.utils.DateUtil;
 
 /**
  * Created by smeesala on 6/30/2017.
  */
 
-public class ChallengeAdapter extends CommonRecyclerAdapter<String> {
+public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private int lastPosition = -1;
     private Activity mActivity;
     private TypedArray typedArray;
+    private DateUtil dateUtil;
 
     public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
         super(recyclerView, onLoadMoreListener);
         mActivity = activity;
         typedArray = activity.getResources().obtainTypedArray(R.array.patterns);
+        dateUtil = new DateUtil();
     }
 
     @Override
@@ -46,8 +50,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<String> {
     public void onBindBasicItemView(RecyclerView.ViewHolder genericHolder, int position) {
         SampleViewHolder sampleViewHolder = (SampleViewHolder) genericHolder;
 
-        String title = getItem(position);
-        sampleViewHolder.bindData(title, position);
+        PostInfo postInfo = getItem(position);
+        sampleViewHolder.bindData(postInfo, position);
         setAnimation(sampleViewHolder.itemView, position);
     }
 
@@ -66,22 +70,34 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<String> {
     }
 
     private class SampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_name;
+        TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title;
         ImageView iv_challenge, ic_clap_anim, iv_clap, iv_profile;
 
         SampleViewHolder(View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
+            tv_title = itemView.findViewById(R.id.tv_title);
             iv_challenge = itemView.findViewById(R.id.iv_challenge);
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             iv_clap = itemView.findViewById(R.id.iv_clap);
             iv_profile = itemView.findViewById(R.id.iv_profile);
+            tv_created_time = itemView.findViewById(R.id.tv_created_time);
+            tv_claps_count = itemView.findViewById(R.id.tv_claps_count);
+            tv_comments_count = itemView.findViewById(R.id.tv_comments_count);
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
         }
 
-        private void bindData(String title, int position) {
-            tv_name.setText(title);
+        private void bindData(PostInfo postInfo, int position) {
+            tv_name.setText(postInfo.getUserName());
+            tv_title.setText(postInfo.getTitle());
+
+            String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
+            tv_created_time.setText(date);
+
+            tv_claps_count.setText(String.format(mActivity.getString(R.string.s_people), postInfo.getTotalClapsCount()));
+            tv_comments_count.setText(String.format(mActivity.getString(R.string.s_comments), postInfo.getTotalCommentCount()));
+
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
             iv_challenge.setImageDrawable(ContextCompat.getDrawable(mActivity, resId));

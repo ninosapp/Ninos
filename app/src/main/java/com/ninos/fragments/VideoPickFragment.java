@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.FilePickerActivity;
 import com.ninos.adapters.VideoPickAdapter;
 import com.ninos.models.MediaObject;
 
@@ -31,7 +31,7 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
 
     private static final int URL_LOADER = 1;
     private final static String BUCKET_NAME = "BUCKET_NAME";
-    private BaseActivity mBaseActivity;
+    private FilePickerActivity mBaseActivity;
     private View cl_home;
     private VideoPickAdapter videoPickAdapter;
     private String bucketName;
@@ -67,7 +67,7 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            mBaseActivity = (BaseActivity) getActivity();
+            mBaseActivity = (FilePickerActivity) getActivity();
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
 
@@ -96,6 +96,7 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
 
             view.findViewById(R.id.tv_cancel).setOnClickListener(this);
             tv_select_count = view.findViewById(R.id.tv_select_count);
+            tv_select_count.setOnClickListener(this);
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
@@ -152,6 +153,9 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
         switch (view.getId()) {
             case R.id.tv_cancel:
                 mBaseActivity.onBackPressed();
+                break;
+            case R.id.tv_select_count:
+                mBaseActivity.setSelectedVideo(videoPickAdapter.getSelectedMedia());
                 break;
         }
     }

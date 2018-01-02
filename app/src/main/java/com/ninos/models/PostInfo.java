@@ -1,5 +1,7 @@
 package com.ninos.models;
 
+import java.util.Date;
+
 /**
  * Created by FAMILY on 14-12-2017.
  */
@@ -7,7 +9,7 @@ package com.ninos.models;
 public class PostInfo {
     private String[] tags;
 
-    private String updatedAt;
+    private Date updatedAt;
 
     private String isChallenge;
 
@@ -17,9 +19,11 @@ public class PostInfo {
 
     private String totalCommentCount;
 
-    private String createdAt;
+    private Date createdAt;
 
     private String userId;
+
+    private String userName;
 
     private String type;
 
@@ -29,6 +33,14 @@ public class PostInfo {
 
     private String challengeId;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String[] getTags() {
         return tags;
     }
@@ -37,11 +49,11 @@ public class PostInfo {
         this.tags = tags;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -77,11 +89,11 @@ public class PostInfo {
         this.totalCommentCount = totalCommentCount;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
