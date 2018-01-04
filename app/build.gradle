@@ -90,9 +90,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    implementation 'com.amazonaws:aws-android-sdk-core:2.2.4'
-    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.4'
-    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.4'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.2.+'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.2.+'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
 
     implementation 'pub.devrel:easypermissions:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.4.0'

@@ -3,7 +3,9 @@ package com.ninos.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -17,9 +19,13 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.activities.ProfileActivity;
+import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.models.PostInfo;
+import com.ninos.utils.AWSClient;
 import com.ninos.utils.DateUtil;
+
+import java.util.List;
 
 /**
  * Created by smeesala on 6/30/2017.
@@ -31,12 +37,17 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private Activity mActivity;
     private TypedArray typedArray;
     private DateUtil dateUtil;
+    private String userId;
+    private AWSClient awsClient;
 
     public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
         super(recyclerView, onLoadMoreListener);
         mActivity = activity;
         typedArray = activity.getResources().obtainTypedArray(R.array.patterns);
         dateUtil = new DateUtil();
+        userId = Database.getUserId();
+        awsClient = new AWSClient(activity);
+        awsClient.awsInit();
     }
 
     @Override
@@ -71,13 +82,14 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private class SampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title;
-        ImageView iv_challenge, ic_clap_anim, iv_clap, iv_profile;
+        ImageView ic_clap_anim, iv_clap, iv_profile;
+        RecyclerView recyclerView;
+        ImageAdapter imageAdapter;
 
         SampleViewHolder(View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_title = itemView.findViewById(R.id.tv_title);
-            iv_challenge = itemView.findViewById(R.id.iv_challenge);
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             iv_clap = itemView.findViewById(R.id.iv_clap);
             iv_profile = itemView.findViewById(R.id.iv_profile);
@@ -86,6 +98,11 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_comments_count = itemView.findViewById(R.id.tv_comments_count);
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+
+            recyclerView = itemView.findViewById(R.id.image_list);
+            recyclerView.setLayoutManager(layoutManager);
         }
 
         private void bindData(PostInfo postInfo, int position) {
@@ -100,7 +117,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
-            iv_challenge.setImageDrawable(ContextCompat.getDrawable(mActivity, resId));
             iv_profile.setImageDrawable(ContextCompat.getDrawable(mActivity, resId));
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
@@ -146,13 +162,23 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             });
 
-            iv_challenge.setOnTouchListener(new View.OnTouchListener() {
+            recyclerView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
                     return gd.onTouchEvent(event);
                 }
             });
+
+            String path = String.format("%s/%s", userId, postInfo.get_id());
+
+
+            imageAdapter = new ImageAdapter(mActivity, resId);
+
+            recyclerView.setAdapter(imageAdapter);
+
+
+            new LoadImage().execute(path);
         }
 
         @Override
@@ -167,6 +193,23 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
                     mActivity.startActivity(intent);
                     break;
+            }
+        }
+
+        public class LoadImage extends AsyncTask<String, Void, List<String>> {
+
+            @Override
+            protected List<String> doInBackground(String... strings) {
+                String path = strings[0];
+                List<String> links = awsClient.getBucket(path);
+                return links;
+            }
+
+            @Override
+            protected void onPostExecute(List<String> links) {
+                for (String link : links) {
+                    imageAdapter.addItem(link);
+                }
             }
         }
     }

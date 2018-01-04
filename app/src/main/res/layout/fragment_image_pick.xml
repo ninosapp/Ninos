@@ -52,7 +52,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="@dimen/margin8dp"
+                android:padding="@dimen/margin16dp"
                 android:text="@string/cancel" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="@dimen/margin8dp"
+                android:padding="@dimen/margin16dp"
                 android:text="@string/select"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>

@@ -11,7 +11,7 @@ public class PostInfo {
 
     private Date updatedAt;
 
-    private String isChallenge;
+    private boolean isChallenge;
 
     private String title;
 
@@ -57,11 +57,11 @@ public class PostInfo {
         this.updatedAt = updatedAt;
     }
 
-    public String getIsChallenge() {
+    public boolean getIsChallenge() {
         return isChallenge;
     }
 
-    public void setIsChallenge(String isChallenge) {
+    public void setIsChallenge(boolean isChallenge) {
         this.isChallenge = isChallenge;
     }
 

@@ -22,13 +22,15 @@
     <string name="rationale_storage_ask_again">This app needs External Storage permission to select photos and videos. Open the app settings screen to modify app permissions.</string>
     <string name="images">Images</string>
     <string name="videos">Videos</string>
-    <string name="app_exit_msg">Press back again to exit TaskPad app.</string>
+    <string name="app_exit_msg">Press back again to exit Ninos app</string>
     <string name="cancel">Cancel</string>
-    <string name="select_count">(%d) Select</string>
+    <string name="select_count">Select (%d)</string>
     <string name="select">Select</string>
-    <string name="loading_image_upload">Uploading image...</string>
+    <string name="loading_image_upload">Uploading image…</string>
     <string name="s_people">%s people</string>
     <string name="s_comments">%s comments</string>
+    <string name="done">Done</string>
+    <string name="about">About…</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

@@ -1,5 +1,7 @@
 package com.ninos.listeners;
 
+import com.ninos.models.AddPostResponse;
+import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.RegisterResponse;
@@ -27,7 +29,12 @@ public interface RetrofitService {
     @GET("check/{userId}")
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
 
-
     @GET("posts")
     Call<PostResponse> getPosts(@Query("from") int from, @Query("size") int size);
+
+    @POST("posts")
+    Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
+
+    @POST("refresh-token")
+    Call<RegisterResponse> refreshToken(@Query("token") String token);
 }

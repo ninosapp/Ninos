@@ -22,7 +22,10 @@
             android:id="@+id/challenge_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:clipToPadding="false"
+            android:focusable="true"
             android:scrollbars="vertical"
             tools:listitem="@layout/item_challenge" />
     </LinearLayout>

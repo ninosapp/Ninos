@@ -9,10 +9,11 @@ import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.BucketFragment;
 import com.ninos.fragments.ImagePickFragment;
+import com.ninos.fragments.UploadFragment;
 import com.ninos.fragments.VideoPickFragment;
-import com.ninos.utils.AWSClient;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 public class FilePickerActivity extends BaseActivity {
 
@@ -54,13 +55,11 @@ public class FilePickerActivity extends BaseActivity {
         }
     }
 
-    public void setSelectedImages(List<String> selectedImages) {
+    public void setSelectedImages(ArrayList<String> selectedImages) {
         if (selectedImages.size() > 0) {
-            for (String path : selectedImages) {
-                AWSClient awsClient = new AWSClient(this, "ksjbakjsdfbadkjs", path);
-                awsClient.awsInit();
-                awsClient.uploadImage();
-            }
+            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedImages));
+            fts.commit();
         } else {
             finish();
         }

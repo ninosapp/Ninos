@@ -43,8 +43,10 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
         imagePickHolder.bindData(getItem(position));
     }
 
-    public List<String> getSelectedMedia() {
-        return selectedMedia;
+    public ArrayList<String> getSelectedMedia() {
+        ArrayList<String> medias = new ArrayList<>(selectedMedia.size());
+        medias.addAll(selectedMedia);
+        return medias;
     }
 
     public interface ISetImageSelected {

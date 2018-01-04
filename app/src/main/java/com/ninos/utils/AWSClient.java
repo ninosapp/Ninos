@@ -15,11 +15,16 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.iterable.S3Objects;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.ninos.BuildConfig;
 import com.ninos.R;
 import com.ninos.firebase.Database;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by smeesala on 23-Jun-16.
@@ -37,14 +42,6 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
     private String mPostId, mPath;
     private AmazonS3 mAmazonS3;
 
-    /**
-     * Constructor to initialize parameters
-     * Groups - upload group attachments
-     *
-     * @param context context of home activity
-     * @param file    feedback image to be uploaded
-     * @param userId  user id of user for setting the path to aws
-     */
     public AWSClient(Context context, String postId, String path) {
         try {
             mContext = context;
@@ -53,6 +50,14 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mProgressDialog.show();
             mPostId = postId;
             mPath = path;
+        } catch (Exception e) {
+            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+        }
+    }
+
+    public AWSClient(Context context) {
+        try {
+            mContext = context;
         } catch (Exception e) {
             Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
         }
@@ -85,12 +90,37 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
             String fileName = image.getName();
             String userId = Database.getUserId();
+            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
 
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_challenge_bucket + "/" + userId, fileName, image);
+            mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new ImageUploadListener());
         } catch (Exception e) {
             Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
         }
+    }
+
+    public boolean bucketExist(String path) {
+//        ObjectListing ol = mAmazonS3.listObjects(path);
+//        List<S3ObjectSummary> objects = ol.getObjectSummaries();
+//        for (S3ObjectSummary os : objects) {
+//            System.out.println("* " + os.getKey());
+//        }
+        return mAmazonS3.doesBucketExist(path);
+    }
+
+    public List<String> getBucket(String prefix) {
+        List<String> links = new ArrayList<>();
+
+        String delimiter = "/";
+        if (!prefix.endsWith(delimiter)) {
+            prefix += delimiter;
+        }
+
+        for (S3ObjectSummary summary : S3Objects.withPrefix(mAmazonS3, BuildConfig.ams_challenge_bucket, prefix)) {
+            links.add(String.format("%s/%s/%s", "https://s3.amazonaws.com", BuildConfig.ams_challenge_bucket, summary.getKey()));
+        }
+
+        return links;
     }
 
     /**

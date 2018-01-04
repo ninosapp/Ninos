@@ -13,7 +13,7 @@ public class RegisterResponse {
 
     private UserInfo userInfo;
 
-    private String success;
+    private boolean success;
 
     public String getMessage() {
         return message;
@@ -47,11 +47,11 @@ public class RegisterResponse {
         this.userInfo = userInfo;
     }
 
-    public String getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 
