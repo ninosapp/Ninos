@@ -69,7 +69,12 @@ public class FilePickerActivity extends BaseActivity {
         if (selectedVideo == null) {
             finish();
         } else {
+            ArrayList<String> selectedVideos = new ArrayList<>();
+            selectedVideos.add(selectedVideo);
 
+            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideos));
+            fts.commit();
         }
     }
 }

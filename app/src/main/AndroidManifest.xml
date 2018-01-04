@@ -46,6 +46,10 @@
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
 
+        <activity
+            android:name=".activities.ProfileSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.CommentActivity"></activity>
     </application>
 
 </manifest>

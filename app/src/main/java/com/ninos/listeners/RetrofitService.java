@@ -4,6 +4,7 @@ import com.ninos.models.AddPostResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.models.Profile;
+import com.ninos.models.ProfileResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.UserCheckResponse;
 
@@ -25,6 +26,9 @@ public interface RetrofitService {
 
     @GET("register")
     Call<Profile> getProfile(@Header("Authorization") String token);
+
+    @GET("/profile/users/{userId}")
+    Call<ProfileResponse> getUserProfile(@Header("Authorization") String token, @Path("userId") String userId);
 
     @GET("check/{userId}")
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);

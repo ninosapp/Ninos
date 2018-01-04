@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
+import com.ninos.fragments.ProfilePickFragment;
 import com.ninos.fragments.VideoPickFragment;
 import com.ninos.models.Bucket;
 
@@ -44,7 +45,8 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
 
     public enum Type {
         IMAGES,
-        VIDEOS
+        VIDEOS,
+        PROFILE
     }
 
     private class BucketHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -73,14 +75,18 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
             FragmentTransaction fts = baseActivity.getSupportFragmentManager().beginTransaction();
 
             Fragment fragment;
+            int id = R.id.fl_file_pick;
 
             if (type.equals(Type.IMAGES)) {
                 fragment = ImagePickFragment.newInstance(bucket.getBucketName());
-            } else {
+            } else if (type.equals(Type.VIDEOS)) {
                 fragment = VideoPickFragment.newInstance(bucket.getBucketName());
+            } else {
+                fragment = ProfilePickFragment.newInstance(bucket.getBucketName());
+                id = R.id.fl_profile_select;
             }
 
-            fts.add(R.id.fl_file_pick, fragment);
+            fts.add(id, fragment);
             fts.commit();
         }
     }

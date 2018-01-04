@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -17,12 +16,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.models.PostInfo;
 import com.ninos.utils.AWSClient;
+import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 
 import java.util.List;
@@ -117,7 +120,18 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
-            iv_profile.setImageDrawable(ContextCompat.getDrawable(mActivity, resId));
+
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.ic_account);
+            requestOptions.error(R.drawable.ic_account);
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.circleCrop();
+
+            Glide.with(mActivity)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(AWSUrls.GetPI512(mActivity, postInfo.getUserId()))
+                    .into(iv_profile);
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -184,6 +198,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         @Override
         public void onClick(View view) {
             int id = view.getId();
+            PostInfo postInfo = getItem(getAdapterPosition());
 
             switch (id) {
                 case R.id.tv_name:
@@ -191,6 +206,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     Intent intent = new Intent(mActivity, ProfileActivity.class);
                     int resId = typedArray.getResourceId(getAdapterPosition(), 0);
                     intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
+                    intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
                     mActivity.startActivity(intent);
                     break;
             }

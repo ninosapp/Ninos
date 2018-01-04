@@ -31,6 +31,13 @@
     <string name="s_comments">%s comments</string>
     <string name="done">Done</string>
     <string name="about">About…</string>
+    <string name="posts">Posts</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="profile_aws_url_suffix_PI128">/PI128.jpg</string>
+    <string name="profile_aws_url_suffix_PI48">/PI48.jpg</string>
+    <string name="profile_aws_url_suffix_PI512">/PI512.jpg</string>
+
 
     <array name="patterns">
         <item>@drawable/pattern</item>

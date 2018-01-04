@@ -18,14 +18,15 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin6dp">
 
-        <com.ninos.views.CircleImageView
+        <ImageView
             android:id="@+id/iv_profile"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/margin6dp"
+            android:adjustViewBounds="true"
             android:background="@drawable/ic_account"
-            android:paddingTop="@dimen/margin4dp" />
+            android:paddingTop="@dimen/margin4dp"
+            android:scaleType="fitCenter" />
 
         <LinearLayout
             android:id="@+id/ll_profile"

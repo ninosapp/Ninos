@@ -20,6 +20,7 @@ android {
 
     productFlavors {
         dvl {
+            buildConfigField 'String', 'ams_profile_bucket', '"ninos-dev-profile"'
             buildConfigField 'String', 'ams_challenge_bucket', '"ninos-dev-challenge"'
             buildConfigField 'String', 'USER_PATH_FMT', '"/dvl/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/dvl"'
@@ -29,6 +30,7 @@ android {
         }
 
         prd {
+            buildConfigField 'String', 'ams_profile_bucket', '"ninos-dev-profile"'
             buildConfigField 'String', 'ams_challenge_bucket', '"ninos-dev-challenge"'
             buildConfigField 'String', 'USER_PATH_FMT', '"/prd/users/%1$s/%2$s"'
             buildConfigField 'String', 'ROOT_PATH', '"/prd"'
