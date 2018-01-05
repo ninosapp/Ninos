@@ -44,6 +44,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private DateUtil dateUtil;
     private String userId;
     private AWSClient awsClient;
+    private RequestOptions requestOptions;
 
     public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
         super(recyclerView, onLoadMoreListener);
@@ -53,6 +54,13 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         userId = Database.getUserId();
         awsClient = new AWSClient(activity);
         awsClient.awsInit();
+
+        requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_account);
+        requestOptions.error(R.drawable.ic_account);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.circleCrop();
     }
 
     @Override
@@ -123,16 +131,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
 
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.drawable.ic_account);
-            requestOptions.error(R.drawable.ic_account);
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.circleCrop();
 
             Glide.with(mActivity)
                     .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI512(mActivity, postInfo.getUserId()))
+                    .load(AWSUrls.GetPI48(mActivity, postInfo.getUserId()))
                     .into(iv_profile);
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {

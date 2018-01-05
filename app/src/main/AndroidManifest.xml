@@ -49,7 +49,10 @@
         <activity
             android:name=".activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.CommentActivity"></activity>
+        <activity
+            android:name=".activities.CommentActivity"
+            android:theme="@style/CommentsTheme"
+            android:windowSoftInputMode="adjustUnspecified" />
     </application>
 
 </manifest>

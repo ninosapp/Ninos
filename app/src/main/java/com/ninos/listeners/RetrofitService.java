@@ -1,6 +1,9 @@
 package com.ninos.listeners;
 
 import com.ninos.models.AddPostResponse;
+import com.ninos.models.Comment;
+import com.ninos.models.CommentResponse;
+import com.ninos.models.CommentsResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.models.Profile;
@@ -41,4 +44,10 @@ public interface RetrofitService {
 
     @POST("refresh-token")
     Call<RegisterResponse> refreshToken(@Query("token") String token);
+
+    @GET("posts/{postId}/comments")
+    Call<CommentsResponse> getPostComments(@Path("postId") String postId, @Query("token") String token);
+
+    @POST("posts/{postId}/comments")
+    Call<CommentResponse> addPostComments(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);
 }

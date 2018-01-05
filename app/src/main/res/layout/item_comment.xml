@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin8dp"
+    android:paddingEnd="@dimen/margin16dp"
+    android:paddingStart="@dimen/margin16dp"
+    android:paddingTop="@dimen/margin8dp">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/margin6dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/ic_account"
+        android:paddingTop="@dimen/margin4dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin16dp"
+        android:layout_toEndOf="@+id/iv_image"
+        android:textColor="@color/midnight_blue"
+        tools:text="Sumanth" />
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_name"
+        android:layout_marginStart="@dimen/margin16dp"
+        android:layout_marginTop="@dimen/margin8dp"
+        android:layout_toEndOf="@+id/iv_image"
+        tools:text="Sumanth sample coment text example Sumanth sample coment text example" />
+
+</RelativeLayout>
