@@ -76,24 +76,6 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
             mProgressDialog.show();
             mPath = path;
-            Luban.compress(context, new File(path))
-                    .putGear(Luban.THIRD_GEAR)
-                    .launch(new OnCompressListener() {
-                        @Override
-                        public void onStart() {
-
-                        }
-
-                        @Override
-                        public void onSuccess(File file) {
-                            mBitmap = BitmapFactory.decodeFile(file.getPath());
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-                    });
 
             //creating a cache dir
             File dir = mContext.getCacheDir();
@@ -130,16 +112,16 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         }
     }
 
-    private void upload48Image() {
+    private void upload64Image() {
         try {
             String userId = Database.getUserId();
-            File path48 = resizeImage(48);
+            File path64 = resizeImage(64);
 
             //setting the path to which bucket file need to be uploaded
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI48), path48, CannedAccessControlList.PublicRead);
+            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI48), path64, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new UploadListener());
         } catch (Exception e) {
-            Log.e(TAG, "upload48Image() - " + e.getMessage(), e);
+            Log.e(TAG, "upload64Image() - " + e.getMessage(), e);
         }
     }
 
@@ -158,10 +140,28 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
     /*Uploading 512X512 resolution image*/
     public void upload512Image() {
         try {
-            String userId = Database.getUserId();
-            File path512 = resizeImage(512);
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path512, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new UploadListener());
+            Luban.compress(mContext, new File(mPath))
+                    .putGear(Luban.THIRD_GEAR)
+                    .launch(new OnCompressListener() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(File file) {
+                            mBitmap = BitmapFactory.decodeFile(file.getPath());
+                            String userId = Database.getUserId();
+                            File path512 = resizeImage(512);
+                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path512, CannedAccessControlList.PublicRead);
+                            mTransfer.setTransferListener(new UploadListener());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
         } catch (Exception e) {
             Log.e(TAG, "upload512Image() - " + e.getMessage(), e);
         }
@@ -257,7 +257,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                     mCount = mCount + 1;
                     switch (mCount) {
                         case 1:
-                            upload48Image();
+                            upload64Image();
                             break;
                         case 2:
                             upload128Image();
