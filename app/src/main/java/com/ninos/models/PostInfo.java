@@ -1,6 +1,7 @@
 package com.ninos.models;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by FAMILY on 14-12-2017.
@@ -32,6 +33,16 @@ public class PostInfo {
     private String challengeTitle;
 
     private String challengeId;
+
+    private List<String> links;
+
+    public List<String> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<String> links) {
+        this.links = links;
+    }
 
     public String getUserName() {
         return userName;

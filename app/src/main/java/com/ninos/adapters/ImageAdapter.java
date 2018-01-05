@@ -41,6 +41,10 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
         sampleViewHolder.bindData(position);
     }
 
+    public void setResId(int resId) {
+        this.resId = resId;
+    }
+
     private class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_challenge;
 

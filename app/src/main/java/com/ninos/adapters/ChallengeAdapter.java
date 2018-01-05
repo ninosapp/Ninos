@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.activities.CommentActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
@@ -87,7 +89,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title;
         ImageView ic_clap_anim, iv_clap, iv_profile;
         RecyclerView recyclerView;
-        ImageAdapter imageAdapter;
+        LinearLayout ll_comment;
 
         SampleViewHolder(View itemView) {
             super(itemView);
@@ -99,12 +101,12 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
             tv_claps_count = itemView.findViewById(R.id.tv_claps_count);
             tv_comments_count = itemView.findViewById(R.id.tv_comments_count);
+            ll_comment = itemView.findViewById(R.id.ll_comment);
+            ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
-
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
-
             recyclerView = itemView.findViewById(R.id.image_list);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
         }
 
@@ -185,14 +187,16 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             });
 
             String path = String.format("%s/%s", userId, postInfo.get_id());
-
-
-            imageAdapter = new ImageAdapter(mActivity, resId);
-
+            ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
             recyclerView.setAdapter(imageAdapter);
 
-
-            new LoadImage().execute(path);
+            if (postInfo.getLinks() == null) {
+                new LoadImage(imageAdapter, position).execute(path);
+            } else {
+                for (String link : postInfo.getLinks()) {
+                    imageAdapter.addItem(link);
+                }
+            }
         }
 
         @Override
@@ -209,23 +213,41 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
                     mActivity.startActivity(intent);
                     break;
+                case R.id.ll_comment:
+                    Intent commentIntent = new Intent(mActivity, CommentActivity.class);
+                    commentIntent.putExtra(CommentActivity.POST_ID, postInfo.get_id());
+                    mActivity.startActivity(commentIntent);
+                    break;
             }
         }
 
         public class LoadImage extends AsyncTask<String, Void, List<String>> {
 
+            ImageAdapter imageAdapter;
+            int position;
+
+            LoadImage(ImageAdapter imageAdapter, int position) {
+                this.imageAdapter = imageAdapter;
+                this.position = position;
+            }
+
             @Override
             protected List<String> doInBackground(String... strings) {
                 String path = strings[0];
+
                 List<String> links = awsClient.getBucket(path);
+                getItem(position).setLinks(links);
                 return links;
             }
 
             @Override
             protected void onPostExecute(List<String> links) {
+
                 for (String link : links) {
                     imageAdapter.addItem(link);
                 }
+
+                getItem(position).setLinks(links);
             }
         }
     }
