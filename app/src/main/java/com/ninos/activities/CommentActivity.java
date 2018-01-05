@@ -72,7 +72,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
         list_comment.setAdapter(challengeAdapter);
 
         service = RetrofitInstance.createService(RetrofitService.class);
-        service.getPostComments(accessToken, postId).enqueue(new Callback<CommentsResponse>() {
+        service.getPostComments(postId, accessToken).enqueue(new Callback<CommentsResponse>() {
             @Override
             public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

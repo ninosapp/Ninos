@@ -29,6 +29,7 @@
             android:layout_marginStart="@dimen/margin16dp"
             android:background="@color/silver" />
 
+
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,13 +37,26 @@
             android:layout_marginBottom="?attr/actionBarSize"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_comment"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/margin8dp"
-                android:layout_marginTop="@dimen/margin8dp" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:orientation="vertical">
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadeScrollbars="true">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin8dp"
+                        android:layout_marginTop="@dimen/margin8dp" />
+
+                </ScrollView>
+            </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
 

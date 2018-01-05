@@ -31,6 +31,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.shaohui.advancedluban.Luban;
+import me.shaohui.advancedluban.OnCompressListener;
+
+
 /**
  * Created by smeesala on 23-Jun-16.
  * Class for uploading files to aws for user profile image and send a report
@@ -58,6 +62,8 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mProgressDialog.show();
             mPostId = postId;
             mPath = path;
+            File dir = mContext.getCacheDir();
+            mFolder = new File(dir, "images");
         } catch (Exception e) {
             Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
         }
@@ -70,7 +76,25 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
             mProgressDialog.show();
             mPath = path;
-            mBitmap = BitmapFactory.decodeFile(path);
+            Luban.compress(context, new File(path))
+                    .putGear(Luban.THIRD_GEAR)
+                    .launch(new OnCompressListener() {
+                        @Override
+                        public void onStart() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(File file) {
+                            mBitmap = BitmapFactory.decodeFile(file.getPath());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+
             //creating a cache dir
             File dir = mContext.getCacheDir();
             mFolder = new File(dir, "images");
@@ -168,18 +192,35 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
     public void uploadImage() {
         try {
-            File image = new File(mPath);
+            Luban.compress(mContext, new File(mPath))
+                    .putGear(Luban.THIRD_GEAR)
+                    .launch(new OnCompressListener() {
+                        @Override
+                        public void onStart() {
 
-            if ((image.length() / 1024) > 100) {
-                image = new ImageUtil().getResizedBitmap(mContext, mPath, 400);
-            }
+                        }
 
-            String fileName = image.getName();
-            String userId = Database.getUserId();
-            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+                        @Override
+                        public void onSuccess(File image) {
+                            String fileName = image.getName();
+                            String userId = Database.getUserId();
+                            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
 
-            mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new ImageUploadListener());
+                            mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
+                            mTransfer.setTransferListener(new ImageUploadListener());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+
+//            if ((image.length() / 1024) > 100) {
+//                image = new ImageUtil().getResizedBitmap(mContext, mPath, 400);
+//            }
+
+
         } catch (Exception e) {
             Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
         }
