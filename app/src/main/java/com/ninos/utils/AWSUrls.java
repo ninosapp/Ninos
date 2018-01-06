@@ -20,7 +20,7 @@ public class AWSUrls {
      * @param userId  id of user
      * @return
      */
-    public static String GetPI48(Context context, String userId) {
+    public static String GetPI64(Context context, String userId) {
         String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI48);
         return imageUrl;
     }

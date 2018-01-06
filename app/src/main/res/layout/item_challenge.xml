@@ -26,7 +26,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/ic_account"
             android:paddingTop="@dimen/margin4dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="centerInside" />
 
         <LinearLayout
             android:id="@+id/ll_profile"
@@ -162,9 +162,13 @@
                 android:weightSum="3">
 
                 <LinearLayout
+                    android:id="@+id/ll_clap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center">
 
                     <ImageView
@@ -189,6 +193,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center">
 
                     <ImageView
@@ -211,6 +218,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center">
 
                     <ImageView

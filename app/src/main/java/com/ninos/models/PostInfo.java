@@ -34,7 +34,25 @@ public class PostInfo {
 
     private String challengeId;
 
+    private boolean myRating;
+
     private List<String> links;
+
+    public boolean isChallenge() {
+        return isChallenge;
+    }
+
+    public void setChallenge(boolean challenge) {
+        isChallenge = challenge;
+    }
+
+    public boolean isMyRating() {
+        return myRating;
+    }
+
+    public void setMyRating(boolean myRating) {
+        this.myRating = myRating;
+    }
 
     public List<String> getLinks() {
         return links;

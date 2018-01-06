@@ -67,7 +67,7 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
             tv_user_name.setText(comment.getUserName());
 
 
-            Glide.with(mContext).load(AWSUrls.GetPI48(mContext, comment.getUserId())).apply(requestOptions).into(iv_image);
+            Glide.with(mContext).load(AWSUrls.GetPI64(mContext, comment.getUserId())).apply(requestOptions).into(iv_image);
         }
     }
 }
