@@ -2,17 +2,24 @@ package com.ninos.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.ProfileResponse;
@@ -67,15 +74,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         tv_following.setText(userProfile.getFollowingCount());
                         tv_name.setText(userProfile.getChildName());
 
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.placeholder(placeHolderId);
-                        requestOptions.error(placeHolderId);
-                        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                        requestOptions.skipMemoryCache(true);
+                        RequestOptions requestOptions = new RequestOptions()
+                                .placeholder(placeHolderId)
+                                .error(placeHolderId)
+                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
                         Glide.with(ProfileActivity.this)
                                 .setDefaultRequestOptions(requestOptions)
-                                .load(AWSUrls.GetPI512(ProfileActivity.this, userId)).into(iv_profile);
+                                .asBitmap()
+                                .load(AWSUrls.GetPI512(ProfileActivity.this, userId))
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                        iv_profile.setImageBitmap(resource);
+
+                                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                            @Override
+                                            public void onGenerated(Palette palette) {
+
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                    Window window = getWindow();
+                                                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                                    window.setStatusBarColor(palette.getLightVibrantColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorAccent)));
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                     }
                 }
             }
@@ -85,12 +110,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        supportFinishAfterTransition();
+        finish();
     }
 
     @Override

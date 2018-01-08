@@ -70,9 +70,9 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         awsClient.awsInit();
 
         requestOptions = new RequestOptions();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
         requestOptions.circleCrop();
+
         drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
         color = ContextCompat.getColor(mActivity, R.color.colorAccent);
     }
@@ -81,15 +81,15 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     public RecyclerView.ViewHolder onCreateBasicItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_challenge, parent, false);
-        return new SampleViewHolder(view);
+        return new ChallengeViewHolder(view);
     }
 
     @Override
     public void onBindBasicItemView(RecyclerView.ViewHolder genericHolder, int position) {
-        SampleViewHolder sampleViewHolder = (SampleViewHolder) genericHolder;
+        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) genericHolder;
 
-        sampleViewHolder.bindData(position);
-        setAnimation(sampleViewHolder.itemView, position);
+        challengeViewHolder.bindData(position);
+        setAnimation(challengeViewHolder.itemView, position);
     }
 
     private void setAnimation(View viewToAnimate, int position) {
@@ -123,14 +123,14 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         });
     }
 
-    private class SampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title;
         ImageView ic_clap_anim, iv_clap, iv_profile;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
         LinearLayout ll_comment;
 
-        SampleViewHolder(View itemView) {
+        ChallengeViewHolder(View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_title = itemView.findViewById(R.id.tv_title);

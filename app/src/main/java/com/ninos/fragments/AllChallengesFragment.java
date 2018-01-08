@@ -35,6 +35,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private ChallengeAdapter challengeAdapter;
     private RetrofitService service;
     private int from = 0, size = 10;
+    private String accessToken;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,8 +80,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             challenge_list.setAdapter(challengeAdapter);
 
-            String accessToken = PreferenceUtil.getAccessToken(getContext());
-            service = RetrofitInstance.createService(RetrofitService.class, accessToken);
+            accessToken = PreferenceUtil.getAccessToken(getContext());
+            service = RetrofitInstance.createService(RetrofitService.class);
 
             getPosts();
         } catch (Exception e) {
@@ -90,7 +91,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getPosts() {
-        service.getPosts(from, size).enqueue(new Callback<PostResponse>() {
+        service.getPosts(from, size, accessToken).enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

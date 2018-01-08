@@ -39,7 +39,7 @@ public interface RetrofitService {
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
 
     @GET("posts")
-    Call<PostResponse> getPosts(@Query("from") int from, @Query("size") int size);
+    Call<PostResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
 
     @POST("posts")
     Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
