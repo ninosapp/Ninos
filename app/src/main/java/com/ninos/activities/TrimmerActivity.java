@@ -31,9 +31,12 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
         mProgressDialog.setMessage(getString(R.string.trimming_progress));
 
         mVideoTrimmer = findViewById(R.id.timeLine);
+
+
+
         if (mVideoTrimmer != null) {
-            mVideoTrimmer.setMaxDuration(60);
             mVideoTrimmer.setOnTrimVideoListener(this);
+//            mVideoTrimmer.setDestinationPath();
             mVideoTrimmer.setOnVideoListener(this);
             mVideoTrimmer.setVideoURI(Uri.parse(path));
             mVideoTrimmer.setVideoInformationVisibility(true);

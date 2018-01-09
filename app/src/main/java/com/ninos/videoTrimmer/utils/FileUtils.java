@@ -34,6 +34,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
+import java.io.File;
+
+import static com.ninos.utils.CrashUtil.report;
+
 public class FileUtils {
 
     /**
@@ -175,5 +179,32 @@ public class FileUtils {
      */
     private static boolean isMediaDocument(@NonNull Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean createDir(String dirPath) {
+        boolean isDirExist = false;
+
+        try {
+
+            File dir = new File(dirPath);
+            isDirExist = dir.exists();
+
+            if (!dir.exists()) {
+                isDirExist = dir.mkdirs();
+            }
+        } catch (Exception e) {
+            report(e);
+        }
+
+        return isDirExist;
+    }
+
+    public static void createFileInDir(String dirPath, String fileName) {
+
+        try {
+            new File(dirPath, fileName).createNewFile();
+        } catch (Exception e) {
+            report(e);
+        }
     }
 }

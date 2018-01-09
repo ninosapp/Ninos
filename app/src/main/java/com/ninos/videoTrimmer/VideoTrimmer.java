@@ -91,7 +91,7 @@ public class VideoTrimmer extends FrameLayout {
     private List<OnProgressVideoListener> mListeners;
     private OnTrimVideoListener mOnTrimVideoListener;
     private OnVideoListener mOnVideoListener;
-    private int mDuration = 0;
+    private int mDuration = 60;
     private int mTimeVideo = 0;
     private int mStartPosition = 0;
     private int mEndPosition = 0;
