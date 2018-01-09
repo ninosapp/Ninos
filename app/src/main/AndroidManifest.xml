@@ -59,6 +59,9 @@
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
 
+        <activity
+            android:name=".activities.TrimmerActivity"
+            android:theme="@style/AppTheme.VideoTrimmer" />
     </application>
 
 </manifest>

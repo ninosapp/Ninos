@@ -42,8 +42,19 @@
     <string name="comment_validation">Comment is empty</string>
     <string name="facebook_app_id">2021224038166624</string>
     <string name="fb_login_protocol_scheme">fb2021224038166624</string>
-    <string name="trimming_progress">Trimming your video...</string>
+    <string name="save">Save</string>
+    <string name="Ok">OK</string>
+    <string name="short_seconds">sec</string>
+    <string name="megabyte">MB</string>
+    <string name="kilobyte">KB</string>
+
+
+    <string name="label_select_video">Select Video</string>
+    <string name="toast_cannot_retrieve_selected_video">Cannot retrieve selected video</string>
     <string name="video_saved_at">Video saves at : $%1s</string>
+    <string name="pick_a_video">Select or record a a video below to try it out:</string>
+    <string name="trimming_progress">Trimming your video…</string>
+    <string name="file_size_is_too_large">File Size is too large.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
