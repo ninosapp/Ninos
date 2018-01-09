@@ -27,7 +27,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.activities.CommentActivity;
 import com.ninos.activities.ProfileActivity;
-import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.PostClapResponse;
@@ -54,7 +53,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private Activity mActivity;
     private TypedArray typedArray;
     private DateUtil dateUtil;
-    private String userId;
     private AWSClient awsClient;
     private RequestOptions requestOptions;
     private Drawable drawable;
@@ -65,13 +63,14 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         mActivity = activity;
         typedArray = activity.getResources().obtainTypedArray(R.array.patterns);
         dateUtil = new DateUtil();
-        userId = Database.getUserId();
         awsClient = new AWSClient(activity);
         awsClient.awsInit();
 
-        requestOptions = new RequestOptions();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-        requestOptions.circleCrop();
+        requestOptions = new RequestOptions()
+                .placeholder(R.drawable.ic_account)
+                .error(R.drawable.ic_account)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .circleCrop();
 
         drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
         color = ContextCompat.getColor(mActivity, R.color.colorAccent);
@@ -234,7 +233,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             });
 
-            String path = String.format("%s/%s", userId, postInfo.get_id());
+            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
             ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
             recyclerView.setAdapter(imageAdapter);
 

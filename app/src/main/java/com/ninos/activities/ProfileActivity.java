@@ -3,6 +3,7 @@ package com.ninos.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,8 +57,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
         final ImageView iv_profile = findViewById(R.id.iv_profile);
-        iv_profile.setImageDrawable(ContextCompat.getDrawable(this, placeHolderId));
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
+        iv_profile.setImageBitmap(bm);
         iv_profile.setOnClickListener(this);
+        setBitmapPalette(bm);
 
         String token = PreferenceUtil.getAccessToken(this);
 
@@ -88,17 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                                         iv_profile.setImageBitmap(resource);
 
-                                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                            @Override
-                                            public void onGenerated(Palette palette) {
-
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                                    Window window = getWindow();
-                                                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                                    window.setStatusBarColor(palette.getLightVibrantColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorAccent)));
-                                                }
-                                            }
-                                        });
+                                        setBitmapPalette(resource);
                                     }
                                 });
                     }
@@ -112,6 +105,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
 
+    }
+
+    private void setBitmapPalette(Bitmap resource) {
+        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = getWindow();
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    window.setStatusBarColor(palette.getLightVibrantColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorAccent)));
+                }
+            }
+        });
     }
 
     @Override

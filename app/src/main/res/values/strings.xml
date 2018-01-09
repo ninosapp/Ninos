@@ -40,7 +40,8 @@
     <string name="comments">Comments</string>
     <string name="leave_a_comment">Leave a comment…</string>
     <string name="comment_validation">Comment is empty</string>
-
+    <string name="facebook_app_id">2021224038166624</string>
+    <string name="fb_login_protocol_scheme">fb2021224038166624</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

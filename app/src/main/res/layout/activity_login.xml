@@ -36,7 +36,7 @@
         <LinearLayout
             android:id="@+id/ll_login"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="125dp"
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="vertical"
@@ -55,7 +55,6 @@
                 android:id="@+id/btn_fb_login"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
-                android:clickable="false"
                 android:drawableStart="@drawable/ic_facebook"
                 android:text="@string/faceboook"
                 android:textColor="@android:color/white"

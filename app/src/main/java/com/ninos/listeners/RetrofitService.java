@@ -9,6 +9,7 @@ import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
+import com.ninos.models.QuizResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.UserCheckResponse;
 
@@ -55,4 +56,7 @@ public interface RetrofitService {
 
     @PUT("/posts/{postId}/claps")
     Call<PostClapResponse> addPostClaps(@Path("postId") String postId, @Query("token") String token);
+
+    @GET("quizzes")
+    Call<QuizResponse> getQuizzes(@Query("token") String token);
 }

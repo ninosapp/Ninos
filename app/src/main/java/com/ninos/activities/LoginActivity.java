@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -44,6 +51,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ninos.utils.CrashUtil.report;
+
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, GoogleApiClient.OnConnectionFailedListener {
     public static final int RC_SIGN_IN = 13596;
@@ -56,6 +65,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private ArgbEvaluator mARGBEvaluator;
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +110,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
 
+            mCallbackManager = CallbackManager.Factory.create();
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_login);
@@ -109,6 +120,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -135,39 +148,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
-                            final FirebaseUser user = mAuth.getCurrentUser();
-
-                            if (user != null) {
-
-                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                service.userCheck(user.getUid()).enqueue(new Callback<UserCheckResponse>() {
-                                    @Override
-                                    public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
-                                        if (response.body() != null) {
-
-                                            UserCheckResponse userCheckResponse = response.body();
-
-                                            if (userCheckResponse != null && userCheckResponse.getSuccess()) {
-                                                PreferenceUtil.setAccessToken(LoginActivity.this, userCheckResponse.getToken());
-                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                                finish();
-                                            } else {
-                                                Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
-                                                intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
-                                                intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
-                                                intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<UserCheckResponse> call, Throwable t) {
-
-                                    }
-                                });
-                            }
+                            signInUser();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             showSnackBar(R.string.error_message, cl_login);
@@ -175,6 +156,42 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         }
                     }
                 });
+    }
+
+    private void signInUser() {
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.userCheck(user.getUid()).enqueue(new Callback<UserCheckResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
+                    if (response.body() != null) {
+
+                        UserCheckResponse userCheckResponse = response.body();
+
+                        if (userCheckResponse != null && userCheckResponse.getSuccess()) {
+                            PreferenceUtil.setAccessToken(LoginActivity.this, userCheckResponse.getToken());
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
+                            intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
+                            intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
+                            intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserCheckResponse> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     public void enableButton() {
@@ -202,11 +219,75 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     startActivityForResult(signInIntent, RC_SIGN_IN);
                     break;
                 case R.id.btn_fb_login:
-
+                    doFacebookLogin();
                     break;
             }
         } else {
             showNetworkDownSnackBar(cl_login);
+        }
+    }
+
+    private void doFacebookLogin() {
+
+        try {
+            ArrayList<String> permissions = new ArrayList<>();
+
+            permissions.add("email");
+            permissions.add("public_profile");
+
+            LoginManager.getInstance().logInWithReadPermissions(this, permissions);
+
+            LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    firebaseAuthWithFacebook(loginResult.getAccessToken());
+                }
+
+                @Override
+                public void onCancel() {
+                    enableButton();
+                    showToast(R.string.error_message);
+                }
+
+                @Override
+                public void onError(FacebookException e) {
+                    enableButton();
+                    showToast(R.string.error_message);
+                }
+            });
+        } catch (Exception e) {
+            report(e);
+        }
+    }
+
+    private void firebaseAuthWithFacebook(final AccessToken accessToken) {
+
+        try {
+            Log.d(TAG, "firebaseAuthWithFacebook:" + accessToken.getToken());
+
+            disableButton();
+
+            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(final @NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                            if (!task.isSuccessful()) {
+                                enableButton();
+                                Log.w(TAG, "signInWithCredential", task.getException());
+                                showToast(R.string.error_message);
+                            } else {
+                                signInUser();
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            enableButton();
+            report(e);
+            showToast(R.string.error_message);
         }
     }
 

@@ -234,8 +234,12 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             prefix += delimiter;
         }
 
-        for (S3ObjectSummary summary : S3Objects.withPrefix(mAmazonS3, BuildConfig.ams_challenge_bucket, prefix)) {
-            links.add(String.format("%s/%s/%s", "https://s3.amazonaws.com", BuildConfig.ams_challenge_bucket, summary.getKey()));
+        try {
+            for (S3ObjectSummary summary : S3Objects.withPrefix(mAmazonS3, BuildConfig.ams_challenge_bucket, prefix)) {
+                links.add(String.format("%s/%s/%s", "https://s3.amazonaws.com", BuildConfig.ams_challenge_bucket, summary.getKey()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return links;

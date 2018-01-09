@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninos.R;
+import com.ninos.models.Quizze;
 
 /**
  * Created by FAMILY on 08-12-2017.
  */
 
-public class QuizAdapter extends CommonRecyclerAdapter<String> {
+public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
     private Context mContext;
     private String[] mColors;
@@ -39,8 +40,7 @@ public class QuizAdapter extends CommonRecyclerAdapter<String> {
     public void onBindBasicItemView(RecyclerView.ViewHolder genericHolder, int position) {
         QuizViewHolder sampleViewHolder = (QuizViewHolder) genericHolder;
 
-        String title = getItem(position);
-        sampleViewHolder.bindData(title, position);
+        sampleViewHolder.bindData(position);
     }
 
     private class QuizViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -53,8 +53,9 @@ public class QuizAdapter extends CommonRecyclerAdapter<String> {
             iv_quiz_background = itemView.findViewById(R.id.iv_quiz_background);
         }
 
-        private void bindData(String title, int position) {
-            tv_quiz_name.setText(title);
+        private void bindData(int position) {
+            Quizze quizze = getItem(position);
+            tv_quiz_name.setText(quizze.getTitle());
             int index = position % 10;
 
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_circle);

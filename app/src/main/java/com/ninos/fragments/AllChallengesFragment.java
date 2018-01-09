@@ -16,8 +16,12 @@ import com.ninos.adapters.QuizAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.PostResponse;
+import com.ninos.models.QuizResponse;
+import com.ninos.models.Quizze;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,9 +70,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             quiz_list.setAdapter(quizAdapter);
 
-            for (int i = 0; i < 10; i++) {
-                quizAdapter.addItem("Sumanth " + i);
-            }
 
             LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(mBaseActivity);
 
@@ -82,6 +83,22 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             accessToken = PreferenceUtil.getAccessToken(getContext());
             service = RetrofitInstance.createService(RetrofitService.class);
+
+            service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                @Override
+                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<Quizze> quizzes = response.body().getQuizeData();
+
+                        quizAdapter.addItems(quizzes);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+
+                }
+            });
 
             getPosts();
         } catch (Exception e) {

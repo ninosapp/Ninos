@@ -30,8 +30,7 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
         requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_account);
         requestOptions.error(R.drawable.ic_account);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
         requestOptions.circleCrop();
     }
 
