@@ -1,5 +1,6 @@
 package com.ninos.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -69,12 +70,16 @@ public class FilePickerActivity extends BaseActivity {
         if (selectedVideo == null) {
             finish();
         } else {
-            ArrayList<String> selectedVideos = new ArrayList<>();
-            selectedVideos.add(selectedVideo);
-
-            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideos));
-            fts.commit();
+//            ArrayList<String> selectedVideos = new ArrayList<>();
+//            selectedVideos.add(selectedVideo);
+//
+//            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+//            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideos));
+//            fts.commit();
         }
+
+        Intent intent = new Intent(this, TrimmerActivity.class);
+        intent.putExtra(TrimmerActivity.VIDEO_PATH, selectedVideo);
+        startActivity(intent);
     }
 }

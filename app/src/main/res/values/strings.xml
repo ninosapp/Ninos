@@ -42,6 +42,8 @@
     <string name="comment_validation">Comment is empty</string>
     <string name="facebook_app_id">2021224038166624</string>
     <string name="fb_login_protocol_scheme">fb2021224038166624</string>
+    <string name="trimming_progress">Trimming your video...</string>
+    <string name="video_saved_at">Video saves at : $%1s</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

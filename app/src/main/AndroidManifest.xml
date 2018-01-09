@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -59,6 +58,10 @@
             android:name=".activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
+
+        <activity
+            android:name=".activities.TrimmerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
