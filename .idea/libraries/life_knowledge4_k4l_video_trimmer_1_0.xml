@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="life.knowledge4:k4l-video-trimmer-1.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/k4l-video-trimmer-1.0.aar/92f3cc40d1ce02e5e4556cde0fa80fdc/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/k4l-video-trimmer-1.0.aar/92f3cc40d1ce02e5e4556cde0fa80fdc/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/life.knowledge4/k4l-video-trimmer/1.0/fd5bbfb14b081ba5118682dff619d166a2f440e9/k4l-video-trimmer-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
