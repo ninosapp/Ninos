@@ -56,7 +56,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private AWSClient awsClient;
     private RequestOptions requestOptions;
     private Drawable drawable;
-    private int color;
+    private int color_accent, color_dark_grey;
 
     public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
         super(recyclerView, onLoadMoreListener);
@@ -74,7 +74,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 .circleCrop();
 
         drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
-        color = ContextCompat.getColor(mActivity, R.color.colorAccent);
+        color_accent = ContextCompat.getColor(mActivity, R.color.colorAccent);
+        color_dark_grey = ContextCompat.getColor(mActivity, R.color.dark_grey);
     }
 
     @Override
@@ -106,13 +107,13 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         holder.itemView.clearAnimation();
     }
 
-    private void addClap(PostInfo postInfo) {
+    private void addClap(PostInfo postInfo, final int position) {
         RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
         service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-
+                    updateItem(position);
                 }
             }
 
@@ -124,7 +125,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     }
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title;
+        TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title, tv_clap;
         ImageView ic_clap_anim, iv_clap, iv_profile;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
@@ -134,6 +135,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_title = itemView.findViewById(R.id.tv_title);
+            tv_clap = itemView.findViewById(R.id.tv_clap);
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             ll_clap = itemView.findViewById(R.id.ll_clap);
             iv_clap = itemView.findViewById(R.id.iv_clap);
@@ -151,7 +153,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             recyclerView.setLayoutManager(layoutManager);
         }
 
-        private void bindData(int position) {
+        private void bindData(final int position) {
             final PostInfo postInfo = getItem(position);
 
             tv_name.setText(postInfo.getUserName());
@@ -172,14 +174,19 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     .load(AWSUrls.GetPI64(mActivity, postInfo.getUserId()))
                     .into(iv_profile);
 
+            int color;
 
             if (postInfo.isMyRating()) {
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                color = color_accent;
+                drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
                 iv_clap.setOnClickListener(null);
             } else {
+                color = color_dark_grey;
+                tv_clap.setTextColor(color_dark_grey);
                 iv_clap.setOnClickListener(this);
             }
 
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             iv_clap.setImageDrawable(drawable);
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
@@ -195,7 +202,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     pulse_fade.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            addClap(postInfo);
+                            addClap(postInfo, position);
                             ic_clap_anim.setVisibility(View.VISIBLE);
                         }
 
@@ -250,13 +257,14 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         @Override
         public void onClick(View view) {
             int id = view.getId();
-            PostInfo postInfo = getItem(getAdapterPosition());
+            int position = getAdapterPosition();
+            PostInfo postInfo = getItem(position);
 
             switch (id) {
                 case R.id.tv_name:
                 case R.id.iv_profile:
                     Intent intent = new Intent(mActivity, ProfileActivity.class);
-                    int resId = typedArray.getResourceId(getAdapterPosition(), 0);
+                    int resId = typedArray.getResourceId(position, 0);
                     intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
                     intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
                     mActivity.startActivity(intent);
@@ -268,7 +276,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     break;
                 case R.id.ll_clap:
                 case R.id.iv_clap:
-                    addClap(postInfo);
+                    addClap(postInfo, position);
                     break;
             }
         }
