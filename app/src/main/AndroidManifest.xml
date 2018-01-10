@@ -54,14 +54,22 @@
         <activity
             android:name=".activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
+
         <activity
             android:name=".activities.TrimmerActivity"
             android:theme="@style/AppTheme.VideoTrimmer" />
-        <activity android:name=".activities.QuizActivity"></activity>
+
+        <activity android:name=".activities.QuizActivity" />
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

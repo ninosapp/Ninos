@@ -69,7 +69,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_account)
                 .error(R.drawable.ic_account)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .circleCrop();
 
         drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);

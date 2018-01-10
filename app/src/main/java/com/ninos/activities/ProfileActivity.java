@@ -4,10 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
@@ -80,12 +80,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         RequestOptions requestOptions = new RequestOptions()
                                 .placeholder(placeHolderId)
                                 .error(placeHolderId)
-                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true);
 
                         Glide.with(ProfileActivity.this)
                                 .setDefaultRequestOptions(requestOptions)
                                 .asBitmap()
-                                .load(AWSUrls.GetPI512(ProfileActivity.this, userId))
+                                .load(AWSUrls.GetPI256(ProfileActivity.this, userId))
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
@@ -115,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Window window = getWindow();
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    window.setStatusBarColor(palette.getLightVibrantColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorAccent)));
+                    window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
                 }
             }
         });

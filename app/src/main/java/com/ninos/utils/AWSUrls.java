@@ -21,7 +21,7 @@ public class AWSUrls {
      * @return
      */
     public static String GetPI64(Context context, String userId) {
-        String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI48);
+        String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI64);
         return imageUrl;
     }
 
@@ -38,12 +38,17 @@ public class AWSUrls {
     }
 
     /**
-     * User 512X512 resolution image url
+     * User 256X256 resolution image url
      *
      * @param context in which class the method is invoked
      * @param userId  id of user
      * @return
      */
+    public static String GetPI256(Context context, String userId) {
+        String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI512);
+        return imageUrl;
+    }
+
     public static String GetPI512(Context context, String userId) {
         String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI512);
         return imageUrl;

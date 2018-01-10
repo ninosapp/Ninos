@@ -28,6 +28,13 @@ public class StorageUtils {
         return attachmentDir;
     }
 
+    public static String getUserImagePath(Context context) {
+        String attachmentDir = getPostPath(context);
+        FileUtils.createDir(attachmentDir);
+        FileUtils.createFileInDir(attachmentDir, ".nomedia");
+        return attachmentDir;
+    }
+
     public static String getPostPath(Context context, String taskId, String attachmentName) {
         return String.format("%s/%s", getPostPath(context, taskId), attachmentName);
     }

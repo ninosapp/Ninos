@@ -34,9 +34,10 @@
     <string name="posts">Posts</string>
     <string name="followers">followers</string>
     <string name="following">following</string>
-    <string name="profile_aws_url_suffix_PI128">/PI128.jpg</string>
-    <string name="profile_aws_url_suffix_PI48">/PI64.jpg</string>
-    <string name="profile_aws_url_suffix_PI512">/PI512.jpg</string>
+    <string name="profile_aws_url_suffix_PI128">/PI128.png</string>
+    <string name="profile_aws_url_suffix_PI64">/PI64.png</string>
+    <string name="profile_aws_url_suffix_PI256">/PI256.png</string>
+    <string name="profile_aws_url_suffix_PI512">/PI512.png</string>
     <string name="comments">Comments</string>
     <string name="leave_a_comment">Leave a comment…</string>
     <string name="comment_validation">Comment is empty</string>

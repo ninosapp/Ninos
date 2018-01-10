@@ -15,11 +15,11 @@
         <ImageView
             android:id="@+id/iv_profile"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="350dp"
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
     </com.ninos.views.DiagonalCutLayout>
 
 

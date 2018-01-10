@@ -118,7 +118,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             File path64 = resizeImage(64);
 
             //setting the path to which bucket file need to be uploaded
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI48), path64, CannedAccessControlList.PublicRead);
+            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI64), path64, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new UploadListener());
         } catch (Exception e) {
             Log.e(TAG, "upload64Image() - " + e.getMessage(), e);
@@ -134,6 +134,17 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mTransfer.setTransferListener(new UploadListener());
         } catch (Exception e) {
             Log.e(TAG, "upload128Image() - " + e.getMessage(), e);
+        }
+    }
+
+    private void upload256Image() {
+        try {
+            String userId = Database.getUserId();
+            File path256 = resizeImage(256);
+            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI256), path256, CannedAccessControlList.PublicRead);
+            mTransfer.setTransferListener(new UploadListener());
+        } catch (Exception e) {
+            Log.e(TAG, "upload256Image() - " + e.getMessage(), e);
         }
     }
 
@@ -177,7 +188,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                 resizedBitmap = Bitmap.createBitmap(mBitmap);
             }
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
             FileOutputStream fos = new FileOutputStream(mFolder);
             fos.write(bitmapdata);
@@ -267,6 +278,9 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             upload128Image();
                             break;
                         case 3:
+                            upload256Image();
+                            break;
+                        case 4:
                             deleteDir();
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();

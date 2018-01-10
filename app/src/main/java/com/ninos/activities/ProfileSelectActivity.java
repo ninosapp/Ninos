@@ -1,5 +1,8 @@
 package com.ninos.activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +16,10 @@ import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.ProfileBucketFragment;
 import com.ninos.utils.AWSClient;
+import com.ninos.videoTrimmer.utils.StorageUtils;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
 
 public class ProfileSelectActivity extends BaseActivity {
 
@@ -67,11 +74,40 @@ public class ProfileSelectActivity extends BaseActivity {
         }
     }
 
-    public void setSelectedImage(String selectedImage) {
-        if (selectedImage != null) {
-            AWSClient awsClient = new AWSClient(this, selectedImage);
-            awsClient.awsInit();
-            awsClient.upload512Image();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            Uri resultUri = UCrop.getOutput(data);
+
+            if (resultUri != null && resultUri.getPath() != null) {
+                String path = resultUri.getPath();
+                AWSClient awsClient = new AWSClient(this, path);
+                awsClient.awsInit();
+                awsClient.upload512Image();
+            } else {
+                showToast(R.string.error_message);
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            showToast(R.string.error_message);
         }
+    }
+
+    public void setSelectedImage(String selectedImage) {
+        Uri uri = Uri.fromFile(new File(selectedImage));
+        String dPath = StorageUtils.getUserImagePath(this);
+        dPath = String.format("%s/%s", dPath, uri.getLastPathSegment());
+
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
+        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorAccent));
+        options.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+        UCrop.of(uri, Uri.parse(dPath))
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(512, 512)
+                .withOptions(options)
+                .start(this);
     }
 }
