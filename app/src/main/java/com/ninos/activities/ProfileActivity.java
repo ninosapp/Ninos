@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private int placeHolderId;
     private String userId;
     private ImageView iv_profile;
+    private RelativeLayout rl_progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
-        iv_profile = findViewById(R.id.iv_profile);
         final Button btn_follow = findViewById(R.id.btn_follow);
+        iv_profile = findViewById(R.id.iv_profile);
+        rl_progress = findViewById(R.id.rl_progress);
+        rl_progress.setVisibility(View.VISIBLE);
+        findViewById(R.id.fab_back).setOnClickListener(this);
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
         iv_profile.setImageBitmap(bm);
@@ -103,8 +108,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
-
     }
 
     private void updateImage() {
@@ -122,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         iv_profile.setImageBitmap(resource);
-
+                        rl_progress.setVisibility(View.GONE);
                         setBitmapPalette(resource);
                     }
                 });
@@ -150,7 +153,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        addFile();
+        switch (view.getId()) {
+            case R.id.fab_back:
+                onBackPressed();
+                break;
+            default:
+                addFile();
+                break;
+        }
     }
 
     @AfterPermissionGranted(RC_STORAGE_PERM)
@@ -190,6 +200,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 addFile();
                 break;
             case IMAGE_UPDATED:
+                rl_progress.setVisibility(View.VISIBLE);
                 Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
                 iv_profile.setImageBitmap(bm);
 
