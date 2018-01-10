@@ -13,6 +13,7 @@ import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
+import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.ProfileResponse;
 import com.ninos.models.UserProfile;
@@ -42,24 +44,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final String PROFILE_PLACE_HOLDER = "PROFILE_PLACE_HOLDER";
     public static final String PROFILE_ID = "PROFILE_ID";
+    public static final int IMAGE_UPDATED = 5468;
     private static final int RC_STORAGE_PERM = 4523;
+    private int placeHolderId;
+    private String userId;
+    private ImageView iv_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        final int placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, 0);
-        final String userId = getIntent().getStringExtra(PROFILE_ID);
+        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, 0);
+        userId = getIntent().getStringExtra(PROFILE_ID);
 
         final TextView tv_name = findViewById(R.id.tv_name);
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
-        final ImageView iv_profile = findViewById(R.id.iv_profile);
+        iv_profile = findViewById(R.id.iv_profile);
+        final Button btn_follow = findViewById(R.id.btn_follow);
+
         Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
         iv_profile.setImageBitmap(bm);
-        iv_profile.setOnClickListener(this);
+
+        if (Database.getUserId().equals(userId)) {
+            iv_profile.setOnClickListener(this);
+            btn_follow.setVisibility(View.GONE);
+        } else {
+            btn_follow.setVisibility(View.VISIBLE);
+            iv_profile.setOnClickListener(null);
+        }
+
         setBitmapPalette(bm);
 
         String token = PreferenceUtil.getAccessToken(this);
@@ -77,24 +93,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         tv_following.setText(userProfile.getFollowingCount());
                         tv_name.setText(userProfile.getChildName());
 
-                        RequestOptions requestOptions = new RequestOptions()
-                                .placeholder(placeHolderId)
-                                .error(placeHolderId)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true);
-
-                        Glide.with(ProfileActivity.this)
-                                .setDefaultRequestOptions(requestOptions)
-                                .asBitmap()
-                                .load(AWSUrls.GetPI256(ProfileActivity.this, userId))
-                                .into(new SimpleTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                        iv_profile.setImageBitmap(resource);
-
-                                        setBitmapPalette(resource);
-                                    }
-                                });
+                        updateImage();
                     }
                 }
             }
@@ -106,6 +105,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
 
+    }
+
+    private void updateImage() {
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(placeHolderId)
+                .error(placeHolderId)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true);
+
+        Glide.with(ProfileActivity.this)
+                .setDefaultRequestOptions(requestOptions)
+                .asBitmap()
+                .load(AWSUrls.GetPI256(ProfileActivity.this, userId))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        iv_profile.setImageBitmap(resource);
+
+                        setBitmapPalette(resource);
+                    }
+                });
     }
 
     private void setBitmapPalette(Bitmap resource) {
@@ -137,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void addFile() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent(this, ProfileSelectActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, IMAGE_UPDATED);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }
@@ -168,6 +188,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch (requestCode) {
             case RC_STORAGE_PERM:
                 addFile();
+                break;
+            case IMAGE_UPDATED:
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
+                iv_profile.setImageBitmap(bm);
+
+                setBitmapPalette(bm);
+                updateImage();
                 break;
         }
     }

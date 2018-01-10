@@ -3,6 +3,7 @@ package com.ninos.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.ninos.BuildConfig;
 import com.ninos.R;
+import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
 
 import java.io.ByteArrayOutputStream;
@@ -292,7 +294,10 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                                 mProgressDialog.dismiss();
                             }
 
-                            ((Activity) mContext).finish();
+                            Activity activity = ((Activity) mContext);
+                            Intent intent = new Intent();
+                            activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
+                            activity.finish();
                             break;
                     }
                 }
