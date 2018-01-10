@@ -25,6 +25,10 @@ import com.ninos.BuildConfig;
 import com.ninos.R;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
+import com.ninos.listeners.RetrofitService;
+import com.ninos.models.AddPostResponse;
+import com.ninos.models.PostInfo;
+import com.ninos.reterofit.RetrofitInstance;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -35,6 +39,9 @@ import java.util.List;
 
 import me.shaohui.advancedluban.Luban;
 import me.shaohui.advancedluban.OnCompressListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -203,7 +210,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         return mFolder;
     }
 
-    public void uploadImage() {
+    public void uploadImage(final PostInfo postInfo) {
         try {
             Luban.compress(mContext, new File(mPath))
                     .putGear(Luban.THIRD_GEAR)
@@ -220,7 +227,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
 
                             mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
-                            mTransfer.setTransferListener(new ImageUploadListener());
+                            mTransfer.setTransferListener(new ImageUploadListener(postInfo));
                         }
 
                         @Override
@@ -325,14 +332,40 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
     private class ImageUploadListener implements TransferListener {
 
+        PostInfo postInfo;
+
+        ImageUploadListener(PostInfo postInfo) {
+            this.postInfo = postInfo;
+        }
+
         @Override
         public void onStateChanged(int id, TransferState state) {
             try {
                 if (state.toString().contentEquals(COMPLETED)) {
-                    if (mProgressDialog != null) {
-                        mProgressDialog.dismiss();
-                    }
-                    ((Activity) mContext).finish();
+                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<AddPostResponse>() {
+                        @Override
+                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+
+                                ((Activity) mContext).finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+
+                            ((Activity) mContext).finish();
+                        }
+                    });
+
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
@@ -341,7 +374,6 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
         @Override
         public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-
 
         }
 

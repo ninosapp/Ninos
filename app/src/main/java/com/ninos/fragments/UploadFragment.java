@@ -111,26 +111,26 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_select_count:
-                String title = tv_description.getText().toString();
-
                 PostInfo postInfo = new PostInfo();
-                postInfo.setTitle(title);
-                postInfo.setCreatedAt(new Date());
-                postInfo.setIsChallenge(false);
-                postInfo.setUserId(Database.getUserId());
-                postInfo.setType("post");
-
-                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                service.addPost(postInfo, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<AddPostResponse>() {
+                final String token = PreferenceUtil.getAccessToken(getContext());
+                final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                service.addPost(postInfo, token).enqueue(new Callback<AddPostResponse>() {
                     @Override
                     public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                         if (response.body() != null && response.isSuccessful()) {
+                            String title = tv_description.getText().toString();
+
                             PostInfo postInfo = response.body().getPostInfo();
+                            postInfo.setTitle(title);
+                            postInfo.setCreatedAt(new Date());
+                            postInfo.setIsChallenge(false);
+                            postInfo.setUserId(Database.getUserId());
+                            postInfo.setType("post");
 
                             for (String path : paths) {
                                 AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
                                 awsClient.awsInit();
-                                awsClient.uploadImage();
+                                awsClient.uploadImage(postInfo);
                             }
                         }
                     }

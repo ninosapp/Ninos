@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -44,6 +45,9 @@ public interface RetrofitService {
 
     @POST("posts")
     Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
+
+    @PATCH("posts/{postId}")
+    Call<AddPostResponse> updatePost(@Path("postId") String postId, @Body PostInfo postInfo, @Query("token") String token);
 
     @POST("refresh-token")
     Call<RegisterResponse> refreshToken(@Query("token") String token);

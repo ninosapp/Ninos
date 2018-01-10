@@ -24,8 +24,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
+    public static final int POST_ADDED = 8525;
     private final int RC_STORAGE_PERM = 4531;
-    private final int REQUEST_CODE_CHOOSE = 4532;
     private ImageView iv_home, iv_challenges;
     private Fragment allChallengeFragment, challengeFragment;
     private boolean doubleBackToExit;
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void addFile() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent(this, FilePickerActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, POST_ADDED);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         }
