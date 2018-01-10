@@ -8,12 +8,21 @@ import java.util.List;
 
 public class Quizze {
 
+    String _id;
     String agegroup;
     int duration;
     int maxage;
     int minage;
     String title;
     List<Question> questions;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getAgegroup() {
         return agegroup;

@@ -73,7 +73,7 @@ public class RangeSeekBarView extends View {
         mThumbWidth = Thumb.getWidthBitmap(mThumbs);
         mThumbHeight = Thumb.getHeightBitmap(mThumbs);
 
-        mScaleRangeMax = 100;
+        mScaleRangeMax = 1000;
         mHeightTimeLine = getContext().getResources().getDimensionPixelOffset(R.dimen.frames_video_height);
 
         setFocusable(true);

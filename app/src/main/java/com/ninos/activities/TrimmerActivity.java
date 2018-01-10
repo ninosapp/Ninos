@@ -11,10 +11,12 @@ import com.ninos.R;
 import com.ninos.videoTrimmer.VideoTrimmer;
 import com.ninos.videoTrimmer.interfaces.OnTrimVideoListener;
 import com.ninos.videoTrimmer.interfaces.OnVideoListener;
+import com.ninos.videoTrimmer.utils.StorageUtils;
 
 public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener, OnVideoListener {
 
     public static final String VIDEO_PATH = "VIDEO_PATH";
+    public static final String POST_ID = "POST_ID";
     private VideoTrimmer mVideoTrimmer;
     private ProgressDialog mProgressDialog;
 
@@ -25,6 +27,7 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
 
         Intent extraIntent = getIntent();
         String path = extraIntent.getStringExtra(VIDEO_PATH);
+        String postId = extraIntent.getStringExtra(POST_ID);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
@@ -32,11 +35,12 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
 
         mVideoTrimmer = findViewById(R.id.timeLine);
 
-
+        String destinationPath = StorageUtils.getPostPath(this, postId);
 
         if (mVideoTrimmer != null) {
+            mVideoTrimmer.setMaxDuration(60);
             mVideoTrimmer.setOnTrimVideoListener(this);
-//            mVideoTrimmer.setDestinationPath();
+            mVideoTrimmer.setDestinationPath(destinationPath);
             mVideoTrimmer.setOnVideoListener(this);
             mVideoTrimmer.setVideoURI(Uri.parse(path));
             mVideoTrimmer.setVideoInformationVisibility(true);

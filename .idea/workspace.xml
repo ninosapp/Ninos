@@ -14,6 +14,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00465d50-69d9-4aaf-afd2-5e8592058db6" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/QuizActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" />
@@ -23,9 +25,14 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizze.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizze.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/FileUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/FileUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/ninos/utils/StorageUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/StorageUtils.java" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <ignored path=".idea/libraries/" />
@@ -165,51 +172,7 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TrimmerActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoTrimmer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Thumb.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/Thumb.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-374">
-              <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StorageUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/utils/StorageUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="24" column="74" lean-forward="false" selection-start-line="24" selection-start-column="68" selection-end-line="24" selection-end-column="74" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#441#492#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -225,13 +188,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>git</find>
-      <find>gitig</find>
-      <find>gitign</find>
-      <find>gitigno</find>
-      <find>gitignor</find>
-      <find>gitignore</find>
-      <find>FAMILY on</find>
       <find>fab_elevation</find>
       <find>getRealPathFromURI</find>
       <find>drawable_fab_state_list_animator</find>
@@ -251,10 +207,17 @@
       <find>mOnTrimVideoListener.</find>
       <find>onError</find>
       <find>mediaRecorder</find>
-      <find>mMaxDuration</find>
-      <find>mEndPosition</find>
       <find>getDuration</find>
       <find>mDuration =</find>
+      <find>mRangeSeekBarView</find>
+      <find>mTimeVideo</find>
+      <find>mEndPosition =</find>
+      <find>mMaxDuration</find>
+      <find>mEndPosition</find>
+      <find>mThumbs</find>
+      <find>mMaxWidth</find>
+      <find>genVideoUsingMp4Parser</find>
+      <find>TrimVideoUtils</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -3109,10 +3072,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_send.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_image.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/ImageAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/comment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Comment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/CommentResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_comment.xml" />
@@ -3129,7 +3088,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/utils/AWSClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Question.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizzes.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/QuizResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/listeners/RetrofitService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/fragments/AllChallengesFragment.java" />
@@ -3142,13 +3100,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/interfaces/OnRangeSeekBarListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_trimmer.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/Thumb.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/TimeLineView.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/ProgressBarView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/drawable_fab_state_list_animator.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/FilePickerActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/view_time_line.xml" />
@@ -3158,16 +3114,23 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/interfaces/OnTrimVideoListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/FileUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/utils/StorageUtils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/StorageUtils.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/activities/QuizActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizze.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="784" />
+    <option name="x" value="-6" />
+    <option name="y" value="1" />
+    <option name="width" value="1378" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -3210,56 +3173,6 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ninos" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ninos" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ninos" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -3311,7 +3224,29 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
+              <option name="myItemId" value="adapters" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ninos" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ninos" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="activities" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -3509,7 +3444,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515510126642" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515563067819" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -3556,7 +3491,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
       </Profilers>
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515510126642" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515563067819" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -3738,7 +3673,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515510126644" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515563067820" />
       </method>
     </configuration>
     <list size="3">
@@ -3956,7 +3891,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="0" />
+    <frame x="-6" y="1" width="1378" height="773" extended-state="0" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32668713" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23298033" sideWeight="0.5289079" order="2" side_tool="true" content_ui="tabs" />
@@ -3966,21 +3901,21 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26533744" sideWeight="0.49485862" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2652106" sideWeight="0.49485862" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784638" sideWeight="0.4974293" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30674848" sideWeight="0.4922879" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30577224" sideWeight="0.4922879" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3260212" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32473445" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.48200515" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.45858896" sideWeight="0.48865354" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.45709828" sideWeight="0.48865354" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32668713" sideWeight="0.4974293" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4375839" sideWeight="0.5051414" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23298033" sideWeight="0.47109208" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32055214" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969153" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2336874" sideWeight="0.47109208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3198128" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290469" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -4103,7 +4038,8 @@
     <MESSAGE value="TRIM activity added" />
     <MESSAGE value="removed trimmer activity" />
     <MESSAGE value="added trimmer activity" />
-    <option name="LAST_COMMIT_MESSAGE" value="added trimmer activity" />
+    <MESSAGE value="quiz activity added" />
+    <option name="LAST_COMMIT_MESSAGE" value="quiz activity added" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -4183,42 +4119,18 @@
           <properties />
           <option name="timeStamp" value="216" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java</url>
+          <line>275</line>
+          <properties />
+          <option name="timeStamp" value="235" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="235" />
+      <option name="time" value="256" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/NinosApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/activities/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="174" column="0" lean-forward="false" selection-start-line="174" selection-start-column="0" selection-end-line="174" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/activities/EditProfileActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="114" column="29" lean-forward="false" selection-start-line="114" selection-start-column="29" selection-end-line="114" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/models/PostInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="60" column="16" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/models/Question.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -4244,20 +4156,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
           <caret line="42" column="44" lean-forward="false" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizze.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="56" column="16" lean-forward="false" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -4392,14 +4290,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/ProgressBarView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="35" column="19" lean-forward="false" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/TimeLineView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -4439,29 +4329,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_trimmer.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_time_line.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -4496,14 +4367,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="29" column="46" lean-forward="true" selection-start-line="29" selection-start-column="46" selection-end-line="29" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.mp4parser/isoparser/1.1.20/39829837617a6af9327818289bf849cffd0f952a/isoparser-1.1.20-sources.jar!/com/googlecode/mp4parser/FileDataSourceViaHeapImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -4512,31 +4375,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/TrimVideoUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="74" column="43" lean-forward="false" selection-start-line="74" selection-start-column="43" selection-end-line="74" selection-end-column="43" />
-          <folding>
-            <element signature="e#3541#3627#0" expanded="false" />
-            <element signature="e#3927#4007#0" expanded="false" />
-            <element signature="method#correctTimeToSyncSample#0;class#TrimVideoUtils#0" expanded="false" />
-            <element signature="method#stringForTime#0;class#TrimVideoUtils#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://G:/android-sdk/platforms/android-26/android.jar!/java/lang/Thread.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
           <caret line="139" column="13" lean-forward="false" selection-start-line="139" selection-start-column="13" selection-end-line="139" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/BackgroundExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="214" column="0" lean-forward="false" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -4557,30 +4399,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/FileUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="208" column="5" lean-forward="false" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/utils/StorageUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/view_time_line.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="24" column="74" lean-forward="false" selection-start-line="24" selection-start-column="68" selection-end-line="24" selection-end-column="74" />
+        <state relative-caret-position="419">
+          <caret line="128" column="38" lean-forward="false" selection-start-line="128" selection-start-column="38" selection-end-line="128" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="43" column="60" lean-forward="true" selection-start-line="43" selection-start-column="60" selection-end-line="43" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="36" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/Thumb.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="56" column="35" lean-forward="true" selection-start-line="56" selection-start-column="35" selection-end-line="56" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/BackgroundExecutor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2975">
+          <caret line="214" column="0" lean-forward="false" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/ProgressBarView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-102">
+          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#441#492#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="286" column="16" lean-forward="false" selection-start-line="286" selection-start-column="16" selection-end-line="286" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4589,26 +4465,152 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/RangeSeekBarView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1208">
+          <caret line="86" column="27" lean-forward="false" selection-start-line="86" selection-start-column="27" selection-end-line="86" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/FileUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1650">
+          <caret line="208" column="5" lean-forward="false" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/StorageUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="23" column="36" lean-forward="false" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/activities/TrimmerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="391">
+          <caret line="37" column="70" lean-forward="false" selection-start-line="37" selection-start-column="70" selection-end-line="37" selection-end-column="70" />
+          <folding>
+            <element signature="e#1205#1242#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/VideoTrimmer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+        <state relative-caret-position="679">
+          <caret line="351" column="23" lean-forward="true" selection-start-line="351" selection-start-column="23" selection-end-line="351" selection-end-column="23" />
+          <folding>
+            <element signature="method#VideoTrimmer#1;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#init#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setUpListeners#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="class#7322:7966" expanded="false" />
+            <element signature="method#onCreate#0;class#7322:7966" expanded="false" />
+            <element signature="method#onSeek#0;class#7322:7966" expanded="false" />
+            <element signature="method#onSeekStart#0;class#7322:7966" expanded="false" />
+            <element signature="method#onSeekStop#0;class#7322:7966" expanded="false" />
+            <element signature="class#8024:8563" expanded="false" />
+            <element signature="method#onProgressChanged#0;class#8024:8563" expanded="false" />
+            <element signature="method#setUpMargins#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onClickVideoPlayPause#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onCancelClicked#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setDestinationPath#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setDestinationPath#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onPlayerIndicatorSeekChanged#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onPlayerIndicatorSeekStart#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onPlayerIndicatorSeekStop#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onVideoPrepared#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="e#14658#14689#0" expanded="false" />
+            <element signature="method#setSeekBarPosition#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setTimeFrames#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setTimeVideo#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onSeekThumbs#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#onStopSeekThumbs#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#notifyProgressUpdate#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#updateVideoProgress#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setProgressBarPosition#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setVideoInformationVisibility#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setVideoInformationVisibility#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setOnTrimVideoListener#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setOnTrimVideoListener#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setOnVideoListener#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setOnVideoListener#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#destroy#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#destroy#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setMaxDuration#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setMaxDuration#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="docComment;method#setVideoURI#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#setVideoURI#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="class#MessageHandler#0;class#VideoTrimmer#0" expanded="false" />
+            <element signature="method#handleMessage#0;class#MessageHandler#0;class#VideoTrimmer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/utils/TrimVideoUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="52" column="27" lean-forward="false" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="27" />
+          <folding>
+            <element signature="e#3541#3627#0" expanded="false" />
+            <element signature="e#3927#4007#0" expanded="false" />
+            <element signature="method#correctTimeToSyncSample#0;class#TrimVideoUtils#0" expanded="false" />
+            <element signature="method#stringForTime#0;class#TrimVideoUtils#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_quiz.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/activities/QuizActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/videoTrimmer/view/Thumb.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_quiz.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-374">
-          <caret line="60" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+        <state relative-caret-position="-255">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/models/Quizze.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+          <folding>
+            <element signature="e#308#309#0" expanded="true" />
+            <element signature="e#346#347#0" expanded="true" />
+            <element signature="e#376#377#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ninos/adapters/QuizAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="76" column="1" lean-forward="true" selection-start-line="76" selection-start-column="1" selection-end-line="76" selection-end-column="1" />
           <folding />
         </state>
       </provider>

@@ -1,6 +1,7 @@
 package com.ninos.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninos.R;
+import com.ninos.activities.QuizActivity;
 import com.ninos.models.Quizze;
 
 /**
@@ -51,6 +53,7 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
             super(itemView);
             tv_quiz_name = itemView.findViewById(R.id.tv_quiz_name);
             iv_quiz_background = itemView.findViewById(R.id.iv_quiz_background);
+            itemView.setOnClickListener(this);
         }
 
         private void bindData(int position) {
@@ -65,11 +68,10 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
         @Override
         public void onClick(View view) {
-            int id = view.getId();
-
-            switch (id) {
-
-            }
+            Quizze quizze = getItem(getAdapterPosition());
+            Intent intent = new Intent(mContext, QuizActivity.class);
+            intent.putExtra(QuizActivity.QUIZ_ID, quizze.get_id());
+            mContext.startActivity(intent);
         }
     }
 }
