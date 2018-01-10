@@ -261,6 +261,12 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         if (mFolder != null && mFolder.isDirectory()) {
             mFolder.delete();
         }
+
+        if (mPath != null) {
+            File imagePath = new File(mPath);
+            imagePath.delete();
+        }
+
     }
 
     private class UploadListener implements TransferListener {
@@ -291,6 +297,8 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                     }
                 }
             } catch (Exception e) {
+                deleteDir();
+
                 Log.e(TAG, "UploadListener() - onStateChanged(): " + e.getMessage(), e);
             }
         }
@@ -302,6 +310,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
         @Override
         public void onError(int id, Exception ex) {
+            deleteDir();
 
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
