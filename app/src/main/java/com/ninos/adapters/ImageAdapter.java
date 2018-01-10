@@ -2,6 +2,7 @@ package com.ninos.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,10 +42,6 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
         sampleViewHolder.bindData(position);
     }
 
-    public void setResId(int resId) {
-        this.resId = resId;
-    }
-
     private class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_challenge;
 
@@ -56,11 +53,13 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
         @SuppressLint("CheckResult")
         private void bindData(int position) {
             String path = getItem(position);
+            iv_challenge.setImageDrawable(ContextCompat.getDrawable(mContext, resId));
 
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(resId);
-            requestOptions.error(resId);
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(resId)
+                    .error(resId)
+                    .fallback(resId)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
 
             Glide.with(mContext)
                     .setDefaultRequestOptions(requestOptions)

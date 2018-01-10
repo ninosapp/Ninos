@@ -182,10 +182,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 iv_clap.setOnClickListener(null);
             } else {
                 color = color_dark_grey;
-                tv_clap.setTextColor(color_dark_grey);
                 iv_clap.setOnClickListener(this);
             }
 
+            tv_clap.setTextColor(color);
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             iv_clap.setImageDrawable(drawable);
 
@@ -202,13 +202,13 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     pulse_fade.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            addClap(postInfo, position);
                             ic_clap_anim.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             ic_clap_anim.setVisibility(View.GONE);
+                            addClap(postInfo, position);
                         }
 
                         @Override
