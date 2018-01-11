@@ -169,6 +169,11 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
         notifyItemChanged(position);
     }
 
+    public void updateItem(int position, T item) {
+        dataSet.set(position, item);
+        notifyItemChanged(position);
+    }
+
     /**
      * get type of item at given position (used to show/remove progressbar at bottom )
      *

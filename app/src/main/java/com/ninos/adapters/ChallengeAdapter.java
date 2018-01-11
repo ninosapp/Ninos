@@ -55,7 +55,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private DateUtil dateUtil;
     private AWSClient awsClient;
     private RequestOptions requestOptions;
-    private Drawable drawable;
     private int color_accent, color_dark_grey;
 
     public ChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
@@ -73,7 +72,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 .skipMemoryCache(true)
                 .circleCrop();
 
-        drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
         color_accent = ContextCompat.getColor(mActivity, R.color.colorAccent);
         color_dark_grey = ContextCompat.getColor(mActivity, R.color.dark_grey);
     }
@@ -107,13 +105,16 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         holder.itemView.clearAnimation();
     }
 
-    private void addClap(PostInfo postInfo, final int position) {
+    private void addClap(final PostInfo postInfo, final int position) {
         RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
         service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    updateItem(position);
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    postInfo.setMyRating(true);
+                    int commentCount = Integer.parseInt(postInfo.getTotalCommentCount()) + 1;
+                    postInfo.setTotalCommentCount("" + commentCount);
+                    updateItem(position, postInfo);
                 }
             }
 
@@ -174,19 +175,18 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     .load(AWSUrls.GetPI64(mActivity, postInfo.getUserId()))
                     .into(iv_profile);
 
-            int color;
+            Drawable drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
 
             if (postInfo.isMyRating()) {
-                color = color_accent;
-                drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
+                tv_clap.setTextColor(color_accent);
                 iv_clap.setOnClickListener(null);
+                drawable.setColorFilter(color_accent, PorterDuff.Mode.SRC_ATOP);
             } else {
-                color = color_dark_grey;
+                tv_clap.setTextColor(color_dark_grey);
                 iv_clap.setOnClickListener(this);
+                drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
             }
 
-            tv_clap.setTextColor(color);
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             iv_clap.setImageDrawable(drawable);
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
