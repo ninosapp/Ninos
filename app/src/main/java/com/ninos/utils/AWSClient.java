@@ -23,6 +23,8 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.ninos.BuildConfig;
 import com.ninos.R;
+import com.ninos.activities.FilePickerActivity;
+import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
@@ -367,7 +369,8 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
                                 Activity activity = ((Activity) mContext);
                                 Intent intent = new Intent();
-                                activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
+                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                activity.setResult(FilePickerActivity.TRIMMER_RESULT, intent);
                                 activity.finish();
                             }
                         }
@@ -423,7 +426,11 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                                     mProgressDialog.dismiss();
                                 }
 
-                                ((Activity) mContext).finish();
+                                Activity activity = ((Activity) mContext);
+                                Intent intent = new Intent();
+                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                activity.setResult(MainActivity.POST_ADDED, intent);
+                                activity.finish();
                             }
                         }
 

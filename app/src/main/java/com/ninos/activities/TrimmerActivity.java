@@ -83,6 +83,16 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case FilePickerActivity.TRIMMER_RESULT:
+                String postId = getIntent().getStringExtra(POST_ID);
+                Intent intent = new Intent();
+                intent.putExtra(FilePickerActivity.POST_ID, postId);
+                setResult(MainActivity.POST_ADDED, intent);
+                finish();
+                break;
+        }
     }
 
     @Override

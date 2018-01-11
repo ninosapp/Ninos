@@ -29,6 +29,7 @@ import retrofit2.Response;
 public class FilePickerActivity extends BaseActivity {
 
     public static final int TRIMMER_RESULT = 2563;
+    public static final String POST_ID = "POST_ID";
     private BucketFragment bucketFragment;
 
     @Override
@@ -111,7 +112,13 @@ public class FilePickerActivity extends BaseActivity {
 
         switch (requestCode) {
             case TRIMMER_RESULT:
-                finish();
+                if (data != null) {
+                    String postId = data.getStringExtra(POST_ID);
+                    Intent intent = new Intent();
+                    intent.putExtra(FilePickerActivity.POST_ID, postId);
+                    setResult(MainActivity.POST_ADDED, intent);
+                    finish();
+                }
                 break;
         }
     }

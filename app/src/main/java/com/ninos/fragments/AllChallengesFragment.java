@@ -15,7 +15,9 @@ import com.ninos.adapters.ChallengeAdapter;
 import com.ninos.adapters.QuizAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
+import com.ninos.models.PostsResponse;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.Quizze;
 import com.ninos.reterofit.RetrofitInstance;
@@ -108,9 +110,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getPosts() {
-        service.getPosts(from, size, accessToken).enqueue(new Callback<PostResponse>() {
+        service.getPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+            public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     challengeAdapter.removeItem(null);
                     challengeAdapter.addItems(response.body().getPostInfo());
@@ -119,7 +121,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             }
 
             @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+            public void onFailure(Call<PostsResponse> call, Throwable t) {
                 logError(t.getMessage());
             }
         });
@@ -129,5 +131,22 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     public void onLoadMore() {
         challengeAdapter.addItem(null);
         getPosts();
+    }
+
+    public void newPostAdded(String postId) {
+        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
+                    PostInfo postInfo = response.body().getPostInfo();
+                    challengeAdapter.addItem(postInfo, 0);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

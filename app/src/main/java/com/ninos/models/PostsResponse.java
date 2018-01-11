@@ -1,15 +1,17 @@
 package com.ninos.models;
 
+import java.util.List;
+
 /**
- * Created by FAMILY on 11-01-2018.
+ * Created by FAMILY on 28-12-2017.
  */
 
-public class PostResponse {
+public class PostsResponse {
     private String message;
 
     private String success;
 
-    private PostInfo postInfo;
+    private List<PostInfo> postInfo;
 
     public String getMessage() {
         return message;
@@ -27,17 +29,17 @@ public class PostResponse {
         this.success = success;
     }
 
-    public PostInfo getPostInfo() {
+    public List<PostInfo> getPostInfo() {
         return postInfo;
     }
 
-    public void setPostInfo(PostInfo postInfo) {
+    public void setPostInfo(List<PostInfo> postInfo) {
         this.postInfo = postInfo;
     }
 
     @Override
     public String toString() {
-        return "PostResponse{" +
+        return "PostsResponse{" +
                 "message='" + message + '\'' +
                 ", success='" + success + '\'' +
                 ", postInfo=" + postInfo +

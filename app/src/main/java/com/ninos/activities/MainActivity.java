@@ -26,8 +26,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     public static final int POST_ADDED = 8525;
     private final int RC_STORAGE_PERM = 4531;
+    Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
-    private Fragment allChallengeFragment, challengeFragment;
+    private AllChallengesFragment allChallengeFragment;
     private boolean doubleBackToExit;
     private View cl_home;
 
@@ -140,6 +141,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (requestCode) {
             case RC_STORAGE_PERM:
                 addFile();
+                break;
+            case POST_ADDED:
+                if (data != null) {
+                    String postId = data.getStringExtra(FilePickerActivity.POST_ID);
+
+                    if (allChallengeFragment != null && postId != null) {
+                        allChallengeFragment.newPostAdded(postId);
+                    }
+                }
                 break;
         }
     }

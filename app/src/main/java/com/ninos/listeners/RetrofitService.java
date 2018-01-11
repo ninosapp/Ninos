@@ -7,6 +7,7 @@ import com.ninos.models.CommentsResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
+import com.ninos.models.PostsResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
 import com.ninos.models.QuizResponse;
@@ -41,7 +42,10 @@ public interface RetrofitService {
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
 
     @GET("posts")
-    Call<PostResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
+    Call<PostsResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
+
+    @GET("posts/{postId}")
+    Call<PostResponse> getPost(@Path("postId") String postId, @Query("token") String token);
 
     @POST("posts")
     Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
