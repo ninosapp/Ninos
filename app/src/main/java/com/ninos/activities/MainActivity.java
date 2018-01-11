@@ -25,6 +25,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     public static final int POST_ADDED = 8525;
+    public static final int COMMENT_ADDED = 8526;
     private final int RC_STORAGE_PERM = 4531;
     Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
@@ -148,6 +149,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     if (allChallengeFragment != null && postId != null) {
                         allChallengeFragment.newPostAdded(postId);
+                    }
+                }
+            case COMMENT_ADDED:
+                if (data != null) {
+                    String postId = data.getStringExtra(FilePickerActivity.POST_ID);
+
+                    if (allChallengeFragment != null && postId != null) {
+                        allChallengeFragment.newCommentAdded(postId);
                     }
                 }
                 break;

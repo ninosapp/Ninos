@@ -1,6 +1,7 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,7 +93,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     if (response.isSuccessful() && response.body() != null) {
                         List<Quizze> quizzes = response.body().getQuizeData();
 
-                        quizAdapter.addItems(quizzes);
+                        for (Quizze quizze : quizzes) {
+                            quizAdapter.addItem(quizze);
+                        }
                     }
                 }
 
@@ -115,7 +118,16 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     challengeAdapter.removeItem(null);
-                    challengeAdapter.addItems(response.body().getPostInfo());
+
+                    for (final PostInfo postInfo : response.body().getPostInfo()) {
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                challengeAdapter.addItem(postInfo);
+                            }
+                        });
+                    }
+
                     from = from + size;
                 }
             }
@@ -140,6 +152,27 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
                     PostInfo postInfo = response.body().getPostInfo();
                     challengeAdapter.addItem(postInfo, 0);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void newCommentAdded(String postId) {
+        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
+                    PostInfo postInfo = response.body().getPostInfo();
+//                    int position = challengeAdapter.getIndex(postInfo);
+//
+//                    if (position != -1) {
+//                        challengeAdapter.updateItem(position, postInfo);
+//                    }
                 }
             }
 

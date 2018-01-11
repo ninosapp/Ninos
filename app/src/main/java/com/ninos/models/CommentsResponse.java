@@ -1,5 +1,6 @@
 package com.ninos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,10 @@ public class CommentsResponse {
     }
 
     public List<Comment> getPostComments() {
+        if (postComments == null) {
+            postComments = new ArrayList<>();
+        }
+
         return postComments;
     }
 

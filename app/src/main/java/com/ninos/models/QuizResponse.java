@@ -1,5 +1,6 @@
 package com.ninos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,11 @@ public class QuizResponse {
     }
 
     public List<Quizze> getQuizeData() {
+
+        if (quizeData == null) {
+            quizeData = new ArrayList<>();
+        }
+
         return quizeData;
     }
 

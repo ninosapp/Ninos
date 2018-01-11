@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.activities.CommentActivity;
+import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
@@ -290,7 +291,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.ll_comment:
                     Intent commentIntent = new Intent(mActivity, CommentActivity.class);
                     commentIntent.putExtra(CommentActivity.POST_ID, postInfo.get_id());
-                    mActivity.startActivity(commentIntent);
+                    mActivity.startActivityForResult(commentIntent, MainActivity.COMMENT_ADDED);
                     break;
                 case R.id.ll_clap:
                 case R.id.iv_clap:

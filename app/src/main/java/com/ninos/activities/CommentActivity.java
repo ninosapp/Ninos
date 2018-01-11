@@ -2,6 +2,7 @@ package com.ninos.activities;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -47,6 +48,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
     private String postId, accessToken;
     private RetrofitService service;
     private CommentAdapter challengeAdapter;
+    private boolean isCommentAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +203,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    finish();
+                    onBackPressed();
                 }
 
                 @Override
@@ -237,7 +239,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    finish();
+                    onBackPressed();
                 }
 
                 @Override
@@ -290,7 +292,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
             comment.setComment(commentValue);
             comment.setUserId(Database.getUserId());
             comment.setPostId(postId);
-
+            isCommentAdded = true;
             service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
@@ -307,5 +309,15 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isCommentAdded) {
+            Intent intent = new Intent();
+            intent.putExtra(FilePickerActivity.POST_ID, postId);
+            setResult(MainActivity.COMMENT_ADDED, intent);
+        }
+        finish();
     }
 }

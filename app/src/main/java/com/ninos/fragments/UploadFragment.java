@@ -96,7 +96,10 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
             UploadAdapter uploadAdapter = new UploadAdapter(baseActivity);
 
             recyclerView.setAdapter(uploadAdapter);
-            uploadAdapter.addItems(paths);
+
+            for (String path : paths) {
+                uploadAdapter.addItem(path);
+            }
 
             tv_description = view.findViewById(R.id.tv_description);
             view.findViewById(R.id.tv_cancel).setOnClickListener(this);

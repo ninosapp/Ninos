@@ -1,5 +1,6 @@
 package com.ninos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,11 @@ public class PostsResponse {
     }
 
     public List<PostInfo> getPostInfo() {
+
+        if (postInfo == null) {
+            postInfo = new ArrayList<>();
+        }
+
         return postInfo;
     }
 
