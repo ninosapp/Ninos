@@ -168,11 +168,15 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
                 if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
                     PostInfo postInfo = response.body().getPostInfo();
-//                    int position = challengeAdapter.getIndex(postInfo);
-//
-//                    if (position != -1) {
-//                        challengeAdapter.updateItem(position, postInfo);
-//                    }
+
+                    for (int i = 0; i < challengeAdapter.getItemCount(); i++) {
+                        PostInfo pf = challengeAdapter.getItem(i);
+
+                        if (pf.get_id().equals(postInfo.get_id())) {
+                            challengeAdapter.updateItem(i, postInfo);
+                            break;
+                        }
+                    }
                 }
             }
 
