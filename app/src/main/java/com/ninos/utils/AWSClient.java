@@ -246,6 +246,20 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         }
     }
 
+    public void uploadVideo(final PostInfo postInfo) {
+        try {
+            File file = new File(mPath);
+            String fileName = file.getName();
+            String userId = Database.getUserId();
+            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+
+            mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
+            mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+        } catch (Exception e) {
+            Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
+        }
+    }
+
     public List<String> getBucket(String prefix) {
         List<String> links = new ArrayList<>();
 
@@ -327,6 +341,64 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
+        }
+    }
+
+    private class VideoUploadListener implements TransferListener {
+
+        PostInfo postInfo;
+
+        VideoUploadListener(PostInfo postInfo) {
+            this.postInfo = postInfo;
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState state) {
+            try {
+                if (state.toString().contentEquals(COMPLETED)) {
+                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<AddPostResponse>() {
+                        @Override
+                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+
+                                Activity activity = ((Activity) mContext);
+                                Intent intent = new Intent();
+                                activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
+                                activity.finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+
+                            ((Activity) mContext).finish();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+        }
+
+        @Override
+        public void onError(int id, Exception ex) {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+            Log.e(TAG, ex.toString(), ex);
+            Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

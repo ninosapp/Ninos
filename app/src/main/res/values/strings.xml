@@ -56,6 +56,7 @@
     <string name="pick_a_video">Select or record a a video below to try it out:</string>
     <string name="trimming_progress">Trimming your video…</string>
     <string name="file_size_is_too_large">File Size is too large.</string>
+    <string name="complete_action_using">Complete action using</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

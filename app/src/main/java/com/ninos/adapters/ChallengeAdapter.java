@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -127,18 +128,21 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title, tv_clap;
-        ImageView ic_clap_anim, iv_clap, iv_profile;
+        ImageView ic_clap_anim, iv_clap, iv_profile, iv_video;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
         LinearLayout ll_comment;
+        View itemView;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_clap = itemView.findViewById(R.id.tv_clap);
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             ll_clap = itemView.findViewById(R.id.ll_clap);
+            iv_video = itemView.findViewById(R.id.iv_video);
             iv_clap = itemView.findViewById(R.id.iv_clap);
             iv_profile = itemView.findViewById(R.id.iv_profile);
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
@@ -170,6 +174,14 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             int resId = typedArray.getResourceId(index, 0);
 
 
+            if (postInfo.isVideo()) {
+                iv_video.setVisibility(View.VISIBLE);
+                iv_video.setOnClickListener(this);
+            } else {
+                iv_video.setVisibility(View.GONE);
+                iv_video.setOnClickListener(null);
+            }
+
             Glide.with(mActivity)
                     .setDefaultRequestOptions(requestOptions)
                     .load(AWSUrls.GetPI64(mActivity, postInfo.getUserId()))
@@ -180,11 +192,17 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             if (postInfo.isMyRating()) {
                 tv_clap.setTextColor(color_accent);
                 iv_clap.setOnClickListener(null);
-                drawable.setColorFilter(color_accent, PorterDuff.Mode.SRC_ATOP);
+
+                if (drawable != null) {
+                    drawable.setColorFilter(color_accent, PorterDuff.Mode.SRC_ATOP);
+                }
             } else {
                 tv_clap.setTextColor(color_dark_grey);
                 iv_clap.setOnClickListener(this);
-                drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
+
+                if (drawable != null) {
+                    drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
+                }
             }
 
             iv_clap.setImageDrawable(drawable);
@@ -277,6 +295,17 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.ll_clap:
                 case R.id.iv_clap:
                     addClap(postInfo, position);
+                    break;
+                case R.id.iv_video:
+                    List<String> links = postInfo.getLinks();
+
+                    if (links.size() > 0) {
+                        String videoLink = links.get(0);
+                        Intent videoIntent = new Intent();
+                        videoIntent.setAction(Intent.ACTION_VIEW);
+                        videoIntent.setDataAndType(Uri.parse(videoLink), "video/mp4");
+                        mActivity.startActivity(Intent.createChooser(videoIntent, mActivity.getString(R.string.complete_action_using)));
+                    }
                     break;
             }
         }

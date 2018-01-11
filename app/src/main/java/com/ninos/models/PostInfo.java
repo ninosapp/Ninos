@@ -36,7 +36,17 @@ public class PostInfo {
 
     private boolean myRating;
 
+    private boolean isVideo;
+
     private List<String> links;
+
+    public boolean isVideo() {
+        return isVideo;
+    }
+
+    public void setVideo(boolean video) {
+        isVideo = video;
+    }
 
     public boolean isChallenge() {
         return isChallenge;

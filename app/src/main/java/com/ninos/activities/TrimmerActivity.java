@@ -8,10 +8,15 @@ import android.widget.Toast;
 
 import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.firebase.Database;
+import com.ninos.models.PostInfo;
+import com.ninos.utils.AWSClient;
 import com.ninos.videoTrimmer.VideoTrimmer;
 import com.ninos.videoTrimmer.interfaces.OnTrimVideoListener;
 import com.ninos.videoTrimmer.interfaces.OnVideoListener;
 import com.ninos.videoTrimmer.utils.StorageUtils;
+
+import java.util.Date;
 
 public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener, OnVideoListener {
 
@@ -19,6 +24,7 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
     public static final String POST_ID = "POST_ID";
     private VideoTrimmer mVideoTrimmer;
     private ProgressDialog mProgressDialog;
+    private String postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +33,7 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
 
         Intent extraIntent = getIntent();
         String path = extraIntent.getStringExtra(VIDEO_PATH);
-        String postId = extraIntent.getStringExtra(POST_ID);
+        postId = extraIntent.getStringExtra(POST_ID);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
@@ -59,8 +65,17 @@ public class TrimmerActivity extends BaseActivity implements OnTrimVideoListener
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // Toast.makeText(TrimmerActivity.this, getString(R.string.video_saved_at, contentUri.getPath()), Toast.LENGTH_SHORT).show();
+                PostInfo postInfo = new PostInfo();
+                postInfo.set_id(postId);
+                postInfo.setCreatedAt(new Date());
+                postInfo.setIsChallenge(false);
+                postInfo.setUserId(Database.getUserId());
+                postInfo.setType("post");
+                postInfo.setVideo(true);
 
+                AWSClient awsClient = new AWSClient(TrimmerActivity.this, postInfo.get_id(), contentUri.getPath());
+                awsClient.awsInit();
+                awsClient.uploadVideo(postInfo);
             }
         });
     }
