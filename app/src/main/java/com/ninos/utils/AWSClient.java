@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -312,15 +313,22 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             upload256Image();
                             break;
                         case 4:
-                            deleteDir();
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();
                             }
 
                             Activity activity = ((Activity) mContext);
                             Intent intent = new Intent();
+                            intent.putExtra(ProfileActivity.PROFILE_PATH, mPath);
                             activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
                             activity.finish();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteDir();
+                                }
+                            }, 3000);
                             break;
                     }
                 }

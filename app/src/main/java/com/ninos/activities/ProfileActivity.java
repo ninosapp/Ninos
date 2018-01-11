@@ -32,6 +32,7 @@ import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
 
+import java.io.File;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -45,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final String PROFILE_PLACE_HOLDER = "PROFILE_PLACE_HOLDER";
     public static final String PROFILE_ID = "PROFILE_ID";
+    public static final String PROFILE_PATH = "PROFILE_PATH";
     public static final int IMAGE_UPDATED = 5468;
     private static final int RC_STORAGE_PERM = 4523;
     private int placeHolderId;
@@ -200,12 +202,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 addFile();
                 break;
             case IMAGE_UPDATED:
-                rl_progress.setVisibility(View.VISIBLE);
-                Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
-                iv_profile.setImageBitmap(bm);
+                if (data != null) {
+                    rl_progress.setVisibility(View.GONE);
 
-                setBitmapPalette(bm);
-                updateImage();
+                    String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
+                    Glide.with(this).load(path).into(iv_profile);
+
+                    File file = new File(path);
+
+                    if (file.exists()) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        iv_profile.setImageBitmap(bitmap);
+                        setBitmapPalette(bitmap);
+                    }
+                }
                 break;
         }
     }
