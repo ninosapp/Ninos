@@ -217,6 +217,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         try {
             Luban.compress(mContext, new File(mPath))
                     .putGear(Luban.THIRD_GEAR)
+                    .setCompressFormat(Bitmap.CompressFormat.PNG)
                     .launch(new OnCompressListener() {
                         @Override
                         public void onStart() {
