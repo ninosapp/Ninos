@@ -40,8 +40,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.shaohui.advancedluban.Luban;
-import me.shaohui.advancedluban.OnCompressListener;
+import id.zelory.compressor.Compressor;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,12 +67,15 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
     private int mCount = 0;
     private File mFolder;
     private Bitmap mBitmap;
+    private String fileName;
+
 
     public AWSClient(Context context, String postId, String path) {
         try {
             mContext = context;
             mProgressDialog = new ProgressDialog(context);
             mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
+            mProgressDialog.setCancelable(false);
             mProgressDialog.show();
             mPostId = postId;
             mPath = path;
@@ -86,6 +91,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             mContext = context;
             mProgressDialog = new ProgressDialog(context);
             mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
+            mProgressDialog.setCancelable(false);
             mProgressDialog.show();
             mPath = path;
 
@@ -163,26 +169,24 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
     /*Uploading 512X512 resolution image*/
     public void upload512Image() {
         try {
-            Luban.compress(mContext, new File(mPath))
-                    .putGear(Luban.THIRD_GEAR)
-                    .launch(new OnCompressListener() {
+            new Compressor(mContext)
+                    .compressToFileAsFlowable(new File(mPath))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<File>() {
                         @Override
-                        public void onStart() {
-
-                        }
-
-                        @Override
-                        public void onSuccess(File file) {
+                        public void accept(File file) {
+                            fileName = file.getName();
                             mBitmap = BitmapFactory.decodeFile(file.getPath());
                             String userId = Database.getUserId();
                             File path512 = resizeImage(512);
                             mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path512, CannedAccessControlList.PublicRead);
                             mTransfer.setTransferListener(new UploadListener());
                         }
-
+                    }, new Consumer<Throwable>() {
                         @Override
-                        public void onError(Throwable e) {
-
+                        public void accept(Throwable throwable) {
+                            throwable.printStackTrace();
                         }
                     });
         } catch (Exception e) {
@@ -191,9 +195,14 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
     }
 
     private File resizeImage(int dimension) {
+        File file = null;
+
         try {
             Bitmap resizedBitmap;
             mFolder.createNewFile();
+            file = new File(mFolder, fileName);
+            file.createNewFile();
+
             if (dimension != 0) {
                 resizedBitmap = Bitmap.createScaledBitmap(mBitmap, dimension, dimension, true);
             } else {
@@ -202,7 +211,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bitmapdata = stream.toByteArray();
-            FileOutputStream fos = new FileOutputStream(mFolder);
+            FileOutputStream fos = new FileOutputStream(file);
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
@@ -210,22 +219,18 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         } catch (IOException e) {
             Log.e(TAG, "resizeImage() - " + e.toString(), e);
         }
-        return mFolder;
+        return file;
     }
 
     public void uploadImage(final PostInfo postInfo) {
         try {
-            Luban.compress(mContext, new File(mPath))
-                    .putGear(Luban.THIRD_GEAR)
-                    .setCompressFormat(Bitmap.CompressFormat.PNG)
-                    .launch(new OnCompressListener() {
+            new Compressor(mContext)
+                    .compressToFileAsFlowable(new File(mPath))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<File>() {
                         @Override
-                        public void onStart() {
-
-                        }
-
-                        @Override
-                        public void onSuccess(File image) {
+                        public void accept(File image) {
                             String fileName = image.getName();
                             String userId = Database.getUserId();
                             String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
@@ -233,17 +238,12 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
                             mTransfer.setTransferListener(new ImageUploadListener(postInfo));
                         }
-
+                    }, new Consumer<Throwable>() {
                         @Override
-                        public void onError(Throwable e) {
-
+                        public void accept(Throwable throwable) {
+                            throwable.printStackTrace();
                         }
                     });
-
-//            if ((image.length() / 1024) > 100) {
-//                image = new ImageUtil().getResizedBitmap(mContext, mPath, 400);
-//            }
-
 
         } catch (Exception e) {
             Log.e(TAG, "uploadImage() - " + e.getMessage(), e);

@@ -108,8 +108,8 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String orderBy = MediaStore.Images.Media.DATE_TAKEN;
             String searchParams = "bucket_display_name = \"" + bucketName + "\"";
+            String orderBy = "datetaken DESC";
 
             return new CursorLoader(getContext(),
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,

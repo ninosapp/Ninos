@@ -33,12 +33,64 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static com.ninos.utils.CrashUtil.report;
 
 public class FileUtils {
+
+    private static final int EOF = -1;
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+
+    public static File from(Context context, String path) throws IOException {
+        File file = new File(path);
+        String fileName = file.getName();
+        String[] splitName = splitFileName(fileName);
+        File tempFile = File.createTempFile(splitName[0], splitName[1]);
+        tempFile = rename(tempFile, fileName);
+        tempFile.deleteOnExit();
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(tempFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (out != null) {
+            out.close();
+        }
+        return tempFile;
+    }
+
+    private static String[] splitFileName(String fileName) {
+        String name = fileName;
+        String extension = "";
+        int i = fileName.lastIndexOf(".");
+        if (i != -1) {
+            name = fileName.substring(0, i);
+            extension = fileName.substring(i);
+        }
+
+        return new String[]{name, extension};
+    }
+
+    private static File rename(File file, String newName) {
+        File newFile = new File(file.getParent(), newName);
+        if (!newFile.equals(file)) {
+            if (newFile.exists() && newFile.delete()) {
+                Log.d("FileUtil", "Delete old " + newName + " file");
+            }
+            if (file.renameTo(newFile)) {
+                Log.d("FileUtil", "Rename file to " + newName);
+            }
+        }
+        return newFile;
+    }
 
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access

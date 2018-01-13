@@ -74,7 +74,7 @@ public class ProfileBucketFragment extends BaseFragment implements LoaderManager
 
             String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
 
-            String BUCKET_ORDER_BY = "MAX(datetaken) DESC";
+            String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
 
             return new CursorLoader(getContext(),
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,

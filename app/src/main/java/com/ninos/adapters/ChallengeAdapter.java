@@ -108,23 +108,27 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     }
 
     private void addClap(final PostInfo postInfo, final int position) {
-        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-        service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
-                    postInfo.setMyRating(true);
-                    int commentCount = Integer.parseInt(postInfo.getTotalCommentCount()) + 1;
-                    postInfo.setTotalCommentCount("" + commentCount);
-                    updateItem(position, postInfo);
+        try {
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
+                    if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                        postInfo.setMyRating(true);
+                        int clapCount = Integer.parseInt(postInfo.getTotalClapsCount()) + 1;
+                        postInfo.setTotalClapsCount("" + clapCount);
+                        updateItem(position, postInfo);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<PostClapResponse> call, @NonNull Throwable t) {
+                @Override
+                public void onFailure(@NonNull Call<PostClapResponse> call, @NonNull Throwable t) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

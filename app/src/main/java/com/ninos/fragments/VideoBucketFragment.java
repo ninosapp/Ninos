@@ -74,7 +74,7 @@ public class VideoBucketFragment extends BaseFragment implements LoaderManager.L
 
             String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
 
-            String BUCKET_ORDER_BY = "MAX(datetaken) DESC";
+            String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
 
             return new CursorLoader(getContext(),
                     MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
