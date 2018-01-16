@@ -60,3 +60,6 @@
 -dontwarn com.amazonaws.metrics.**
 
 -dontwarn com.googlecode.mp4parser.**
+
+-dontwarn okio.**
+-dontwarn retrofit2.Platform$Java8
