@@ -22,6 +22,19 @@
             android:scaleType="centerCrop" />
     </com.ninos.views.DiagonalCutLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_update_Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_add"
+        android:tint="@color/dark_grey"
+        app:backgroundTint="@android:color/white"
+        app:elevation="8dp"
+        app:fabSize="mini" />
+
     <RelativeLayout
         android:id="@+id/rl_progress"
         android:layout_width="match_parent"
@@ -40,11 +53,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin16dp"
+        android:src="@drawable/ic_back"
         android:tint="@color/dark_grey"
         app:backgroundTint="@android:color/white"
         app:elevation="8dp"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_back" />
+        app:fabSize="mini" />
 
     <com.ninos.views.FontTextView
         android:id="@+id/tv_name"
@@ -66,9 +79,11 @@
         android:layout_margin="@dimen/margin8dp"
         android:text="@string/follow"
         android:textColor="@android:color/white"
-        android:theme="@style/BaseButtonTheme" />
+        android:theme="@style/BaseButtonTheme"
+        android:visibility="gone" />
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_follow"
@@ -79,7 +94,9 @@
             android:id="@+id/ll_posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/margin8dp"
             android:layout_marginStart="@dimen/margin8dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -102,19 +119,23 @@
             android:layout_width="6dp"
             android:layout_height="6dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="48dp"
             android:layout_marginStart="48dp"
             android:layout_toEndOf="@+id/ll_posts"
-            android:tint="@color/grey"
-            app:srcCompat="@drawable/ic_circle" />
+            android:layout_toRightOf="@+id/ll_posts"
+            android:src="@drawable/ic_circle"
+            android:tint="@color/grey" />
 
         <ImageView
             android:layout_width="6dp"
             android:layout_height="6dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="36dp"
             android:layout_marginStart="36dp"
             android:layout_toEndOf="@+id/ll_followers"
-            android:tint="@color/grey"
-            app:srcCompat="@drawable/ic_circle" />
+            android:layout_toRightOf="@+id/ll_followers"
+            android:src="@drawable/ic_circle"
+            android:tint="@color/grey" />
 
         <LinearLayout
             android:id="@+id/ll_followers"
@@ -143,7 +164,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/margin8dp"
+            android:layout_marginRight="@dimen/margin8dp"
             android:gravity="center"
             android:orientation="vertical">
 

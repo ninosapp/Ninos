@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -41,11 +40,13 @@ import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tcking.github.com.giraffeplayer2.VideoView;
 
 /**
  * Created by smeesala on 6/30/2017.
@@ -172,6 +173,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         RecyclerView recyclerView;
         LinearLayout ll_comment;
         View itemView;
+        VideoView video_view;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -191,6 +193,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
+            video_view = itemView.findViewById(R.id.video_view);
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -226,14 +229,38 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
-
+            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
 
             if (postInfo.isVideo()) {
+                List<String> links = awsClient.getBucket(path);
                 iv_video.setVisibility(View.VISIBLE);
                 iv_video.setOnClickListener(this);
+                recyclerView.setVisibility(View.GONE);
+                video_view.setVisibility(View.VISIBLE);
+
+                if (postInfo.getLinks() == null) {
+                    new LoadVideo(video_view, position).execute(path);
+                } else {
+                    if (links.size() > 0) {
+                        video_view.setVideoPath(links.get(0));
+                    }
+                }
             } else {
+                video_view.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 iv_video.setVisibility(View.GONE);
                 iv_video.setOnClickListener(null);
+
+                ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
+                recyclerView.setAdapter(imageAdapter);
+
+                if (postInfo.getLinks() == null) {
+                    new LoadImage(imageAdapter, position).execute(path);
+                } else {
+                    for (String link : postInfo.getLinks()) {
+                        imageAdapter.addItem(link);
+                    }
+                }
             }
 
             Glide.with(mActivity)
@@ -287,18 +314,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     return true;
                 }
             });
-
-            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
-            ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
-            recyclerView.setAdapter(imageAdapter);
-
-            if (postInfo.getLinks() == null) {
-                new LoadImage(imageAdapter, position).execute(path);
-            } else {
-                for (String link : postInfo.getLinks()) {
-                    imageAdapter.addItem(link);
-                }
-            }
         }
 
         @Override
@@ -326,15 +341,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     addClap(postInfo, iv_clap, tv_clap);
                     break;
                 case R.id.iv_video:
-                    List<String> links = postInfo.getLinks();
 
-                    if (links.size() > 0) {
-                        String videoLink = links.get(0);
-                        Intent videoIntent = new Intent();
-                        videoIntent.setAction(Intent.ACTION_VIEW);
-                        videoIntent.setDataAndType(Uri.parse(videoLink), "video/mp4");
-                        mActivity.startActivity(Intent.createChooser(videoIntent, mActivity.getString(R.string.complete_action_using)));
-                    }
                     break;
             }
         }
@@ -363,6 +370,36 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 for (String link : links) {
                     imageAdapter.addItem(link);
+                }
+
+                getItem(position).setLinks(links);
+            }
+        }
+
+        public class LoadVideo extends AsyncTask<String, Void, List<String>> {
+
+            WeakReference<VideoView> video_view;
+            int position;
+
+            LoadVideo(VideoView video_view, int position) {
+                this.video_view = new WeakReference<>(video_view);
+                this.position = position;
+            }
+
+            @Override
+            protected List<String> doInBackground(String... strings) {
+                String path = strings[0];
+
+                List<String> links = awsClient.getBucket(path);
+                getItem(position).setLinks(links);
+                return links;
+            }
+
+            @Override
+            protected void onPostExecute(List<String> links) {
+
+                if (links.size() > 0) {
+                    video_view.get().setVideoPath(links.get(0));
                 }
 
                 getItem(position).setLinks(links);

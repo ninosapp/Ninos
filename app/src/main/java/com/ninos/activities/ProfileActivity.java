@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
@@ -53,13 +54,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String userId;
     private ImageView iv_profile;
     private RelativeLayout rl_progress;
+    private FloatingActionButton fab_update_Image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, 0);
+        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, 2131230935);
         userId = getIntent().getStringExtra(PROFILE_ID);
 
         final TextView tv_name = findViewById(R.id.tv_name);
@@ -67,6 +69,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
         final Button btn_follow = findViewById(R.id.btn_follow);
+        fab_update_Image = findViewById(R.id.fab_update_Image);
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
         rl_progress.setVisibility(View.VISIBLE);
@@ -76,11 +79,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         iv_profile.setImageBitmap(bm);
 
         if (Database.getUserId().equals(userId)) {
-            iv_profile.setOnClickListener(this);
+            fab_update_Image.setOnClickListener(this);
+            fab_update_Image.setVisibility(View.VISIBLE);
             btn_follow.setVisibility(View.GONE);
         } else {
+            fab_update_Image.setVisibility(View.GONE);
             btn_follow.setVisibility(View.VISIBLE);
-            iv_profile.setOnClickListener(null);
+            fab_update_Image.setOnClickListener(null);
         }
 
         setBitmapPalette(bm);

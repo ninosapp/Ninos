@@ -6,14 +6,7 @@
     <dimen name="margin4dp">4dp</dimen>
     <dimen name="grid_expected_size">120dp</dimen>
 
-    <dimen name="marginLayoutLR">15dp</dimen>
-    <dimen name="textSize">15dp</dimen>
-
-    <dimen name="btnWidth">200dp</dimen>
-    <dimen name="btnTextSize">18dp</dimen>
-    <dimen name="btnElevation">6dp</dimen>
-
-    <dimen name="progress_video_line_height">2dp</dimen>
-    <dimen name="frames_video_height">40dip</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
 </resources>
 

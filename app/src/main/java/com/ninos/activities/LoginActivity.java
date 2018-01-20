@@ -169,10 +169,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
                     if (response.body() != null) {
 
-                        UserCheckResponse userCheckResponse = response.body();
+                        UserCheckResponse uCR = response.body();
 
-                        if (userCheckResponse != null && userCheckResponse.getSuccess()) {
-                            PreferenceUtil.setAccessToken(LoginActivity.this, userCheckResponse.getToken());
+                        if (uCR != null && uCR.getSuccess()) {
+                            PreferenceUtil.setUserName(LoginActivity.this, uCR.getUserInfo().getChildName());
+                            PreferenceUtil.setUserEmail(LoginActivity.this, uCR.getUserInfo().getEmail());
+                            PreferenceUtil.setAccessToken(LoginActivity.this, uCR.getToken());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         } else {
@@ -188,7 +190,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 @Override
                 public void onFailure(Call<UserCheckResponse> call, Throwable t) {
-
+                    showSnackBar(R.string.error_message, cl_login);
+                    enableButton();
                 }
             });
         }
@@ -289,11 +292,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             report(e);
             showToast(R.string.error_message);
         }
-    }
-
-    private void launchHome() {
-        startActivity(new Intent(this, EditProfileActivity.class));
-        finish();
     }
 
     @Override

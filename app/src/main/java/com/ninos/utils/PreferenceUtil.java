@@ -15,4 +15,20 @@ public class PreferenceUtil {
     public static void setAccessToken(Context context, String accessToken) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_token", accessToken).apply();
     }
+
+    public static void setUserName(Context context, String userInfo) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_name", userInfo).apply();
+    }
+
+    public static String getUserName(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("user_name", null);
+    }
+
+    public static void setUserEmail(Context context, String userInfo) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_email", userInfo).apply();
+    }
+
+    public static String getUserEmail(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("user_email", null);
+    }
 }

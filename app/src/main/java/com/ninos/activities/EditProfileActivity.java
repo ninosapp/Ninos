@@ -137,6 +137,8 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                                     RegisterResponse rR = response.body();
 
                                     if (rR != null) {
+                                        PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
+                                        PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
                                         PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
                                         startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
                                         finish();

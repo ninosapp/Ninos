@@ -59,6 +59,8 @@
     <string name="trimming_progress">Trimming your video…</string>
     <string name="file_size_is_too_large">File Size is too large.</string>
     <string name="complete_action_using">Complete action using</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
