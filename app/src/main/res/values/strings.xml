@@ -27,8 +27,10 @@
     <string name="select_count">Select (%d)</string>
     <string name="select">Select</string>
     <string name="loading_image_upload">Uploading image…</string>
-    <string name="s_people">%s people</string>
-    <string name="s_comments">%s comments</string>
+    <string name="s_clap">%d clap</string>
+    <string name="s_claps">%d claps</string>
+    <string name="s_comments">%d comments</string>
+    <string name="s_comment">%d comment</string>
     <string name="done">Done</string>
     <string name="about">About…</string>
     <string name="posts">Posts</string>

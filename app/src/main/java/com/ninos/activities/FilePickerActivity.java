@@ -91,10 +91,10 @@ public class FilePickerActivity extends BaseActivity {
                     if (response.body() != null && response.isSuccessful()) {
                         PostInfo postInfo = response.body().getPostInfo();
 
-                        Intent intent = new Intent(FilePickerActivity.this, TrimmerActivity.class);
-                        intent.putExtra(TrimmerActivity.POST_ID, postInfo.get_id());
-                        intent.putExtra(TrimmerActivity.VIDEO_PATH, selectedVideo);
-                        startActivityForResult(intent, TRIMMER_RESULT);
+//                        Intent intent = new Intent(FilePickerActivity.this, TrimmerActivity.class);
+//                        intent.putExtra(TrimmerActivity.POST_ID, postInfo.get_id());
+//                        intent.putExtra(TrimmerActivity.VIDEO_PATH, selectedVideo);
+//                        startActivityForResult(intent, TRIMMER_RESULT);
                     }
                 }
 

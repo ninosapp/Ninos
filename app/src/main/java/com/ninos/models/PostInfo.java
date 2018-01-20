@@ -18,7 +18,7 @@ public class PostInfo {
 
     private String _id;
 
-    private String totalCommentCount;
+    private int totalCommentCount;
 
     private Date createdAt;
 
@@ -28,7 +28,7 @@ public class PostInfo {
 
     private String type;
 
-    private String totalClapsCount;
+    private int totalClapsCount;
 
     private String challengeTitle;
 
@@ -120,11 +120,11 @@ public class PostInfo {
         this._id = _id;
     }
 
-    public String getTotalCommentCount() {
+    public int getTotalCommentCount() {
         return totalCommentCount;
     }
 
-    public void setTotalCommentCount(String totalCommentCount) {
+    public void setTotalCommentCount(int totalCommentCount) {
         this.totalCommentCount = totalCommentCount;
     }
 
@@ -152,11 +152,11 @@ public class PostInfo {
         this.type = type;
     }
 
-    public String getTotalClapsCount() {
+    public int getTotalClapsCount() {
         return totalClapsCount;
     }
 
-    public void setTotalClapsCount(String totalClapsCount) {
+    public void setTotalClapsCount(int totalClapsCount) {
         this.totalClapsCount = totalClapsCount;
     }
 

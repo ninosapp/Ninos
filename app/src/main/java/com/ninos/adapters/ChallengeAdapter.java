@@ -7,8 +7,10 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -107,7 +109,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         holder.itemView.clearAnimation();
     }
 
-    private void addClap(final PostInfo postInfo, final int position) {
+    private void addClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
             service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
@@ -115,9 +117,9 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
                     if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
                         postInfo.setMyRating(true);
-                        int clapCount = Integer.parseInt(postInfo.getTotalClapsCount()) + 1;
-                        postInfo.setTotalClapsCount("" + clapCount);
-                        updateItem(position, postInfo);
+                        int clapCount = postInfo.getTotalClapsCount() + 1;
+                        postInfo.setTotalClapsCount(clapCount);
+                        setClap(postInfo, iv_clap, tv_clap);
                     }
                 }
 
@@ -131,8 +133,40 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
+    private void setClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
+        Drawable drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
+        iv_clap.setImageDrawable(drawable);
+        int color;
+
+        if (postInfo.isMyRating()) {
+            tv_clap.setTextColor(color_accent);
+            iv_clap.setOnClickListener(null);
+
+            color = color_accent;
+        } else {
+            tv_clap.setTextColor(color_dark_grey);
+            iv_clap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addClap(postInfo, iv_clap, tv_clap);
+                }
+            });
+
+            color = color_dark_grey;
+        }
+
+        if (drawable != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                DrawableCompat.setTint(drawable, color);
+
+            } else {
+                drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
+    }
+
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_name, tv_created_time, tv_claps_count, tv_comments_count, tv_title, tv_clap;
+        TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
         ImageView ic_clap_anim, iv_clap, iv_profile, iv_video;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
@@ -151,8 +185,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             iv_clap = itemView.findViewById(R.id.iv_clap);
             iv_profile = itemView.findViewById(R.id.iv_profile);
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
-            tv_claps_count = itemView.findViewById(R.id.tv_claps_count);
-            tv_comments_count = itemView.findViewById(R.id.tv_comments_count);
+            tv_comment = itemView.findViewById(R.id.tv_comment);
             ll_comment = itemView.findViewById(R.id.ll_comment);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
@@ -172,8 +205,24 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
             tv_created_time.setText(date);
 
-            tv_claps_count.setText(String.format(mActivity.getString(R.string.s_people), postInfo.getTotalClapsCount()));
-            tv_comments_count.setText(String.format(mActivity.getString(R.string.s_comments), postInfo.getTotalCommentCount()));
+            int clapStringId;
+
+            if (postInfo.getTotalClapsCount() > 1) {
+                clapStringId = R.string.s_claps;
+            } else {
+                clapStringId = R.string.s_clap;
+            }
+
+            int commentStringId;
+
+            if (postInfo.getTotalClapsCount() > 1) {
+                commentStringId = R.string.s_comments;
+            } else {
+                commentStringId = R.string.s_comment;
+            }
+
+            tv_clap.setText(String.format(mActivity.getString(clapStringId), postInfo.getTotalClapsCount()));
+            tv_comment.setText(String.format(mActivity.getString(commentStringId), postInfo.getTotalCommentCount()));
 
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
@@ -192,25 +241,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     .load(AWSUrls.GetPI64(mActivity, postInfo.getUserId()))
                     .into(iv_profile);
 
-            Drawable drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
+            setClap(postInfo, iv_clap, tv_clap);
 
-            if (postInfo.isMyRating()) {
-                tv_clap.setTextColor(color_accent);
-                iv_clap.setOnClickListener(null);
-
-                if (drawable != null) {
-                    drawable.setColorFilter(color_accent, PorterDuff.Mode.SRC_ATOP);
-                }
-            } else {
-                tv_clap.setTextColor(color_dark_grey);
-                iv_clap.setOnClickListener(this);
-
-                if (drawable != null) {
-                    drawable.setColorFilter(color_dark_grey, PorterDuff.Mode.SRC_ATOP);
-                }
-            }
-
-            iv_clap.setImageDrawable(drawable);
 
             final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -231,7 +263,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             ic_clap_anim.setVisibility(View.GONE);
-                            addClap(postInfo, position);
+                            addClap(postInfo, iv_clap, tv_clap);
                         }
 
                         @Override
@@ -299,7 +331,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     break;
                 case R.id.ll_clap:
                 case R.id.iv_clap:
-                    addClap(postInfo, position);
+                    addClap(postInfo, iv_clap, tv_clap);
                     break;
                 case R.id.iv_video:
                     List<String> links = postInfo.getLinks();

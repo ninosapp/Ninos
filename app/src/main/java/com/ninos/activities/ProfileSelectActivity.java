@@ -16,7 +16,7 @@ import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.ProfileBucketFragment;
 import com.ninos.utils.AWSClient;
-import com.ninos.videoTrimmer.utils.StorageUtils;
+import com.ninos.utils.StorageUtils;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
