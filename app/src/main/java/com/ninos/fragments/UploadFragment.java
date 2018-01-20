@@ -37,16 +37,32 @@ import retrofit2.Response;
 
 public class UploadFragment extends BaseFragment implements View.OnClickListener {
 
-    private final static String FILE_PATHS = "FILE_PATHS";
+    public final static String IMAGES = "IMAGES";
+    public final static String VIDEOS = "VIDEOS";
+    private final static String TYPE = "TYPE";
     private View cl_home;
     private ArrayList<String> paths;
     private TextView tv_description;
+    private String path;
+    private String type;
 
     public static UploadFragment newInstance(ArrayList<String> paths) {
         UploadFragment uploadFragment = new UploadFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(FILE_PATHS, paths);
+        bundle.putStringArrayList(IMAGES, paths);
+        bundle.putString(TYPE, IMAGES);
+        uploadFragment.setArguments(bundle);
+
+        return uploadFragment;
+    }
+
+    public static UploadFragment newInstance(String path) {
+        UploadFragment uploadFragment = new UploadFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(VIDEOS, path);
+        bundle.putString(TYPE, VIDEOS);
         uploadFragment.setArguments(bundle);
 
         return uploadFragment;
@@ -57,7 +73,10 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            paths = getArguments().getStringArrayList(FILE_PATHS);
+
+            type = getArguments().getString(TYPE);
+            path = getArguments().getString(VIDEOS);
+            paths = getArguments().getStringArrayList(IMAGES);
         }
     }
 
@@ -97,7 +116,11 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
             recyclerView.setAdapter(uploadAdapter);
 
-            for (String path : paths) {
+            if (type.equals(IMAGES)) {
+                for (String path : paths) {
+                    uploadAdapter.addItem(path);
+                }
+            } else {
                 uploadAdapter.addItem(path);
             }
 
@@ -117,6 +140,8 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                 PostInfo postInfo = new PostInfo();
                 final String token = PreferenceUtil.getAccessToken(getContext());
                 final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+
+
                 service.addPost(postInfo, token).enqueue(new Callback<AddPostResponse>() {
                     @Override
                     public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
@@ -130,10 +155,17 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                             postInfo.setUserId(Database.getUserId());
                             postInfo.setType("post");
 
-                            for (String path : paths) {
+                            if (type.equals(IMAGES)) {
+                                for (String path : paths) {
+                                    AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
+                                    awsClient.awsInit();
+                                    awsClient.uploadImage(postInfo);
+                                }
+                            } else {
+                                postInfo.setVideo(true);
                                 AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
                                 awsClient.awsInit();
-                                awsClient.uploadImage(postInfo);
+                                awsClient.uploadVideo(postInfo);
                             }
                         }
                     }

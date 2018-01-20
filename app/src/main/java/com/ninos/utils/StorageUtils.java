@@ -36,8 +36,8 @@ public class StorageUtils {
         return attachmentDir;
     }
 
-    public static String getPostPath(Context context, String taskId, String attachmentName) {
-        return String.format("%s/%s", getPostPath(context, taskId), attachmentName);
+    public static String getPostPath(Context context, String postId, String attachmentName) {
+        return String.format("%s/%s", getPostPath(context, postId), attachmentName);
     }
 
     public static long getPostDirSize(Context context) {

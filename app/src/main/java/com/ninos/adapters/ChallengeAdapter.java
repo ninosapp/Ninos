@@ -288,14 +288,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             });
 
-            recyclerView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    return gd.onTouchEvent(event);
-                }
-            });
-
             String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
             ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
             recyclerView.setAdapter(imageAdapter);

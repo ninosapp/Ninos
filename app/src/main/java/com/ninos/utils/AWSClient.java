@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,12 +23,14 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.github.tcking.giraffecompressor.GiraffeCompressor;
 import com.ninos.BuildConfig;
 import com.ninos.R;
 import com.ninos.activities.FilePickerActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
+import com.ninos.listeners.OnTrimVideoListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.AddPostResponse;
 import com.ninos.models.PostInfo;
@@ -47,6 +50,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscriber;
 
 
 /**
@@ -252,14 +256,77 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
     public void uploadVideo(final PostInfo postInfo) {
         try {
-            File file = new File(mPath);
-            String fileName = file.getName();
-            String userId = Database.getUserId();
-            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+            final File file = new File(mPath);
 
-            mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+            if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+            TrimVideoUtils.startTrim(file, StorageUtils.getPostPath(mContext, postInfo.get_id()), 0, 60000, new OnTrimVideoListener() {
+                @Override
+                public void onTrimStarted() {
+                    if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+                        mProgressDialog.show();
+                    }
+                }
+
+                @Override
+                public void getResult(Uri uri) {
+                    mFolder = new File(uri.getPath());
+                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id(), mFolder.getName());
+
+                    GiraffeCompressor.create()
+                            .input(uri.getPath())
+                            .output(outputPath)
+                            .bitRate(2073600)
+                            .resizeFactor(1.0f)
+                            .ready()
+                            .observeOn(rx.schedulers.Schedulers.newThread())
+                            .subscribe(new Subscriber<GiraffeCompressor.Result>() {
+                                @Override
+                                public void onCompleted() {
+                                    File file = new File(outputPath);
+                                    String fileName = file.getName();
+                                    String userId = Database.getUserId();
+                                    String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+
+                                    mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
+                                    mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    if (mProgressDialog != null) {
+                                        mProgressDialog.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onNext(GiraffeCompressor.Result s) {
+
+                                }
+                            });
+                }
+
+                @Override
+                public void cancelAction() {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onError(String message) {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.dismiss();
+                    }
+                }
+            });
         } catch (Exception e) {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+
             Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
         }
     }
@@ -381,6 +448,13 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                                 intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
                                 activity.setResult(FilePickerActivity.TRIMMER_RESULT, intent);
                                 activity.finish();
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        deleteDir();
+                                    }
+                                }, 3000);
                             }
                         }
 
@@ -391,6 +465,13 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             }
 
                             ((Activity) mContext).finish();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteDir();
+                                }
+                            }, 3000);
                         }
                     });
                 }
@@ -401,7 +482,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
         @Override
         public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-
+            Log.i(TAG, "Progress changed" + bytesCurrent);
         }
 
         @Override
