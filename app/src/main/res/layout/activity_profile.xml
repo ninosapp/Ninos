@@ -28,12 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="36dp"
         android:src="@drawable/ic_add"
         android:tint="@color/dark_grey"
         app:backgroundTint="@android:color/white"
-        app:elevation="8dp"
-        app:fabSize="mini" />
+        app:elevation="8dp" />
 
     <RelativeLayout
         android:id="@+id/rl_progress"

@@ -68,10 +68,11 @@
             android:clickable="true"
             android:focusable="true">
 
-            <tcking.github.com.giraffeplayer2.VideoView
+            <com.devbrackets.android.exomedia.ui.widget.VideoView
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                app:useDefaultControls="true" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/image_list"
@@ -90,15 +91,6 @@
                 android:visibility="invisible"
                 tools:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/iv_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:scaleType="center"
-                android:visibility="gone"
-                app:srcCompat="@drawable/play_button"
-                tools:visibility="visible" />
         </RelativeLayout>
 
         <LinearLayout

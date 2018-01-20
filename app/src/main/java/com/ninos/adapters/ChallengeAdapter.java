@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.ninos.R;
 import com.ninos.activities.CommentActivity;
 import com.ninos.activities.MainActivity;
@@ -46,7 +48,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tcking.github.com.giraffeplayer2.VideoView;
 
 /**
  * Created by smeesala on 6/30/2017.
@@ -168,7 +169,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
-        ImageView ic_clap_anim, iv_clap, iv_profile, iv_video;
+        ImageView ic_clap_anim, iv_clap, iv_profile;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
         LinearLayout ll_comment;
@@ -183,7 +184,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_clap = itemView.findViewById(R.id.tv_clap);
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             ll_clap = itemView.findViewById(R.id.ll_clap);
-            iv_video = itemView.findViewById(R.id.iv_video);
             iv_clap = itemView.findViewById(R.id.iv_clap);
             iv_profile = itemView.findViewById(R.id.iv_profile);
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
@@ -194,6 +194,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
             video_view = itemView.findViewById(R.id.video_view);
+            video_view.pause();
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -233,8 +234,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             if (postInfo.isVideo()) {
                 List<String> links = awsClient.getBucket(path);
-                iv_video.setVisibility(View.VISIBLE);
-                iv_video.setOnClickListener(this);
                 recyclerView.setVisibility(View.GONE);
                 video_view.setVisibility(View.VISIBLE);
 
@@ -242,14 +241,12 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     new LoadVideo(video_view, position).execute(path);
                 } else {
                     if (links.size() > 0) {
-                        video_view.setVideoPath(links.get(0));
+                        video_view.setVideoURI(Uri.parse(links.get(0)));
                     }
                 }
             } else {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                iv_video.setVisibility(View.GONE);
-                iv_video.setOnClickListener(null);
 
                 ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
                 recyclerView.setAdapter(imageAdapter);
@@ -340,9 +337,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.iv_clap:
                     addClap(postInfo, iv_clap, tv_clap);
                     break;
-                case R.id.iv_video:
-
-                    break;
             }
         }
 
@@ -399,7 +393,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected void onPostExecute(List<String> links) {
 
                 if (links.size() > 0) {
-                    video_view.get().setVideoPath(links.get(0));
+                    video_view.get().setVideoURI(Uri.parse(links.get(0)));
                 }
 
                 getItem(position).setLinks(links);
