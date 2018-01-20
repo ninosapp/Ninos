@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (id) {
             case R.id.fl_home:
-                iv_home.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
-                iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
+                iv_home.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_home));
+//                iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
 
                 displayAllChallengeFragment();
                 break;
@@ -71,8 +71,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 addFile();
                 break;
             case R.id.fl_challenges:
-                iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
-                iv_home.setColorFilter(ContextCompat.getColor(this, R.color.grey));
+                iv_challenges.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_flash));
+//                iv_home.setColorFilter(ContextCompat.getColor(this, R.color.grey));
 
                 displayChallengeFragment();
                 break;
