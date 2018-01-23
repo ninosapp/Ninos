@@ -4,6 +4,7 @@ import com.ninos.models.AddPostResponse;
 import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
+import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
@@ -67,4 +68,7 @@ public interface RetrofitService {
 
     @GET("quizzes")
     Call<QuizResponse> getQuizzes(@Query("token") String token);
+
+    @GET("users")
+    Call<PeopleResponse> getUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);
 }

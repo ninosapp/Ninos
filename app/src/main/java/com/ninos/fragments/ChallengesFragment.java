@@ -1,7 +1,6 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,25 +21,6 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
     public static final String APP_NAME = "APP_NAME";
     private BaseActivity mBaseActivity;
     private View cl_home;
-    private String mAppName;
-
-    public static AllChallengesFragment newInstance(String appName) {
-        AllChallengesFragment allChallengesFragment = new AllChallengesFragment();
-
-        Bundle args = new Bundle();
-        args.putString(APP_NAME, appName);
-        allChallengesFragment.setArguments(args);
-        return allChallengesFragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mAppName = getArguments().getString(APP_NAME);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

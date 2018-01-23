@@ -65,6 +65,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         iv_challenges = findViewById(R.id.iv_challenges);
         iv_profile = findViewById(R.id.iv_profile);
         iv_profile.setOnClickListener(this);
+        ImageView iv_search = findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(this);
 
         drawer_layout = findViewById(R.id.drawer_layout);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -153,6 +155,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     drawer_layout.closeDrawer(Gravity.START);
                 }
 
+                break;
+            case R.id.iv_search:
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
         }
     }
