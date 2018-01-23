@@ -40,6 +40,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.ninos.R;
 import com.ninos.activities.CommentActivity;
+import com.ninos.activities.EditPostActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.firebase.Database;
@@ -55,6 +56,7 @@ import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -351,6 +353,13 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                             switch (item.getItemId()) {
                                 case R.id.action_edit:
+
+                                    Intent editPostIntent = new Intent(mActivity, EditPostActivity.class);
+                                    editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
+                                    editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
+                                    editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
+                                    mActivity.startActivity(editPostIntent);
+
                                     break;
                                 case R.id.action_report:
 
