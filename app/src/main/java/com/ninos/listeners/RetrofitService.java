@@ -1,6 +1,7 @@
 package com.ninos.listeners;
 
 import com.ninos.models.AddPostResponse;
+import com.ninos.models.ChallengeSearchResponse;
 import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
@@ -8,6 +9,7 @@ import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
+import com.ninos.models.PostSearchResponse;
 import com.ninos.models.PostsResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
@@ -71,4 +73,11 @@ public interface RetrofitService {
 
     @GET("users")
     Call<PeopleResponse> getUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);
+
+    @GET("/search-posts")
+    Call<PostSearchResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+
+    @GET("/search-challenge")
+    Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+
 }

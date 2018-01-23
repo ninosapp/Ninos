@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninos.R;
-import com.ninos.adapters.PeopleAdapter;
+import com.ninos.adapters.ChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
-import com.ninos.models.PeopleResponse;
-import com.ninos.models.UserInfo;
+import com.ninos.models.ChallengeSearchResponse;
+import com.ninos.models.PostInfo;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
@@ -26,13 +26,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreListener {
+/**
+ * Created by FAMILY on 23-01-2018.
+ */
+
+public class AllChallengesSearchFragment extends BaseFragment implements OnLoadMoreListener {
 
     private RetrofitService service;
-    private PeopleAdapter peopleAdapter;
+    private ChallengeAdapter challengeAdapter;
     private String accessToken;
     private int from = 0, size = 20;
-    private String userName;
+    private String challengeKeyword;
     private TextView tv_empty;
     private RelativeLayout rl_empty;
 
@@ -56,14 +60,14 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
             rl_empty = view.findViewById(R.id.rl_empty);
             rl_empty.setVisibility(View.GONE);
 
-            GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
             final RecyclerView recyclerView = view.findViewById(R.id.people_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            peopleAdapter = new PeopleAdapter(context, recyclerView, this);
+            challengeAdapter = new ChallengeAdapter(getActivity(), recyclerView, this);
 
-            recyclerView.setAdapter(peopleAdapter);
+            recyclerView.setAdapter(challengeAdapter);
 
 
         } catch (Exception e) {
@@ -72,33 +76,33 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
     }
 
     public void userSearch(String keyword) {
-        userName = keyword;
+        challengeKeyword = keyword;
         from = 0;
         size = 20;
-        peopleAdapter.clearItemsforSearch();
-        getUsers();
+        challengeAdapter.clearItemsforSearch();
+        getPosts();
     }
 
-    private void getUsers() {
-        service.getUsers(from, size, userName, accessToken).enqueue(new Callback<PeopleResponse>() {
+    private void getPosts() {
+        service.getChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
             @Override
-            public void onResponse(@NonNull Call<PeopleResponse> call, @NonNull Response<PeopleResponse> response) {
+            public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    peopleAdapter.removeItem(null);
+                    challengeAdapter.removeItem(null);
 
-                    if (response.body().getUsers().size() > 0) {
+                    if (response.body().getChallenges().size() > 0) {
                         rl_empty.setVisibility(View.GONE);
 
-                        for (final UserInfo userInfo : response.body().getUsers()) {
+                        for (final PostInfo postInfo : response.body().getChallenges()) {
                             new Handler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    peopleAdapter.addItem(userInfo);
+                                    challengeAdapter.addItem(postInfo);
                                 }
                             });
                         }
                     } else if (from == 0) {
-                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_user_for_s), userName));
+                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_post_for_s), challengeKeyword));
                         rl_empty.setVisibility(View.VISIBLE);
                     }
 
@@ -107,7 +111,7 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
             }
 
             @Override
-            public void onFailure(Call<PeopleResponse> call, Throwable t) {
+            public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
                 logError(t.getMessage());
             }
         });
@@ -115,11 +119,11 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
 
     @Override
     public void onLoadMore() {
-        peopleAdapter.addItem(null);
-        getUsers();
+        challengeAdapter.addItem(null);
+        getPosts();
     }
 
-    public String getUserName() {
-        return userName;
+    public String getChallengeKeyword() {
+        return challengeKeyword;
     }
 }

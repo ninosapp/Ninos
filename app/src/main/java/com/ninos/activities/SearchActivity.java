@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.SearchAdapter;
+import com.ninos.fragments.AllChallengesSearchFragment;
+import com.ninos.fragments.ChallengeSearchFragment;
 import com.ninos.fragments.PeopleSearchFragment;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener, EditText.OnEditorActionListener, ViewPager.OnPageChangeListener {
@@ -26,6 +28,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private EditText et_search;
     private SearchAdapter searchAdapter;
     private ViewPager viewPager;
+    private String previousKeyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             if (text.isEmpty()) {
                 showToast(R.string.search_keyword_is_empty);
             } else {
+                previousKeyword = text;
                 search(text);
             }
         }
@@ -89,19 +93,32 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             case 0:
                 if (fragment instanceof PeopleSearchFragment) {
                     PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
-                    peopleSearchFragment.userSearch(text);
+                    String userName = peopleSearchFragment.getUserName();
+
+                    if (userName == null || !userName.equals(text)) {
+                        peopleSearchFragment.userSearch(text);
+                    }
                 }
                 break;
             case 1:
-                if (fragment instanceof PeopleSearchFragment) {
-                    PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
-                    peopleSearchFragment.userSearch(text);
+                if (fragment instanceof ChallengeSearchFragment) {
+                    ChallengeSearchFragment challengeSearchFragment = (ChallengeSearchFragment) fragment;
+                    String postKeyword = challengeSearchFragment.getPostKeyword();
+
+                    if (postKeyword == null || !postKeyword.equals(text)) {
+                        challengeSearchFragment.userSearch(text);
+                    }
                 }
                 break;
             case 2:
-                if (fragment instanceof PeopleSearchFragment) {
-                    PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
-                    peopleSearchFragment.userSearch(text);
+                if (fragment instanceof AllChallengesSearchFragment) {
+                    AllChallengesSearchFragment challengeSearchFragment = (AllChallengesSearchFragment) fragment;
+
+                    String challengeKeyword = challengeSearchFragment.getChallengeKeyword();
+
+                    if (challengeKeyword == null || !challengeKeyword.equals(text)) {
+                        challengeSearchFragment.userSearch(text);
+                    }
                 }
                 break;
         }

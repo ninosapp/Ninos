@@ -5,15 +5,32 @@
     android:background="@color/clouds"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_empty"
+    <RelativeLayout
+        android:id="@+id/rl_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:text="@string/unable_to_find_the_user_for_s"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp" />
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_flat_search" />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_search"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:gravity="center"
+            android:text="@string/unable_to_find_the_user_for_s"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/people_list"

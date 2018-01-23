@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.ninos.R;
+import com.ninos.fragments.AllChallengesSearchFragment;
+import com.ninos.fragments.ChallengeSearchFragment;
 import com.ninos.fragments.PeopleSearchFragment;
 
 import java.util.ArrayList;
@@ -29,8 +31,8 @@ public class SearchAdapter extends FragmentStatePagerAdapter {
         titles.add(context.getString(R.string.challenges));
 
         fragments.add(new PeopleSearchFragment());
-        fragments.add(new PeopleSearchFragment());
-        fragments.add(new PeopleSearchFragment());
+        fragments.add(new ChallengeSearchFragment());
+        fragments.add(new AllChallengesSearchFragment());
     }
 
     @Override

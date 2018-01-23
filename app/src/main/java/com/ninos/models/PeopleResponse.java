@@ -1,5 +1,6 @@
 package com.ninos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,10 @@ public class PeopleResponse {
     }
 
     public List<UserInfo> getUsers() {
+        if (users == null) {
+            users = new ArrayList<>();
+        }
+
         return users;
     }
 
