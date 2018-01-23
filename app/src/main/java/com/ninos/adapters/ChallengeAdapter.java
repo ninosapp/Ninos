@@ -94,15 +94,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) genericHolder;
 
         challengeViewHolder.bindData(position);
-        setAnimation(challengeViewHolder.itemView, position);
-    }
-
-    private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.slide_in_bottom);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
     }
 
     @Override
@@ -165,6 +156,16 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
             }
         }
+
+        int clapStringId;
+
+        if (postInfo.getTotalClapsCount() > 1) {
+            clapStringId = R.string.s_claps;
+        } else {
+            clapStringId = R.string.s_clap;
+        }
+
+        tv_clap.setText(String.format(mActivity.getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -198,6 +199,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(null);
         }
 
         private void bindData(final int position) {
@@ -209,14 +211,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
             tv_created_time.setText(date);
 
-            int clapStringId;
-
-            if (postInfo.getTotalClapsCount() > 1) {
-                clapStringId = R.string.s_claps;
-            } else {
-                clapStringId = R.string.s_clap;
-            }
-
             int commentStringId;
 
             if (postInfo.getTotalClapsCount() > 1) {
@@ -225,7 +219,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 commentStringId = R.string.s_comment;
             }
 
-            tv_clap.setText(String.format(mActivity.getString(clapStringId), postInfo.getTotalClapsCount()));
             tv_comment.setText(String.format(mActivity.getString(commentStringId), postInfo.getTotalCommentCount()));
 
             int index = position % 10;

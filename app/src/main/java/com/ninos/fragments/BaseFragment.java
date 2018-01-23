@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ninos.R;
 import com.ninos.utils.CrashUtil;
@@ -78,5 +79,9 @@ public class BaseFragment extends Fragment {
 
     protected void logError(String exception) {
         CrashUtil.report(exception);
+    }
+
+    public void showToast(int msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
