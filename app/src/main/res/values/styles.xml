@@ -55,6 +55,20 @@
         </item>
     </style>
 
+    <style name="ButtonThemeReport" parent="BaseButtonTheme">
+        <item name="colorButtonNormal">@color/report_color</item>
+        <item name="android:colorButtonNormal" tools:targetApi="lollipop">@color/report_color
+        </item>
+    </style>
+
+
+    <style name="ButtonThemeWhite" parent="BaseButtonTheme">
+        <item name="colorButtonNormal">@color/silver</item>
+        <item name="android:colorButtonNormal" tools:targetApi="lollipop">@color/silver
+        </item>
+    </style>
+
+
     <style name="BaseButtonTheme" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
         <item name="colorControlNormal">@color/clouds</item>

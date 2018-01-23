@@ -141,6 +141,13 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
         }
     }
 
+    public void removeItem(int indexOfItem) {
+        if (indexOfItem != -1) {
+            this.dataSet.remove(indexOfItem);
+            notifyItemRemoved(indexOfItem);
+        }
+    }
+
     public void hideLoading() {
         loading = false;
     }

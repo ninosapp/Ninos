@@ -70,16 +70,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             quiz_list.setLayoutManager(quizLayoutManager);
 
             quizAdapter = new QuizAdapter(getContext());
-
             quiz_list.setAdapter(quizAdapter);
-
-            for (int i = 0; i < 10; i++) {
-                Quizze quizze = new Quizze();
-                quizze.set_id("" + i);
-                quizze.setTitle("Sample");
-                quizAdapter.addItem(quizze);
-            }
-
 
             LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(mBaseActivity);
 

@@ -8,6 +8,7 @@ import com.ninos.models.CommentsResponse;
 import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
+import com.ninos.models.PostReport;
 import com.ninos.models.PostResponse;
 import com.ninos.models.PostSearchResponse;
 import com.ninos.models.PostsResponse;
@@ -15,6 +16,7 @@ import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.RegisterResponse;
+import com.ninos.models.Response;
 import com.ninos.models.UserCheckResponse;
 
 import retrofit2.Call;
@@ -67,6 +69,9 @@ public interface RetrofitService {
 
     @POST("posts/{postId}/comments")
     Call<CommentResponse> addPostComments(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);
+
+    @POST("report-post")
+    Call<Response> reportPost(@Body PostReport postReport, @Query("token") String token);
 
     @PUT("/posts/{postId}/claps")
     Call<PostClapResponse> addPostClaps(@Path("postId") String postId, @Query("token") String token);

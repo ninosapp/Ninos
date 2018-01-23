@@ -17,4 +17,5 @@
     <color name="dark_grey">#909090</color>
     <color name="grey40">#A1A1A1</color>
     <color name="accent_dark">#037BFF</color>
+    <color name="report_color">#e2574c</color>
 </resources>

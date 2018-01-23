@@ -68,6 +68,10 @@
     <string name="unable_to_find_the_user_for_s">Unable to find the People for \'%s\'</string>
     <string name="unable_to_find_the_post_for_s">Unable to find the Posts for \'%s\'</string>
     <string name="unable_to_find_the_challenges_for_s">Unable to find the Challenges for \'%s\'</string>
+    <string name="edit">Edit</string>
+    <string name="report">Report</string>
+    <string name="reason_for_report">Reason for report</string>
+    <string name="provide_reason_for_report">Provide reason for report</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

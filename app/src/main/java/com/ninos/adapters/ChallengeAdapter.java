@@ -1,6 +1,8 @@
 package com.ninos.adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -11,18 +13,26 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,10 +42,12 @@ import com.ninos.R;
 import com.ninos.activities.CommentActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
+import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
+import com.ninos.models.PostReport;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
@@ -55,7 +67,6 @@ import retrofit2.Response;
 
 public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
-    private int lastPosition = -1;
     private Activity mActivity;
     private TypedArray typedArray;
     private DateUtil dateUtil;
@@ -170,7 +181,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
-        ImageView ic_clap_anim, iv_clap, iv_profile;
+        ImageView ic_clap_anim, iv_clap, iv_profile, iv_menu;
         LinearLayout ll_clap;
         RecyclerView recyclerView;
         LinearLayout ll_comment;
@@ -186,10 +197,12 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             ic_clap_anim = itemView.findViewById(R.id.ic_clap_anim);
             ll_clap = itemView.findViewById(R.id.ll_clap);
             iv_clap = itemView.findViewById(R.id.iv_clap);
+            iv_menu = itemView.findViewById(R.id.iv_menu);
             iv_profile = itemView.findViewById(R.id.iv_profile);
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
             tv_comment = itemView.findViewById(R.id.tv_comment);
             ll_comment = itemView.findViewById(R.id.ll_comment);
+            iv_menu.setOnClickListener(this);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
@@ -309,8 +322,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         @Override
         public void onClick(View view) {
             int id = view.getId();
-            int position = getAdapterPosition();
-            PostInfo postInfo = getItem(position);
+            final int position = getAdapterPosition();
+            final PostInfo postInfo = getItem(position);
 
             switch (id) {
                 case R.id.tv_name:
@@ -330,6 +343,106 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.iv_clap:
                     addClap(postInfo, iv_clap, tv_clap);
                     break;
+                case R.id.iv_menu:
+                    MenuBuilder menuBuilder = new MenuBuilder(mActivity);
+                    menuBuilder.setCallback(new MenuBuilder.Callback() {
+                        @Override
+                        public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+
+                            switch (item.getItemId()) {
+                                case R.id.action_edit:
+                                    break;
+                                case R.id.action_report:
+
+                                    final Dialog dialog = new Dialog(mActivity);
+                                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    dialog.setContentView(R.layout.dialog_report);
+                                    final EditText et_report = dialog.findViewById(R.id.et_report);
+
+                                    InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                                    if (imm != null) {
+                                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                                    }
+
+                                    dialog.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            hideKeyboard(et_report);
+
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    dialog.findViewById(R.id.btn_report).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            String text = et_report.getText().toString().trim();
+
+                                            if (text.isEmpty()) {
+                                                Toast.makeText(mActivity, R.string.provide_reason_for_report, Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                PostReport postReport = new PostReport();
+                                                postReport.setPostId(postInfo.get_id());
+                                                postReport.setUserReport(text);
+
+                                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                                service.reportPost(postReport, PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<com.ninos.models.Response>() {
+                                                    @Override
+                                                    public void onResponse(@NonNull Call<com.ninos.models.Response> call, @NonNull Response<com.ninos.models.Response> response) {
+                                                        if (response.body() != null && response.body().isSuccess()) {
+                                                            removeItem(position);
+                                                            hideKeyboard(et_report);
+                                                            dialog.dismiss();
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                                        hideKeyboard(et_report);
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    dialog.show();
+                                    break;
+                            }
+
+                            return false;
+                        }
+
+                        @Override
+                        public void onMenuModeChange(MenuBuilder menu) {
+
+                        }
+                    });
+
+                    MenuInflater inflater = new MenuInflater(mActivity);
+                    inflater.inflate(R.menu.menu_post, menuBuilder);
+
+                    if (postInfo.getUserId().equals(Database.getUserId())) {
+                        menuBuilder.findItem(R.id.action_edit).setVisible(true);
+                        menuBuilder.findItem(R.id.action_report).setVisible(true);
+                    } else {
+                        menuBuilder.findItem(R.id.action_edit).setVisible(false);
+                        menuBuilder.findItem(R.id.action_report).setVisible(true);
+                    }
+
+                    MenuPopupHelper optionsMenu = new MenuPopupHelper(mActivity, menuBuilder, view);
+                    optionsMenu.setForceShowIcon(true);
+                    optionsMenu.show();
+                    break;
+            }
+        }
+
+        private void hideKeyboard(EditText et_report) {
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(et_report.getWindowToken(), 0);
             }
         }
 
