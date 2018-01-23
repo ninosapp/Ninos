@@ -9,7 +9,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/ic_ninos_round" />
     </item>
 
 </layer-list>
