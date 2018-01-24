@@ -48,6 +48,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         viewPager = findViewById(R.id.view_pager);
         searchAdapter = new SearchAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(searchAdapter);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(this);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

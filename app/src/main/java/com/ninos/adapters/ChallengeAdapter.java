@@ -223,8 +223,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_name.setText(postInfo.getUserName());
             tv_title.setText(postInfo.getTitle());
 
-            String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
-            tv_created_time.setText(date);
+            if (postInfo.getCreatedAt() != null) {
+                String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
+                tv_created_time.setText(date);
+            }
 
             int commentStringId;
 
