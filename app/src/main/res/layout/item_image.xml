@@ -1,7 +1,8 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/iv_challenge"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin8dp"
-    android:adjustViewBounds="true"
-    android:scaleType="centerCrop" />
+    android:background="@android:color/black"
+    android:minHeight="250dp"
+    android:src="@drawable/pattern_12" />
