@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ninos.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by FAMILY on 23-01-2018.
@@ -17,9 +21,11 @@ import com.ninos.R;
 public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
     private Context mContext;
+    private List<String> deletedLinks;
 
     public EditPostAdapter(Context context) {
         mContext = context;
+        deletedLinks = new ArrayList<>();
     }
 
     @Override
@@ -34,6 +40,10 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
         EditPostViewHolder sampleViewHolder = (EditPostViewHolder) genericHolder;
 
         sampleViewHolder.bindData(position);
+    }
+
+    public List<String> getDeletedLinks() {
+        return deletedLinks;
     }
 
     private class EditPostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -53,7 +63,13 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
         @Override
         public void onClick(View view) {
-
+            String item = getItem(getAdapterPosition());
+            if (getItemCount() > 2) {
+                deletedLinks.add(item);
+                removeItem(item);
+            } else {
+                Toast.makeText(mContext, R.string.cannot_delete_image, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

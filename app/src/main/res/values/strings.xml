@@ -72,6 +72,7 @@
     <string name="report">Report</string>
     <string name="reason_for_report">Reason for report</string>
     <string name="provide_reason_for_report">Provide reason for report</string>
+    <string name="cannot_delete_image">Cannot delete image or video</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

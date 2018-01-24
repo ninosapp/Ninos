@@ -358,7 +358,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                     editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                     editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                     editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                    mActivity.startActivity(editPostIntent);
+                                    mActivity.startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
 
                                     break;
                                 case R.id.action_report:

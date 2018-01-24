@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -22,6 +24,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.github.tcking.giraffecompressor.GiraffeCompressor;
 import com.ninos.BuildConfig;
@@ -363,6 +366,10 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
     }
 
+    public void removeImage(String post, List<String> paths) {
+        new DeleteImage(post, paths).execute();
+    }
+
     private class UploadListener implements TransferListener {
 
         @Override
@@ -533,8 +540,6 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             ((Activity) mContext).finish();
                         }
                     });
-
-
                 }
             } catch (Exception e) {
                 Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
@@ -553,6 +558,33 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             }
             Log.e(TAG, ex.toString(), ex);
             Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class DeleteImage extends AsyncTask<String, Void, Void> {
+
+        List<String> links;
+        String postId;
+
+        DeleteImage(String postId, List<String> links) {
+            this.links = links;
+            this.postId = postId;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String bucket = BuildConfig.ams_challenge_bucket + "/" + Database.getUserId() + "/" + postId;
+
+            for (String link : links) {
+                String url = link.substring(link.lastIndexOf('/') + 1);
+                try {
+                    mAmazonS3.deleteObject(new DeleteObjectRequest(bucket, url));
+                } catch (AmazonClientException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
         }
     }
 }
