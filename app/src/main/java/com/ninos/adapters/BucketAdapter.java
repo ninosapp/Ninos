@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.BaseActivity;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.ProfilePickFragment;
 import com.ninos.fragments.VideoPickFragment;

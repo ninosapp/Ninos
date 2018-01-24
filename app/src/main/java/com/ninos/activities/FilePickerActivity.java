@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.BucketFragment;
 import com.ninos.fragments.ImagePickFragment;

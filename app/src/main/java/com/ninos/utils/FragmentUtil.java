@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.BaseActivity;
 
 
 /**

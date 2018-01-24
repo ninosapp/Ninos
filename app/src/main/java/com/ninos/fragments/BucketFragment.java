@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.BaseActivity;
 import com.ninos.adapters.FilePickerAdapter;
 
 /**

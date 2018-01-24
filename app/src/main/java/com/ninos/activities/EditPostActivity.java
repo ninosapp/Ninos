@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.EditPostAdapter;
 import com.ninos.listeners.RetrofitService;

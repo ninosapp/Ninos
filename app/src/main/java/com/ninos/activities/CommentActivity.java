@@ -17,7 +17,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.CommentAdapter;
 import com.ninos.firebase.Database;

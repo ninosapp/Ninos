@@ -31,4 +31,8 @@ public class PreferenceUtil {
     public static String getUserEmail(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("user_email", null);
     }
+
+    public static void clear(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
+    }
 }

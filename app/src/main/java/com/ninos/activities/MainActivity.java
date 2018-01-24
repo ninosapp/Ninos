@@ -23,8 +23,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.firebase.Database;
 import com.ninos.fragments.AllChallengesFragment;
@@ -272,10 +270,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (item.getItemId()) {
             case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                PreferenceUtil.setAccessToken(this, null);
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                logout();
                 return true;
             case R.id.nav_settings:
                 return true;

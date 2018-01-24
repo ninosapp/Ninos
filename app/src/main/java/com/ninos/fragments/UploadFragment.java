@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.BaseActivity;
 import com.ninos.adapters.UploadAdapter;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;

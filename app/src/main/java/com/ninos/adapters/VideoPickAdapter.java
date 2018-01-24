@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.ninos.BaseActivity;
 import com.ninos.R;
+import com.ninos.activities.BaseActivity;
 import com.ninos.models.MediaObject;
 
 /**

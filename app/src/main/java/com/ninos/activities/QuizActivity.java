@@ -2,7 +2,6 @@ package com.ninos.activities;
 
 import android.os.Bundle;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 
 public class QuizActivity extends BaseActivity {

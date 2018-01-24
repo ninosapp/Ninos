@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.ProfileBucketFragment;

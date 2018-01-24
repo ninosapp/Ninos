@@ -1,7 +1,9 @@
 package com.ninos.utils;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.view.Window;
 import android.widget.DatePicker;
 
 import com.ninos.listeners.DateSetListener;
@@ -35,7 +37,7 @@ public class DateUtil {
             int month = c.get(Calendar.MONTH);
             final int day = c.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT,
                     new DatePickerDialog.OnDateSetListener() {
 
                         @Override
@@ -66,6 +68,7 @@ public class DateUtil {
                         }
                     }, year, month, day);
 
+            datePickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             datePickerDialog.show();
         } catch (Exception e) {
             report(e);

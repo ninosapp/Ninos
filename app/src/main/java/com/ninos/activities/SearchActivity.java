@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.SearchAdapter;
 import com.ninos.fragments.AllChallengesSearchFragment;

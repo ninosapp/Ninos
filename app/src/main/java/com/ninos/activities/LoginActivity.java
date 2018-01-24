@@ -35,7 +35,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.ninos.BaseActivity;
 import com.ninos.R;
 import com.ninos.adapters.IntroAdapter;
 import com.ninos.adapters.IntroPageTransformer;

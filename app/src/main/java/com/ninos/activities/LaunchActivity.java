@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.ninos.BaseActivity;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.RegisterResponse;
 import com.ninos.reterofit.RetrofitInstance;
