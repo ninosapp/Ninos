@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,7 +46,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private String accessToken;
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
-    private SwipeRefreshLayout swipe_refresh;
 
     @Override
 
@@ -69,7 +67,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
             ns_view = view.findViewById(R.id.ns_view);
-            swipe_refresh = view.findViewById(R.id.swipe_refresh);
 
             LinearLayoutManager quizLayoutManager = new LinearLayoutManager(mBaseActivity, LinearLayoutManager.HORIZONTAL, false);
 
@@ -101,12 +98,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 mBaseActivity.showNoNetwork();
             }
 
-            swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    refresh();
-                }
-            });
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
@@ -123,7 +114,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
             @Override
             public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<Quizze> quizzes = response.body().getQuizeData();
 
@@ -145,8 +135,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         service.getPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
-                swipe_refresh.setRefreshing(false);
-
                 if (response.isSuccessful() && response.body() != null) {
                     challengeAdapter.removeItem(null);
 
