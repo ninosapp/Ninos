@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -53,12 +52,13 @@ import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
-import com.waynell.videolist.widget.TextureVideoView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -188,7 +188,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         RecyclerView recyclerView;
         LinearLayout ll_comment;
         View itemView;
-        TextureVideoView video_view;
+        JZVideoPlayerStandard video_view;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -210,6 +210,8 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
             video_view = itemView.findViewById(R.id.video_view);
+            video_view.batteryLevel.setVisibility(View.GONE);
+
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -250,7 +252,11 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     new LoadVideo(video_view, position).execute(path);
                 } else {
                     if (links.size() > 0) {
-                        video_view.setVideoURI(Uri.parse(links.get(0)));
+                        String link = links.get(0);
+                        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                        Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
+
+                        video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     }
                 }
             } else {
@@ -488,10 +494,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
         public class LoadVideo extends AsyncTask<String, Void, List<String>> {
 
-            WeakReference<TextureVideoView> video_view;
+            WeakReference<JZVideoPlayerStandard> video_view;
             int position;
 
-            LoadVideo(TextureVideoView video_view, int position) {
+            LoadVideo(JZVideoPlayerStandard video_view, int position) {
                 this.video_view = new WeakReference<>(video_view);
                 this.position = position;
             }
@@ -509,7 +515,11 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected void onPostExecute(List<String> links) {
 
                 if (links.size() > 0) {
-                    video_view.get().setVideoURI(Uri.parse(links.get(0)));
+                    String link = links.get(0);
+                    video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
+                    RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                    Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
+
                 }
 
                 getItem(position).setLinks(links);

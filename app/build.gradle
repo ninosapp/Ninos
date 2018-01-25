@@ -113,7 +113,7 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.1-native'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.github.waynell:VideoListPlayer:1.4'
+    implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
     implementation 'com.writingminds:FFmpegAndroid:0.3.2'
     implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
 

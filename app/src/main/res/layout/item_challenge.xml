@@ -77,10 +77,11 @@
             android:clickable="true"
             android:focusable="true">
 
-            <com.waynell.videolist.widget.TextureVideoView
+            <cn.jzvd.JZVideoPlayerStandard
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="300dp"
+                android:layout_marginTop="@dimen/margin4dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/image_list"

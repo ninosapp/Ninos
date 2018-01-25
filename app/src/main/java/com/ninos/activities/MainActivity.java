@@ -33,6 +33,7 @@ import com.ninos.views.CircleImageView;
 
 import java.util.List;
 
+import cn.jzvd.JZVideoPlayer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -245,8 +246,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayer.releaseAllVideos();
+    }
+
+    @Override
     public void onBackPressed() {
-        if (challengeFragment.isVisible()) {
+        if (JZVideoPlayer.backPress()) {
+            return;
+        } else if (challengeFragment.isVisible()) {
             iv_home.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
             iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
 
