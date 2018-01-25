@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -188,7 +189,9 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         RecyclerView recyclerView;
         LinearLayout ll_comment;
         View itemView;
+        RelativeLayout rl_challenge;
         JZVideoPlayerStandard video_view;
+        GestureDetector gd;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -213,6 +216,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             video_view.batteryLevel.setVisibility(View.GONE);
             video_view.mRetryLayout.setVisibility(View.GONE);
 
+            rl_challenge = itemView.findViewById(R.id.rl_challenge);
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -284,7 +288,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             setClap(postInfo, iv_clap, tv_clap);
 
 
-            final GestureDetector gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
+            gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDown(MotionEvent e) {
                     return true;
@@ -293,26 +297,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
 
-                    Animation pulse_fade = AnimationUtils.loadAnimation(mActivity, R.anim.pulse_fade_in);
-                    pulse_fade.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            ic_clap_anim.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            ic_clap_anim.setVisibility(View.GONE);
-                            addClap(postInfo, iv_clap, tv_clap);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-
-                    ic_clap_anim.startAnimation(pulse_fade);
+                    clapAnimation(postInfo);
                     return true;
                 }
 
@@ -327,6 +312,29 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     return true;
                 }
             });
+        }
+
+        private void clapAnimation(final PostInfo postInfo) {
+            Animation pulse_fade = AnimationUtils.loadAnimation(mActivity, R.anim.pulse_fade_in);
+            pulse_fade.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    ic_clap_anim.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ic_clap_anim.setVisibility(View.GONE);
+                    addClap(postInfo, iv_clap, tv_clap);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+            ic_clap_anim.startAnimation(pulse_fade);
         }
 
         @Override
@@ -351,6 +359,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     break;
                 case R.id.ll_clap:
                 case R.id.iv_clap:
+                    clapAnimation(postInfo);
                     addClap(postInfo, iv_clap, tv_clap);
                     break;
                 case R.id.iv_menu:
