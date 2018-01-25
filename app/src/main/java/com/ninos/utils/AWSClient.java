@@ -163,19 +163,19 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         }
     }
 
-    private void upload256Image() {
+    private void upload192Image() {
         try {
             String userId = Database.getUserId();
-            File path256 = resizeImage(256);
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI256), path256, CannedAccessControlList.PublicRead);
+            File path192 = resizeImage(192);
+            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI192), path192, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new UploadListener());
         } catch (Exception e) {
-            Log.e(TAG, "upload256Image() - " + e.getMessage(), e);
+            Log.e(TAG, "upload192Image() - " + e.getMessage(), e);
         }
     }
 
     /*Uploading 512X512 resolution image*/
-    public void upload512Image() {
+    public void upload256Image() {
         try {
             new Compressor(mContext)
                     .compressToFileAsFlowable(new File(mPath))
@@ -187,8 +187,8 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             fileName = file.getName();
                             mBitmap = BitmapFactory.decodeFile(file.getPath());
                             String userId = Database.getUserId();
-                            File path512 = resizeImage(512);
-                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path512, CannedAccessControlList.PublicRead);
+                            File path256 = resizeImage(256);
+                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI256), path256, CannedAccessControlList.PublicRead);
                             mTransfer.setTransferListener(new UploadListener());
                         }
                     }, new Consumer<Throwable>() {
@@ -198,7 +198,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "upload512Image() - " + e.getMessage(), e);
+            Log.e(TAG, "upload256Image() - " + e.getMessage(), e);
         }
     }
 
@@ -358,7 +358,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                             upload128Image();
                             break;
                         case 3:
-                            upload256Image();
+                            upload192Image();
                             break;
                         case 4:
                             if (mProgressDialog != null) {

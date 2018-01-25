@@ -121,8 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(placeHolderId)
                 .error(placeHolderId)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true);
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
         Glide.with(ProfileActivity.this)
                 .setDefaultRequestOptions(requestOptions)

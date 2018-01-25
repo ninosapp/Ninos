@@ -37,6 +37,11 @@ public class AWSUrls {
         return imageUrl;
     }
 
+    public static String GetPI192(Context context, String userId) {
+        String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI192);
+        return imageUrl;
+    }
+
     /**
      * User 256X256 resolution image url
      *
