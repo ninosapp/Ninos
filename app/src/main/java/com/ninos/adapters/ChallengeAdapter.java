@@ -487,7 +487,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 String path = strings[0];
 
                 List<String> links = awsClient.getBucket(path);
-                getItem(position).setLinks(links);
+
+                if (getItemCount() > 0) {
+                    getItem(position).setLinks(links);
+                }
                 return links;
             }
 
@@ -498,7 +501,9 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     imageAdapter.addItem(link);
                 }
 
-                getItem(position).setLinks(links);
+                if (getItemCount() > 0) {
+                    getItem(position).setLinks(links);
+                }
             }
         }
 
@@ -535,7 +540,9 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 }
 
-                getItem(position).setLinks(links);
+                if (getItemCount() > 0) {
+                    getItem(position).setLinks(links);
+                }
             }
         }
     }

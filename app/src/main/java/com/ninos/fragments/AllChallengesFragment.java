@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ninos.R;
-import com.ninos.activities.BaseActivity;
+import com.ninos.activities.MainActivity;
 import com.ninos.adapters.ChallengeAdapter;
 import com.ninos.adapters.QuizAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
@@ -37,7 +38,7 @@ import retrofit2.Response;
 
 public class AllChallengesFragment extends BaseFragment implements OnLoadMoreListener {
 
-    private BaseActivity mBaseActivity;
+    private MainActivity mBaseActivity;
     private View cl_home;
     private QuizAdapter quizAdapter;
     private ChallengeAdapter challengeAdapter;
@@ -46,8 +47,10 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private String accessToken;
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
+    private SwipeRefreshLayout swipe_refresh;
 
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -62,10 +65,11 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            mBaseActivity = (BaseActivity) getActivity();
+            mBaseActivity = (MainActivity) getActivity();
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
             ns_view = view.findViewById(R.id.ns_view);
+            swipe_refresh = view.findViewById(R.id.swipe_refresh);
 
             LinearLayoutManager quizLayoutManager = new LinearLayoutManager(mBaseActivity, LinearLayoutManager.HORIZONTAL, false);
 
@@ -89,35 +93,60 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             accessToken = PreferenceUtil.getAccessToken(getContext());
             service = RetrofitInstance.createService(RetrofitService.class);
 
-            service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+            if (isNetworkAvailable(getContext())) {
+                getQuizzes();
+
+                getPosts();
+            } else {
+                mBaseActivity.showNoNetwork();
+            }
+
+            swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Quizze> quizzes = response.body().getQuizeData();
-
-                        for (Quizze quizze : quizzes) {
-                            quizAdapter.addItem(quizze);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-
+                public void onRefresh() {
+                    refresh();
                 }
             });
-
-            getPosts();
         } catch (Exception e) {
             logError(e);
             showSnackBar(R.string.error_message, cl_home);
         }
     }
 
+    public void refresh() {
+        from = 0;
+        challengeAdapter.clearItemsforSearch();
+        getPosts();
+    }
+
+    private void getQuizzes() {
+        service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+            @Override
+            public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Quizze> quizzes = response.body().getQuizeData();
+
+                    for (Quizze quizze : quizzes) {
+                        quizAdapter.addItem(quizze);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
     private void getPosts() {
         service.getPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
+                swipe_refresh.setRefreshing(false);
+
                 if (response.isSuccessful() && response.body() != null) {
                     challengeAdapter.removeItem(null);
 

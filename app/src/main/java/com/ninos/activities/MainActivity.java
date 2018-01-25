@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean doubleBackToExit;
     private CircleImageView iv_profile;
     private DrawerLayout drawer_layout;
+    private RelativeLayout rl_no_network;
+    private TextView tv_try_again;
 
     @Override
 
@@ -66,6 +69,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         iv_challenges = findViewById(R.id.iv_challenges);
         iv_profile = findViewById(R.id.iv_profile);
         iv_profile.setOnClickListener(this);
+        rl_no_network = findViewById(R.id.rl_no_network);
+        rl_no_network.setVisibility(View.GONE);
+        tv_try_again = findViewById(R.id.tv_try_again);
+        tv_try_again.setOnClickListener(this);
+
         ImageView iv_search = findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
 
@@ -159,6 +167,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_search:
                 startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case R.id.tv_try_again:
+                if (isNetworkAvailable()) {
+                    rl_no_network.setVisibility(View.GONE);
+
+                    if (allChallengeFragment.isAdded()) {
+                        allChallengeFragment.refresh();
+                    }
+
+                    if (challengeFragment.isAdded()) {
+
+                    }
+                }
                 break;
         }
     }
@@ -299,5 +320,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         return false;
+    }
+
+    public void showNoNetwork() {
+        rl_no_network.setVisibility(View.VISIBLE);
     }
 }

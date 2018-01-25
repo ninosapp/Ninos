@@ -133,7 +133,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
         }
 
-        Glide.with(ProfileActivity.this)
+        Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)
                 .asBitmap()
                 .load(AWSUrls.GetPI256(ProfileActivity.this, userId))
