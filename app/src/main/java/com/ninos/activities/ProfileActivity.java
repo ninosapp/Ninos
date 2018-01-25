@@ -118,10 +118,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updateImage() {
-        RequestOptions requestOptions = new RequestOptions()
-                .placeholder(placeHolderId)
-                .error(placeHolderId)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        RequestOptions requestOptions;
+
+        if (Database.getUserId().equals(userId)) {
+            requestOptions = new RequestOptions()
+                    .placeholder(placeHolderId)
+                    .error(placeHolderId)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true);
+        } else {
+            requestOptions = new RequestOptions()
+                    .placeholder(placeHolderId)
+                    .error(placeHolderId)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        }
 
         Glide.with(ProfileActivity.this)
                 .setDefaultRequestOptions(requestOptions)
@@ -138,17 +148,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setBitmapPalette(Bitmap resource) {
-        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
+        if (resource != null) {
+            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Window window = getWindow();
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Window window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

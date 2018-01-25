@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.ninos.R;
 import com.ninos.fragments.ImagePickFragment;
 import com.ninos.fragments.ProfileBucketFragment;
+import com.ninos.fragments.ProfilePickFragment;
 import com.ninos.utils.AWSClient;
 import com.ninos.utils.StorageUtils;
 import com.yalantis.ucrop.UCrop;
@@ -64,7 +65,7 @@ public class ProfileSelectActivity extends BaseActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
 
-        if (manager.findFragmentById(R.id.fl_profile_select) instanceof ImagePickFragment) {
+        if (manager.findFragmentById(R.id.fl_profile_select) instanceof ImagePickFragment || manager.findFragmentById(R.id.fl_profile_select) instanceof ProfilePickFragment) {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
             fts.replace(R.id.fl_profile_select, profileBucketFragment);
             fts.commit();

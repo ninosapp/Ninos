@@ -347,7 +347,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.tv_name:
                 case R.id.iv_profile:
                     Intent intent = new Intent(mActivity, ProfileActivity.class);
-                    int resId = typedArray.getResourceId(position, 0);
+                    int resId = typedArray.getResourceId(position % 10, 0);
                     intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
                     intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
                     mActivity.startActivity(intent);
