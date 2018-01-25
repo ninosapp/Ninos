@@ -1,6 +1,8 @@
 package com.ninos.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -274,7 +276,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (item.getItemId()) {
             case R.id.nav_logout:
-                logout();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.logout);
+                builder.setMessage(R.string.are_you_sure);
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
                 return true;
             case R.id.nav_settings:
                 return true;

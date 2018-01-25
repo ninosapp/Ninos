@@ -74,6 +74,9 @@
     <string name="reason_for_report">Reason for report</string>
     <string name="provide_reason_for_report">Provide reason for report</string>
     <string name="cannot_delete_image">Cannot delete image or video</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
