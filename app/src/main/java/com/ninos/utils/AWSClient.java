@@ -1,5 +1,6 @@
 package com.ninos.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -533,6 +534,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class DeleteImage extends AsyncTask<String, Void, Void> {
 
         List<String> links;
@@ -560,6 +562,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
 
         private Context mContext;
