@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_camera" />
+                android:src="@drawable/ic_camera" />
 
         </RelativeLayout>
 
@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin16dp"
                 android:background="@android:color/transparent"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:gravity="center"
                 android:hint="@string/child_name"
                 android:inputType="textCapWords"
@@ -96,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_margin="@dimen/margin16dp"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_forward" />
+        android:src="@drawable/ic_forward"
+        app:fabSize="normal" />
 </android.support.design.widget.CoordinatorLayout>
 
