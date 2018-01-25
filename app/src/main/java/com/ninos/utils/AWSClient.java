@@ -575,6 +575,10 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
         @Override
         protected String doInBackground(String... paths) {
+            if (mProgressDialog != null) {
+                mProgressDialog.show();
+            }
+
             String filePath = null;
             try {
                 filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
