@@ -211,6 +211,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             ll_clap.setOnClickListener(this);
             video_view = itemView.findViewById(R.id.video_view);
             video_view.batteryLevel.setVisibility(View.GONE);
+            video_view.mRetryLayout.setVisibility(View.GONE);
 
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
