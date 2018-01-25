@@ -113,9 +113,9 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.1-native'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.googlecode.mp4parser:isoparser:1.1.21'
-    implementation 'com.github.tcking:giraffecompressor:0.1.4'
-    implementation 'com.devbrackets.android:exomedia:4.1.0'
+    implementation 'com.github.waynell:VideoListPlayer:1.4'
+    implementation 'com.writingminds:FFmpegAndroid:0.3.2'
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

@@ -77,11 +77,10 @@
             android:clickable="true"
             android:focusable="true">
 
-            <com.devbrackets.android.exomedia.ui.widget.VideoView
+            <com.waynell.videolist.widget.TextureVideoView
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                app:useDefaultControls="true" />
+                android:layout_height="300dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/image_list"

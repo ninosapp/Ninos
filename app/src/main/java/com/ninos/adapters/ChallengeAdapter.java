@@ -37,7 +37,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.ninos.R;
 import com.ninos.activities.CommentActivity;
 import com.ninos.activities.EditPostActivity;
@@ -54,6 +53,7 @@ import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
+import com.waynell.videolist.widget.TextureVideoView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         RecyclerView recyclerView;
         LinearLayout ll_comment;
         View itemView;
-        VideoView video_view;
+        TextureVideoView video_view;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -210,7 +210,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
             video_view = itemView.findViewById(R.id.video_view);
-            video_view.pause();
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -489,10 +488,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
         public class LoadVideo extends AsyncTask<String, Void, List<String>> {
 
-            WeakReference<VideoView> video_view;
+            WeakReference<TextureVideoView> video_view;
             int position;
 
-            LoadVideo(VideoView video_view, int position) {
+            LoadVideo(TextureVideoView video_view, int position) {
                 this.video_view = new WeakReference<>(video_view);
                 this.position = position;
             }

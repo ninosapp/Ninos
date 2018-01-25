@@ -26,7 +26,7 @@ import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.github.tcking.giraffecompressor.GiraffeCompressor;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.ninos.BuildConfig;
 import com.ninos.R;
 import com.ninos.activities.FilePickerActivity;
@@ -43,6 +43,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,6 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscriber;
 
 
 /**
@@ -259,13 +259,11 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
 
     public void uploadVideo(final PostInfo postInfo) {
         try {
-            final File file = new File(mPath);
-
             if (mProgressDialog != null && !mProgressDialog.isShowing()) {
                 mProgressDialog.show();
             }
 
-            TrimVideoUtils.startTrim(file, StorageUtils.getPostPath(mContext, postInfo.get_id()), 0, 60000, new OnTrimVideoListener() {
+            TrimVideoUtils.startTrim(mContext, mPath, StorageUtils.getPostPath(mContext, postInfo.get_id()), new OnTrimVideoListener() {
                 @Override
                 public void onTrimStarted() {
                     if (mProgressDialog != null && !mProgressDialog.isShowing()) {
@@ -274,41 +272,10 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                 }
 
                 @Override
-                public void getResult(Uri uri) {
-                    mFolder = new File(uri.getPath());
-                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id(), mFolder.getName());
-
-                    GiraffeCompressor.create()
-                            .input(uri.getPath())
-                            .output(outputPath)
-                            .bitRate(2073600)
-                            .resizeFactor(1.0f)
-                            .ready()
-                            .observeOn(rx.schedulers.Schedulers.newThread())
-                            .subscribe(new Subscriber<GiraffeCompressor.Result>() {
-                                @Override
-                                public void onCompleted() {
-                                    File file = new File(outputPath);
-                                    String fileName = file.getName();
-                                    String userId = Database.getUserId();
-                                    String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
-
-                                    mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
-                                    mTransfer.setTransferListener(new VideoUploadListener(postInfo));
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    if (mProgressDialog != null) {
-                                        mProgressDialog.dismiss();
-                                    }
-                                }
-
-                                @Override
-                                public void onNext(GiraffeCompressor.Result s) {
-
-                                }
-                            });
+                public void getResult(String uri) {
+                    mFolder = new File(uri);
+                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
+                    new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
                 }
 
                 @Override
@@ -316,6 +283,11 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                     }
+                }
+
+                @Override
+                public void finished() {
+
                 }
 
                 @Override
@@ -585,6 +557,51 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             }
 
             return null;
+        }
+    }
+
+    private class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
+
+        private Context mContext;
+        private PostInfo postInfo;
+
+        public VideoCompressAsyncTask(Context context, PostInfo postInfo) {
+            mContext = context;
+            this.postInfo = postInfo;
+        }
+
+        @Override
+        protected String doInBackground(String... paths) {
+            String filePath = null;
+            try {
+                filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
+            } catch (URISyntaxException e) {
+                if (mProgressDialog != null) {
+                    mProgressDialog.dismiss();
+                }
+            }
+
+            return filePath;
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String compressedFilePath) {
+            super.onPostExecute(compressedFilePath);
+            mPath = compressedFilePath;
+
+            File file = new File(compressedFilePath);
+            String fileName = file.getName();
+            String userId = Database.getUserId();
+            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+
+            mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
+            mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
         }
     }
 }
