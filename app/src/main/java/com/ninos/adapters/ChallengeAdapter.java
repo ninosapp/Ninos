@@ -53,6 +53,7 @@ import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
+import com.ninos.views.CircleImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -89,11 +90,11 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 .placeholder(R.drawable.ic_account)
                 .error(R.drawable.ic_account)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .circleCrop();
+                .skipMemoryCache(true);
 
         color_accent = ContextCompat.getColor(mActivity, R.color.colorAccent);
         color_dark_grey = ContextCompat.getColor(mActivity, R.color.dark_grey);
+
     }
 
     @Override
@@ -184,10 +185,11 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
-        ImageView ic_clap_anim, iv_clap, iv_profile, iv_menu;
+        ImageView ic_clap_anim, iv_clap, iv_menu;
         LinearLayout ll_clap;
+        CircleImageView iv_profile;
         RecyclerView recyclerView;
-        LinearLayout ll_comment;
+        LinearLayout ll_comment, ll_options;
         View itemView;
         RelativeLayout rl_challenge;
         JZVideoPlayerStandard video_view;
@@ -207,6 +209,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
             tv_comment = itemView.findViewById(R.id.tv_comment);
             ll_comment = itemView.findViewById(R.id.ll_comment);
+            ll_options = itemView.findViewById(R.id.ll_options);
             iv_menu.setOnClickListener(this);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
@@ -227,7 +230,13 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             final PostInfo postInfo = getItem(position);
 
             tv_name.setText(postInfo.getUserName());
-            tv_title.setText(postInfo.getTitle());
+
+            if (postInfo.getTitle() == null) {
+                tv_title.setVisibility(View.GONE);
+            } else {
+                tv_title.setText(postInfo.getTitle());
+                tv_title.setVisibility(View.VISIBLE);
+            }
 
             if (postInfo.getCreatedAt() != null) {
                 String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
@@ -488,7 +497,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 List<String> links = awsClient.getBucket(path);
 
-                if (getItemCount() > 0) {
+                if (getItemCount() > position) {
                     getItem(position).setLinks(links);
                 }
                 return links;
@@ -501,7 +510,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     imageAdapter.addItem(link);
                 }
 
-                if (getItemCount() > 0) {
+                if (getItemCount() > position) {
                     getItem(position).setLinks(links);
                 }
             }
@@ -540,7 +549,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 }
 
-                if (getItemCount() > 0) {
+                if (getItemCount() > position) {
                     getItem(position).setLinks(links);
                 }
             }

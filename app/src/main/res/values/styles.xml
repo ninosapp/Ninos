@@ -13,6 +13,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.DarkActionBar" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">@color/status_dark</item>
+    </style>
+
     <style name="AppTheme.EditProfile" parent="AppTheme.NoActionBar">
         <item name="colorPrimaryDark">@color/colorAccent</item>
     </style>

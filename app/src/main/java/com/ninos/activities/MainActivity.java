@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             @Override
                             public void onGenerated(Palette palette) {
                                 if (palette != null) {
-                                    iv_profile.setBorderColor(palette.getDominantColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
+                                    iv_profile.setBorderColor(Color.WHITE);
                                     iv_nav_image.setBorderColor(palette.getDominantColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
                                 }
                             }
