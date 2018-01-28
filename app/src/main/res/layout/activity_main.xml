@@ -29,10 +29,8 @@
                     android:layout_marginLeft="@dimen/margin16dp"
                     android:layout_marginStart="@dimen/margin16dp"
                     android:src="@drawable/ic_account"
-                    app:civ_border_color="@color/colorAccent"
-                    app:civ_border_overlay="false"
-                    app:civ_border_width="2dp"
-                    app:civ_circle_background_color="@android:color/white" />
+                    app:civ_border_color="@android:color/white"
+                    app:civ_border_width="2dp" />
 
                 <com.ninos.views.FontTextView
                     android:id="@+id/tv_title"

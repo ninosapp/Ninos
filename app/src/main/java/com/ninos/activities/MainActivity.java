@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.graphics.Palette;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,8 +22,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
 import com.ninos.firebase.Database;
 import com.ninos.fragments.AllChallengesFragment;
@@ -101,6 +96,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_account)
+                .centerCrop()
                 .error(R.drawable.ic_account)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true);
@@ -112,24 +108,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         Glide.with(this)
                 .setDefaultRequestOptions(requestOptions)
-                .asBitmap()
                 .load(AWSUrls.GetPI64(this, Database.getUserId()))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        iv_profile.setImageBitmap(resource);
-
-                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                            @Override
-                            public void onGenerated(Palette palette) {
-                                if (palette != null) {
-                                    iv_profile.setBorderColor(Color.WHITE);
-                                    iv_nav_image.setBorderColor(palette.getDominantColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
-                                }
-                            }
-                        });
-                    }
-                });
+                .into(iv_profile);
     }
 
     @Override
