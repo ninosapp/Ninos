@@ -18,6 +18,7 @@ import com.ninos.models.QuizResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.Response;
 import com.ninos.models.UserCheckResponse;
+import com.ninos.models.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -87,5 +88,8 @@ public interface RetrofitService {
 
     @GET("/search-challenge")
     Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+
+    @PATCH("profile/settings")
+    Call<Response> updateProfile(@Query("userId") String userId, @Body UserInfo userInfo, @Query("token") String token);
 
 }

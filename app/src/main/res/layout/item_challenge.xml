@@ -75,7 +75,8 @@
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginTop="@dimen/margin4dp" />
+                android:layout_marginTop="@dimen/margin4dp"
+                android:background="@android:color/white" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/image_list"

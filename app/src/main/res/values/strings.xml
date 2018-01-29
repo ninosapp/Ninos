@@ -79,6 +79,7 @@
     <string name="no">No</string>
     <string name="no_network">No network</string>
     <string name="try_again">Try again?</string>
+    <string name="edit_name">Edit Child Name</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

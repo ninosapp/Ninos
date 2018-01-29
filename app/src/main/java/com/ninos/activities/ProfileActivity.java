@@ -49,22 +49,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public static final String PROFILE_ID = "PROFILE_ID";
     public static final String PROFILE_PATH = "PROFILE_PATH";
     public static final int IMAGE_UPDATED = 5468;
+    public static final int NAME_UPDATED = 5469;
     private static final int RC_STORAGE_PERM = 4523;
     private int placeHolderId;
     private String userId;
     private ImageView iv_profile;
     private RelativeLayout rl_progress;
+    private ImageView iv_edit;
     private FloatingActionButton fab_update_Image;
+    private TextView tv_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, 2131230935);
+        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
         userId = getIntent().getStringExtra(PROFILE_ID);
 
-        final TextView tv_name = findViewById(R.id.tv_name);
+        tv_name = findViewById(R.id.tv_name);
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
@@ -72,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         fab_update_Image = findViewById(R.id.fab_update_Image);
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
+        iv_edit = findViewById(R.id.iv_edit);
         rl_progress.setVisibility(View.VISIBLE);
         findViewById(R.id.fab_back).setOnClickListener(this);
 
@@ -79,13 +83,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         iv_profile.setImageBitmap(bm);
 
         if (Database.getUserId().equals(userId)) {
+            iv_edit.setOnClickListener(this);
+            iv_edit.setVisibility(View.VISIBLE);
             fab_update_Image.setOnClickListener(this);
             fab_update_Image.setVisibility(View.VISIBLE);
             btn_follow.setVisibility(View.GONE);
         } else {
+            iv_edit.setOnClickListener(null);
+            iv_edit.setVisibility(View.GONE);
             fab_update_Image.setVisibility(View.GONE);
-            btn_follow.setVisibility(View.VISIBLE);
             fab_update_Image.setOnClickListener(null);
+            btn_follow.setVisibility(View.VISIBLE);
         }
 
         setBitmapPalette(bm);
@@ -174,6 +182,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.fab_back:
                 onBackPressed();
+                break;
+            case R.id.iv_edit:
+                Intent intent = new Intent(this, EditNameActivity.class);
+                intent.putExtra(EditNameActivity.USER_ID, userId);
+                intent.putExtra(EditNameActivity.CHILD_NAME, tv_name.getText().toString());
+                startActivityForResult(intent, NAME_UPDATED);
                 break;
             default:
                 addFile();
