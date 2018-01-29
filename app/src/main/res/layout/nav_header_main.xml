@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@android:color/white"
+    android:background="@color/colorAccent"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="@dimen/margin16dp">
@@ -15,7 +15,7 @@
         android:layout_height="72dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@drawable/ic_account"
-        app:civ_border_color="@color/colorAccent"
+        app:civ_border_color="@android:color/white"
         app:civ_border_overlay="false"
         app:civ_border_width="2dp"
         app:srcCompat="@mipmap/ic_launcher_round" />
@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:textColor="@color/midnight_blue"
+        android:textColor="@android:color/white"
         tools:text="Android Studio" />
 
     <TextView
         android:id="@+id/tv_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/dark_grey"
+        android:textColor="@color/silver"
         tools:text="android.studio@android.com" />
 
 </LinearLayout>

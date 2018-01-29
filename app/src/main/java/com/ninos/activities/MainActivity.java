@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private TextView tv_try_again;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -74,7 +73,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         iv_search.setOnClickListener(this);
 
         drawer_layout = findViewById(R.id.drawer_layout);
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -249,7 +248,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (JZVideoPlayer.backPress()) {
@@ -297,6 +295,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 builder.create().show();
                 return true;
             case R.id.nav_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+
+                if (drawer_layout.isDrawerOpen(Gravity.START)) {
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawer_layout.closeDrawer(Gravity.START);
+                        }
+                    });
+                }
+
                 return true;
         }
 
