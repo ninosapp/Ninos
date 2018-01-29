@@ -131,11 +131,12 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                         RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
                         service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
                             @Override
-                            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                            public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
                                 if (response.isSuccessful()) {
                                     RegisterResponse rR = response.body();
 
                                     if (rR != null) {
+                                        PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
                                         PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
                                         PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
                                         PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
@@ -148,7 +149,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                             }
 
                             @Override
-                            public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                            public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
                                 CrashUtil.report(t.getMessage());
                             }
                         });

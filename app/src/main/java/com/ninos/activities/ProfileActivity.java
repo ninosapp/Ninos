@@ -43,11 +43,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     public static final String PROFILE_PLACE_HOLDER = "PROFILE_PLACE_HOLDER";
     public static final String PROFILE_ID = "PROFILE_ID";
     public static final String PROFILE_PATH = "PROFILE_PATH";
+    public static final String IS_PROFILE_UPDATED = "IS_PROFILE_UPDATED";
     public static final int IMAGE_UPDATED = 5468;
     public static final int NAME_UPDATED = 5469;
     private static final int RC_STORAGE_PERM = 4523;
@@ -58,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView iv_edit;
     private FloatingActionButton fab_update_Image;
     private TextView tv_name;
+    private boolean isProfileUpdated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,8 +176,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra(IS_PROFILE_UPDATED, isProfileUpdated);
+        setResult(MainActivity.PROFILE_UPDATED, intent);
         finish();
+
     }
 
     @Override
@@ -185,7 +191,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.iv_edit:
                 Intent intent = new Intent(this, EditNameActivity.class);
-                intent.putExtra(EditNameActivity.USER_ID, userId);
                 intent.putExtra(EditNameActivity.CHILD_NAME, tv_name.getText().toString());
                 startActivityForResult(intent, NAME_UPDATED);
                 break;
@@ -233,6 +238,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case IMAGE_UPDATED:
                 if (data != null) {
+                    isProfileUpdated = true;
                     rl_progress.setVisibility(View.GONE);
 
                     String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
@@ -245,6 +251,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         iv_profile.setImageBitmap(bitmap);
                         setBitmapPalette(bitmap);
                     }
+                }
+                break;
+            case NAME_UPDATED:
+                if (data != null) {
+                    isProfileUpdated = true;
+                    String childName = data.getStringExtra(EditNameActivity.CHILD_NAME);
+                    tv_name.setText(childName);
                 }
                 break;
         }

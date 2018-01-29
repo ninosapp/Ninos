@@ -174,6 +174,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             PreferenceUtil.setUserName(LoginActivity.this, uCR.getUserInfo().getChildName());
                             PreferenceUtil.setUserEmail(LoginActivity.this, uCR.getUserInfo().getEmail());
                             PreferenceUtil.setAccessToken(LoginActivity.this, uCR.getToken());
+                            PreferenceUtil.setUserInfo(LoginActivity.this, uCR.getUserInfo());
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         } else {

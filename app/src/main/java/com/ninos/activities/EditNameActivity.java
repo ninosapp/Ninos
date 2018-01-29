@@ -24,10 +24,8 @@ import retrofit2.Callback;
 public class EditNameActivity extends BaseActivity implements View.OnClickListener {
 
     final public static String CHILD_NAME = "CHILD_NAME";
-    final public static String USER_ID = "USER_ID";
     private EditText et_child_name;
     private String mChildName;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +48,6 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.tv_ok).setOnClickListener(this);
 
         mChildName = getIntent().getStringExtra(CHILD_NAME);
-        userId = getIntent().getStringExtra(USER_ID);
 
         et_child_name = findViewById(R.id.et_child_name);
         et_child_name.setText(mChildName);
@@ -70,13 +67,19 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_cancel:
                 onBackPressed();
                 break;
             case R.id.tv_ok:
-                String childName = et_child_name.getText().toString().trim();
+                final String childName = et_child_name.getText().toString().trim();
 
                 if (mChildName.equals(childName)) {
                     finish();
@@ -84,15 +87,18 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
                     if (childName.isEmpty()) {
                         showToast(R.string.enter_child_name);
                     } else {
-                        UserInfo userInfo = new UserInfo();
+                        final UserInfo userInfo = PreferenceUtil.getUserInfo(this);
                         userInfo.setChildName(childName);
 
                         RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                        service.updateProfile(userId, userInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<Response>() {
+                        service.updateProfile(userInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<Response>() {
                             @Override
                             public void onResponse(@NonNull Call<Response> call, @NonNull retrofit2.Response<Response> response) {
                                 if (response.body() != null && response.body().isSuccess()) {
+                                    PreferenceUtil.setUserInfo(EditNameActivity.this, userInfo);
+                                    PreferenceUtil.setUserName(EditNameActivity.this, userInfo.getChildName());
                                     Intent intent = new Intent();
+                                    intent.putExtra(CHILD_NAME, childName);
                                     setResult(ProfileActivity.NAME_UPDATED, intent);
                                     finish();
                                 } else {

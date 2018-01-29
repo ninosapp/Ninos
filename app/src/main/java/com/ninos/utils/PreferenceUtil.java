@@ -3,6 +3,9 @@ package com.ninos.utils;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.ninos.models.UserInfo;
+
 /**
  * Created by FAMILY on 14-12-2017.
  */
@@ -14,6 +17,17 @@ public class PreferenceUtil {
 
     public static void setAccessToken(Context context, String accessToken) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_token", accessToken).apply();
+    }
+
+    public static UserInfo getUserInfo(Context context) {
+        String userInfoValue = PreferenceManager.getDefaultSharedPreferences(context).getString("user_info", null);
+        UserInfo userInfo = new Gson().fromJson(userInfoValue, UserInfo.class);
+        return userInfo;
+    }
+
+    public static void setUserInfo(Context context, UserInfo userInfo) {
+        String userInfoValue = new Gson().toJson(userInfo);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_info", userInfoValue).apply();
     }
 
     public static void setUserName(Context context, String userInfo) {

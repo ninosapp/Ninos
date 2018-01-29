@@ -90,6 +90,6 @@ public interface RetrofitService {
     Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
 
     @PATCH("profile/settings")
-    Call<Response> updateProfile(@Query("userId") String userId, @Body UserInfo userInfo, @Query("token") String token);
+    Call<Response> updateProfile(@Body UserInfo userInfo, @Query("token") String token);
 
 }

@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     public static final int POST_ADDED = 8525;
     public static final int COMMENT_ADDED = 8526;
+    public static final int PROFILE_UPDATED = 8527;
     private final int RC_STORAGE_PERM = 4531;
     Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
@@ -50,6 +51,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private DrawerLayout drawer_layout;
     private RelativeLayout rl_no_network;
     private TextView tv_try_again;
+    private TextView tv_user_name;
+    private TextView tv_user_email;
+    private CircleImageView iv_nav_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +82,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView tv_user_name = navigationView.getHeaderView(0).findViewById(R.id.tv_user_name);
-        TextView tv_user_email = navigationView.getHeaderView(0).findViewById(R.id.tv_user_email);
-        final CircleImageView iv_nav_image = navigationView.getHeaderView(0).findViewById(R.id.iv_nav_image);
+        tv_user_name = navigationView.getHeaderView(0).findViewById(R.id.tv_user_name);
+        tv_user_email = navigationView.getHeaderView(0).findViewById(R.id.tv_user_email);
+        iv_nav_image = navigationView.getHeaderView(0).findViewById(R.id.iv_nav_image);
         iv_nav_image.setOnClickListener(this);
-
-        tv_user_name.setText(PreferenceUtil.getUserName(this));
-        tv_user_email.setText(PreferenceUtil.getUserEmail(this));
 
         allChallengeFragment = new AllChallengesFragment();
         challengeFragment = new ChallengesFragment();
@@ -92,6 +93,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
         fts.replace(R.id.frame_layout, allChallengeFragment);
         fts.commit();
+
+        updateProfile();
+    }
+
+    private void updateProfile() {
+        tv_user_name.setText(PreferenceUtil.getUserName(this));
+        tv_user_email.setText(PreferenceUtil.getUserEmail(this));
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_account)
@@ -118,18 +126,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         switch (id) {
             case R.id.fl_home:
-                iv_home.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_home));
-//                iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
-
                 displayAllChallengeFragment();
                 break;
             case R.id.fl_add:
                 addFile();
                 break;
             case R.id.fl_challenges:
-                iv_challenges.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_flash));
-//                iv_home.setColorFilter(ContextCompat.getColor(this, R.color.grey));
-
                 displayChallengeFragment();
                 break;
             case R.id.iv_profile:
@@ -138,12 +140,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.iv_nav_image:
                 Intent intent = new Intent(this, ProfileActivity.class);
                 intent.putExtra(ProfileActivity.PROFILE_ID, Database.getUserId());
-                startActivity(intent);
+                startActivityForResult(intent, PROFILE_UPDATED);
 
-                if (drawer_layout.isDrawerOpen(Gravity.START)) {
-                    drawer_layout.closeDrawer(Gravity.START);
-                }
-
+                closeDrawer();
                 break;
             case R.id.iv_search:
                 startActivity(new Intent(this, SearchActivity.class));
@@ -161,6 +160,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     }
                 }
                 break;
+        }
+    }
+
+    private void closeDrawer() {
+        if (drawer_layout.isDrawerOpen(Gravity.START)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawer_layout.closeDrawer(Gravity.START);
+                }
+            }, 1000);
         }
     }
 
@@ -244,6 +254,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         allChallengeFragment.newCommentAdded(postId);
                     }
                 }
+
+                break;
+            case PROFILE_UPDATED:
+                if (data != null) {
+                    boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
+
+                    if (isProfileUpdated) {
+                        updateProfile();
+                    }
+                }
                 break;
         }
     }
@@ -297,14 +317,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
 
-                if (drawer_layout.isDrawerOpen(Gravity.START)) {
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            drawer_layout.closeDrawer(Gravity.START);
-                        }
-                    });
-                }
+                closeDrawer();
 
                 return true;
         }
