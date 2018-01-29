@@ -80,6 +80,7 @@
     <string name="no_network">No network</string>
     <string name="try_again">Try again?</string>
     <string name="edit_name">Edit Child Name</string>
+    <string name="instagram">Instagram</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

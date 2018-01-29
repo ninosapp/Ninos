@@ -149,20 +149,22 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
         if (postInfo.isMyRating()) {
             tv_clap.setTextColor(color_accent);
-            iv_clap.setOnClickListener(null);
-
             color = color_accent;
         } else {
             tv_clap.setTextColor(color_dark_grey);
-            iv_clap.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addClap(postInfo, iv_clap, tv_clap);
-                }
-            });
-
             color = color_dark_grey;
         }
+
+        iv_clap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (postInfo.isMyRating()) {
+                    removeClap(postInfo, iv_clap, tv_clap);
+                } else {
+                    addClap(postInfo, iv_clap, tv_clap);
+                }
+            }
+        });
 
         if (drawable != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -184,13 +186,36 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         tv_clap.setText(String.format(mActivity.getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
+    private void removeClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
+        try {
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.removePostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
+                    if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                        postInfo.setMyRating(false);
+                        int clapCount = postInfo.getTotalClapsCount() - 1;
+                        postInfo.setTotalClapsCount(clapCount);
+                        setClap(postInfo, iv_clap, tv_clap);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<PostClapResponse> call, @NonNull Throwable t) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
         ImageView ic_clap_anim, iv_clap, iv_menu;
-        LinearLayout ll_clap;
         CircleImageView iv_profile;
         RecyclerView recyclerView;
-        LinearLayout ll_comment, ll_options;
+        LinearLayout ll_comment, ll_options, ll_clap;
         View itemView;
         RelativeLayout rl_challenge;
         JZVideoPlayerStandard video_view;
@@ -335,7 +360,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     ic_clap_anim.setVisibility(View.GONE);
-                    addClap(postInfo, iv_clap, tv_clap);
                 }
 
                 @Override
@@ -370,7 +394,12 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.ll_clap:
                 case R.id.iv_clap:
                     clapAnimation(postInfo);
-                    addClap(postInfo, iv_clap, tv_clap);
+
+                    if (postInfo.isMyRating()) {
+                        removeClap(postInfo, iv_clap, tv_clap);
+                    } else {
+                        addClap(postInfo, iv_clap, tv_clap);
+                    }
                     break;
                 case R.id.iv_menu:
                     MenuBuilder menuBuilder = new MenuBuilder(mActivity);
@@ -544,7 +573,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
-                    if (mActivity != null && !mActivity.isDestroyed()) {
+                    if (mActivity != null) {
                         Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
                     }
                 }

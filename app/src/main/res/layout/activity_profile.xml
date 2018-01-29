@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     tools:context="com.ninos.activities.ProfileActivity">
 
-    <com.ninos.views.DiagonalCutLayout
+    <RelativeLayout
         android:id="@+id/diagonal_cut_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +20,7 @@
             android:clickable="true"
             android:focusable="true"
             android:scaleType="centerCrop" />
-    </com.ninos.views.DiagonalCutLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_update_Image"
@@ -176,6 +176,30 @@
                 android:text="@string/followers"
                 android:textColor="@color/grey" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/margin8dp"
+            android:layout_marginRight="@dimen/margin8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/midnight_blue"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/following"
+                android:textColor="@color/grey" />
         </LinearLayout>
 
         <LinearLayout

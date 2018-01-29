@@ -22,6 +22,7 @@ import com.ninos.models.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
@@ -76,6 +77,9 @@ public interface RetrofitService {
 
     @PUT("/posts/{postId}/claps")
     Call<PostClapResponse> addPostClaps(@Path("postId") String postId, @Query("token") String token);
+
+    @DELETE("/posts/{postId}/claps")
+    Call<PostClapResponse> removePostClaps(@Path("postId") String postId, @Query("token") String token);
 
     @GET("quizzes")
     Call<QuizResponse> getQuizzes(@Query("token") String token);

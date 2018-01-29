@@ -1,5 +1,7 @@
 package com.ninos.models;
 
+import java.util.Date;
+
 /**
  * Created by FAMILY on 05-01-2018.
  */
@@ -10,6 +12,7 @@ public class Comment {
     private String userId;
     private String postId;
     private String userName;
+    private Date createdAt;
 
     public String getComment() {
         return comment;
@@ -51,6 +54,14 @@ public class Comment {
         this.userName = userName;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -59,6 +70,7 @@ public class Comment {
                 ", userId='" + userId + '\'' +
                 ", postId='" + postId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

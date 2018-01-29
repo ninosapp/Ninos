@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -316,6 +317,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 return true;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+
+                closeDrawer();
+
+                return true;
+
+            case R.id.nav_facebook:
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/app.ninos"));
+                startActivity(facebookIntent);
+
+                closeDrawer();
+
+                return true;
+            case R.id.nav_instagram:
+                Intent instagramIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/ninos.app"));
+                startActivity(instagramIntent);
 
                 closeDrawer();
 

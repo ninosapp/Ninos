@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ninos.R;
@@ -48,12 +50,15 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
     private RetrofitService service;
     private CommentAdapter challengeAdapter;
     private boolean isCommentAdded;
+    private RecyclerView list_comment;
+    private NestedScrollView ns_comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
+        ns_comment = findViewById(R.id.ns_comment);
         et_leave_comment = findViewById(R.id.et_leave_comment);
         et_leave_comment.setOnEditorActionListener(this);
         findViewById(R.id.iv_add_comment).setOnClickListener(this);
@@ -65,7 +70,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
-        RecyclerView list_comment = findViewById(R.id.list_comment);
+        list_comment = findViewById(R.id.list_comment);
         list_comment.setNestedScrollingEnabled(true);
         list_comment.setLayoutManager(layoutManager);
 
@@ -299,6 +304,13 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
                         Comment comment = response.body().getPostComment();
                         challengeAdapter.addItem(comment);
                         et_leave_comment.setText("");
+
+                        ns_comment.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ns_comment.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
                     }
                 }
 

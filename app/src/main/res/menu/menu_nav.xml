@@ -4,6 +4,16 @@
     tools:showIn="navigation_view">
 
     <item
+        android:id="@+id/nav_instagram"
+        android:icon="@drawable/ic_instagram"
+        android:title="@string/instagram" />
+
+    <item
+        android:id="@+id/nav_facebook"
+        android:icon="@drawable/ic_fb"
+        android:title="@string/faceboook" />
+
+    <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
