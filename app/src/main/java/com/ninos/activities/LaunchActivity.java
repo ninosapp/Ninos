@@ -22,9 +22,7 @@ public class LaunchActivity extends BaseActivity {
         String accessToken = PreferenceUtil.getAccessToken(this);
 
         if (accessToken == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-
+            startLogin();
         } else {
 
             if (isNetworkAvailable()) {
@@ -41,19 +39,24 @@ public class LaunchActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                        startHome();
+                        startLogin();
                     }
                 });
             } else {
-                startHome();
+                startLogin();
             }
         }
+    }
 
+    private void startLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
         finish();
     }
 
     private void startHome() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }
