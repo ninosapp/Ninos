@@ -16,6 +16,7 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -231,10 +232,10 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             tv_name.setText(postInfo.getUserName());
 
-            if (postInfo.getTitle() == null) {
+            if (TextUtils.isEmpty(postInfo.getTitle())) {
                 tv_title.setVisibility(View.GONE);
             } else {
-                tv_title.setText(postInfo.getTitle());
+                tv_title.setText(postInfo.getTitle().trim());
                 tv_title.setVisibility(View.VISIBLE);
             }
 
@@ -546,7 +547,6 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     if (mActivity != null && !mActivity.isDestroyed()) {
                         Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
                     }
-
                 }
 
                 if (getItemCount() > position) {
