@@ -169,7 +169,6 @@
                         android:src="@drawable/ic_add_square" />
                 </FrameLayout>
 
-
                 <FrameLayout
                     android:id="@+id/fl_challenges"
                     android:layout_width="match_parent"
