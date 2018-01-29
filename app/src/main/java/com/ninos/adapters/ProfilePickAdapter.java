@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.activities.ProfileSelectActivity;
 import com.ninos.models.MediaObject;
@@ -49,6 +51,7 @@ public class ProfilePickAdapter extends CommonRecyclerAdapter<MediaObject> {
 
         void bindData(MediaObject mediaObject) {
             Glide.with(baseActivity)
+                    .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .load(mediaObject.getPath())
                     .into(iv_image);
         }
