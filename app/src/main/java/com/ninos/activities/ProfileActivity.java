@@ -74,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
+        final TextView tv_points = findViewById(R.id.tv_points);
         final Button btn_follow = findViewById(R.id.btn_follow);
         fab_update_Image = findViewById(R.id.fab_update_Image);
         iv_profile = findViewById(R.id.iv_profile);
@@ -111,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     UserProfile userProfile = response.body().getUserProfile();
 
                     if (userProfile != null) {
+                        tv_points.setText(userProfile.getPostCount());
                         tv_post_count.setText(userProfile.getPostCount());
                         tv_follower_count.setText(userProfile.getFollowersCount());
                         tv_following.setText(userProfile.getFollowingCount());

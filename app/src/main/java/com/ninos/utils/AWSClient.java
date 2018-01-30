@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -61,8 +60,7 @@ import retrofit2.Response;
  * Created by smeesala on 23-Jun-16.
  * Class for uploading files to aws for user profile image and send a report
  */
-public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be method concerned, reorder dialog appearance, can discuss
-
+public class AWSClient {
     private static final String TAG = AWSClient.class.getSimpleName();
     private static final String COMPLETED = "COMPLETED";
 
@@ -180,7 +178,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             new Compressor(mContext)
                     .compressToFileAsFlowable(new File(mPath))
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.newThread())
                     .subscribe(new Consumer<File>() {
                         @Override
                         public void accept(File file) {
@@ -235,7 +233,7 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
             new Compressor(mContext)
                     .compressToFileAsFlowable(new File(mPath))
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.newThread())
                     .subscribe(new Consumer<File>() {
                         @Override
                         public void accept(File image) {
@@ -264,40 +262,59 @@ public class AWSClient { // TODO: 04/Nov/2016 refactor whole class, should be me
                 mProgressDialog.show();
             }
 
-            TrimVideoUtils.startTrim(mContext, mPath, StorageUtils.getPostPath(mContext, postInfo.get_id()), new OnTrimVideoListener() {
-                @Override
-                public void onTrimStarted() {
-                    if (mProgressDialog != null && !mProgressDialog.isShowing()) {
-                        mProgressDialog.show();
-                    }
-                }
+            final String folderPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
 
+            new TrimVideoUtils().startTrim(mPath, folderPath, new OnTrimVideoListener() {
                 @Override
                 public void getResult(String uri) {
-                    mFolder = new File(uri);
+                    mFolder = new File(folderPath);
                     final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
                     new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
                 }
 
                 @Override
-                public void cancelAction() {
-                    if (mProgressDialog != null) {
-                        mProgressDialog.dismiss();
-                    }
-                }
-
-                @Override
-                public void finished() {
-
-                }
-
-                @Override
-                public void onError(String message) {
+                public void onError(int message) {
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                     }
                 }
             });
+
+//            new TrimVideoUtils().startTrim(mContext, mPath, StorageUtils.getPostPath(mContext, postInfo.get_id()), new OnTrimVideoListener() {
+//                @Override
+//                public void onTrimStarted() {
+//                    if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+//                        mProgressDialog.show();
+//                    }
+//                }
+//
+//                @Override
+//                public void getResult(String uri) {
+//                    mFolder = new File(uri);
+//                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
+//                    new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
+//                }
+//
+//                @Override
+//                public void cancelAction() {
+//                    if (mProgressDialog != null) {
+//                        mProgressDialog.dismiss();
+//                    }
+//                }
+//
+//                @Override
+//                public void finished() {
+//
+//                }
+//
+//                @Override
+//                public void onError(String message) {
+//                    if (mProgressDialog != null) {
+//                        mProgressDialog.dismiss();
+//                    }
+//                }
+//            });
+
         } catch (Exception e) {
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();

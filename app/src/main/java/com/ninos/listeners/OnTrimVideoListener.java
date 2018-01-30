@@ -6,13 +6,8 @@ package com.ninos.listeners;
 
 public interface OnTrimVideoListener {
 
-    void onTrimStarted();
 
     void getResult(final String url);
 
-    void cancelAction();
-
-    void finished();
-
-    void onError(final String message);
+    void onError(final int message);
 }

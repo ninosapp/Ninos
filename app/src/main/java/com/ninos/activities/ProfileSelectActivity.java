@@ -102,7 +102,6 @@ public class ProfileSelectActivity extends BaseActivity {
         options.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
         options.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.colorAccent));
-        options.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         options.setCompressionQuality(80);
 
         UCrop.of(uri, Uri.parse(dPath))
