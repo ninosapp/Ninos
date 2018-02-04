@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninos.R;
-import com.ninos.adapters.ChallengeAdapter;
+import com.ninos.adapters.AllChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.PostInfo;
@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreListener {
 
     private RetrofitService service;
-    private ChallengeAdapter challengeAdapter;
+    private AllChallengeAdapter allChallengeAdapter;
     private String accessToken;
     private int from = 0, size = 20;
     private String postKeyword;
@@ -65,9 +65,9 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
             final RecyclerView recyclerView = view.findViewById(R.id.people_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            challengeAdapter = new ChallengeAdapter(getActivity(), recyclerView, this);
+            allChallengeAdapter = new AllChallengeAdapter(getActivity(), recyclerView, this);
 
-            recyclerView.setAdapter(challengeAdapter);
+            recyclerView.setAdapter(allChallengeAdapter);
 
 
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
         postKeyword = keyword;
         from = 0;
         size = 20;
-        challengeAdapter.clearItemsforSearch();
+        allChallengeAdapter.clearItemsforSearch();
         getPosts();
     }
 
@@ -88,7 +88,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
             @Override
             public void onResponse(@NonNull Call<PostSearchResponse> call, @NonNull Response<PostSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    challengeAdapter.removeItem(null);
+                    allChallengeAdapter.removeItem(null);
 
                     if (response.body().getPostsInfo().size() > 0) {
                         rl_empty.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
                             new Handler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    challengeAdapter.addItem(postInfo);
+                                    allChallengeAdapter.addItem(postInfo);
                                 }
                             });
                         }
@@ -119,7 +119,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
 
     @Override
     public void onLoadMore() {
-        challengeAdapter.addItem(null);
+        allChallengeAdapter.addItem(null);
         getPosts();
     }
 

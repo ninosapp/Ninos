@@ -28,6 +28,6 @@
             android:clipToPadding="false"
             android:focusable="true"
             android:scrollbars="vertical"
-            tools:listitem="@layout/item_challenge" />
+            tools:listitem="@layout/item_challenge_all" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

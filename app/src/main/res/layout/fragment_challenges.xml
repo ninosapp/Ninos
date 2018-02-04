@@ -13,5 +13,5 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_challenge" />
+        tools:listitem="@layout/item_challenge_all" />
 </LinearLayout>

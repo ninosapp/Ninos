@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.ninos.R;
 import com.ninos.activities.MainActivity;
-import com.ninos.adapters.ChallengeAdapter;
+import com.ninos.adapters.AllChallengeAdapter;
 import com.ninos.adapters.QuizAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
@@ -40,7 +40,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private MainActivity mBaseActivity;
     private View cl_home;
     private QuizAdapter quizAdapter;
-    private ChallengeAdapter challengeAdapter;
+    private AllChallengeAdapter allChallengeAdapter;
     private RetrofitService service;
     private int from = 0, size = 10;
     private String accessToken;
@@ -83,9 +83,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             challenge_list.setNestedScrollingEnabled(false);
             challenge_list.setLayoutManager(challengeLayoutManager);
 
-            challengeAdapter = new ChallengeAdapter(getActivity(), challenge_list, this);
+            allChallengeAdapter = new AllChallengeAdapter(getActivity(), challenge_list, this);
 
-            challenge_list.setAdapter(challengeAdapter);
+            challenge_list.setAdapter(allChallengeAdapter);
 
             accessToken = PreferenceUtil.getAccessToken(getContext());
             service = RetrofitInstance.createService(RetrofitService.class);
@@ -106,7 +106,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
     public void refresh() {
         from = 0;
-        challengeAdapter.clearItemsforSearch();
+        allChallengeAdapter.clearItemsforSearch();
         getPosts();
     }
 
@@ -136,13 +136,13 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             @Override
             public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    challengeAdapter.removeItem(null);
+                    allChallengeAdapter.removeItem(null);
 
                     for (final PostInfo postInfo : response.body().getPostInfo()) {
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
-                                challengeAdapter.addItem(postInfo);
+                                allChallengeAdapter.addItem(postInfo);
                             }
                         });
                     }
@@ -160,7 +160,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
     @Override
     public void onLoadMore() {
-        challengeAdapter.addItem(null);
+        allChallengeAdapter.addItem(null);
         getPosts();
     }
 
@@ -168,9 +168,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
+                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
                     PostInfo postInfo = response.body().getPostInfo();
-                    challengeAdapter.addItem(postInfo, 0);
+                    allChallengeAdapter.addItem(postInfo, 0);
 
                     new Handler().postAtTime(new Runnable() {
                         @Override
@@ -192,14 +192,14 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && challengeAdapter != null) {
+                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
                     PostInfo postInfo = response.body().getPostInfo();
 
-                    for (int i = 0; i < challengeAdapter.getItemCount(); i++) {
-                        PostInfo pf = challengeAdapter.getItem(i);
+                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                        PostInfo pf = allChallengeAdapter.getItem(i);
 
                         if (pf.get_id().equals(postInfo.get_id())) {
-                            challengeAdapter.updateItem(i, postInfo);
+                            allChallengeAdapter.updateItem(i, postInfo);
                             break;
                         }
                     }
