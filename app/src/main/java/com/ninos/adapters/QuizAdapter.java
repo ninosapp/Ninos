@@ -79,6 +79,8 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
             Quizze quizze = getItem(getAdapterPosition());
             Intent intent = new Intent(mContext, QuizActivity.class);
             intent.putExtra(QuizActivity.QUIZ_ID, quizze.get_id());
+            intent.putExtra(QuizActivity.QUIZ_DURATION, quizze.getDuration());
+            intent.putExtra(QuizActivity.QUIZ_TITLE, quizze.getTitle());
             mContext.startActivity(intent);
         }
     }

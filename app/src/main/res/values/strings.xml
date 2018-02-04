@@ -83,6 +83,11 @@
     <string name="instagram">Instagram</string>
     <string name="device_not_supported">Device not supported.</string>
     <string name="points">Points</string>
+    <string name="quiz">Quiz</string>
+    <string name="instructions">Instructions</string>
+    <string name="start">Start</string>
+    <string name="exit_quiz">Exit quiz?</string>
+    <string name="exit_quiz_message">Quiz progress will be lost.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

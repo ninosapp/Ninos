@@ -14,6 +14,7 @@ import com.ninos.models.PostSearchResponse;
 import com.ninos.models.PostsResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
+import com.ninos.models.QuestionResponse;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.Response;
@@ -96,4 +97,6 @@ public interface RetrofitService {
     @PATCH("profile/settings")
     Call<Response> updateProfile(@Body UserInfo userInfo, @Query("token") String token);
 
+    @GET("/quizzes/{quizId}/questions")
+    Call<QuestionResponse> getQuiz(@Path("quizId") String quizId, @Query("token") String token);
 }

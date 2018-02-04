@@ -1,12 +1,14 @@
 package com.ninos.models;
 
+import java.util.Arrays;
+
 /**
  * Created by FAMILY on 09-01-2018.
  */
 
 public class Question {
     String question;
-    String options;
+    String[] options;
     String solution;
     String type;
 
@@ -18,11 +20,11 @@ public class Question {
         this.question = question;
     }
 
-    public String getOptions() {
+    public String[] getOptions() {
         return options;
     }
 
-    public void setOptions(String options) {
+    public void setOptions(String[] options) {
         this.options = options;
     }
 
@@ -46,7 +48,7 @@ public class Question {
     public String toString() {
         return "Question{" +
                 "question='" + question + '\'' +
-                ", options='" + options + '\'' +
+                ", options=" + Arrays.toString(options) +
                 ", solution='" + solution + '\'' +
                 ", type='" + type + '\'' +
                 '}';

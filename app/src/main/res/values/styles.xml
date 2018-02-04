@@ -21,6 +21,10 @@
         <item name="colorPrimaryDark">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Quiz" parent="AppTheme.NoActionBar">
+        <item name="colorPrimaryDark">@color/quiz_dark</item>
+    </style>
+
     <style name="AppTheme.VideoTrimmer" parent="AppTheme.NoActionBar">
         <item name="colorPrimaryDark">@android:color/black</item>
     </style>

@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin16dp"
                 android:background="@android:color/transparent"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:gravity="center"
                 android:hint="@string/child_name"
                 android:inputType="textCapWords"

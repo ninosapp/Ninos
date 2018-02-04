@@ -11,7 +11,7 @@
     <color name="silver">#bdc3c7</color>
     <color name="midnight_blue">#2c3e50</color>
     <color name="grape">#cc5de8</color>
-    <color name="teal">#20c997</color>
+    <color name="teal">#00a077</color>
     <color name="green">#51cf66</color>
     <color name="divider_color">#F7F7F7</color>
     <color name="dark_grey">#909090</color>
@@ -19,4 +19,7 @@
     <color name="accent_dark">#790000</color>
     <color name="report_color">#e2574c</color>
     <color name="status_dark">#790000</color>
+    <color name="quiz_dark">#1c0030</color>
+    <color name="quiz_title">#b4004a</color>
+    <color name="quiz_text">#b982ae</color>
 </resources>

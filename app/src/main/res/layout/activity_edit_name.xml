@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
             android:gravity="center"
             android:hint="@string/child_name"
             android:maxLines="1"
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
         android:weightSum="2">
 
         <TextView
@@ -59,7 +61,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="@dimen/margin16dp"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:textColor="@color/silver" />
 
         <TextView
             android:id="@+id/tv_ok"
@@ -72,7 +75,7 @@
             android:gravity="center"
             android:padding="@dimen/margin16dp"
             android:text="@string/Ok"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/ic_gradient">
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        tools:text="We're a community of passionate designers developers who love to share inspiration, feedback and resources." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tv_question"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_option1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin16dp"
+                android:background="@drawable/ic_rectangle_grey"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin24dp"
+                android:paddingLeft="@dimen/margin8dp"
+                android:paddingRight="@dimen/margin8dp"
+                android:paddingTop="@dimen/margin24dp"
+                android:text="Option 1"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/tv_option3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin16dp"
+                android:background="@drawable/ic_rectangle_grey"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin24dp"
+                android:paddingLeft="@dimen/margin8dp"
+                android:paddingRight="@dimen/margin8dp"
+                android:paddingTop="@dimen/margin24dp"
+                android:text="Option 3"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_option2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin16dp"
+                android:background="@drawable/ic_rectangle_grey"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin24dp"
+                android:paddingLeft="@dimen/margin8dp"
+                android:paddingRight="@dimen/margin8dp"
+                android:paddingTop="@dimen/margin24dp"
+                android:text="Option 1"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/tv_option4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin16dp"
+                android:background="@drawable/ic_rectangle_grey"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin24dp"
+                android:paddingLeft="@dimen/margin8dp"
+                android:paddingRight="@dimen/margin8dp"
+                android:paddingTop="@dimen/margin24dp"
+                android:text="Option 4"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
