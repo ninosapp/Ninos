@@ -82,6 +82,15 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
         notifyDataSetChanged();
     }
 
+    public void resetItems() {
+        loading = false;
+        lastVisibleItem = 0;
+        totalItemCount = 0;
+        previousTotal = 0;
+        dataSet.clear();
+        notifyDataSetChanged();
+    }
+
     /**
      * clears the items in the data set
      */
@@ -156,11 +165,10 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
      * @return
      */
     public T getItem(int index) {
-        if (dataSet != null && dataSet.get(index) != null) {
+        if (dataSet != null && dataSet.size() >= index && dataSet.get(index) != null) {
             return dataSet.get(index);
         } else {
-            Log.w(TAG, "Item with index " + index + " doesn't exist.");
-            throw new IllegalArgumentException("Item with index " + index + " doesn't exist, dataSet is " + dataSet);
+            return null;
         }
     }
 

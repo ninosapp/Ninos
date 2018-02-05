@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
     private FloatingActionButton fab_move_up;
+    private SwipeRefreshLayout sr_layout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,25 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             fab_move_up = view.findViewById(R.id.fab_move_up);
             fab_move_up.setOnClickListener(this);
             fab_move_up.hide();
+
+            sr_layout = view.findViewById(R.id.sr_layout);
+            sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetworkAvailable(getContext())) {
+                        from = 0;
+                        quizAdapter.resetItems();
+                        allChallengeAdapter.resetItems();
+                        getQuizzes();
+
+                        getPosts();
+
+                        sr_layout.setRefreshing(false);
+                    } else {
+                        mBaseActivity.showNoNetwork();
+                    }
+                }
+            });
 
             ns_view = view.findViewById(R.id.ns_view);
             ns_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {

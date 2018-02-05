@@ -528,7 +528,11 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 List<String> links = awsClient.getBucket(path);
 
                 if (getItemCount() > position) {
-                    getItem(position).setLinks(links);
+                    PostInfo postInfo = getItem(position);
+
+                    if (postInfo != null) {
+                        postInfo.setLinks(links);
+                    }
                 }
                 return links;
             }
@@ -541,7 +545,11 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
 
                 if (getItemCount() > position) {
-                    getItem(position).setLinks(links);
+                    PostInfo postInfo = getItem(position);
+
+                    if (postInfo != null) {
+                        postInfo.setLinks(links);
+                    }
                 }
             }
         }
@@ -561,7 +569,13 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 String path = strings[0];
 
                 List<String> links = awsClient.getBucket(path);
-                getItem(position).setLinks(links);
+
+                PostInfo postInfo = getItem(position);
+
+                if (postInfo != null) {
+                    postInfo.setLinks(links);
+                }
+
                 return links;
             }
 
@@ -579,7 +593,11 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
 
                 if (getItemCount() > position) {
-                    getItem(position).setLinks(links);
+                    PostInfo postInfo = getItem(position);
+
+                    if (postInfo != null) {
+                        postInfo.setLinks(links);
+                    }
                 }
             }
         }
