@@ -177,7 +177,12 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     @Override
     public void onLoadMore() {
         allChallengeAdapter.addItem(null);
-        getPosts();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getPosts();
+            }
+        }, 5000);
     }
 
     public void newPostAdded(String postId) {

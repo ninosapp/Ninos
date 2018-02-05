@@ -573,7 +573,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
-                    if (mActivity != null && !mActivity.isDestroyed()) {
+                    if (mActivity != null) {
                         Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
                     }
                 }

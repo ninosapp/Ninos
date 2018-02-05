@@ -43,11 +43,9 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
                         totalItemCount = linearLayoutManager.getItemCount();
                         lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
 
-                        if (loading) {
-                            if (totalItemCount > previousTotal) {
-                                loading = false;
-                                previousTotal = totalItemCount;
-                            }
+                        if (loading && (totalItemCount > previousTotal)) {
+                            loading = false;
+                            previousTotal = totalItemCount;
                         }
 
                         if (!loading && totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
@@ -56,7 +54,6 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
                             }
                             loading = true;
                         }
-
                     }
 
                 });
