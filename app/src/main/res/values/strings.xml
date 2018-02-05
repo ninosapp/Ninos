@@ -91,6 +91,7 @@
     <string name="offensive_words">About contains offensive words.</string>
     <string name="accept">Accept</string>
     <string name="user_warn">Do not post bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Make this app a safe place for children.</string>
+    <string name="notifications">Notifications</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

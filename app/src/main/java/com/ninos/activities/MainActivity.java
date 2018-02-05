@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rl_no_network.setVisibility(View.GONE);
         tv_try_again = findViewById(R.id.tv_try_again);
         tv_try_again.setOnClickListener(this);
+        findViewById(R.id.iv_notification).setOnClickListener(this);
 
         ImageView iv_search = findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
@@ -84,6 +85,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        NavigationView nav_notification = findViewById(R.id.nav_notification);
 
         tv_user_name = navigationView.getHeaderView(0).findViewById(R.id.tv_user_name);
         tv_user_email = navigationView.getHeaderView(0).findViewById(R.id.tv_user_email);
@@ -170,6 +173,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivityForResult(intent, PROFILE_UPDATED);
 
                 closeDrawer();
+                break;
+            case R.id.iv_notification:
+                drawer_layout.openDrawer(Gravity.END);
                 break;
             case R.id.iv_search:
                 startActivity(new Intent(this, SearchActivity.class));
