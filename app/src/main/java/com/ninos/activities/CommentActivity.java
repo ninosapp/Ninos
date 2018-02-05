@@ -16,7 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ninos.R;
@@ -48,7 +47,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
     private EditText et_leave_comment;
     private String postId, accessToken;
     private RetrofitService service;
-    private CommentAdapter challengeAdapter;
+    private CommentAdapter commentAdapter;
     private boolean isCommentAdded;
     private RecyclerView list_comment;
     private NestedScrollView ns_comment;
@@ -74,8 +73,8 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
         list_comment.setNestedScrollingEnabled(true);
         list_comment.setLayoutManager(layoutManager);
 
-        challengeAdapter = new CommentAdapter(this);
-        list_comment.setAdapter(challengeAdapter);
+        commentAdapter = new CommentAdapter(this);
+        list_comment.setAdapter(commentAdapter);
 
         service = RetrofitInstance.createService(RetrofitService.class);
         service.getPostComments(postId, accessToken).enqueue(new Callback<CommentsResponse>() {
@@ -85,7 +84,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
                     List<Comment> commentList = response.body().getPostComments();
 
                     if (commentList != null) {
-                        challengeAdapter.addItems(commentList);
+                        commentAdapter.addItems(commentList);
                     }
                 }
             }
@@ -292,6 +291,7 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
         if (commentValue.isEmpty()) {
             showToast(R.string.comment_validation);
         } else {
+            et_leave_comment.setText("");
             Comment comment = new Comment();
             comment.setComment(commentValue);
             comment.setUserId(Database.getUserId());
@@ -302,15 +302,8 @@ public class CommentActivity extends BaseActivity implements View.OnTouchListene
                 public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Comment comment = response.body().getPostComment();
-                        challengeAdapter.addItem(comment);
+                        commentAdapter.addItem(comment, 0);
                         et_leave_comment.setText("");
-
-                        ns_comment.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ns_comment.fullScroll(ScrollView.FOCUS_DOWN);
-                            }
-                        });
                     }
                 }
 

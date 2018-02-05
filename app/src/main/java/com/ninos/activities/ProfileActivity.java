@@ -57,7 +57,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String userId;
     private ImageView iv_profile;
     private RelativeLayout rl_progress;
-    private ImageView iv_edit;
     private FloatingActionButton fab_update_Image;
     private TextView tv_name;
     private boolean isProfileUpdated;
@@ -79,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         fab_update_Image = findViewById(R.id.fab_update_Image);
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
-        iv_edit = findViewById(R.id.iv_edit);
         rl_progress.setVisibility(View.VISIBLE);
         findViewById(R.id.fab_back).setOnClickListener(this);
 
@@ -87,14 +85,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         iv_profile.setImageBitmap(bm);
 
         if (Database.getUserId().equals(userId)) {
-            iv_edit.setOnClickListener(this);
-            iv_edit.setVisibility(View.VISIBLE);
             fab_update_Image.setOnClickListener(this);
             fab_update_Image.setVisibility(View.VISIBLE);
             btn_follow.setVisibility(View.GONE);
         } else {
-            iv_edit.setOnClickListener(null);
-            iv_edit.setVisibility(View.GONE);
             fab_update_Image.setVisibility(View.GONE);
             fab_update_Image.setOnClickListener(null);
             btn_follow.setVisibility(View.VISIBLE);
@@ -190,11 +184,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.fab_back:
                 onBackPressed();
-                break;
-            case R.id.iv_edit:
-                Intent intent = new Intent(this, EditNameActivity.class);
-                intent.putExtra(EditNameActivity.CHILD_NAME, tv_name.getText().toString());
-                startActivityForResult(intent, NAME_UPDATED);
                 break;
             default:
                 addFile();

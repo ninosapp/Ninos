@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.ninos.R;
 import com.ninos.activities.MainActivity;
@@ -35,7 +37,7 @@ import retrofit2.Response;
  * Created by smeesala on 6/30/2017.
  */
 
-public class AllChallengesFragment extends BaseFragment implements OnLoadMoreListener {
+public class AllChallengesFragment extends BaseFragment implements OnLoadMoreListener, View.OnClickListener {
 
     private MainActivity mBaseActivity;
     private View cl_home;
@@ -46,9 +48,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private String accessToken;
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
+    private FloatingActionButton fab_move_up;
 
     @Override
-
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -66,7 +68,21 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             mBaseActivity = (MainActivity) getActivity();
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
+            fab_move_up = view.findViewById(R.id.fab_move_up);
+            fab_move_up.setOnClickListener(this);
+            fab_move_up.hide();
+
             ns_view = view.findViewById(R.id.ns_view);
+            ns_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > oldScrollY) {
+                        fab_move_up.show();
+                    } else {
+                        fab_move_up.hide();
+                    }
+                }
+            });
 
             LinearLayoutManager quizLayoutManager = new LinearLayoutManager(mBaseActivity, LinearLayoutManager.HORIZONTAL, false);
 
@@ -211,5 +227,20 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_move_up:
+                fab_move_up.hide();
+                ns_view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ns_view.fullScroll(ScrollView.FOCUS_UP);
+                    }
+                });
+                break;
+        }
     }
 }
