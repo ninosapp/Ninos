@@ -65,7 +65,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
             final RecyclerView recyclerView = view.findViewById(R.id.people_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getActivity(), recyclerView, this);
+            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), recyclerView, this);
 
             recyclerView.setAdapter(allChallengeAdapter);
 

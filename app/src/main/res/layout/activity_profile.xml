@@ -1,195 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tool="http://schemas.android.com/tools"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="com.ninos.activities.ProfileActivity">
+    android:layout_height="match_parent">
 
-    <com.ninos.views.DiagonalCutLayout
-        android:id="@+id/diagonal_cut_layout"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tool="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:descendantFocusability="blocksDescendants"
+        tools:context="com.ninos.activities.ProfileActivity">
 
-        <ImageView
-            android:id="@+id/iv_profile"
+        <com.ninos.views.DiagonalCutLayout
+            android:id="@+id/diagonal_cut_layout"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="?selectableItemBackground"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop" />
+        </com.ninos.views.DiagonalCutLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_update_Image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/relativeLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="36dp"
+            android:src="@drawable/ic_add"
+            android:tint="@color/dark_grey"
+            app:backgroundTint="@android:color/white"
+            app:elevation="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_progress"
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin16dp"
+            android:src="@drawable/ic_back"
+            android:tint="@color/dark_grey"
+            app:backgroundTint="@android:color/white"
+            app:elevation="8dp"
+            app:fabSize="mini" />
+
+        <com.ninos.views.FontTextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/diagonal_cut_layout"
+            android:layout_centerHorizontal="true"
+            android:maxLength="20"
+            android:padding="@dimen/margin4dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:fontValue="RobotoMono-Regular.ttf"
+            tools:text="@string/app_name" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_follow"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/tv_name"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin8dp"
+            android:drawableLeft="@drawable/ic_add_user"
+            android:drawableStart="@drawable/ic_add_user"
+            android:text="@string/follow"
+            android:textColor="@android:color/white"
+            android:theme="@style/BaseButtonTheme"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_follow"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:gravity="center"
+            android:padding="@dimen/margin8dp"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:id="@+id/ll_posts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_post_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp"
+                    tool:text="20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/posts"
+                    android:textColor="@color/grey" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_follower_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp"
+                    tool:text="20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/followers"
+                    android:textColor="@color/grey" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp"
+                    tool:text="20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/following"
+                    android:textColor="@color/grey" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp"
+                    tool:text="20" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/points"
+                    android:textColor="@color/grey" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/challenge_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout"
             android:clickable="true"
+            android:clipToPadding="false"
             android:focusable="true"
-            android:scaleType="centerCrop" />
-    </com.ninos.views.DiagonalCutLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_update_Image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/relativeLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp"
-        android:src="@drawable/ic_add"
-        android:tint="@color/dark_grey"
-        app:backgroundTint="@android:color/white"
-        app:elevation="8dp" />
-
-    <RelativeLayout
-        android:id="@+id/rl_progress"
-        android:layout_width="match_parent"
-        android:layout_height="350dp">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_challenge_all" />
     </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin16dp"
-        android:src="@drawable/ic_back"
-        android:tint="@color/dark_grey"
-        app:backgroundTint="@android:color/white"
-        app:elevation="8dp"
-        app:fabSize="mini" />
-
-    <com.ninos.views.FontTextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/diagonal_cut_layout"
-        android:layout_centerHorizontal="true"
-        android:maxLength="20"
-        android:padding="@dimen/margin4dp"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        app:fontValue="RobotoMono-Regular.ttf"
-        tools:text="@string/app_name" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_follow"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/tv_name"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/margin8dp"
-        android:drawableLeft="@drawable/ic_add_user"
-        android:drawableStart="@drawable/ic_add_user"
-        android:text="@string/follow"
-        android:textColor="@android:color/white"
-        android:theme="@style/BaseButtonTheme"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_follow"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin8dp"
-        android:gravity="center"
-        android:padding="@dimen/margin8dp"
-        android:weightSum="4">
-
-        <LinearLayout
-            android:id="@+id/ll_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_post_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp"
-                tool:text="20" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/posts"
-                android:textColor="@color/grey" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_followers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_follower_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp"
-                tool:text="20" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/followers"
-                android:textColor="@color/grey" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_following"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp"
-                tool:text="20" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/following"
-                android:textColor="@color/grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_points"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp"
-                tool:text="20" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/points"
-                android:textColor="@color/grey" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>

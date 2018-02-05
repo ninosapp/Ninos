@@ -7,10 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,8 +27,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
+import com.ninos.adapters.AllChallengeAdapter;
 import com.ninos.firebase.Database;
+import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.PostInfo;
+import com.ninos.models.PostsResponse;
 import com.ninos.models.ProfileResponse;
 import com.ninos.models.UserProfile;
 import com.ninos.reterofit.RetrofitInstance;
@@ -44,7 +50,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
+public class ProfileActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks, OnLoadMoreListener {
 
     public static final String PROFILE_PLACE_HOLDER = "PROFILE_PLACE_HOLDER";
     public static final String PROFILE_ID = "PROFILE_ID";
@@ -60,6 +66,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private FloatingActionButton fab_update_Image;
     private TextView tv_name;
     private boolean isProfileUpdated;
+    private AllChallengeAdapter allChallengeAdapter;
+    private RetrofitService service;
+    private String accessToken;
+    private int from = 0, size = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +104,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             btn_follow.setVisibility(View.VISIBLE);
         }
 
+        LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
+
+        RecyclerView challenge_list = findViewById(R.id.challenge_list);
+        challenge_list.setNestedScrollingEnabled(false);
+        challenge_list.setLayoutManager(challengeLayoutManager);
+
+        allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this);
+
+        challenge_list.setAdapter(allChallengeAdapter);
+
         setBitmapPalette(bm);
 
-        String token = PreferenceUtil.getAccessToken(this);
+        accessToken = PreferenceUtil.getAccessToken(this);
 
-        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-        service.getUserProfile(token, userId).enqueue(new Callback<ProfileResponse>() {
+        service = RetrofitInstance.createService(RetrofitService.class);
+        service.getUserProfile(accessToken, userId).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(@NonNull Call<ProfileResponse> call, @NonNull Response<ProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -122,6 +142,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+
+        getPosts();
+
     }
 
     private void updateImage() {
@@ -252,5 +275,47 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
         }
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLoadMore() {
+        allChallengeAdapter.addItem(null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getPosts();
+            }
+        }, 5000);
+    }
+
+    private void getPosts() {
+        service.getUserPosts(from, size, userId, accessToken).enqueue(new Callback<PostsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    allChallengeAdapter.removeItem(null);
+
+                    for (final PostInfo postInfo : response.body().getPostInfo()) {
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                allChallengeAdapter.addItem(postInfo);
+                            }
+                        });
+                    }
+
+                    from = from + size;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostsResponse> call, Throwable t) {
+                logError(t.getMessage());
+            }
+        });
     }
 }

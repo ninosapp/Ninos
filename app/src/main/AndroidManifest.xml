@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -30,11 +31,9 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.LaunchActivity"
             android:screenOrientation="portrait"
@@ -45,15 +44,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.EditProfileActivity"
             android:theme="@style/AppTheme.EditProfile" />
-
         <activity
             android:name=".activities.FilePickerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -65,37 +61,34 @@
         <activity
             android:name=".activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
-
         <activity
             android:name=".activities.QuizActivity"
             android:theme="@style/AppTheme.Quiz" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.EditPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.SettingsActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.EditNameActivity"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity
+            android:name=".activities.ChallengeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

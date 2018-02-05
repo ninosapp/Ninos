@@ -1,6 +1,7 @@
 package com.ninos.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninos.R;
+import com.ninos.activities.ChallengeActivity;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.models.PostInfo;
 
@@ -50,6 +52,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_char = view.findViewById(R.id.tv_char);
             tv_title = view.findViewById(R.id.tv_title);
             rl_challenge = view.findViewById(R.id.rl_challenge);
+            view.setOnClickListener(this);
         }
 
         void bindData(int position) {
@@ -65,7 +68,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
         @Override
         public void onClick(View view) {
-
+            context.startActivity(new Intent(context, ChallengeActivity.class));
         }
     }
 }

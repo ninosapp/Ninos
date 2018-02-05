@@ -72,19 +72,21 @@ import retrofit2.Response;
 
 public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
-    private Activity mActivity;
+    private Context context;
     private TypedArray typedArray;
     private DateUtil dateUtil;
     private AWSClient awsClient;
     private RequestOptions requestOptions;
     private int color_accent, color_dark_grey;
+    private Activity activity;
 
-    public AllChallengeAdapter(Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+    public AllChallengeAdapter(Context context, Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
         super(recyclerView, onLoadMoreListener);
-        mActivity = activity;
-        typedArray = activity.getResources().obtainTypedArray(R.array.patterns);
+        this.context = context;
+        this.activity = activity;
+        typedArray = context.getResources().obtainTypedArray(R.array.patterns);
         dateUtil = new DateUtil();
-        awsClient = new AWSClient(activity);
+        awsClient = new AWSClient(context);
         awsClient.awsInit();
 
         requestOptions = new RequestOptions()
@@ -93,8 +95,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true);
 
-        color_accent = ContextCompat.getColor(mActivity, R.color.colorAccent);
-        color_dark_grey = ContextCompat.getColor(mActivity, R.color.dark_grey);
+        color_accent = ContextCompat.getColor(this.context, R.color.colorAccent);
+        color_dark_grey = ContextCompat.getColor(this.context, R.color.dark_grey);
 
     }
 
@@ -121,7 +123,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private void addClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-            service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
+            service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<PostClapResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
                     if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
@@ -143,7 +145,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     }
 
     private void setClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
-        Drawable drawable = ContextCompat.getDrawable(mActivity, R.drawable.ic_clap);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_clap);
         iv_clap.setImageDrawable(drawable);
         int color;
 
@@ -183,13 +185,13 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             clapStringId = R.string.s_clap;
         }
 
-        tv_clap.setText(String.format(mActivity.getString(clapStringId), postInfo.getTotalClapsCount()));
+        tv_clap.setText(String.format(context.getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
     private void removeClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-            service.removePostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<PostClapResponse>() {
+            service.removePostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<PostClapResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<PostClapResponse> call, @NonNull Response<PostClapResponse> response) {
                     if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
@@ -247,7 +249,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
             recyclerView = itemView.findViewById(R.id.image_list);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(null);
         }
@@ -277,7 +279,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 commentStringId = R.string.s_comment;
             }
 
-            tv_comment.setText(String.format(mActivity.getString(commentStringId), postInfo.getTotalCommentCount()));
+            tv_comment.setText(String.format(context.getString(commentStringId), postInfo.getTotalCommentCount()));
 
             int index = position % 10;
             int resId = typedArray.getResourceId(index, 0);
@@ -294,7 +296,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     if (links.size() > 0) {
                         String link = links.get(0);
                         RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-                        Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
+                        Glide.with(context).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
 
                         video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     }
@@ -303,7 +305,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(mActivity, resId);
+                ImageAdapter imageAdapter = new ImageAdapter(context, resId);
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -315,15 +317,15 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             }
 
-            Glide.with(mActivity)
+            Glide.with(context)
                     .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI64(mActivity, postInfo.getUserId()))
+                    .load(AWSUrls.GetPI64(context, postInfo.getUserId()))
                     .into(iv_profile);
 
             setClap(postInfo, iv_clap, tv_clap);
 
 
-            gd = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
+            gd = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDown(MotionEvent e) {
                     return true;
@@ -350,7 +352,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
 
         private void clapAnimation(final PostInfo postInfo) {
-            Animation pulse_fade = AnimationUtils.loadAnimation(mActivity, R.anim.pulse_fade_in);
+            Animation pulse_fade = AnimationUtils.loadAnimation(context, R.anim.pulse_fade_in);
             pulse_fade.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -380,16 +382,16 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             switch (id) {
                 case R.id.tv_name:
                 case R.id.iv_profile:
-                    Intent intent = new Intent(mActivity, ProfileActivity.class);
+                    Intent intent = new Intent(context, ProfileActivity.class);
                     int resId = typedArray.getResourceId(position % 10, 0);
                     intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
                     intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
-                    mActivity.startActivity(intent);
+                    context.startActivity(intent);
                     break;
                 case R.id.ll_comment:
-                    Intent commentIntent = new Intent(mActivity, CommentActivity.class);
+                    Intent commentIntent = new Intent(context, CommentActivity.class);
                     commentIntent.putExtra(CommentActivity.POST_ID, postInfo.get_id());
-                    mActivity.startActivityForResult(commentIntent, MainActivity.COMMENT_ADDED);
+                    activity.startActivityForResult(commentIntent, MainActivity.COMMENT_ADDED);
                     break;
                 case R.id.ll_clap:
                 case R.id.iv_clap:
@@ -402,7 +404,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     }
                     break;
                 case R.id.iv_menu:
-                    MenuBuilder menuBuilder = new MenuBuilder(mActivity);
+                    MenuBuilder menuBuilder = new MenuBuilder(context);
                     menuBuilder.setCallback(new MenuBuilder.Callback() {
                         @Override
                         public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
@@ -410,21 +412,21 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                             switch (item.getItemId()) {
                                 case R.id.action_edit:
 
-                                    Intent editPostIntent = new Intent(mActivity, EditPostActivity.class);
+                                    Intent editPostIntent = new Intent(context, EditPostActivity.class);
                                     editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                     editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                     editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                    mActivity.startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
+                                    activity.startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
 
                                     break;
                                 case R.id.action_report:
 
-                                    final Dialog dialog = new Dialog(mActivity);
+                                    final Dialog dialog = new Dialog(context);
                                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     dialog.setContentView(R.layout.dialog_report);
                                     final EditText et_report = dialog.findViewById(R.id.et_report);
 
-                                    InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
                                     if (imm != null) {
                                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -445,14 +447,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                             String text = et_report.getText().toString().trim();
 
                                             if (text.isEmpty()) {
-                                                Toast.makeText(mActivity, R.string.provide_reason_for_report, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, R.string.provide_reason_for_report, Toast.LENGTH_SHORT).show();
                                             } else {
                                                 PostReport postReport = new PostReport();
                                                 postReport.setPostId(postInfo.get_id());
                                                 postReport.setUserReport(text);
 
                                                 RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                                service.reportPost(postReport, PreferenceUtil.getAccessToken(mActivity)).enqueue(new Callback<com.ninos.models.Response>() {
+                                                service.reportPost(postReport, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
                                                     @Override
                                                     public void onResponse(@NonNull Call<com.ninos.models.Response> call, @NonNull Response<com.ninos.models.Response> response) {
                                                         if (response.body() != null && response.body().isSuccess()) {
@@ -485,7 +487,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         }
                     });
 
-                    MenuInflater inflater = new MenuInflater(mActivity);
+                    MenuInflater inflater = new MenuInflater(context);
                     inflater.inflate(R.menu.menu_post, menuBuilder);
 
                     if (postInfo.getUserId().equals(Database.getUserId())) {
@@ -496,7 +498,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         menuBuilder.findItem(R.id.action_report).setVisible(true);
                     }
 
-                    MenuPopupHelper optionsMenu = new MenuPopupHelper(mActivity, menuBuilder, view);
+                    MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, view);
                     optionsMenu.setForceShowIcon(true);
                     optionsMenu.show();
                     break;
@@ -504,7 +506,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
 
         private void hideKeyboard(EditText et_report) {
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
             if (imm != null) {
                 imm.hideSoftInputFromWindow(et_report.getWindowToken(), 0);
@@ -587,8 +589,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
-                    if (mActivity != null) {
-                        Glide.with(mActivity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
+                    if (activity != null && !activity.isFinishing()) {
+                        Glide.with(activity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
                     }
                 }
 

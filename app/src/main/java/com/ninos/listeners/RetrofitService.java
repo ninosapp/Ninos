@@ -52,6 +52,9 @@ public interface RetrofitService {
     @GET("posts")
     Call<PostsResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
 
+    @GET("posts")
+    Call<PostsResponse> getUserPosts(@Query("from") int from, @Query("size") int size, @Query("userId") String userId, @Query("token") String token);
+
     @GET("challenges")
     Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("token") String token);
 

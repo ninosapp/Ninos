@@ -120,7 +120,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             challenge_list.setNestedScrollingEnabled(false);
             challenge_list.setLayoutManager(challengeLayoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getActivity(), challenge_list, this);
+            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this);
 
             challenge_list.setAdapter(allChallengeAdapter);
 
