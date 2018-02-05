@@ -89,6 +89,8 @@
     <string name="exit_quiz">Exit quiz?</string>
     <string name="exit_quiz_message">Quiz progress will be lost.</string>
     <string name="offensive_words">About contains offensive words.</string>
+    <string name="accept">Accept</string>
+    <string name="user_warn">Do not post bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Make this app a safe place for children.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

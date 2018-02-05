@@ -19,6 +19,14 @@ public class PreferenceUtil {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString("user_token", accessToken).apply();
     }
 
+    public static boolean isUserWarned(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("user_warn", false);
+    }
+
+    public static void setUserWarn(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("user_warn", true).apply();
+    }
+
     public static UserInfo getUserInfo(Context context) {
         String userInfoValue = PreferenceManager.getDefaultSharedPreferences(context).getString("user_info", null);
         UserInfo userInfo = new Gson().fromJson(userInfoValue, UserInfo.class);

@@ -2,6 +2,7 @@ package com.ninos.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -130,7 +132,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 displayAllChallengeFragment();
                 break;
             case R.id.fl_add:
-                addFile();
+                if (PreferenceUtil.isUserWarned(this)) {
+                    addFile();
+                } else {
+                    final Dialog dialog = new Dialog(this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_warn);
+
+                    dialog.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.findViewById(R.id.btn_report).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            PreferenceUtil.setUserWarn(MainActivity.this);
+                            addFile();
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                }
                 break;
             case R.id.fl_challenges:
                 displayChallengeFragment();

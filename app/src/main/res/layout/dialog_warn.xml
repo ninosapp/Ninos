@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="@dimen/margin16dp">
+
+    <ImageView
+        android:id="@+id/iv_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_flat_report" />
+
+    <TextView
+        android:id="@+id/et_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_report"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="@dimen/margin16dp"
+        android:text="@string/user_warn"
+        android:textColor="@color/midnight_blue" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_report"
+        android:layout_marginBottom="@dimen/margin4dp"
+        android:layout_marginTop="@dimen/margin16dp"
+        android:orientation="horizontal">
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="12sp"
+            android:theme="@style/ButtonThemeWhite" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_report"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/accept"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:theme="@style/ButtonThemeReport" />
+
+    </LinearLayout>
+
+</RelativeLayout>
