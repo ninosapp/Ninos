@@ -56,8 +56,7 @@
 
         <activity
             android:name=".activities.FilePickerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
@@ -87,8 +86,7 @@
 
         <activity
             android:name=".activities.EditPostActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.SettingsActivity"

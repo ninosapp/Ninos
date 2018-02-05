@@ -59,6 +59,12 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
         private void bindData(int position) {
             String path = getItem(position);
             Glide.with(mContext).load(path).into(iv_image);
+
+            if (getItemCount() == 1) {
+                iv_delete.setVisibility(View.GONE);
+            } else {
+                iv_delete.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

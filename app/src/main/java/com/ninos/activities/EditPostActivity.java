@@ -19,6 +19,7 @@ import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
+import com.ninos.utils.BadWordUtil;
 import com.ninos.utils.PreferenceUtil;
 
 import java.util.List;
@@ -86,8 +87,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
         tv_description = findViewById(R.id.tv_description);
         tv_description.setText(description);
 
-        findViewById(R.id.tv_cancel).setOnClickListener(this);
-        findViewById(R.id.tv_select_count).setOnClickListener(this);
+        findViewById(R.id.fab_upload).setOnClickListener(this);
     }
 
     @Override
@@ -117,32 +117,50 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
                 onBackPressed();
                 break;
             case R.id.tv_select_count:
-                postInfo.setTitle(tv_description.getText().toString().trim());
+                String desc = tv_description.getText().toString().trim();
+                boolean hasBadWords = false;
 
-                final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<AddPostResponse>() {
-                    @Override
-                    public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
-                        if (response.body() != null && response.isSuccessful()) {
-                            AWSClient awsClient = new AWSClient(EditPostActivity.this);
-                            awsClient.awsInit();
+                if (!desc.isEmpty()) {
+                    List<String> badWords = BadWordUtil.getBardWords();
 
-                            if (uploadAdapter.getDeletedLinks().size() > 1) {
-                                awsClient.removeImage(postInfo.get_id(), uploadAdapter.getDeletedLinks());
-                            }
-
-                            Intent intent = new Intent();
-                            intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
-                            setResult(MainActivity.COMMENT_ADDED, intent);
-                            finish();
+                    for (String word : desc.toLowerCase().split(" ")) {
+                        if (badWords.contains(word)) {
+                            hasBadWords = true;
+                            break;
                         }
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<AddPostResponse> call, Throwable t) {
-                        finish();
-                    }
-                });
+                if (hasBadWords) {
+                    showToast(R.string.offensive_words);
+                } else {
+                    postInfo.setTitle(tv_description.getText().toString().trim());
+
+                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<AddPostResponse>() {
+                        @Override
+                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                AWSClient awsClient = new AWSClient(EditPostActivity.this);
+                                awsClient.awsInit();
+
+                                if (uploadAdapter.getDeletedLinks().size() > 1) {
+                                    awsClient.removeImage(postInfo.get_id(), uploadAdapter.getDeletedLinks());
+                                }
+
+                                Intent intent = new Intent();
+                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                setResult(MainActivity.COMMENT_ADDED, intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            finish();
+                        }
+                    });
+                }
 
                 break;
         }

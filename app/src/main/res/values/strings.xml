@@ -88,6 +88,7 @@
     <string name="start">Start</string>
     <string name="exit_quiz">Exit quiz?</string>
     <string name="exit_quiz_message">Quiz progress will be lost.</string>
+    <string name="offensive_words">About contains offensive words.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
