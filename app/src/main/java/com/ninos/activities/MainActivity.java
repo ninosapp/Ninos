@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -306,9 +305,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (JZVideoPlayer.backPress()) {
             return;
         } else if (challengeFragment.isVisible()) {
-            iv_home.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
-            iv_challenges.setColorFilter(ContextCompat.getColor(this, R.color.grey));
-
             displayAllChallengeFragment();
         } else if (!doubleBackToExit) {
             doubleBackToExit = true;
