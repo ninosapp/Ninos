@@ -68,6 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_image"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin8dp"
+        android:background="@android:color/white"
         android:padding="@dimen/margin16dp"
         android:text="@string/your_score"
         android:textColor="@color/midnight_blue"
