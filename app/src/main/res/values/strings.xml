@@ -92,6 +92,9 @@
     <string name="accept">Accept</string>
     <string name="user_warn">Do not post bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Make this app a safe place for children.</string>
     <string name="notifications">Notifications</string>
+    <string name="starting_quiz">Starting quiz...</string>
+    <string name="your_score">Your Score</string>
+    <string name="_0">0</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

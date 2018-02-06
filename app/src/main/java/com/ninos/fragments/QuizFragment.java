@@ -1,7 +1,9 @@
 package com.ninos.fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,15 +13,22 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.QuestionsAdapter;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.EvaluateInfo;
+import com.ninos.models.EvaluateResponse;
+import com.ninos.models.MCQSolution;
 import com.ninos.models.QuestionResponse;
+import com.ninos.models.QuizEvaluateBody;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.utils.TimerCountDown;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,18 +43,22 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
     private static final String QUIZ_ID = "QUIZ_ID";
     private static final String QUIZ_DURATION = "QUIZ_DURATION";
     private static final String QUIZ_TITLE = "QUIZ_TITLE";
+    private static final String QUIZ_EVALUATION_ID = "QUIZ_EVALUATION_ID";
 
-    private String quizId, title;
+    private String quizId, title, evaluationId;
     private TimeCounter mTimeCounter;
     private TextView tv_time;
     private int duration;
+    private RetrofitService service;
+    private QuestionsAdapter questionsAdapter;
 
-    public static QuizFragment newInstance(String quizId, int duration, String title) {
+    public static QuizFragment newInstance(String quizId, int duration, String title, String evaluationId) {
         QuizFragment quizFragment = new QuizFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QUIZ_ID, quizId);
         bundle.putInt(QUIZ_DURATION, duration);
         bundle.putString(QUIZ_TITLE, title);
+        bundle.putString(QUIZ_EVALUATION_ID, evaluationId);
         quizFragment.setArguments(bundle);
         return quizFragment;
     }
@@ -55,9 +68,11 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
+            evaluationId = getArguments().getString(QUIZ_EVALUATION_ID);
             quizId = getArguments().getString(QUIZ_ID);
-            int value = getArguments().getInt(QUIZ_DURATION);
             title = getArguments().getString(QUIZ_TITLE);
+
+            int value = getArguments().getInt(QUIZ_DURATION);
             duration = value * 100;
         }
     }
@@ -82,13 +97,13 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             final ViewPager view_pager = view.findViewById(R.id.view_pager);
             final TabLayout tabLayout = view.findViewById(R.id.tab_layout);
 
-            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service = RetrofitInstance.createService(RetrofitService.class);
             service.getQuiz(quizId, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<QuestionResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<QuestionResponse> call, @NonNull Response<QuestionResponse> response) {
                     if (response.body() != null && response.isSuccessful()) {
-                        view_pager.setAdapter(new QuestionsAdapter(getChildFragmentManager(), response.body().getQuestions()));
-                        view_pager.setOffscreenPageLimit(10);
+                        questionsAdapter = new QuestionsAdapter(getChildFragmentManager(), response.body().getQuestions(), quizId);
+                        view_pager.setAdapter(questionsAdapter);
                         tabLayout.setupWithViewPager(view_pager, true);
 
                         new Handler().post(new Runnable() {
@@ -177,6 +192,64 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             }
 
             tv_time.setText("00");
+
+            if (questionsAdapter != null) {
+                List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
+
+                QuizEvaluateBody quizEvaluateBody = new QuizEvaluateBody();
+                quizEvaluateBody.setEvalutionId(evaluationId);
+                quizEvaluateBody.setMcqSolution(mcqSolutions);
+
+                service.evaluateResult(quizId, quizEvaluateBody, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<EvaluateResponse>() {
+                    @Override
+                    public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
+                        if (response.isSuccessful()) {
+                            if (getContext() != null) {
+                                final Dialog dialog = new Dialog(getContext());
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                                if (dialog.getWindow() != null) {
+                                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                }
+
+                                dialog.setContentView(R.layout.dialog_score);
+                                TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
+                                TextView tv_score_two = dialog.findViewById(R.id.tv_score_two);
+
+                                EvaluateInfo eInfo = response.body().getEvaluateInfo();
+
+                                if (eInfo.getAcquiredScore().length() > 1) {
+                                    String score = eInfo.getAcquiredScore();
+                                    tv_score_two.setText(score.substring(0, 1));
+                                    tv_score_one.setText(score.substring(1, 2));
+                                } else {
+                                    tv_score_two.setText("0");
+                                    tv_score_one.setText(eInfo.getAcquiredScore());
+                                }
+
+                                dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+
+                                        if (getActivity() != null) {
+                                            getActivity().finish();
+                                        }
+                                    }
+                                });
+
+                                dialog.setCancelable(false);
+                                dialog.show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<EvaluateResponse> call, Throwable t) {
+                        showToast(R.string.error_message);
+                    }
+                });
+            }
         }
     }
 }

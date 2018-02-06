@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_close"
+        app:backgroundTint="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_score" />
+
+    <com.ninos.views.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="94dp"
+        android:layout_toLeftOf="@+id/tv_score_two"
+        android:layout_toStartOf="@+id/tv_score_two"
+        android:text="@string/_0"
+        android:textColor="#495a79"
+        android:textSize="36sp"
+        app:fontValue="noraviyel.ttf" />
+
+    <com.ninos.views.FontTextView
+        android:id="@+id/tv_score_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="94dp"
+        android:text="@string/_0"
+        android:textColor="#495a79"
+        android:textSize="36sp"
+        app:fontValue="noraviyel.ttf"
+        tools:text="2" />
+
+    <com.ninos.views.FontTextView
+        android:id="@+id/tv_score_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="94dp"
+        android:layout_toEndOf="@+id/tv_score_two"
+        android:layout_toRightOf="@+id/tv_score_two"
+        android:text="@string/_0"
+        android:textColor="#495a79"
+        android:textSize="36sp"
+        app:fontValue="noraviyel.ttf"
+        tools:text="2" />
+
+    <com.ninos.views.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_image"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/margin16dp"
+        android:text="@string/your_score"
+        android:textColor="@color/midnight_blue"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:fontValue="noraviyel.ttf" />
+</RelativeLayout>

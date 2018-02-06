@@ -5,6 +5,7 @@ import com.ninos.models.ChallengeSearchResponse;
 import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
+import com.ninos.models.EvaluateResponse;
 import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
@@ -15,7 +16,9 @@ import com.ninos.models.PostsResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
 import com.ninos.models.QuestionResponse;
+import com.ninos.models.QuizEvaluateBody;
 import com.ninos.models.QuizResponse;
+import com.ninos.models.QuizStartResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.Response;
 import com.ninos.models.UserCheckResponse;
@@ -102,4 +105,11 @@ public interface RetrofitService {
 
     @GET("/quizzes/{quizId}/questions")
     Call<QuestionResponse> getQuiz(@Path("quizId") String quizId, @Query("token") String token);
+
+    @PUT("/quizzes/{quizId}/start")
+    Call<QuizStartResponse> startQuiz(@Path("quizId") String quizId, @Query("token") String token);
+
+    @POST("/quizzes/{quizId}/evaluate")
+    Call<EvaluateResponse> evaluateResult(@Path("quizId") String quizId, @Body QuizEvaluateBody body, @Query("token") String token);
+
 }

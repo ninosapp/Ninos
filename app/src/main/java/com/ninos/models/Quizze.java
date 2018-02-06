@@ -1,20 +1,18 @@
 package com.ninos.models;
 
-import java.util.List;
-
 /**
  * Created by FAMILY on 09-01-2018.
  */
 
 public class Quizze {
 
-    String _id;
-    String agegroup;
-    int duration;
-    int maxage;
-    int minage;
-    String title;
-    List<Question> questions;
+    private String _id;
+    private String agegroup;
+    private int duration;
+    private int maxage;
+    private int minage;
+    private String title;
+    private boolean isQuizTaken;
 
     public String get_id() {
         return _id;
@@ -64,23 +62,24 @@ public class Quizze {
         this.title = title;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public boolean isQuizTaken() {
+        return isQuizTaken;
     }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+    public void setQuizTaken(boolean quizTaken) {
+        isQuizTaken = quizTaken;
     }
 
     @Override
     public String toString() {
         return "Quizze{" +
-                "agegroup='" + agegroup + '\'' +
+                "_id='" + _id + '\'' +
+                ", agegroup='" + agegroup + '\'' +
                 ", duration=" + duration +
                 ", maxage=" + maxage +
                 ", minage=" + minage +
                 ", title='" + title + '\'' +
-                ", questions=" + questions +
+                ", isQuizTaken=" + isQuizTaken +
                 '}';
     }
 }

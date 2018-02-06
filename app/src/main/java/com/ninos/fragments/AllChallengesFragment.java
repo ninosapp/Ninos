@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.ninos.R;
@@ -49,7 +49,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private String accessToken;
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
-    private FloatingActionButton fab_move_up;
+    private ImageView iv_move_up;
     private SwipeRefreshLayout sr_layout;
 
     @Override
@@ -70,9 +70,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             mBaseActivity = (MainActivity) getActivity();
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
-            fab_move_up = view.findViewById(R.id.fab_move_up);
-            fab_move_up.setOnClickListener(this);
-            fab_move_up.hide();
+            iv_move_up = view.findViewById(R.id.iv_move_up);
+            iv_move_up.setOnClickListener(this);
+            iv_move_up.setVisibility(View.GONE);
 
             sr_layout = view.findViewById(R.id.sr_layout);
             sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -98,9 +98,9 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 @Override
                 public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                     if (scrollY > oldScrollY) {
-                        fab_move_up.show();
+                        iv_move_up.setVisibility(View.VISIBLE);
                     } else {
-                        fab_move_up.hide();
+                        iv_move_up.setVisibility(View.GONE);
                     }
                 }
             });
@@ -258,8 +258,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab_move_up:
-                fab_move_up.hide();
+            case R.id.iv_move_up:
+                iv_move_up.setVisibility(View.GONE);
                 ns_view.post(new Runnable() {
                     @Override
                     public void run() {
