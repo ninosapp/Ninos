@@ -1,5 +1,6 @@
 package com.ninos.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ninos.activities.ProfileActivity.IS_PROFILE_UPDATED;
+
 public class SettingsActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText et_name, et_school, et_state, et_city, et_about;
@@ -34,6 +37,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private RetrofitService service;
     private Profile profile;
     private String childNameOld;
+    private boolean isProfileUpdated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +166,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                                     userInfo.setChildName(childName);
                                     PreferenceUtil.setUserInfo(SettingsActivity.this, userInfo);
                                     PreferenceUtil.setUserName(SettingsActivity.this, childName);
+                                    isProfileUpdated = true;
                                 }
+
                                 showToast(R.string.profile_updated_successfully);
-                                finish();
+                                onBackPressed();
                             } else {
                                 showToast(R.string.error_update_profile);
                             }
@@ -178,5 +184,13 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(IS_PROFILE_UPDATED, isProfileUpdated);
+        setResult(MainActivity.PROFILE_UPDATED, intent);
+        finish();
     }
 }

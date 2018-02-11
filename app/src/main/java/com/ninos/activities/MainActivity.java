@@ -344,7 +344,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 builder.create().show();
                 return true;
             case R.id.nav_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), PROFILE_UPDATED);
 
                 closeDrawer();
 

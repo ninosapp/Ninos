@@ -57,7 +57,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public static final String PROFILE_PATH = "PROFILE_PATH";
     public static final String IS_PROFILE_UPDATED = "IS_PROFILE_UPDATED";
     public static final int IMAGE_UPDATED = 5468;
-    public static final int NAME_UPDATED = 5469;
     private static final int RC_STORAGE_PERM = 4523;
     private int placeHolderId;
     private String userId;
@@ -265,13 +264,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         iv_profile.setImageBitmap(bitmap);
                         setBitmapPalette(bitmap);
                     }
-                }
-                break;
-            case NAME_UPDATED:
-                if (data != null) {
-                    isProfileUpdated = true;
-                    String childName = data.getStringExtra(EditNameActivity.CHILD_NAME);
-                    tv_name.setText(childName);
                 }
                 break;
         }
