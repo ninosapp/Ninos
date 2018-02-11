@@ -1,13 +1,14 @@
 package com.ninos.models;
 
 /**
- * Created by FAMILY on 11-02-2018.
+ * Created by FAMILY on 10-02-2018.
  */
 
-public class ProfileResponse {
+public class ChallengeResponse {
+
     private boolean success;
     private String message;
-    private Profile userDetails;
+    private ChallengeInfo challengeInfo;
 
     public boolean isSuccess() {
         return success;
@@ -25,20 +26,20 @@ public class ProfileResponse {
         this.message = message;
     }
 
-    public Profile getUserDetails() {
-        return userDetails;
+    public ChallengeInfo getChallengeInfo() {
+        return challengeInfo;
     }
 
-    public void setUserDetails(Profile userDetails) {
-        this.userDetails = userDetails;
+    public void setChallengeInfo(ChallengeInfo challengeInfo) {
+        this.challengeInfo = challengeInfo;
     }
 
     @Override
     public String toString() {
-        return "ProfileResponse{" +
+        return "ChallengeResponse{" +
                 "success=" + success +
                 ", message='" + message + '\'' +
-                ", userDetails=" + userDetails +
+                ", challengeInfo=" + challengeInfo +
                 '}';
     }
 }

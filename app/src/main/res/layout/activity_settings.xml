@@ -4,21 +4,241 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.ninos.activities.SettingsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_settings"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/margin16dp"
+                android:text="@string/save"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:drawableLeft="@drawable/ic_user"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_user"
+            android:gravity="center_vertical"
+            android:hint="@string/child_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Sumanth Kumar Meesala" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <TextView
+            android:id="@+id/tv_dob"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_cake"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_cake"
+            android:gravity="center_vertical"
+            android:hint="@string/date_of_birth"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="May 06, 1994" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_gender"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_gender"
+            android:gravity="center_vertical"
+            android:hint="@string/gender"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Male" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_email"
+            android:gravity="center_vertical"
+            android:hint="@string/email"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="meesalasumanth1@gmail.com" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <EditText
+            android:id="@+id/et_school"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:drawableLeft="@drawable/ic_school"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_school"
+            android:gravity="center_vertical"
+            android:hint="@string/school"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Manair High school" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <EditText
+            android:id="@+id/et_state"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:drawableLeft="@drawable/ic_state"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_state"
+            android:gravity="center_vertical"
+            android:hint="@string/state"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Telangana" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+        <EditText
+            android:id="@+id/et_city"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:drawableLeft="@drawable/ic_location"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_location"
+            android:gravity="center_vertical"
+            android:hint="@string/city"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Hyderabad" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+
+
+        <EditText
+            android:id="@+id/et_about"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_info"
+            android:drawablePadding="@dimen/margin16dp"
+            android:drawableStart="@drawable/ic_info"
+            android:gravity="center_vertical"
+            android:hint="@string/about"
+            android:imeOptions="actionDone"
+            android:maxLines="3"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="Iam telling about my self" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            android:background="@color/silver" />
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

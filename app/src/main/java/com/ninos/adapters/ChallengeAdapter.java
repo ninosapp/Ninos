@@ -68,7 +68,12 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
         @Override
         public void onClick(View view) {
-            context.startActivity(new Intent(context, ChallengeActivity.class));
+
+            PostInfo postInfo = getItem(getAdapterPosition());
+
+            Intent intent = new Intent(context, ChallengeActivity.class);
+            intent.putExtra(ChallengeActivity.CHALLENGE_ID, postInfo.get_id());
+            context.startActivity(intent);
         }
     }
 }

@@ -57,7 +57,7 @@
                 android:layout_height="50dp"
                 android:drawableLeft="@drawable/ic_facebook"
                 android:drawableStart="@drawable/ic_facebook"
-                android:text="@string/faceboook"
+                android:text="@string/facebook"
                 android:textColor="@android:color/white"
                 android:theme="@style/ButtonThemeFacebook" />
 

@@ -1,6 +1,7 @@
 package com.ninos.listeners;
 
 import com.ninos.models.AddPostResponse;
+import com.ninos.models.ChallengeResponse;
 import com.ninos.models.ChallengeSearchResponse;
 import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
@@ -24,6 +25,7 @@ import com.ninos.models.RegisterResponse;
 import com.ninos.models.Response;
 import com.ninos.models.UserCheckResponse;
 import com.ninos.models.UserInfo;
+import com.ninos.models.UserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -44,11 +46,11 @@ public interface RetrofitService {
     @POST("register")
     Call<RegisterResponse> registerChild(@Body Profile profile);
 
-    @GET("register")
-    Call<Profile> getProfile(@Header("Authorization") String token);
+    @GET("/profile/settings")
+    Call<ProfileResponse> getProfile(@Query("token") String token);
 
     @GET("/profile/users/{userId}")
-    Call<ProfileResponse> getUserProfile(@Header("Authorization") String token, @Path("userId") String userId);
+    Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token, @Path("userId") String userId);
 
     @GET("check/{userId}")
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
@@ -116,4 +118,9 @@ public interface RetrofitService {
     @GET("/quizzes/{quizId}/user/{userId}/evalutions")
     Call<QuizEvaluateResultResponse> getQuizResult(@Path("quizId") String quizId, @Path("userId") String userId, @Query("token") String token);
 
+    @GET("/challenges/{challengeId}")
+    Call<ChallengeResponse> getChallenge(@Path("challengeId") String challengeId, @Query("token") String token);
+
+    @PATCH("/profile/settings")
+    Call<Response> updateProfile(@Body Profile profile, @Query("token") String token);
 }

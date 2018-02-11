@@ -33,8 +33,8 @@ import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostsResponse;
-import com.ninos.models.ProfileResponse;
 import com.ninos.models.UserProfile;
+import com.ninos.models.UserProfileResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
@@ -119,9 +119,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         accessToken = PreferenceUtil.getAccessToken(this);
 
         service = RetrofitInstance.createService(RetrofitService.class);
-        service.getUserProfile(accessToken, userId).enqueue(new Callback<ProfileResponse>() {
+        service.getUserProfile(accessToken, userId).enqueue(new Callback<UserProfileResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ProfileResponse> call, @NonNull Response<ProfileResponse> response) {
+            public void onResponse(@NonNull Call<UserProfileResponse> call, @NonNull Response<UserProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile userProfile = response.body().getUserProfile();
 
@@ -138,7 +138,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             }
 
             @Override
-            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
 
             }
         });

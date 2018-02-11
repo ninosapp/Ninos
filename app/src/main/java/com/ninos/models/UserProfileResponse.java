@@ -1,13 +1,13 @@
 package com.ninos.models;
 
 /**
- * Created by FAMILY on 11-02-2018.
+ * Created by FAMILY on 04-01-2018.
  */
 
-public class ProfileResponse {
+public class UserProfileResponse {
     private boolean success;
     private String message;
-    private Profile userDetails;
+    private UserProfile userProfile;
 
     public boolean isSuccess() {
         return success;
@@ -25,20 +25,20 @@ public class ProfileResponse {
         this.message = message;
     }
 
-    public Profile getUserDetails() {
-        return userDetails;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUserDetails(Profile userDetails) {
-        this.userDetails = userDetails;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     @Override
     public String toString() {
-        return "ProfileResponse{" +
+        return "UserProfileResponse{" +
                 "success=" + success +
                 ", message='" + message + '\'' +
-                ", userDetails=" + userDetails +
+                ", userProfile=" + userProfile +
                 '}';
     }
 }
