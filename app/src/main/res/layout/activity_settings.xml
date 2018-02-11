@@ -65,6 +65,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Sumanth Kumar Meesala" />
@@ -156,6 +157,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Manair High school" />
@@ -181,6 +183,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Telangana" />
@@ -206,6 +209,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Hyderabad" />
@@ -229,7 +233,8 @@
             android:gravity="center_vertical"
             android:hint="@string/about"
             android:imeOptions="actionDone"
-            android:maxLines="3"
+            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Iam telling about my self" />

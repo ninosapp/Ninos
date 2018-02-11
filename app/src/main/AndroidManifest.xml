@@ -81,10 +81,6 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-        <activity
-            android:name=".activities.EditNameActivity"
-            android:theme="@style/AppTheme.DarkActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".activities.ChallengeActivity"
