@@ -45,7 +45,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     private QuizAdapter quizAdapter;
     private AllChallengeAdapter allChallengeAdapter;
     private RetrofitService service;
-    private int from = 0, size = 10;
+    private int from = 0, size = 5;
     private String accessToken;
     private RecyclerView challenge_list;
     private NestedScrollView ns_view;
