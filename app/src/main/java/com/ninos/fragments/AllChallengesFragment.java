@@ -203,7 +203,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             public void run() {
                 getPosts();
             }
-        }, 5000);
+        }, 2000);
     }
 
     public void newPostAdded(String postId) {
@@ -263,6 +263,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 ns_view.post(new Runnable() {
                     @Override
                     public void run() {
+                        ns_view.scrollTo(0, 0);
                         ns_view.fullScroll(ScrollView.FOCUS_UP);
                     }
                 });
