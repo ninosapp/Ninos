@@ -241,7 +241,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                         PostInfo pf = allChallengeAdapter.getItem(i);
 
                         if (pf.get_id().equals(postInfo.get_id())) {
-                            allChallengeAdapter.updateItem(i, postInfo);
+                            RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                            allChallengeAdapter.updateComment(viewHolder, postInfo.getTotalCommentCount());
                             break;
                         }
                     }

@@ -212,6 +212,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
+    public void updateComment(RecyclerView.ViewHolder viewHolder, int commentCount) {
+        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+
+        if (challengeViewHolder != null) {
+            challengeViewHolder.tv_comment.setText(String.format(context.getString(R.string.s_comments), commentCount));
+        }
+    }
+
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
         ImageView ic_clap_anim, iv_clap, iv_menu;
