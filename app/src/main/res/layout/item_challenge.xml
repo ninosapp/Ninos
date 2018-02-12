@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="240dp"
     android:layout_margin="@dimen/margin8dp"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="12dp"
     app:cardElevation="6dp">
 
     <LinearLayout
@@ -18,18 +17,19 @@
         <ImageView
             android:id="@+id/iv_challenge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="190dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:minHeight="250dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="center"
+            tools:src="@drawable/pattern_12" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8dp"
+            android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:padding="@dimen/margin16dp"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             tools:text="Sample" />

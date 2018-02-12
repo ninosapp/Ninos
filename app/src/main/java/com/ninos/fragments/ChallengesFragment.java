@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +48,7 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(getContext());
+            GridLayoutManager challengeLayoutManager = new GridLayoutManager(getContext(), 2);
 
             RecyclerView challenge_list = view.findViewById(R.id.challenge_list);
             challenge_list.setNestedScrollingEnabled(false);
