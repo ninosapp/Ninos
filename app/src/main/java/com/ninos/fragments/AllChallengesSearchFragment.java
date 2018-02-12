@@ -17,7 +17,7 @@ import com.ninos.R;
 import com.ninos.adapters.AllChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
-import com.ninos.models.ChallengeSearchResponse;
+import com.ninos.models.AllChallengeSearchResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
@@ -84,9 +84,9 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
     }
 
     private void getPosts() {
-        service.getChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
+        service.searchAllChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<AllChallengeSearchResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
+            public void onResponse(@NonNull Call<AllChallengeSearchResponse> call, @NonNull Response<AllChallengeSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allChallengeAdapter.removeItem(null);
 
@@ -111,7 +111,7 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
             }
 
             @Override
-            public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
+            public void onFailure(Call<AllChallengeSearchResponse> call, Throwable t) {
                 logError(t.getMessage());
             }
         });

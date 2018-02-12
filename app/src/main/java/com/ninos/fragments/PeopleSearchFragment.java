@@ -80,7 +80,7 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
     }
 
     private void getUsers() {
-        service.getUsers(from, size, userName, accessToken).enqueue(new Callback<PeopleResponse>() {
+        service.searchUsers(from, size, userName, accessToken).enqueue(new Callback<PeopleResponse>() {
             @Override
             public void onResponse(@NonNull Call<PeopleResponse> call, @NonNull Response<PeopleResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

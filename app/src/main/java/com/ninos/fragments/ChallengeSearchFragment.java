@@ -84,7 +84,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
     }
 
     private void getPosts() {
-        service.getPosts(from, size, postKeyword, accessToken).enqueue(new Callback<PostSearchResponse>() {
+        service.searchPosts(from, size, postKeyword, accessToken).enqueue(new Callback<PostSearchResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostSearchResponse> call, @NonNull Response<PostSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -169,7 +169,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getPosts() {
-        service.getPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
+        service.searchPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

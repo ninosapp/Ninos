@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by FAMILY on 23-01-2018.
+ * Created by FAMILY on 12-02-2018.
  */
 
-public class ChallengeSearchResponse {
+public class AllChallengeSearchResponse {
     private String message;
 
     private boolean success;
 
-    private List<ChallengeInfo> challenges;
+    private List<PostInfo> challenges;
 
     public String getMessage() {
         return message;
@@ -30,7 +30,7 @@ public class ChallengeSearchResponse {
         this.success = success;
     }
 
-    public List<ChallengeInfo> getChallenges() {
+    public List<PostInfo> getChallenges() {
 
         if (challenges == null) {
             challenges = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ChallengeSearchResponse {
         return challenges;
     }
 
-    public void setChallenges(List<ChallengeInfo> challenges) {
+    public void setChallenges(List<PostInfo> challenges) {
         this.challenges = challenges;
     }
 

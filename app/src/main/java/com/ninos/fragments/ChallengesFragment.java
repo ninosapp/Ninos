@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +14,8 @@ import com.ninos.R;
 import com.ninos.adapters.ChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.ChallengeInfo;
 import com.ninos.models.ChallengeSearchResponse;
-import com.ninos.models.PostInfo;
-import com.ninos.models.PostResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
@@ -49,7 +48,7 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            GridLayoutManager challengeLayoutManager = new GridLayoutManager(getContext(), 2);
+            LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(getContext());
 
             RecyclerView challenge_list = view.findViewById(R.id.challenge_list);
             challenge_list.setNestedScrollingEnabled(false);
@@ -70,13 +69,13 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
     }
 
     private void getPosts() {
-        service.getChallenges(from, size, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
+        service.searchChallenges(from, size, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
             @Override
             public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allChallengeAdapter.removeItem(null);
 
-                    for (final PostInfo postInfo : response.body().getChallenges()) {
+                    for (final ChallengeInfo postInfo : response.body().getChallenges()) {
                         new Handler().post(new Runnable() {
                             @Override
                             public void run() {
@@ -100,47 +99,5 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
     public void onLoadMore() {
         allChallengeAdapter.addItem(null);
         getPosts();
-    }
-
-    public void newPostAdded(String postId) {
-        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    PostInfo postInfo = response.body().getPostInfo();
-                    allChallengeAdapter.addItem(postInfo, 0);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void newCommentAdded(String postId) {
-        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    PostInfo postInfo = response.body().getPostInfo();
-
-                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-                        PostInfo pf = allChallengeAdapter.getItem(i);
-
-                        if (pf.get_id().equals(postInfo.get_id())) {
-                            allChallengeAdapter.updateItem(i, postInfo);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
-
-            }
-        });
     }
 }

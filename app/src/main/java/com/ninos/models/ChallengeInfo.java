@@ -14,6 +14,7 @@ public class ChallengeInfo {
     private Date createdAt;
     private String title;
     private String description;
+    private String imageUrl;
     private List<String> tags;
 
     public String get_id() {
@@ -56,6 +57,14 @@ public class ChallengeInfo {
         this.description = description;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public List<String> getTags() {
         return tags;
     }
@@ -72,6 +81,7 @@ public class ChallengeInfo {
                 ", createdAt=" + createdAt +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", tags=" + tags +
                 '}';
     }

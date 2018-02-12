@@ -1,6 +1,7 @@
 package com.ninos.listeners;
 
 import com.ninos.models.AddPostResponse;
+import com.ninos.models.AllChallengeSearchResponse;
 import com.ninos.models.ChallengeResponse;
 import com.ninos.models.ChallengeSearchResponse;
 import com.ninos.models.Comment;
@@ -52,37 +53,37 @@ public interface RetrofitService {
     @GET("/profile/users/{userId}")
     Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token, @Path("userId") String userId);
 
-    @GET("check/{userId}")
+    @GET("/check/{userId}")
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
 
-    @GET("posts")
-    Call<PostsResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
+    @GET("/posts")
+    Call<PostsResponse> searchPosts(@Query("from") int from, @Query("size") int size, @Query("token") String token);
 
-    @GET("posts")
+    @GET("/posts")
     Call<PostsResponse> getUserPosts(@Query("from") int from, @Query("size") int size, @Query("userId") String userId, @Query("token") String token);
 
-    @GET("challenges")
-    Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("token") String token);
+    @GET("/challenges")
+    Call<ChallengeSearchResponse> searchChallenges(@Query("from") int from, @Query("size") int size, @Query("token") String token);
 
-    @GET("posts/{postId}")
+    @GET("/posts/{postId}")
     Call<PostResponse> getPost(@Path("postId") String postId, @Query("token") String token);
 
-    @POST("posts")
+    @POST("/posts")
     Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
 
-    @PATCH("posts/{postId}")
+    @PATCH("/posts/{postId}")
     Call<AddPostResponse> updatePost(@Path("postId") String postId, @Body PostInfo postInfo, @Query("token") String token);
 
-    @POST("refresh-token")
+    @POST("/refresh-token")
     Call<RegisterResponse> refreshToken(@Query("token") String token);
 
-    @GET("posts/{postId}/comments")
+    @GET("/posts/{postId}/comments")
     Call<CommentsResponse> getPostComments(@Path("postId") String postId, @Query("token") String token);
 
-    @POST("posts/{postId}/comments")
+    @POST("/posts/{postId}/comments")
     Call<CommentResponse> addPostComments(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);
 
-    @POST("report-post")
+    @POST("/report-post")
     Call<Response> reportPost(@Body PostReport postReport, @Query("token") String token);
 
     @PUT("/posts/{postId}/claps")
@@ -91,19 +92,22 @@ public interface RetrofitService {
     @DELETE("/posts/{postId}/claps")
     Call<PostClapResponse> removePostClaps(@Path("postId") String postId, @Query("token") String token);
 
-    @GET("quizzes")
+    @GET("/quizzes")
     Call<QuizResponse> getQuizzes(@Query("token") String token);
 
-    @GET("users")
-    Call<PeopleResponse> getUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);
+    @GET("/users")
+    Call<PeopleResponse> searchUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);
 
     @GET("/search-posts")
-    Call<PostSearchResponse> getPosts(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+    Call<PostSearchResponse> searchPosts(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
 
     @GET("/search-challenge")
-    Call<ChallengeSearchResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+    Call<ChallengeSearchResponse> searchChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
 
-    @PATCH("profile/settings")
+    @GET("/search-challenge")
+    Call<AllChallengeSearchResponse> searchAllChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+
+    @PATCH("/profile/settings")
     Call<Response> updateProfile(@Body UserInfo userInfo, @Query("token") String token);
 
     @GET("/quizzes/{quizId}/questions")
@@ -123,4 +127,7 @@ public interface RetrofitService {
 
     @PATCH("/profile/settings")
     Call<Response> updateProfile(@Body Profile profile, @Query("token") String token);
+
+    @GET("/posts")
+    Call<PostsResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("type") String type, @Query("challengeId") String challengeId, @Query("token") String token);
 }
