@@ -20,12 +20,15 @@ public class FilePickerActivity extends BaseActivity {
     public static final int TRIMMER_RESULT = 2563;
     public static final String POST_ID = "POST_ID";
     private BucketFragment bucketFragment;
+    private String challengeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_picker);
         bucketFragment = new BucketFragment();
+        challengeId = getIntent().getStringExtra(ChallengeActivity.CHALLENGE_ID);
+
 
         FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
         fts.replace(R.id.fl_file_pick, bucketFragment);
@@ -60,7 +63,7 @@ public class FilePickerActivity extends BaseActivity {
     public void setSelectedImages(ArrayList<String> selectedImages) {
         if (selectedImages.size() > 0) {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedImages));
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedImages, challengeId));
             fts.commit();
         } else {
             finish();
@@ -72,30 +75,8 @@ public class FilePickerActivity extends BaseActivity {
             finish();
         } else {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideo));
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideo, challengeId));
             fts.commit();
-
-//            PostInfo postInfo = new PostInfo();
-//            final String token = PreferenceUtil.getAccessToken(this);
-//            final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-//            service.addPost(postInfo, token).enqueue(new Callback<AddPostResponse>() {
-//                @Override
-//                public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
-//                    if (response.body() != null && response.isSuccessful()) {
-//                        PostInfo postInfo = response.body().getPostInfo();
-//
-////                        Intent intent = new Intent(FilePickerActivity.this, TrimmerActivity.class);
-////                        intent.putExtra(TrimmerActivity.POST_ID, postInfo.get_id());
-////                        intent.putExtra(TrimmerActivity.VIDEO_PATH, selectedVideo);
-////                        startActivityForResult(intent, TRIMMER_RESULT);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<AddPostResponse> call, Throwable t) {
-//                    Log.e(UploadFragment.class.getSimpleName(), t.getMessage());
-//                }
-//            });
         }
     }
 

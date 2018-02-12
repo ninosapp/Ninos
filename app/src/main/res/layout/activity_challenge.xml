@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
+            android:descendantFocusability="blocksDescendants"
             tools:context="com.ninos.activities.ProfileActivity">
 
             <ImageView
@@ -27,7 +28,7 @@
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin16dp"
+                android:padding="@dimen/margin16dp"
                 android:src="@drawable/ic_back"
                 android:tint="@color/dark_grey" />
 
@@ -79,6 +80,7 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_challenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

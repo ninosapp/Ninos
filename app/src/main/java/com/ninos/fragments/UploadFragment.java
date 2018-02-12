@@ -42,29 +42,33 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
     public final static String IMAGES = "IMAGES";
     public final static String VIDEOS = "VIDEOS";
     private final static String TYPE = "TYPE";
+    private final static String CHALLENGE_ID = "CHALLENGE_ID";
     private View cl_home;
     private ArrayList<String> paths;
     private TextView tv_description;
     private String path;
     private String type;
+    private String challengeId;
 
-    public static UploadFragment newInstance(ArrayList<String> paths) {
+    public static UploadFragment newInstance(ArrayList<String> paths, String challengeId) {
         UploadFragment uploadFragment = new UploadFragment();
 
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(IMAGES, paths);
         bundle.putString(TYPE, IMAGES);
+        bundle.putString(CHALLENGE_ID, challengeId);
         uploadFragment.setArguments(bundle);
 
         return uploadFragment;
     }
 
-    public static UploadFragment newInstance(String path) {
+    public static UploadFragment newInstance(String path, String challengeId) {
         UploadFragment uploadFragment = new UploadFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(VIDEOS, path);
         bundle.putString(TYPE, VIDEOS);
+        bundle.putString(CHALLENGE_ID, challengeId);
         uploadFragment.setArguments(bundle);
 
         return uploadFragment;
@@ -76,6 +80,7 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
         if (getArguments() != null) {
 
+            challengeId = getArguments().getString(CHALLENGE_ID);
             type = getArguments().getString(TYPE);
             path = getArguments().getString(VIDEOS);
             paths = getArguments().getStringArrayList(IMAGES);
@@ -169,7 +174,13 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                                 postInfo.setCreatedAt(new Date());
                                 postInfo.setIsChallenge(false);
                                 postInfo.setUserId(Database.getUserId());
-                                postInfo.setType("post");
+
+                                if (challengeId == null) {
+                                    postInfo.setType("post");
+                                } else {
+                                    postInfo.setType("challenge");
+                                    postInfo.setChallengeId(challengeId);
+                                }
 
                                 if (type.equals(IMAGES)) {
                                     for (String path : paths) {

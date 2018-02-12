@@ -1,5 +1,7 @@
 package com.ninos.activities;
 
+import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -28,18 +30,27 @@ import com.ninos.listeners.RetrofitService;
 import com.ninos.models.ChallengeInfo;
 import com.ninos.models.ChallengeResponse;
 import com.ninos.models.PostInfo;
+import com.ninos.models.PostResponse;
 import com.ninos.models.PostsResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
+import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChallengeActivity extends BaseActivity implements View.OnClickListener, OnLoadMoreListener {
+import static com.ninos.activities.MainActivity.POST_ADDED;
+
+public class ChallengeActivity extends BaseActivity implements View.OnClickListener, OnLoadMoreListener, EasyPermissions.PermissionCallbacks {
 
 
-    public static String CHALLENGE_ID = "CHALLENGE_ID";
+    public static final String CHALLENGE_ID = "CHALLENGE_ID";
+    private final int RC_STORAGE_PERM = 4531;
     private RetrofitService service;
     private int placeHolderId;
     private ImageView iv_challenge;
@@ -65,6 +76,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         iv_challenge.setImageBitmap(bitmap);
 
         findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.fab_challenge).setOnClickListener(this);
 
         LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
 
@@ -135,11 +147,64 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).setRationale(R.string.rationale_storage_ask_again).build().show();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 super.onBackPressed();
                 break;
+            case R.id.fab_challenge:
+                addFile();
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case RC_STORAGE_PERM:
+                addFile();
+                break;
+            case POST_ADDED:
+                if (data != null) {
+                    String postId = data.getStringExtra(FilePickerActivity.POST_ID);
+
+                    if (allChallengeAdapter != null && postId != null) {
+                        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+                            @Override
+                            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
+                                    PostInfo postInfo = response.body().getPostInfo();
+                                    allChallengeAdapter.addItem(postInfo, 0);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<PostResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                }
         }
     }
 
@@ -154,6 +219,16 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         }, 5000);
     }
 
+    @AfterPermissionGranted(RC_STORAGE_PERM)
+    private void addFile() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent(this, FilePickerActivity.class);
+            intent.putExtra(CHALLENGE_ID, challengeId);
+            startActivityForResult(intent, POST_ADDED);
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
 
     private void getPosts() {
         service.getChallenges(from, size, "challenge", challengeId, accessToken).enqueue(new Callback<PostsResponse>() {
