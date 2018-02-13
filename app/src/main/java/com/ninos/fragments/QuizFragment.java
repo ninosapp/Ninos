@@ -101,17 +101,27 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             service.getQuiz(quizId, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<QuestionResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<QuestionResponse> call, @NonNull Response<QuestionResponse> response) {
-                    if (response.body() != null && response.isSuccessful()) {
-                        questionsAdapter = new QuestionsAdapter(getChildFragmentManager(), response.body().getQuestions(), quizId);
-                        view_pager.setAdapter(questionsAdapter);
-                        tabLayout.setupWithViewPager(view_pager, true);
+                    if (response.body() != null && response.isSuccessful() && response.body().getQuestions().size() > 0) {
+                        try {
+                            questionsAdapter = new QuestionsAdapter(getChildFragmentManager(), response.body().getQuestions(), quizId);
+                            view_pager.setAdapter(questionsAdapter);
+                            tabLayout.setupWithViewPager(view_pager, true);
 
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTimeCounter.create();
-                            }
-                        });
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mTimeCounter.create();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        showToast(R.string.error_message);
+
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                     }
                 }
 

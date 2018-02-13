@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="@drawable/ic_gradient">
+    tools:background="@color/ash">
 
     <TextView
         android:id="@+id/tv_question"
@@ -22,94 +23,104 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_question"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_option1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/margin8dp"
+            android:layout_marginEnd="@dimen/margin16dp"
+            android:layout_marginStart="@dimen/margin16dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <TextView
                 android:id="@+id/tv_option1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin16dp"
-                android:background="@drawable/ic_rectangle_grey"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/margin24dp"
-                android:paddingLeft="@dimen/margin8dp"
-                android:paddingRight="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin24dp"
-                android:text="Option 1"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:padding="@dimen/margin8dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Option 1" />
+        </android.support.v7.widget.CardView>
 
-
-            <TextView
-                android:id="@+id/tv_option3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin16dp"
-                android:background="@drawable/ic_rectangle_grey"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/margin24dp"
-                android:paddingLeft="@dimen/margin8dp"
-                android:paddingRight="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin24dp"
-                android:text="Option 3"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_option2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/margin8dp"
+            android:layout_marginEnd="@dimen/margin16dp"
+            android:layout_marginStart="@dimen/margin16dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <TextView
                 android:id="@+id/tv_option2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin16dp"
-                android:background="@drawable/ic_rectangle_grey"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/margin24dp"
-                android:paddingLeft="@dimen/margin8dp"
-                android:paddingRight="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin24dp"
-                android:text="Option 1"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:padding="@dimen/margin8dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Option 2" />
+        </android.support.v7.widget.CardView>
 
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_option3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin8dp"
+            android:layout_marginEnd="@dimen/margin16dp"
+            android:layout_marginStart="@dimen/margin16dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <TextView
+                android:id="@+id/tv_option3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="@dimen/margin8dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Option 3" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_option4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin8dp"
+            android:layout_marginEnd="@dimen/margin16dp"
+            android:layout_marginStart="@dimen/margin16dp"
+            android:layout_marginTop="@dimen/margin8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <TextView
                 android:id="@+id/tv_option4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin16dp"
-                android:background="@drawable/ic_rectangle_grey"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/margin24dp"
-                android:paddingLeft="@dimen/margin8dp"
-                android:paddingRight="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin24dp"
-                android:text="Option 4"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
-
+                android:padding="@dimen/margin8dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                tools:text="Option 4" />
+        </android.support.v7.widget.CardView>
     </LinearLayout>
-
 
 </RelativeLayout>

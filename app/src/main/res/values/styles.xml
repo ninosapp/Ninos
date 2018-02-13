@@ -22,7 +22,7 @@
     </style>
 
     <style name="AppTheme.Quiz" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">@color/quiz_dark</item>
+        <item name="colorPrimaryDark">@color/ash</item>
     </style>
 
     <style name="AppTheme.VideoTrimmer" parent="AppTheme.NoActionBar">

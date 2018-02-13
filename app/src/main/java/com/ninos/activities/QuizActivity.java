@@ -1,8 +1,6 @@
 package com.ninos.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,14 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import com.ninos.R;
 import com.ninos.fragments.InstructionFragment;
 import com.ninos.fragments.QuizFragment;
-import com.ninos.listeners.RetrofitService;
-import com.ninos.models.QuizStartResponse;
-import com.ninos.reterofit.RetrofitInstance;
-import com.ninos.utils.PreferenceUtil;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class QuizActivity extends BaseActivity {
 
@@ -56,30 +46,32 @@ public class QuizActivity extends BaseActivity {
     }
 
     public void startQuiz() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.starting_quiz));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+//        final ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage(getString(R.string.starting_quiz));
+//        progressDialog.setCancelable(false);
+//        progressDialog.show();
 
-        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-        service.startQuiz(quizId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<QuizStartResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<QuizStartResponse> call, @NonNull Response<QuizStartResponse> response) {
-                progressDialog.dismiss();
+        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+        fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, quizId));
+        fts.commit();
 
-                if (response.body() != null) {
-                    FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-                    fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, response.body().getQuizStarted().get_id()));
-                    fts.commit();
-                } else {
-                    showToast(R.string.error_message);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<QuizStartResponse> call, @NonNull Throwable t) {
-
-            }
-        });
+//        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+//        service.startQuiz(quizId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<QuizStartResponse>() {
+//            @Override
+//            public void onResponse(@NonNull Call<QuizStartResponse> call, @NonNull Response<QuizStartResponse> response) {
+//                progressDialog.dismiss();
+//
+//                if (response.body() != null) {
+//
+//                } else {
+//                    showToast(R.string.error_message);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<QuizStartResponse> call, @NonNull Throwable t) {
+//
+//            }
+//        });
     }
 }

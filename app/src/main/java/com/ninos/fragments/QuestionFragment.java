@@ -1,9 +1,10 @@
 package com.ninos.fragments;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class QuestionFragment extends BaseFragment implements View.OnClickListen
     private String question, answer, quizId;
     private String[] options;
     private TextView tv_option1, tv_option2, tv_option3, tv_option4;
+    private CardView cv_option1, cv_option2, cv_option3, cv_option4;
     private MCQSolution mcqSolution;
 
     public static QuestionFragment newInstance(Question question, String quizId) {
@@ -78,10 +80,16 @@ public class QuestionFragment extends BaseFragment implements View.OnClickListen
             tv_option3.setText(options[2]);
             tv_option4.setText(options[3]);
 
-            tv_option1.setOnClickListener(this);
-            tv_option2.setOnClickListener(this);
-            tv_option3.setOnClickListener(this);
-            tv_option4.setOnClickListener(this);
+            cv_option1 = view.findViewById(R.id.cv_option1);
+            cv_option2 = view.findViewById(R.id.cv_option2);
+            cv_option3 = view.findViewById(R.id.cv_option3);
+            cv_option4 = view.findViewById(R.id.cv_option4);
+
+            cv_option1.setOnClickListener(this);
+            cv_option2.setOnClickListener(this);
+            cv_option3.setOnClickListener(this);
+            cv_option4.setOnClickListener(this);
+
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
@@ -93,44 +101,51 @@ public class QuestionFragment extends BaseFragment implements View.OnClickListen
         int id = view.getId();
         int index;
 
+        tv_option1.setBackgroundColor(Color.WHITE);
+        tv_option2.setBackgroundColor(Color.WHITE);
+        tv_option3.setBackgroundColor(Color.WHITE);
+        tv_option4.setBackgroundColor(Color.WHITE);
+
         switch (id) {
             default:
-            case R.id.tv_option1:
+            case R.id.cv_option1:
                 index = 0;
+
+                if (getContext() != null) {
+                    tv_option1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                }
                 break;
-            case R.id.tv_option2:
+            case R.id.cv_option2:
                 index = 1;
+
+                if (getContext() != null) {
+                    tv_option2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                }
                 break;
-            case R.id.tv_option3:
+            case R.id.cv_option3:
                 index = 2;
+
+                if (getContext() != null) {
+                    tv_option3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                }
                 break;
-            case R.id.tv_option4:
+            case R.id.cv_option4:
                 index = 3;
+
+                if (getContext() != null) {
+                    tv_option4.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                }
                 break;
         }
-
-        tv_option1.setOnClickListener(null);
-        tv_option2.setOnClickListener(null);
-        tv_option3.setOnClickListener(null);
-        tv_option4.setOnClickListener(null);
 
         String option = options[index];
 
         mcqSolution = new MCQSolution();
 
-        if (getContext() != null) {
-            TextView textView = (TextView) view;
-            Drawable drawable;
-
-            if (option.equals(answer)) {
-                mcqSolution.setStatus(QuestionsAdapter.correct);
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rectangle_green);
-            } else {
-                mcqSolution.setStatus(QuestionsAdapter.incorrect);
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_rectangle_red);
-            }
-
-            textView.setBackground(drawable);
+        if (option.equals(answer)) {
+            mcqSolution.setStatus(QuestionsAdapter.correct);
+        } else {
+            mcqSolution.setStatus(QuestionsAdapter.incorrect);
         }
 
         mcqSolution.setQuestionId(quizId);

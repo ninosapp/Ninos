@@ -3,13 +3,8 @@ package com.ninos.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,15 +72,35 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
             tv_quiz_name.setText(quizze.getTitle());
             int index = position % 10;
 
-            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(mContext, R.drawable.ic_circle));
-            iv_quiz_background.setImageDrawable(drawable);
+//            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(mContext, R.drawable.ic_circle));
+//            iv_quiz_background.setImageDrawable(drawable);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                DrawableCompat.setTint(drawable, Color.parseColor(mColors[index]));
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                DrawableCompat.setTint(drawable, Color.parseColor(mColors[index]));
+//
+//            } else {
+//                drawable.mutate().setColorFilter(Color.parseColor(mColors[index]), PorterDuff.Mode.SRC_IN);
+//            }
 
-            } else {
-                drawable.mutate().setColorFilter(Color.parseColor(mColors[index]), PorterDuff.Mode.SRC_IN);
+            int drawableId;
+
+            switch (quizze.getTitle().toLowerCase()) {
+                default:
+                case "general knowledge":
+                    drawableId = R.drawable.gk;
+                    break;
+                case "science":
+                    drawableId = R.drawable.science;
+                    break;
+                case "technology":
+                    drawableId = R.drawable.technology;
+                    break;
+                case "sports":
+                    drawableId = R.drawable.sports;
+                    break;
             }
+
+            iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(mContext, drawableId));
         }
 
         @Override

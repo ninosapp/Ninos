@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gradient"
+    android:background="@color/ash"
     android:padding="@dimen/margin16dp">
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin8dp"
             android:src="@drawable/ic_back_white"
-            android:tint="@color/quiz_title" />
+            android:tint="@color/silver" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textColor="@color/quiz_title"
+            android:textColor="@color/silver"
             android:textSize="24sp"
             tools:text="Quiz Title" />
 
@@ -40,10 +40,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin24dp"
+        android:layout_marginTop="@dimen/margin8dp"
         android:gravity="center"
-        android:padding="@dimen/margin16dp"
-        android:textColor="@color/quiz_text"
+        android:padding="@dimen/margin8dp"
+        android:textColor="@color/silver"
         android:textSize="64sp"
         tools:text="0" />
 

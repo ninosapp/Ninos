@@ -34,7 +34,7 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Question question = questions.get(position);
 
-        if (questionFragments.indexOfKey(position) == -1) {
+        if (questionFragments.indexOfKey(position) < 0) {
             questionFragments.put(position, QuestionFragment.newInstance(question, quizId));
         }
 
