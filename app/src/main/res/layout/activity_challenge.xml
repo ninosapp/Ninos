@@ -20,8 +20,7 @@
                 android:id="@+id/iv_challenge"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:scaleType="fitXY"
-                tools:src="@drawable/ic_sample" />
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -63,11 +62,28 @@
                 android:padding="@dimen/margin16dp"
                 android:textSize="18sp" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tv_description"
+                android:background="@color/silver" />
+
+            <TextView
+                android:id="@+id/tv_submit_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"
+                android:gravity="center"
+                android:padding="@dimen/margin16dp"
+                android:text="@string/submitted_challenges"
+                android:textSize="16sp" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/challenge_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_description"
+                android:layout_below="@+id/tv_submit_placeholder"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:clipToPadding="false"
