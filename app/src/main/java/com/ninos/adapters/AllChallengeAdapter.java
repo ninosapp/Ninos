@@ -500,7 +500,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                     if (postInfo.getUserId().equals(Database.getUserId())) {
                         menuBuilder.findItem(R.id.action_edit).setVisible(true);
-                        menuBuilder.findItem(R.id.action_report).setVisible(true);
+                        menuBuilder.findItem(R.id.action_report).setVisible(false);
                     } else {
                         menuBuilder.findItem(R.id.action_edit).setVisible(false);
                         menuBuilder.findItem(R.id.action_report).setVisible(true);
