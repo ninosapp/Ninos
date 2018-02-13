@@ -18,10 +18,11 @@
     <color name="grey40">#A1A1A1</color>
     <color name="accent_dark">@color/status_dark</color>
     <color name="report_color">#e2574c</color>
-    <color name="status_dark">#d9480f</color>
+    <color name="status_dark">#e8590c</color>
     <color name="quiz_dark">#1c0030</color>
     <color name="quiz_title">#b4004a</color>
     <color name="quiz_text">#b982ae</color>
     <color name="blue">#048eff</color>
     <color name="yellow">#FFD600</color>
+    <color name="ash">#3e454f</color>
 </resources>
