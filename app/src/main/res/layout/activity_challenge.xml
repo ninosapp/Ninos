@@ -19,10 +19,9 @@
             <ImageView
                 android:id="@+id/iv_challenge"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="250dp"
-                android:scaleType="center"
-                tools:src="@drawable/pattern_12" />
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
+                tools:src="@drawable/ic_sample" />
 
             <ImageView
                 android:id="@+id/iv_back"

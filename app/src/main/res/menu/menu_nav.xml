@@ -3,20 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/nav_instagram"
-        android:icon="@drawable/ic_instagram"
-        android:title="@string/instagram" />
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_user"
+                android:title="@string/edit_profile" />
 
-    <item
-        android:id="@+id/nav_facebook"
-        android:icon="@drawable/ic_fb"
-        android:title="@string/facebook" />
+            <item
+                android:id="@+id/nav_invite"
+                android:icon="@drawable/ic_add_user"
+                android:title="@string/invite" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
+    <item android:title="@string/social">
+        <menu>
+            <item
+                android:id="@+id/nav_instagram"
+                android:icon="@drawable/ic_instagram"
+                android:title="@string/instagram" />
+
+            <item
+                android:id="@+id/nav_facebook"
+                android:icon="@drawable/ic_fb"
+                android:title="@string/facebook" />
+
+            <item
+                android:id="@+id/nav_twitter"
+                android:icon="@drawable/ic_twitter"
+                android:title="@string/twitter" />
+
+            <item
+                android:id="@+id/nav_rate_us"
+                android:icon="@drawable/ic_play_store"
+                android:title="@string/rate_us" />
+        </menu>
+    </item>
+
+    <item android:title="@string/contact">
+        <menu>
+            <item
+                android:id="@+id/nav_feed_back"
+                android:icon="@drawable/ic_email"
+                android:title="@string/feed_back" />
+
+            <item
+                android:id="@+id/nav_aboutus"
+                android:icon="@drawable/ic_info"
+                android:title="@string/about_us" />
+
+            <item
+                android:id="@+id/nav_policies"
+                android:icon="@drawable/ic_file"
+                android:title="@string/policies" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/nav_logout"

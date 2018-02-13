@@ -107,6 +107,15 @@
     <string name="city">City</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
     <string name="error_update_profile">Error occurred while updating profile</string>
+    <string name="social">Social</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="invite">Invite Friends</string>
+    <string name="rate_us">Rate us on play store</string>
+    <string name="twitter">Twitter</string>
+    <string name="contact">Contact</string>
+    <string name="feed_back">Feed Back</string>
+    <string name="about_us">About us</string>
+    <string name="policies">POlicies</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

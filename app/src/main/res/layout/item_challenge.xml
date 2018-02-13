@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin8dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardElevation="6dp">
@@ -17,9 +17,9 @@
         <ImageView
             android:id="@+id/iv_challenge"
             android:layout_width="match_parent"
-            android:layout_height="190dp"
+            android:layout_height="150dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
             tools:src="@drawable/pattern_12" />
 
         <TextView
