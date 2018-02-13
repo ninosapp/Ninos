@@ -37,11 +37,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="@dimen/margin4dp"
-        android:text="1. Sample Instructions for sample"
+        android:text="@string/_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"
         android:textColor="@color/quiz_text"
         android:textSize="18sp" />
 
@@ -49,9 +48,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="@dimen/margin4dp"
-        android:text="2. Sample Instructions for sample"
+        android:text="@string/_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers"
+        android:textColor="@color/quiz_text"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="start"
+        android:padding="@dimen/margin4dp"
+        android:text="@string/_3_the_timer_is_set_once_you_start_the_quiz"
         android:textColor="@color/quiz_text"
         android:textSize="18sp" />
 
@@ -59,18 +69,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
+        android:gravity="start"
         android:padding="@dimen/margin4dp"
-        android:text="3. Sample Instructions for sample"
+        android:text="@string/_4_you_can_change_answers_any_number_of_times_within_the_time_limit"
         android:textColor="@color/quiz_text"
         android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="start"
+        android:padding="@dimen/margin4dp"
+        android:text="@string/_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"
+        android:textColor="@color/quiz_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/margin8dp"
+        android:text="Good Luck!"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tv_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="99dp"
+        android:layout_marginTop="@dimen/margin8dp"
         android:background="@drawable/ic_rectangle_grey"
         android:clickable="true"
         android:focusable="true"

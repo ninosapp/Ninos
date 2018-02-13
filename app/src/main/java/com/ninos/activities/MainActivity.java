@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +34,9 @@ import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.views.CircleImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import cn.jzvd.JZVideoPlayer;
@@ -364,6 +369,52 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 closeDrawer();
 
                 return true;
+
+            case R.id.nav_twitter:
+                Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/ninosapp"));
+                startActivity(twitterIntent);
+
+                closeDrawer();
+
+                return true;
+            case R.id.nav_rate_us:
+                Intent playstoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_store_link)));
+                startActivity(playstoreIntent);
+
+                closeDrawer();
+
+                return true;
+            case R.id.nav_invite:
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
+                try {
+                    File file = new File(this.getExternalCacheDir(), "logicchip.png");
+                    FileOutputStream fOut = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    file.setReadable(true, false);
+
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text));
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                    shareIntent.setType("image/*");
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_friends)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                closeDrawer();
+                break;
+            case R.id.nav_feed_back:
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "info@ninosapp.in", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, " Feed back from " + PreferenceUtil.getUserName(this));
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_using)));
+                closeDrawer();
+                break;
         }
 
         return false;

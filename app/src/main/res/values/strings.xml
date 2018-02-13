@@ -27,7 +27,7 @@
     <string name="cancel">Cancel</string>
     <string name="select_count">Select (%d)</string>
     <string name="select">Select</string>
-    <string name="loading_image_upload">Uploading image…</string>
+    <string name="loading_image_upload">Uploading …</string>
     <string name="s_clap">%d clap</string>
     <string name="s_claps">%d claps</string>
     <string name="s_comments">%d comments</string>
@@ -63,7 +63,7 @@
     <string name="complete_action_using">Complete action using</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
     <string name="people">People</string>
     <string name="search_keyword_is_empty">Search keyword is empty</string>
     <string name="unable_to_find_the_user_for_s">Unable to find the People for \'%s\'</string>
@@ -92,7 +92,7 @@
     <string name="accept">Accept</string>
     <string name="user_warn">Do not post bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Make this app a safe place for children.</string>
     <string name="notifications">Notifications</string>
-    <string name="starting_quiz">Starting quiz...</string>
+    <string name="starting_quiz">Starting quiz…</string>
     <string name="your_score">Your Score</string>
     <string name="_0">0</string>
     <string name="name">Name</string>
@@ -115,7 +115,16 @@
     <string name="contact">Contact</string>
     <string name="feed_back">Feed Back</string>
     <string name="about_us">About us</string>
-    <string name="policies">POlicies</string>
+    <string name="policies">Policies</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="play_store_link">https://play.google.com/store/apps/details?id=com.ninos</string>
+    <string name="invite_text">Hey! I\'ve found the best app to showcase children\'s talent. Display your Talent, Play Quizzes, Challenges &amp; Win PRIZES EVERY WEEK. Download Ninos App - India\'s 1st Talent App For Children. https://play.google.com/store/apps/details?id=com.ninos</string>
+    <string name="send_email_using">Send email using…</string>
+    <string name="_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers">2. You will be awarded 2 points for every correct answer. There are NO negative points for wrong answers.</string>
+    <string name="_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"><![CDATA[1. The quizzes are carefully designed to educate & entertain you.]]></string>
+    <string name="_3_the_timer_is_set_once_you_start_the_quiz">3. The timer is set once you start the quiz.</string>
+    <string name="_4_you_can_change_answers_any_number_of_times_within_the_time_limit">4. You can change answers any number of times within the time limit.</string>
+    <string name="_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"><![CDATA[5. You can attempt one quiz only once. However, you can always view questions & answers of attempted quizzes.]]></string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
