@@ -415,6 +415,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_using)));
                 closeDrawer();
                 break;
+            case R.id.nav_aboutus:
+                startActivity(new Intent(this, AboutActivity.class));
         }
 
         return false;

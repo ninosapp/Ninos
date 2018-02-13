@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@android:color/white</color>
     <color name="colorPrimaryDark">@color/silver</color>
-    <color name="colorAccent">#8C0000</color>
+    <color name="colorAccent">#f76707</color>
 
     <color name="grey">#adb5bd</color>
     <color name="red_gmail">#d14836</color>
@@ -16,9 +16,9 @@
     <color name="divider_color">#F7F7F7</color>
     <color name="dark_grey">#909090</color>
     <color name="grey40">#A1A1A1</color>
-    <color name="accent_dark">#790000</color>
+    <color name="accent_dark">@color/status_dark</color>
     <color name="report_color">#e2574c</color>
-    <color name="status_dark">#790000</color>
+    <color name="status_dark">#d9480f</color>
     <color name="quiz_dark">#1c0030</color>
     <color name="quiz_title">#b4004a</color>
     <color name="quiz_text">#b982ae</color>

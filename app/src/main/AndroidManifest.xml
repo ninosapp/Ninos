@@ -16,11 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -61,23 +59,29 @@
         <activity
             android:name=".activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
+
         <activity
             android:name=".activities.QuizActivity"
             android:theme="@style/AppTheme.Quiz" />
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.EditPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.SettingsActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
@@ -85,6 +89,10 @@
         <activity
             android:name=".activities.ChallengeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.AboutActivity"
+            android:theme="@style/AppTheme.DarkActionBar" />
     </application>
 
 </manifest>

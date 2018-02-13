@@ -114,7 +114,7 @@
     <string name="twitter">Twitter</string>
     <string name="contact">Contact</string>
     <string name="feed_back">Feed Back</string>
-    <string name="about_us">About us</string>
+    <string name="about_us">About us</string>000000
     <string name="policies">Policies</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="play_store_link">https://play.google.com/store/apps/details?id=com.ninos</string>
@@ -125,6 +125,7 @@
     <string name="_3_the_timer_is_set_once_you_start_the_quiz">3. The timer is set once you start the quiz.</string>
     <string name="_4_you_can_change_answers_any_number_of_times_within_the_time_limit">4. You can change answers any number of times within the time limit.</string>
     <string name="_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"><![CDATA[5. You can attempt one quiz only once. However, you can always view questions & answers of attempted quizzes.]]></string>
+    <string name="about_description">First of it\’s kind talent app for children. A talent app for children like never before. There is something for every child. \n\n Ninos App is the perfect platform for children to showcase their creativity and become superstars. Our motto is to Entertain, Educate &amp; Encourage. \n Entertain: Publish and share anything, just anything – Painting, Singing, Dancing, Acting, Cooking, Spelling Bee, Sporting events, Martial Arts, Fashion, Photography and Everything under the sun. \n\n Educate: We do our bit to keep children engaged with a range of daily educative quizzes, weekly creative challenges, monthly interesting contests exclusively designed to suit children of all ages. \n\n Encourage: We encourage children by rewarding them generously. There are thousands of prizes in the store for them. Ninos app also encourages parents to identify their children’s hidden and unexplored talent. We bestow a novel responsibility upon the parents to share their children’s creativity and innovations on Ninos App. \n\n Children are born stars. Parents identify them. Ninos App makes them superstars.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
