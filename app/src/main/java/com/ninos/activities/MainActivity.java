@@ -306,6 +306,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        JZVideoPlayer.releaseAllVideos();
+    }
+
+    @Override
     public void onBackPressed() {
         if (JZVideoPlayer.backPress()) {
             return;

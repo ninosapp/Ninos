@@ -17,10 +17,10 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        Toolbar toolbar_settings = findViewById(R.id.toolbar_about);
-        toolbar_settings.setTitle(R.string.about);
-        toolbar_settings.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar_settings);
+        Toolbar toolbar_about = findViewById(R.id.toolbar_about);
+        toolbar_about.setTitle(R.string.about);
+        toolbar_about.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar_about);
 
         ActionBar actionBar = getSupportActionBar();
 
