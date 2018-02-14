@@ -121,7 +121,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         accessToken = PreferenceUtil.getAccessToken(this);
 
         service = RetrofitInstance.createService(RetrofitService.class);
-        service.getUserProfile(accessToken, userId).enqueue(new Callback<UserProfileResponse>() {
+        service.getUserProfile(userId, accessToken).enqueue(new Callback<UserProfileResponse>() {
             @Override
             public void onResponse(@NonNull Call<UserProfileResponse> call, @NonNull Response<UserProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

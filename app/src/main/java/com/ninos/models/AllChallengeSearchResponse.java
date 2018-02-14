@@ -12,7 +12,7 @@ public class AllChallengeSearchResponse {
 
     private boolean success;
 
-    private List<PostInfo> challenges;
+    private List<PostInfo> postsInfo;
 
     public String getMessage() {
         return message;
@@ -32,15 +32,15 @@ public class AllChallengeSearchResponse {
 
     public List<PostInfo> getChallenges() {
 
-        if (challenges == null) {
-            challenges = new ArrayList<>();
+        if (postsInfo == null) {
+            postsInfo = new ArrayList<>();
         }
 
-        return challenges;
+        return postsInfo;
     }
 
     public void setChallenges(List<PostInfo> challenges) {
-        this.challenges = challenges;
+        this.postsInfo = challenges;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AllChallengeSearchResponse {
         return "ChallengeSearchResponse{" +
                 "message='" + message + '\'' +
                 ", success=" + success +
-                ", challenges=" + challenges +
+                ", challenges=" + postsInfo +
                 '}';
     }
 }

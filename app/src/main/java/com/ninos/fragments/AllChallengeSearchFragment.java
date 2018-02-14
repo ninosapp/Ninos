@@ -1,6 +1,5 @@
 package com.ninos.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,8 +16,8 @@ import com.ninos.R;
 import com.ninos.adapters.AllChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.AllChallengeSearchResponse;
 import com.ninos.models.PostInfo;
-import com.ninos.models.PostSearchResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
@@ -30,12 +29,12 @@ import retrofit2.Response;
  * Created by FAMILY on 23-01-2018.
  */
 
-public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreListener {
+public class AllChallengeSearchFragment extends BaseFragment implements OnLoadMoreListener {
 
     private RetrofitService service;
     private AllChallengeAdapter allChallengeAdapter;
     private String accessToken;
-    private int from = 0, size = 20;
+    private int from = 0, size = 10;
     private String postKeyword;
     private TextView tv_empty;
     private RelativeLayout rl_empty;
@@ -51,8 +50,6 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            Context context = getContext();
-
             accessToken = PreferenceUtil.getAccessToken(getContext());
             service = RetrofitInstance.createService(RetrofitService.class);
 
@@ -60,15 +57,18 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
             rl_empty = view.findViewById(R.id.rl_empty);
             rl_empty.setVisibility(View.GONE);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-            final RecyclerView recyclerView = view.findViewById(R.id.people_list);
-            recyclerView.setLayoutManager(layoutManager);
+            RecyclerView challenge_list = view.findViewById(R.id.people_list);
+            challenge_list.setNestedScrollingEnabled(false);
+            challenge_list.setLayoutManager(layoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), recyclerView, this);
+            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this);
 
-            recyclerView.setAdapter(allChallengeAdapter);
+            challenge_list.setAdapter(allChallengeAdapter);
 
+            accessToken = PreferenceUtil.getAccessToken(getContext());
+            service = RetrofitInstance.createService(RetrofitService.class);
 
         } catch (Exception e) {
             logError(e);
@@ -78,22 +78,22 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
     public void userSearch(String keyword) {
         postKeyword = keyword;
         from = 0;
-        size = 20;
+        size = 10;
         allChallengeAdapter.clearItemsforSearch();
         getPosts();
     }
 
     private void getPosts() {
-        service.searchPosts(from, size, postKeyword, accessToken).enqueue(new Callback<PostSearchResponse>() {
+        service.searchChallenges(from, size, postKeyword, accessToken).enqueue(new Callback<AllChallengeSearchResponse>() {
             @Override
-            public void onResponse(@NonNull Call<PostSearchResponse> call, @NonNull Response<PostSearchResponse> response) {
+            public void onResponse(@NonNull Call<AllChallengeSearchResponse> call, @NonNull Response<AllChallengeSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allChallengeAdapter.removeItem(null);
 
-                    if (response.body().getPostsInfo().size() > 0) {
+                    if (response.body().getChallenges().size() > 0) {
                         rl_empty.setVisibility(View.GONE);
 
-                        for (final PostInfo postInfo : response.body().getPostsInfo()) {
+                        for (final PostInfo postInfo : response.body().getChallenges()) {
                             new Handler().post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -111,7 +111,7 @@ public class ChallengeSearchFragment extends BaseFragment implements OnLoadMoreL
             }
 
             @Override
-            public void onFailure(Call<PostSearchResponse> call, Throwable t) {
+            public void onFailure(Call<AllChallengeSearchResponse> call, Throwable t) {
                 logError(t.getMessage());
             }
         });

@@ -1,11 +1,10 @@
 package com.ninos.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninos.R;
-import com.ninos.adapters.AllChallengeAdapter;
+import com.ninos.adapters.ChallengeAdapter;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
-import com.ninos.models.AllChallengeSearchResponse;
-import com.ninos.models.PostInfo;
+import com.ninos.models.ChallengeInfo;
+import com.ninos.models.ChallengeSearchResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
@@ -30,10 +29,10 @@ import retrofit2.Response;
  * Created by FAMILY on 23-01-2018.
  */
 
-public class AllChallengesSearchFragment extends BaseFragment implements OnLoadMoreListener {
+public class ChallengesSearchFragment extends BaseFragment implements OnLoadMoreListener {
 
     private RetrofitService service;
-    private AllChallengeAdapter allChallengeAdapter;
+    private ChallengeAdapter allChallengeAdapter;
     private String accessToken;
     private int from = 0, size = 20;
     private String challengeKeyword;
@@ -51,8 +50,6 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            Context context = getContext();
-
             accessToken = PreferenceUtil.getAccessToken(getContext());
             service = RetrofitInstance.createService(RetrofitService.class);
 
@@ -60,12 +57,12 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
             rl_empty = view.findViewById(R.id.rl_empty);
             rl_empty.setVisibility(View.GONE);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            GridLayoutManager challengeLayoutManager = new GridLayoutManager(getContext(), 2);
 
             final RecyclerView recyclerView = view.findViewById(R.id.people_list);
-            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setLayoutManager(challengeLayoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), recyclerView, this);
+            allChallengeAdapter = new ChallengeAdapter(getContext(), recyclerView, this);
 
             recyclerView.setAdapter(allChallengeAdapter);
 
@@ -84,16 +81,16 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
     }
 
     private void getPosts() {
-        service.searchAllChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<AllChallengeSearchResponse>() {
+        service.searchAllChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
             @Override
-            public void onResponse(@NonNull Call<AllChallengeSearchResponse> call, @NonNull Response<AllChallengeSearchResponse> response) {
+            public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allChallengeAdapter.removeItem(null);
 
                     if (response.body().getChallenges().size() > 0) {
                         rl_empty.setVisibility(View.GONE);
 
-                        for (final PostInfo postInfo : response.body().getChallenges()) {
+                        for (final ChallengeInfo postInfo : response.body().getChallenges()) {
                             new Handler().post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -102,7 +99,7 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
                             });
                         }
                     } else if (from == 0) {
-                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_post_for_s), challengeKeyword));
+                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_challenges_for_s), challengeKeyword));
                         rl_empty.setVisibility(View.VISIBLE);
                     }
 
@@ -111,7 +108,7 @@ public class AllChallengesSearchFragment extends BaseFragment implements OnLoadM
             }
 
             @Override
-            public void onFailure(Call<AllChallengeSearchResponse> call, Throwable t) {
+            public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
                 logError(t.getMessage());
             }
         });

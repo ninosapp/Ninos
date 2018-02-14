@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.SearchAdapter;
-import com.ninos.fragments.AllChallengesSearchFragment;
-import com.ninos.fragments.ChallengeSearchFragment;
+import com.ninos.fragments.AllChallengeSearchFragment;
+import com.ninos.fragments.ChallengesSearchFragment;
 import com.ninos.fragments.PeopleSearchFragment;
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener, EditText.OnEditorActionListener, ViewPager.OnPageChangeListener {
@@ -101,8 +101,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }
                 break;
             case 1:
-                if (fragment instanceof ChallengeSearchFragment) {
-                    ChallengeSearchFragment challengeSearchFragment = (ChallengeSearchFragment) fragment;
+                if (fragment instanceof AllChallengeSearchFragment) {
+                    AllChallengeSearchFragment challengeSearchFragment = (AllChallengeSearchFragment) fragment;
                     String postKeyword = challengeSearchFragment.getPostKeyword();
 
                     if (postKeyword == null || !postKeyword.equals(text)) {
@@ -111,8 +111,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }
                 break;
             case 2:
-                if (fragment instanceof AllChallengesSearchFragment) {
-                    AllChallengesSearchFragment challengeSearchFragment = (AllChallengesSearchFragment) fragment;
+                if (fragment instanceof ChallengesSearchFragment) {
+                    ChallengesSearchFragment challengeSearchFragment = (ChallengesSearchFragment) fragment;
 
                     String challengeKeyword = challengeSearchFragment.getChallengeKeyword();
 

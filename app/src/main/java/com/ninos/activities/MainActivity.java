@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 return true;
 
             case R.id.nav_facebook:
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/app.ninos"));
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/ninosapp/"));
                 startActivity(facebookIntent);
 
                 closeDrawer();

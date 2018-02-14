@@ -13,7 +13,6 @@ import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostReport;
 import com.ninos.models.PostResponse;
-import com.ninos.models.PostSearchResponse;
 import com.ninos.models.PostsResponse;
 import com.ninos.models.Profile;
 import com.ninos.models.ProfileResponse;
@@ -25,14 +24,12 @@ import com.ninos.models.QuizStartResponse;
 import com.ninos.models.RegisterResponse;
 import com.ninos.models.Response;
 import com.ninos.models.UserCheckResponse;
-import com.ninos.models.UserInfo;
 import com.ninos.models.UserProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -51,7 +48,7 @@ public interface RetrofitService {
     Call<ProfileResponse> getProfile(@Query("token") String token);
 
     @GET("/profile/users/{userId}")
-    Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token, @Path("userId") String userId);
+    Call<UserProfileResponse> getUserProfile(@Path("userId") String userId, @Query("token") String token);
 
     @GET("/check/{userId}")
     Call<UserCheckResponse> userCheck(@Path("userId") String userId);
@@ -102,16 +99,10 @@ public interface RetrofitService {
     Call<PeopleResponse> searchUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);
 
     @GET("/search-posts")
-    Call<PostSearchResponse> searchPosts(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
+    Call<AllChallengeSearchResponse> searchChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
 
     @GET("/search-challenge")
-    Call<ChallengeSearchResponse> searchChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
-
-    @GET("/search-challenge")
-    Call<AllChallengeSearchResponse> searchAllChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
-
-    @PATCH("/profile/settings")
-    Call<Response> updateProfile(@Body UserInfo userInfo, @Query("token") String token);
+    Call<ChallengeSearchResponse> searchAllChallenges(@Query("from") int from, @Query("size") int size, @Query("keyword") String keyword, @Query("token") String token);
 
     @GET("/quizzes/{quizId}/questions")
     Call<QuestionResponse> getQuiz(@Path("quizId") String quizId, @Query("token") String token);
