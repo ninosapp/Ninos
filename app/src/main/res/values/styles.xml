@@ -69,6 +69,11 @@
         </item>
     </style>
 
+    <style name="ButtonThemeAccent" parent="BaseButtonTheme">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:colorButtonNormal" tools:targetApi="lollipop">@color/colorAccent
+        </item>
+    </style>
 
     <style name="ButtonThemeWhite" parent="BaseButtonTheme">
         <item name="colorButtonNormal">@color/silver</item>

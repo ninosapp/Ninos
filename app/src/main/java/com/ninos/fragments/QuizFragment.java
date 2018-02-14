@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninos.R;
@@ -51,6 +52,9 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
     private int duration;
     private RetrofitService service;
     private QuestionsAdapter questionsAdapter;
+    private ViewPager view_pager;
+    private TabLayout tabLayout;
+    private ImageView iv_previous, iv_next, iv_done;
 
     public static QuizFragment newInstance(String quizId, int duration, String title, String evaluationId) {
         QuizFragment quizFragment = new QuizFragment();
@@ -94,8 +98,45 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             tv_time.setText(String.format("%02d", duration / 1000));
             mTimeCounter = new TimeCounter(duration);
 
-            final ViewPager view_pager = view.findViewById(R.id.view_pager);
-            final TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+            iv_previous = view.findViewById(R.id.iv_previous);
+            iv_previous.setOnClickListener(this);
+
+            iv_next = view.findViewById(R.id.iv_next);
+            iv_next.setOnClickListener(this);
+
+            iv_done = view.findViewById(R.id.iv_done);
+            iv_done.setOnClickListener(this);
+
+            view_pager = view.findViewById(R.id.view_pager);
+            view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    int count = 0;
+
+                    if (questionsAdapter != null) {
+                        count = questionsAdapter.getCount();
+                    }
+
+                    if (position == count - 1) {
+                        iv_next.setVisibility(View.GONE);
+                        iv_done.setVisibility(View.VISIBLE);
+                    } else {
+                        iv_next.setVisibility(View.VISIBLE);
+                        iv_done.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            tabLayout = view.findViewById(R.id.tab_layout);
 
             service = RetrofitInstance.createService(RetrofitService.class);
             service.getQuiz(quizId, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<QuestionResponse>() {
@@ -154,6 +195,15 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             case R.id.iv_back:
                 showAlertDialog();
                 break;
+            case R.id.iv_previous:
+                view_pager.setCurrentItem(view_pager.getCurrentItem() - 1, true);
+                break;
+            case R.id.iv_next:
+                view_pager.setCurrentItem(view_pager.getCurrentItem() + 1, true);
+                break;
+            case R.id.iv_done:
+                submitQuiz();
+                break;
         }
     }
 
@@ -184,6 +234,72 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
         showAlertDialog();
     }
 
+    private void submitQuiz() {
+        if (mTimeCounter != null && mTimeCounter.isRunning()) {
+            mTimeCounter.cancel();
+        }
+
+        tv_time.setText("00");
+
+        if (questionsAdapter != null) {
+            List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
+
+            QuizEvaluateBody quizEvaluateBody = new QuizEvaluateBody();
+            quizEvaluateBody.setEvalutionId(evaluationId);
+            quizEvaluateBody.setMcqSolution(mcqSolutions);
+
+            service.evaluateResult(quizId, quizEvaluateBody, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<EvaluateResponse>() {
+                @Override
+                public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (getContext() != null) {
+                            final Dialog dialog = new Dialog(getContext());
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                            if (dialog.getWindow() != null) {
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            }
+
+                            dialog.setContentView(R.layout.dialog_score);
+                            TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
+                            TextView tv_score_two = dialog.findViewById(R.id.tv_score_two);
+
+                            EvaluateInfo eInfo = response.body().getEvaluateInfo();
+
+                            if (eInfo.getAcquiredScore().length() > 1) {
+                                String score = eInfo.getAcquiredScore();
+                                tv_score_two.setText(score.substring(0, 1));
+                                tv_score_one.setText(score.substring(1, 2));
+                            } else {
+                                tv_score_two.setText("0");
+                                tv_score_one.setText(eInfo.getAcquiredScore());
+                            }
+
+                            dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+
+                                    if (getActivity() != null) {
+                                        getActivity().finish();
+                                    }
+                                }
+                            });
+
+                            dialog.setCancelable(false);
+                            dialog.show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<EvaluateResponse> call, Throwable t) {
+                    showToast(R.string.error_message);
+                }
+            });
+        }
+    }
+
     private class TimeCounter extends TimerCountDown {
 
         TimeCounter(int sec) {
@@ -197,69 +313,8 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
 
         @Override
         public void onFinish() {
-            if (mTimeCounter != null && mTimeCounter.isRunning()) {
-                mTimeCounter.cancel();
-            }
-
-            tv_time.setText("00");
-
-            if (questionsAdapter != null) {
-                List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
-
-                QuizEvaluateBody quizEvaluateBody = new QuizEvaluateBody();
-                quizEvaluateBody.setEvalutionId(evaluationId);
-                quizEvaluateBody.setMcqSolution(mcqSolutions);
-
-                service.evaluateResult(quizId, quizEvaluateBody, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<EvaluateResponse>() {
-                    @Override
-                    public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
-                        if (response.isSuccessful()) {
-                            if (getContext() != null) {
-                                final Dialog dialog = new Dialog(getContext());
-                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                                if (dialog.getWindow() != null) {
-                                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                                }
-
-                                dialog.setContentView(R.layout.dialog_score);
-                                TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
-                                TextView tv_score_two = dialog.findViewById(R.id.tv_score_two);
-
-                                EvaluateInfo eInfo = response.body().getEvaluateInfo();
-
-                                if (eInfo.getAcquiredScore().length() > 1) {
-                                    String score = eInfo.getAcquiredScore();
-                                    tv_score_two.setText(score.substring(0, 1));
-                                    tv_score_one.setText(score.substring(1, 2));
-                                } else {
-                                    tv_score_two.setText("0");
-                                    tv_score_one.setText(eInfo.getAcquiredScore());
-                                }
-
-                                dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialog.dismiss();
-
-                                        if (getActivity() != null) {
-                                            getActivity().finish();
-                                        }
-                                    }
-                                });
-
-                                dialog.setCancelable(false);
-                                dialog.show();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<EvaluateResponse> call, Throwable t) {
-                        showToast(R.string.error_message);
-                    }
-                });
-            }
+            submitQuiz();
         }
     }
+
 }
