@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
-        <com.ninos.views.FontEditText
+        <EditText
             android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,8 +51,7 @@
             android:inputType="textCapWords|textMultiLine"
             android:padding="@dimen/margin16dp"
             android:textColor="@color/midnight_blue"
-            android:textSize="18sp"
-            app:fontValue="RobotoMono-Regular.ttf" />
+            android:textSize="18sp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_upload"
