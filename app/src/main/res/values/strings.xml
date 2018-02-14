@@ -130,6 +130,7 @@
     <string name="good_luck">Good Luck!</string>
     <string name="claps">Claps</string>
     <string name="share_to">Share to…</string>
+    <string name="unfollow">Unfollow</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

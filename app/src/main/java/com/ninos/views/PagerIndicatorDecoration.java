@@ -39,7 +39,7 @@ public class PagerIndicatorDecoration extends RecyclerView.ItemDecoration {
     private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     private final Paint mPaint = new Paint();
     private int colorActive = 0xDEf76707;
-    private int colorInactive = 0x33bdc3c7;
+    private int colorInactive = 0x33adb5bd;
 
     public PagerIndicatorDecoration() {
 

@@ -5,13 +5,14 @@ package com.ninos.models;
  */
 
 public class UserProfile {
-    String childName;
-    String userId;
-    String aboutYou;
-    String postCount;
-    String followersCount;
-    String followingCount;
-    String city;
+    private String childName;
+    private String userId;
+    private String aboutYou;
+    private String postCount;
+    private String followersCount;
+    private String followingCount;
+    private boolean isFollowing;
+    private String city;
 
     public String getChildName() {
         return childName;
@@ -69,6 +70,14 @@ public class UserProfile {
         this.city = city;
     }
 
+    public boolean isFollowing() {
+        return isFollowing;
+    }
+
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+
     @Override
     public String toString() {
         return "UserProfile{" +
@@ -78,6 +87,7 @@ public class UserProfile {
                 ", postCount='" + postCount + '\'' +
                 ", followersCount='" + followersCount + '\'' +
                 ", followingCount='" + followingCount + '\'' +
+                ", isFollowing=" + isFollowing +
                 ", city='" + city + '\'' +
                 '}';
     }

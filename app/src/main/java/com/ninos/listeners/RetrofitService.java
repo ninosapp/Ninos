@@ -133,4 +133,10 @@ public interface RetrofitService {
 
     @GET("/posts")
     Call<PostsResponse> getChallenges(@Query("from") int from, @Query("size") int size, @Query("type") String type, @Query("challengeId") String challengeId, @Query("token") String token);
+
+    @PUT("/follow/{followingId}")
+    Call<Response> follow(@Path("followingId") String followingId, @Query("token") String token);
+
+    @DELETE("/follow/{followingId}")
+    Call<Response> unFollow(@Path("followingId") String followingId, @Query("token") String token);
 }

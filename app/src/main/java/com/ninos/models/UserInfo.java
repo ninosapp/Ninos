@@ -25,6 +25,16 @@ public class UserInfo {
 
     private String parentName;
 
+    private String isFollowing;
+
+    public String getIsFollowing() {
+        return isFollowing;
+    }
+
+    public void setIsFollowing(String isFollowing) {
+        this.isFollowing = isFollowing;
+    }
+
     public String getUpdatedAt() {
         return updatedAt;
     }
@@ -118,6 +128,7 @@ public class UserInfo {
                 ", userId='" + userId + '\'' +
                 ", isEnabled='" + isEnabled + '\'' +
                 ", parentName='" + parentName + '\'' +
+                ", isFollowing='" + isFollowing + '\'' +
                 '}';
     }
 }

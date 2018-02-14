@@ -69,6 +69,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private RetrofitService service;
     private String accessToken;
     private int from = 0, size = 10;
+    private UserProfile userProfile;
+    private Button btn_follow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
         final TextView tv_following = findViewById(R.id.tv_following);
         final TextView tv_points = findViewById(R.id.tv_points);
-        final Button btn_follow = findViewById(R.id.btn_follow);
+        btn_follow = findViewById(R.id.btn_follow);
+        btn_follow.setOnClickListener(this);
         fab_update_Image = findViewById(R.id.fab_update_Image);
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
@@ -122,7 +125,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onResponse(@NonNull Call<UserProfileResponse> call, @NonNull Response<UserProfileResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UserProfile userProfile = response.body().getUserProfile();
+                    userProfile = response.body().getUserProfile();
 
                     if (userProfile != null) {
                         tv_points.setText(userProfile.getPostCount());
@@ -132,6 +135,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         tv_name.setText(userProfile.getChildName());
 
                         updateImage();
+
+                        setFollow(userProfile.isFollowing());
                     }
                 }
             }
@@ -207,9 +212,53 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             case R.id.fab_back:
                 onBackPressed();
                 break;
+            case R.id.btn_follow:
+
+                if (userProfile.isFollowing()) {
+                    service.unFollow(userProfile.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                        @Override
+                        public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                setFollow(false);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    service.follow(userProfile.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                        @Override
+                        public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                setFollow(true);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+
+                        }
+                    });
+                }
+
+                break;
             default:
                 addFile();
                 break;
+        }
+    }
+
+    public void setFollow(boolean isFollowing) {
+
+        if (isFollowing) {
+            btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove_user, 0, 0, 0);
+            btn_follow.setText(R.string.unfollow);
+        } else {
+            btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
+            btn_follow.setText(R.string.follow);
         }
     }
 
