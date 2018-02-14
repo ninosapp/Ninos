@@ -2,7 +2,6 @@
     android:id="@+id/iv_challenge"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin8dp"
     android:background="@android:color/black"
     android:minHeight="250dp"
     android:scaleType="center"

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
+    tools:context="com.ninos.activities.ProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <cn.jzvd.JZVideoPlayerStandard
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@android:color/white" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/image_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:minHeight="300dp"
+            android:scrollbars="vertical" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin16dp"
+        android:src="@drawable/ic_back"
+        android:tint="@color/dark_grey" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_post"
+        android:paddingBottom="@dimen/margin6dp"
+        android:paddingEnd="@dimen/margin16dp"
+        android:paddingStart="@dimen/margin16dp"
+        android:paddingTop="@dimen/margin6dp">
+
+        <TextView
+            android:id="@+id/tv_clap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:drawableLeft="@drawable/ic_clap"
+            android:drawablePadding="@dimen/margin8dp"
+            android:drawableStart="@drawable/ic_clap"
+            android:paddingBottom="@dimen/margin8dp"
+            android:paddingTop="@dimen/margin8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="24" />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin8dp"
+            android:layout_marginStart="@dimen/margin8dp"
+            android:layout_toEndOf="@+id/tv_clap"
+            android:layout_toRightOf="@+id/tv_clap"
+            android:drawableLeft="@drawable/ic_comment"
+            android:drawablePadding="@dimen/margin8dp"
+            android:drawableStart="@drawable/ic_comment"
+            android:paddingBottom="@dimen/margin8dp"
+            android:paddingTop="@dimen/margin8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="24" />
+
+        <com.ninos.views.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="@dimen/margin4dp"
+            android:paddingTop="@dimen/margin4dp"
+            android:src="@drawable/ic_account" />
+
+        <LinearLayout
+            android:id="@+id/ll_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin8dp"
+            android:layout_marginStart="@dimen/margin8dp"
+            android:layout_toEndOf="@+id/tv_comment"
+            android:layout_toLeftOf="@+id/iv_profile"
+            android:layout_toRightOf="@+id/tv_comment"
+            android:layout_toStartOf="@+id/iv_profile"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:paddingTop="6dp">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_created_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="12sp"
+                tools:text="May 06, 2017" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:paddingEnd="@dimen/margin16dp"
+        android:paddingStart="@dimen/margin16dp"
+        android:textSize="16sp"
+        tools:text="Sample text view " />
+</RelativeLayout>

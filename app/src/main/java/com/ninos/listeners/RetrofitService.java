@@ -68,6 +68,9 @@ public interface RetrofitService {
     @GET("/posts/{postId}")
     Call<PostResponse> getPost(@Path("postId") String postId, @Query("token") String token);
 
+    @GET("/posts/{postId}")
+    Call<PostResponse> getPost(@Path("postId") String postId);
+
     @POST("/posts")
     Call<AddPostResponse> addPost(@Body PostInfo postInfo, @Query("token") String token);
 

@@ -225,7 +225,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         ImageView ic_clap_anim, iv_clap, iv_menu;
         CircleImageView iv_profile;
         RecyclerView recyclerView;
-        LinearLayout ll_comment, ll_options, ll_clap;
+        LinearLayout ll_comment, ll_options, ll_clap, ll_share;
         View itemView;
         RelativeLayout rl_challenge;
         JZVideoPlayerStandard video_view;
@@ -245,12 +245,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_created_time = itemView.findViewById(R.id.tv_created_time);
             tv_comment = itemView.findViewById(R.id.tv_comment);
             ll_comment = itemView.findViewById(R.id.ll_comment);
+            ll_share = itemView.findViewById(R.id.ll_share);
             ll_options = itemView.findViewById(R.id.ll_options);
             iv_menu.setOnClickListener(this);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
+            ll_share.setOnClickListener(this);
             video_view = itemView.findViewById(R.id.video_view);
             video_view.batteryLevel.setVisibility(View.GONE);
             video_view.mRetryLayout.setVisibility(View.GONE);
@@ -509,6 +511,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, view);
                     optionsMenu.setForceShowIcon(true);
                     optionsMenu.show();
+                    break;
+                case R.id.ll_share:
+                    String text = postInfo.getUserName() + " has shared you a post from ninos click the below link to open... \n\n http://ninosapp.in/?postId=" + postInfo.get_id();
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    sendIntent.setType("text/plain");
+                    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_to)));
                     break;
             }
         }
