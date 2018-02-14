@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,7 +198,6 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
                         @Override
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
-                            Log.e(UploadFragment.class.getSimpleName(), t.getMessage());
                         }
                     });
                 }

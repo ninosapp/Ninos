@@ -55,6 +55,7 @@ import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.views.CircleImageView;
+import com.ninos.views.PagerIndicatorDecoration;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -261,7 +262,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(null);
+
+            recyclerView.addItemDecoration(new PagerIndicatorDecoration());
         }
 
         private void bindData(final int position) {
