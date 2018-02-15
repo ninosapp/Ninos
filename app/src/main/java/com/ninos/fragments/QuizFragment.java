@@ -3,6 +3,7 @@ package com.ninos.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninos.R;
+import com.ninos.activities.MainActivity;
 import com.ninos.adapters.QuestionsAdapter;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.EvaluateInfo;
@@ -41,7 +43,7 @@ import retrofit2.Response;
 
 public class QuizFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String QUIZ_ID = "QUIZ_ID";
+    public static final String QUIZ_ID = "QUIZ_ID";
     private static final String QUIZ_DURATION = "QUIZ_DURATION";
     private static final String QUIZ_TITLE = "QUIZ_TITLE";
     private static final String QUIZ_EVALUATION_ID = "QUIZ_EVALUATION_ID";
@@ -160,9 +162,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                     } else {
                         showToast(R.string.error_message);
 
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
+                        finishActivity();
                     }
                 }
 
@@ -175,6 +175,15 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
+        }
+    }
+
+    private void finishActivity() {
+        if (getActivity() != null) {
+            Intent intent = new Intent();
+            intent.putExtra(QUIZ_ID, quizId);
+            getActivity().setResult(MainActivity.QUIZ_COMPLETE, intent);
+            getActivity().finish();
         }
     }
 
@@ -215,9 +224,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
+                finishActivity();
             }
         });
 
@@ -239,7 +246,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             mTimeCounter.cancel();
         }
 
-        tv_time.setText("00");
+        tv_time.setText(R.string._00);
 
         if (questionsAdapter != null) {
             List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
@@ -262,17 +269,11 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
 
                             dialog.setContentView(R.layout.dialog_score);
                             TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
-                            TextView tv_score_two = dialog.findViewById(R.id.tv_score_two);
 
                             EvaluateInfo eInfo = response.body().getEvaluateInfo();
 
-                            if (eInfo.getAcquiredScore().length() > 1) {
-                                String score = eInfo.getAcquiredScore();
-                                tv_score_two.setText(score.substring(0, 1));
-                                tv_score_one.setText(score.substring(1, 2));
-                            } else {
-                                tv_score_two.setText("0");
-                                tv_score_one.setText(eInfo.getAcquiredScore());
+                            if (eInfo != null) {
+                                tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
                             }
 
                             dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
@@ -280,9 +281,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                                 public void onClick(View v) {
                                     dialog.dismiss();
 
-                                    if (getActivity() != null) {
-                                        getActivity().finish();
-                                    }
+                                    finishActivity();
                                 }
                             });
 

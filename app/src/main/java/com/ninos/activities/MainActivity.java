@@ -30,6 +30,7 @@ import com.ninos.R;
 import com.ninos.firebase.Database;
 import com.ninos.fragments.AllChallengesFragment;
 import com.ninos.fragments.ChallengesFragment;
+import com.ninos.fragments.QuizFragment;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.views.CircleImageView;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final int POST_ADDED = 8525;
     public static final int COMMENT_ADDED = 8526;
     public static final int PROFILE_UPDATED = 8527;
+    public static final int QUIZ_COMPLETE = 8528;
     private final int RC_STORAGE_PERM = 4531;
     private Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
@@ -299,6 +301,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     if (isProfileUpdated) {
                         updateProfile();
+                    }
+                }
+                break;
+            case QUIZ_COMPLETE:
+                if (data != null) {
+                    String quizId = data.getStringExtra(QuizFragment.QUIZ_ID);
+
+                    if (allChallengeFragment != null && quizId != null) {
+                        allChallengeFragment.quizUpdated(quizId);
                     }
                 }
                 break;

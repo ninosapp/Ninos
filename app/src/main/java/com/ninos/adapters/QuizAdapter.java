@@ -1,5 +1,6 @@
 package com.ninos.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ninos.R;
+import com.ninos.activities.MainActivity;
 import com.ninos.activities.QuizActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
@@ -34,12 +36,12 @@ import retrofit2.Response;
 
 public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
-    private Context mContext;
-    private String[] mColors;
+    private Context context;
+    private Activity activity;
 
-    public QuizAdapter(Context activity) {
-        mContext = activity;
-        mColors = activity.getResources().getStringArray(R.array.colors);
+    public QuizAdapter(Context context, Activity activity) {
+        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -70,17 +72,6 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
         private void bindData(int position) {
             Quizze quizze = getItem(position);
             tv_quiz_name.setText(quizze.getTitle());
-            int index = position % 10;
-
-//            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(mContext, R.drawable.ic_circle));
-//            iv_quiz_background.setImageDrawable(drawable);
-
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                DrawableCompat.setTint(drawable, Color.parseColor(mColors[index]));
-//
-//            } else {
-//                drawable.mutate().setColorFilter(Color.parseColor(mColors[index]), PorterDuff.Mode.SRC_IN);
-//            }
 
             int drawableId;
 
@@ -100,7 +91,7 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
                     break;
             }
 
-            iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(mContext, drawableId));
+            iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(context, drawableId));
         }
 
         @Override
@@ -109,11 +100,11 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
             if (quizze.isQuizTaken()) {
                 RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                service.getQuizResult(quizze.get_id(), Database.getUserId(), PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<QuizEvaluateResultResponse>() {
+                service.getQuizResult(quizze.get_id(), Database.getUserId(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<QuizEvaluateResultResponse>() {
                     @Override
                     public void onResponse(Call<QuizEvaluateResultResponse> call, Response<QuizEvaluateResultResponse> response) {
                         if (response.body() != null) {
-                            final Dialog dialog = new Dialog(mContext);
+                            final Dialog dialog = new Dialog(context);
                             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
                             if (dialog.getWindow() != null) {
@@ -122,17 +113,11 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
                             dialog.setContentView(R.layout.dialog_score);
                             TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
-                            TextView tv_score_two = dialog.findViewById(R.id.tv_score_two);
 
                             EvaluateResult eInfo = response.body().getEvaluateResult();
 
-                            if (eInfo.getAcquiredScore().length() > 1) {
-                                String score = eInfo.getAcquiredScore();
-                                tv_score_two.setText(score.substring(0, 1));
-                                tv_score_one.setText(score.substring(1, 2));
-                            } else {
-                                tv_score_two.setText("0");
-                                tv_score_one.setText(eInfo.getAcquiredScore());
+                            if (eInfo != null) {
+                                tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
                             }
 
                             dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
@@ -149,15 +134,15 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
                     @Override
                     public void onFailure(Call<QuizEvaluateResultResponse> call, Throwable t) {
-                        Toast.makeText(mContext, R.string.error_message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
-                Intent intent = new Intent(mContext, QuizActivity.class);
+                Intent intent = new Intent(context, QuizActivity.class);
                 intent.putExtra(QuizActivity.QUIZ_ID, quizze.get_id());
                 intent.putExtra(QuizActivity.QUIZ_DURATION, quizze.getDuration());
                 intent.putExtra(QuizActivity.QUIZ_TITLE, quizze.getTitle());
-                mContext.startActivity(intent);
+                activity.startActivityForResult(intent, MainActivity.QUIZ_COMPLETE);
             }
         }
     }

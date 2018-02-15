@@ -111,7 +111,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             quiz_list.setNestedScrollingEnabled(false);
             quiz_list.setLayoutManager(quizLayoutManager);
 
-            quizAdapter = new QuizAdapter(getContext());
+            quizAdapter = new QuizAdapter(getContext(), getActivity());
             quiz_list.setAdapter(quizAdapter);
 
             LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(mBaseActivity);
@@ -269,6 +269,18 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     }
                 });
                 break;
+        }
+    }
+
+    public void quizUpdated(String quizId) {
+        for (int i = 0; i < quizAdapter.getItemCount(); i++) {
+            Quizze quizze = quizAdapter.getItem(i);
+
+            if (quizze.get_id().equals(quizId)) {
+                quizze.setQuizTaken(true);
+                quizAdapter.updateItem(i, quizze);
+                break;
+            }
         }
     }
 }
