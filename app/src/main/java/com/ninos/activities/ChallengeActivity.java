@@ -75,7 +75,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         iv_challenge = findViewById(R.id.iv_challenge);
         iv_challenge.setImageBitmap(bitmap);
 
-        findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.fab_back).setOnClickListener(this);
         findViewById(R.id.fab_challenge).setOnClickListener(this);
 
         LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
@@ -167,7 +167,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
+            case R.id.fab_back:
                 super.onBackPressed();
                 break;
             case R.id.fab_challenge:
