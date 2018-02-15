@@ -368,6 +368,13 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             pulse_fade.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+
+                    if (postInfo.isMyRating()) {
+                        ic_clap_anim.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_clap_full_anim));
+                    } else {
+                        ic_clap_anim.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_clap_anim));
+                    }
+
                     ic_clap_anim.setVisibility(View.VISIBLE);
                 }
 
