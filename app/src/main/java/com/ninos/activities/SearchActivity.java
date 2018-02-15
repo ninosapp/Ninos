@@ -1,6 +1,7 @@
 package com.ninos.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -22,12 +23,14 @@ import com.ninos.fragments.AllChallengeSearchFragment;
 import com.ninos.fragments.ChallengesSearchFragment;
 import com.ninos.fragments.PeopleSearchFragment;
 
+import static com.ninos.activities.MainActivity.PROFILE_UPDATED;
+
 public class SearchActivity extends BaseActivity implements View.OnClickListener, EditText.OnEditorActionListener, ViewPager.OnPageChangeListener {
 
+    public static final String USER_ID = "USER_ID";
     private EditText et_search;
     private SearchAdapter searchAdapter;
     private ViewPager viewPager;
-    private String previousKeyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             if (text.isEmpty()) {
                 showToast(R.string.search_keyword_is_empty);
             } else {
-                previousKeyword = text;
                 search(text);
             }
         }
@@ -141,5 +143,31 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case PROFILE_UPDATED:
+                if (data != null) {
+                    boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
+
+                    if (isProfileUpdated) {
+                        Fragment fragment = searchAdapter.getItem(0);
+
+                        if (fragment instanceof PeopleSearchFragment) {
+                            PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
+                            String userName = peopleSearchFragment.getUserName();
+
+                            if (userName != null) {
+                                peopleSearchFragment.userSearch(userName);
+                            }
+                        }
+                    }
+                }
+                break;
+        }
     }
 }

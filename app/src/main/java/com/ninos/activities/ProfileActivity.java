@@ -226,6 +226,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
                             if (response.body() != null && response.isSuccessful()) {
                                 setFollow(false);
+                                isProfileUpdated = true;
                             }
                         }
 
@@ -240,6 +241,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
                             if (response.body() != null && response.isSuccessful()) {
                                 setFollow(true);
+                                isProfileUpdated = true;
                             }
                         }
 
@@ -266,6 +268,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
             btn_follow.setText(R.string.follow);
         }
+
+        userProfile.setFollowing(isFollowing);
     }
 
     @AfterPermissionGranted(RC_STORAGE_PERM)

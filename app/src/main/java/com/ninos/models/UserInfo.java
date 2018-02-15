@@ -25,14 +25,14 @@ public class UserInfo {
 
     private String parentName;
 
-    private String isFollowing;
+    private boolean isFollowing;
 
-    public String getIsFollowing() {
+    public boolean isFollowing() {
         return isFollowing;
     }
 
-    public void setIsFollowing(String isFollowing) {
-        this.isFollowing = isFollowing;
+    public void setFollowing(boolean following) {
+        isFollowing = following;
     }
 
     public String getUpdatedAt() {

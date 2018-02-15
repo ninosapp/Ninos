@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final int COMMENT_ADDED = 8526;
     public static final int PROFILE_UPDATED = 8527;
     private final int RC_STORAGE_PERM = 4531;
-    Fragment challengeFragment;
+    private Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
     private AllChallengesFragment allChallengeFragment;
     private boolean doubleBackToExit;

@@ -61,7 +61,7 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
             final RecyclerView recyclerView = view.findViewById(R.id.people_list);
             recyclerView.setLayoutManager(layoutManager);
 
-            peopleAdapter = new PeopleAdapter(context, recyclerView, this);
+            peopleAdapter = new PeopleAdapter(context, getActivity(), recyclerView, this);
 
             recyclerView.setAdapter(peopleAdapter);
 
