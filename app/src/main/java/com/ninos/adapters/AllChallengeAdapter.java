@@ -262,8 +262,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
-
-            recyclerView.addItemDecoration(new PagerIndicatorDecoration());
         }
 
         private void bindData(final int position) {
@@ -325,6 +323,10 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 } else {
                     for (String link : postInfo.getLinks()) {
                         imageAdapter.addItem(link);
+                    }
+
+                    if (postInfo.getLinks().size() > 1) {
+                        recyclerView.addItemDecoration(new PagerIndicatorDecoration());
                     }
                 }
             }
@@ -604,6 +606,10 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     if (postInfo != null) {
                         postInfo.setLinks(links);
                     }
+                }
+
+                if (links.size() > 1) {
+                    recyclerView.addItemDecoration(new PagerIndicatorDecoration());
                 }
             }
         }
