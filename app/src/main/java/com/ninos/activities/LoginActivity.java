@@ -8,11 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public static final int RC_SIGN_IN = 13596;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private View progress_login;
-    private AppCompatButton btn_gamil_login, btn_fb_login;
+    private LinearLayout ll_google, ll_facebook;
     private View cl_login;
     private List<Integer> mColors;
     private ViewPager view_pager;
@@ -75,11 +75,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             cl_login = findViewById(R.id.cl_login);
             progress_login = findViewById(R.id.progress_login);
 
-            btn_gamil_login = findViewById(R.id.btn_gmail_login);
-            btn_gamil_login.setOnClickListener(this);
+            ll_google = findViewById(R.id.ll_google);
+            ll_google.setOnClickListener(this);
 
-            btn_fb_login = findViewById(R.id.btn_fb_login);
-            btn_fb_login.setOnClickListener(this);
+            ll_facebook = findViewById(R.id.ll_facebook);
+            ll_facebook.setOnClickListener(this);
 
             view_pager = findViewById(R.id.view_pager);
             view_pager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
@@ -198,18 +198,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void enableButton() {
-        btn_gamil_login.setClickable(true);
-        btn_gamil_login.setVisibility(View.VISIBLE);
-        btn_fb_login.setClickable(true);
-        btn_fb_login.setVisibility(View.VISIBLE);
+        ll_google.setClickable(true);
+        ll_google.setVisibility(View.VISIBLE);
+        ll_facebook.setClickable(true);
+        ll_facebook.setVisibility(View.VISIBLE);
         progress_login.setVisibility(View.GONE);
     }
 
     private void disableButton() {
-        btn_gamil_login.setClickable(false);
-        btn_gamil_login.setVisibility(View.GONE);
-        btn_fb_login.setClickable(false);
-        btn_fb_login.setVisibility(View.GONE);
+        ll_google.setClickable(false);
+        ll_google.setVisibility(View.GONE);
+        ll_facebook.setClickable(false);
+        ll_facebook.setVisibility(View.GONE);
         progress_login.setVisibility(View.VISIBLE);
     }
 
@@ -217,11 +217,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         if (isNetworkAvailable()) {
             switch (view.getId()) {
-                case R.id.btn_gmail_login:
+                case R.id.ll_google:
                     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                     startActivityForResult(signInIntent, RC_SIGN_IN);
                     break;
-                case R.id.btn_fb_login:
+                case R.id.ll_facebook:
                     doFacebookLogin();
                     break;
             }

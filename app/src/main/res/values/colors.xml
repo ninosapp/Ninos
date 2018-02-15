@@ -5,8 +5,9 @@
     <color name="colorAccent">#f76707</color>
 
     <color name="grey">#adb5bd</color>
-    <color name="red_gmail">#d14836</color>
-    <color name="blue_facebook">#475993</color>
+    <color name="red_gmail">#f16f6d</color>
+    <color name="blue_facebook">#207ebb</color>
+    <color name="blue_facebook_dark">#196ea4</color>
     <color name="clouds">#ecf0f1</color>
     <color name="silver">#bdc3c7</color>
     <color name="midnight_blue">#2c3e50</color>
