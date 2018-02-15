@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,14 +20,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.adapters.CommentAdapter;
 import com.ninos.adapters.ImageAdapter;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.Comment;
+import com.ninos.models.CommentsResponse;
 import com.ninos.models.PostInfo;
 import com.ninos.models.PostResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
+import com.ninos.utils.PreferenceUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -73,8 +78,10 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
                     video_view = findViewById(R.id.video_view);
                     recyclerView = findViewById(R.id.image_list);
+
                     LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setNestedScrollingEnabled(true);
                     recyclerView.setItemAnimator(null);
 
 
@@ -86,6 +93,15 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     iv_profile = findViewById(R.id.iv_profile);
                     iv_back = findViewById(R.id.iv_back);
                     iv_back.setOnClickListener(this);
+
+                    LinearLayoutManager commentLayoutManager = new LinearLayoutManager(this);
+
+                    RecyclerView list_comment = findViewById(R.id.list_comment);
+                    list_comment.setNestedScrollingEnabled(true);
+                    list_comment.setLayoutManager(commentLayoutManager);
+
+                    final CommentAdapter commentAdapter = new CommentAdapter(this);
+                    list_comment.setAdapter(commentAdapter);
 
                     RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
                     service.getPost(postId).enqueue(new Callback<PostResponse>() {
@@ -174,6 +190,23 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         }
                     });
 
+                    service.getPostComments(postId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<CommentsResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                List<Comment> commentList = response.body().getPostComments();
+
+                                if (commentList != null) {
+                                    commentAdapter.addItems(commentList);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<CommentsResponse> call, @NonNull Throwable t) {
+
+                        }
+                    });
                 } else {
                     showToast(R.string.no_network);
                     finish();
