@@ -116,7 +116,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_cancel:
                 onBackPressed();
                 break;
-            case R.id.tv_select_count:
+            case R.id.fab_upload:
                 String desc = tv_description.getText().toString().trim();
                 boolean hasBadWords = false;
 
