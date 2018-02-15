@@ -285,7 +285,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
             int commentStringId;
 
-            if (postInfo.getTotalClapsCount() > 1) {
+            if (postInfo.getTotalCommentCount() > 1) {
                 commentStringId = R.string.s_comments;
             } else {
                 commentStringId = R.string.s_comment;
