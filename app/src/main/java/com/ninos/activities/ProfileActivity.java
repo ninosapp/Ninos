@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +28,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
-import com.ninos.adapters.AllChallengeAdapter;
+import com.ninos.adapters.ChallengeImageAdapter;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
@@ -36,6 +37,7 @@ import com.ninos.models.PostsResponse;
 import com.ninos.models.UserProfile;
 import com.ninos.models.UserProfileResponse;
 import com.ninos.reterofit.RetrofitInstance;
+import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
 
@@ -65,17 +67,21 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private FloatingActionButton fab_update_Image;
     private TextView tv_name;
     private boolean isProfileUpdated;
-    private AllChallengeAdapter allChallengeAdapter;
+    private ChallengeImageAdapter allChallengeAdapter;
     private RetrofitService service;
     private String accessToken;
     private int from = 0, size = 10;
     private UserProfile userProfile;
     private Button btn_follow;
+    private AWSClient awsClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        awsClient = new AWSClient(this);
+        awsClient.awsInit();
 
         placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
         userId = getIntent().getStringExtra(PROFILE_ID);
@@ -106,13 +112,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             btn_follow.setVisibility(View.VISIBLE);
         }
 
-        LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
+        GridLayoutManager challengeLayoutManager = new GridLayoutManager(this, 3);
 
         RecyclerView challenge_list = findViewById(R.id.challenge_list);
         challenge_list.setNestedScrollingEnabled(false);
         challenge_list.setLayoutManager(challengeLayoutManager);
 
-        allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this);
+        allChallengeAdapter = new ChallengeImageAdapter(this, challenge_list, this);
 
         challenge_list.setAdapter(allChallengeAdapter);
 
@@ -128,7 +134,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     userProfile = response.body().getUserProfile();
 
                     if (userProfile != null) {
-                        tv_points.setText(userProfile.getPostCount());
+                        tv_points.setText(userProfile.getPointsCount());
                         tv_post_count.setText(userProfile.getPostCount());
                         tv_follower_count.setText(userProfile.getFollowersCount());
                         tv_following.setText(userProfile.getFollowingCount());
@@ -341,12 +347,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     allChallengeAdapter.removeItem(null);
 
                     for (final PostInfo postInfo : response.body().getPostInfo()) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                allChallengeAdapter.addItem(postInfo);
-                            }
-                        });
+                        String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
+                        new LoadImage().execute(path);
                     }
 
                     from = from + size;
@@ -358,5 +360,26 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 logError(t.getMessage());
             }
         });
+    }
+
+    public class LoadImage extends AsyncTask<String, Void, List<String>> {
+
+
+        @Override
+        protected List<String> doInBackground(String... strings) {
+            String path = strings[0];
+
+            List<String> links = awsClient.getBucket(path);
+
+            return links;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> links) {
+
+            for (String link : links) {
+                allChallengeAdapter.addItem(link);
+            }
+        }
     }
 }
