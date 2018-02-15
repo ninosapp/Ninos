@@ -131,6 +131,7 @@
     <string name="claps">Claps</string>
     <string name="share_to">Share to…</string>
     <string name="unfollow">Unfollow</string>
+    <string name="delete">Delete</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

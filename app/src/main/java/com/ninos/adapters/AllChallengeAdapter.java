@@ -429,6 +429,29 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
 
                             switch (item.getItemId()) {
+                                case R.id.action_delete:
+                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                    service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
+                                        @Override
+                                        public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                            if (response.isSuccessful() && response.body() != null) {
+
+                                                if (postInfo.getLinks().size() > 1) {
+                                                    awsClient.removeImage(postInfo.get_id(), postInfo.getLinks());
+                                                }
+
+                                                removeItem(position);
+                                            } else {
+                                                Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                            Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    break;
                                 case R.id.action_edit:
 
                                     Intent editPostIntent = new Intent(context, EditPostActivity.class);
@@ -512,9 +535,11 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     if (postInfo.getUserId().equals(Database.getUserId())) {
                         menuBuilder.findItem(R.id.action_edit).setVisible(true);
                         menuBuilder.findItem(R.id.action_report).setVisible(false);
+                        menuBuilder.findItem(R.id.action_delete).setVisible(true);
                     } else {
                         menuBuilder.findItem(R.id.action_edit).setVisible(false);
                         menuBuilder.findItem(R.id.action_report).setVisible(true);
+                        menuBuilder.findItem(R.id.action_delete).setVisible(false);
                     }
 
                     MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, view);
