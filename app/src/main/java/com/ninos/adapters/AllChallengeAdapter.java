@@ -1,8 +1,10 @@
 package com.ninos.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
@@ -432,27 +434,44 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                             switch (item.getItemId()) {
                                 case R.id.action_delete:
-                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                    service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                    builder.setTitle(R.string.delete);
+                                    builder.setMessage(R.string.are_you_sure);
+                                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
-                                            if (response.isSuccessful() && response.body() != null) {
-
-                                                if (postInfo.getLinks().size() > 1) {
-                                                    awsClient.removeImage(postInfo.get_id(), postInfo.getLinks());
-                                                }
-
-                                                removeItem(position);
-                                            } else {
-                                                Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
-                                            Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
                                         }
                                     });
+
+                                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                            service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
+                                                @Override
+                                                public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                                    if (response.isSuccessful() && response.body() != null) {
+
+                                                        if (postInfo.getLinks().size() > 1) {
+                                                            awsClient.removeImage(postInfo.get_id(), postInfo.getLinks());
+                                                        }
+
+                                                        removeItem(position);
+                                                    } else {
+                                                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                                    Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    });
+                                    builder.create().show();
+
                                     break;
                                 case R.id.action_edit:
 
