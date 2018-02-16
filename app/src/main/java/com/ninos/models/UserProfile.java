@@ -13,14 +13,14 @@ public class UserProfile {
     private String followingCount;
     private boolean isFollowing;
     private String city;
-    private String pointsCount;
+    private String userPoints;
 
-    public String getPointsCount() {
-        return pointsCount;
+    public String getUserPoints() {
+        return userPoints;
     }
 
-    public void setPointsCount(String pointsCount) {
-        this.pointsCount = pointsCount;
+    public void setUserPoints(String userPoints) {
+        this.userPoints = userPoints;
     }
 
     public String getChildName() {
@@ -98,7 +98,7 @@ public class UserProfile {
                 ", followingCount='" + followingCount + '\'' +
                 ", isFollowing=" + isFollowing +
                 ", city='" + city + '\'' +
-                ", pointsCount='" + pointsCount + '\'' +
+                ", userPoints='" + userPoints + '\'' +
                 '}';
     }
 }

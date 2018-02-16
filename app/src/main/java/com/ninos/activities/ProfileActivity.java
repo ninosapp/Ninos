@@ -134,7 +134,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     userProfile = response.body().getUserProfile();
 
                     if (userProfile != null) {
-                        tv_points.setText(userProfile.getPointsCount());
+                        tv_points.setText(userProfile.getUserPoints());
                         tv_post_count.setText(userProfile.getPostCount());
                         tv_follower_count.setText(userProfile.getFollowersCount());
                         tv_following.setText(userProfile.getFollowingCount());
@@ -154,7 +154,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         });
 
         getPosts();
-
     }
 
     private void updateImage() {
@@ -351,8 +350,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     allChallengeAdapter.removeItem(null);
 
                     for (final PostInfo postInfo : response.body().getPostInfo()) {
-                        String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
-                        new LoadImage().execute(path);
+                        new LoadImage(postInfo).execute();
                     }
 
                     from = from + size;
@@ -368,10 +366,16 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
 
+        private PostInfo postInfo;
+
+        LoadImage(PostInfo postInfo) {
+            this.postInfo = postInfo;
+        }
 
         @Override
         protected List<String> doInBackground(String... strings) {
-            String path = strings[0];
+            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
+
 
             List<String> links = awsClient.getBucket(path);
 
@@ -381,8 +385,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         @Override
         protected void onPostExecute(List<String> links) {
 
-            for (String link : links) {
-                allChallengeAdapter.addItem(link);
+            postInfo.setLinks(links);
+
+            if (links.size() > 0) {
+                allChallengeAdapter.addItem(postInfo);
             }
         }
     }

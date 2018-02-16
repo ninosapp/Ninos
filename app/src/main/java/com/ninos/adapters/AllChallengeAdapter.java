@@ -98,8 +98,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true);
 
-        color_accent = ContextCompat.getColor(this.context, R.color.colorAccent);
-        color_dark_grey = ContextCompat.getColor(this.context, R.color.dark_grey);
+        color_accent = ContextCompat.getColor(context, R.color.colorAccent);
+        color_dark_grey = ContextCompat.getColor(context, R.color.dark_grey);
 
     }
 
