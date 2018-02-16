@@ -8,6 +8,7 @@ import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
 import com.ninos.models.EvaluateResponse;
+import com.ninos.models.FollowingResponse;
 import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
@@ -133,4 +134,11 @@ public interface RetrofitService {
 
     @DELETE("/posts/{postId}")
     Call<Response> deletePost(@Path("postId") String postId, @Query("token") String token);
+
+
+    @GET("/following-users")
+    Call<FollowingResponse> getFollowing(@Query("token") String token);
+
+    @GET("/followers-users")
+    Call<FollowingResponse> getFollowers(@Query("token") String token);
 }

@@ -58,6 +58,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public static final String PROFILE_ID = "PROFILE_ID";
     public static final String PROFILE_PATH = "PROFILE_PATH";
     public static final String IS_PROFILE_UPDATED = "IS_PROFILE_UPDATED";
+    public static final String IS_FOLLOWERS_UPDATED = "IS_FOLLOWERS_UPDATED";
+    public static final String IS_FOLLOWING_UPDATED = "IS_FOLLOWING_UPDATED";
+    public static final String IS_FOLLOW_COUNT = "IS_FOLLOW_COUNT";
+    public static final int IS_FOLLOW_UPDATED = 5469;
     public static final int IMAGE_UPDATED = 5468;
     private static final int RC_STORAGE_PERM = 4523;
     private int placeHolderId;
@@ -74,6 +78,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private UserProfile userProfile;
     private Button btn_follow;
     private AWSClient awsClient;
+    private TextView tv_follower_count, tv_following_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +93,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         tv_name = findViewById(R.id.tv_name);
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
-        final TextView tv_follower_count = findViewById(R.id.tv_follower_count);
-        final TextView tv_following = findViewById(R.id.tv_following);
+        tv_follower_count = findViewById(R.id.tv_follower_count);
+        tv_following_count = findViewById(R.id.tv_following_count);
         final TextView tv_points = findViewById(R.id.tv_points);
         btn_follow = findViewById(R.id.btn_follow);
         btn_follow.setOnClickListener(this);
@@ -98,6 +103,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         rl_progress = findViewById(R.id.rl_progress);
         rl_progress.setVisibility(View.VISIBLE);
         findViewById(R.id.fab_back).setOnClickListener(this);
+        findViewById(R.id.ll_followers).setOnClickListener(this);
+        findViewById(R.id.ll_following).setOnClickListener(this);
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
         iv_profile.setImageBitmap(bm);
@@ -137,7 +144,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         tv_points.setText(userProfile.getUserPoints());
                         tv_post_count.setText(userProfile.getPostCount());
                         tv_follower_count.setText(userProfile.getFollowersCount());
-                        tv_following.setText(userProfile.getFollowingCount());
+                        tv_following_count.setText(userProfile.getFollowingCount());
                         tv_name.setText(userProfile.getChildName());
 
                         updateImage();
@@ -252,6 +259,22 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 }
 
                 break;
+            case R.id.ll_following:
+                if (Database.getUserId().equals(userId)) {
+
+                    Intent followingIntent = new Intent(this, FollowActivity.class);
+                    followingIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWING);
+                    startActivityForResult(followingIntent, IS_FOLLOW_UPDATED);
+                }
+                break;
+            case R.id.ll_followers:
+                if (Database.getUserId().equals(userId)) {
+
+                    Intent followerIntent = new Intent(this, FollowActivity.class);
+                    followerIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWERS);
+                    startActivityForResult(followerIntent, IS_FOLLOW_UPDATED);
+                }
+                break;
             default:
                 addFile();
                 break;
@@ -321,6 +344,21 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         iv_profile.setImageBitmap(bitmap);
                         setBitmapPalette(bitmap);
+                    }
+                }
+                break;
+            case IS_FOLLOW_UPDATED:
+                if (data != null) {
+                    boolean isFollowersUpdated = data.getBooleanExtra(IS_FOLLOWERS_UPDATED, false);
+                    boolean isFollowingUpdated = data.getBooleanExtra(IS_FOLLOWING_UPDATED, false);
+                    String count = data.getStringExtra(IS_FOLLOW_COUNT);
+
+                    if (isFollowersUpdated) {
+                        tv_follower_count.setText(count);
+                    }
+
+                    if (isFollowingUpdated) {
+                        tv_following_count.setText(count);
                     }
                 }
                 break;
