@@ -40,6 +40,7 @@ import com.ninos.views.CircleImageView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.jzvd.JZVideoPlayer;
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final int COMMENT_ADDED = 8526;
     public static final int PROFILE_UPDATED = 8527;
     public static final int QUIZ_COMPLETE = 8528;
+    public static final int POST_UPDATE = 8529;
     private final int RC_STORAGE_PERM = 4531;
     private Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
@@ -296,6 +298,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     if (allChallengeFragment != null && postId != null) {
                         allChallengeFragment.newCommentAdded(postId);
+                    }
+                }
+
+                break;
+            case POST_UPDATE:
+                if (data != null) {
+                    String postId = data.getStringExtra(FilePickerActivity.POST_ID);
+                    String desc = data.getStringExtra(EditPostActivity.DESCRIPTION);
+                    ArrayList<String> links = data.getStringArrayListExtra(EditPostActivity.LINKS);
+
+                    if (allChallengeFragment != null && postId != null) {
+                        allChallengeFragment.postUpdated(postId, desc, links);
                     }
                 }
 

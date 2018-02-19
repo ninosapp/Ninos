@@ -22,6 +22,7 @@ import com.ninos.utils.AWSClient;
 import com.ninos.utils.BadWordUtil;
 import com.ninos.utils.PreferenceUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,6 +33,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
 
     public static final String POST_ID = "POST_ID";
     public static final String DESCRIPTION = "DESCRIPTION";
+    public static final String LINKS = "LINKS";
     public static final String PATHS = "PATHS";
     private TextView tv_description;
     private PostInfo postInfo;
@@ -150,7 +152,9 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
 
                                 Intent intent = new Intent();
                                 intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
-                                setResult(MainActivity.COMMENT_ADDED, intent);
+                                intent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
+                                intent.putExtra(EditPostActivity.LINKS, new ArrayList<>(uploadAdapter.getDeletedLinks()));
+                                setResult(MainActivity.POST_UPDATE, intent);
                                 finish();
                             }
                         }

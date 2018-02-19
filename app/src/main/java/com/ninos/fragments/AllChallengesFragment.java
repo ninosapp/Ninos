@@ -28,6 +28,7 @@ import com.ninos.models.Quizze;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.PreferenceUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -287,6 +288,25 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             if (quizze.get_id().equals(quizId)) {
                 quizze.setQuizTaken(true);
                 quizAdapter.updateItem(i, quizze);
+                break;
+            }
+        }
+    }
+
+    public void postUpdated(String postId, String desc, ArrayList<String> links) {
+        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+            PostInfo postInfo = allChallengeAdapter.getItem(i);
+
+            if (postInfo.get_id().equals(postId)) {
+                postInfo.setTitle(desc);
+                RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                allChallengeAdapter.updateTitle(viewHolder, desc);
+
+                if (links.size() > 0) {
+                    postInfo.setLinks(links);
+                    allChallengeAdapter.updateItem(i, postInfo);
+                }
+
                 break;
             }
         }

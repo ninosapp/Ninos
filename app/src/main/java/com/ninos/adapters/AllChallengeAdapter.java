@@ -223,6 +223,15 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
+    public void updateTitle(RecyclerView.ViewHolder viewHolder, String title) {
+        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+
+        if (challengeViewHolder != null) {
+            challengeViewHolder.tv_title.setText(title);
+            challengeViewHolder.tv_title.setVisibility(View.VISIBLE);
+        }
+    }
+
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_msg;
         ImageView ic_clap_anim, iv_clap, iv_menu;
@@ -473,7 +482,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                     editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                     editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                     editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                    activity.startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
+                                    activity.startActivityForResult(editPostIntent, MainActivity.POST_UPDATE);
 
                                     break;
                                 case R.id.action_report:

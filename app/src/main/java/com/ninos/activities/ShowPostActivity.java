@@ -474,7 +474,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                                 editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                 editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                 editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
+                                startActivityForResult(editPostIntent, MainActivity.POST_UPDATE);
 
                                 break;
                             case R.id.action_report:
