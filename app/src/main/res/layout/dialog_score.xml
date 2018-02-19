@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
     <android.support.design.widget.FloatingActionButton
@@ -15,21 +15,36 @@
         android:src="@drawable/ic_close"
         app:backgroundTint="@android:color/white" />
 
-    <ImageView
-        android:id="@+id/iv_image"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_score" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_congrats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_congrats" />
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:src="@drawable/ic_score" />
+    </RelativeLayout>
 
 
     <com.ninos.views.FontTextView
         android:id="@+id/tv_score_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_your_score"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="94dp"
         android:text="@string/_0"
         android:textColor="#495a79"
         android:textSize="36sp"
@@ -37,9 +52,10 @@
         tools:text="2" />
 
     <com.ninos.views.FontTextView
+        android:id="@+id/tv_your_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_image"
+        android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin8dp"
         android:background="@android:color/white"
