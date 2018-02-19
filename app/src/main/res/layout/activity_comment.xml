@@ -11,10 +11,18 @@
         android:layout_height="match_parent"
         android:background="@android:color/white">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/margin16dp"
+            android:src="@drawable/ic_back" />
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:gravity="center"
             android:text="@string/comments"
             android:textColor="@color/colorAccent"

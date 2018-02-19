@@ -76,6 +76,8 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
             }
         });
+
+        findViewById(R.id.iv_back).setOnClickListener(this);
     }
 
     @Override
@@ -85,6 +87,9 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         switch (id) {
             case R.id.iv_add_comment:
                 addComment();
+                break;
+            case R.id.iv_back:
+                onBackPressed();
                 break;
         }
     }

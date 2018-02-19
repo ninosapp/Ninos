@@ -89,7 +89,7 @@
     <string name="exit_quiz_message">Quiz progress will be lost.</string>
     <string name="offensive_words">About contains offensive words.</string>
     <string name="accept">Accept</string>
-    <string name="user_warn">Do not post bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Make this app a safe place for children.</string>
+    <string name="user_warn">you will be blocked if you upload bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Your post should display talent. Make this app a safe place for children.</string>
     <string name="notifications">Notifications</string>
     <string name="starting_quiz">Starting quiz…</string>
     <string name="your_score">Your Score</string>

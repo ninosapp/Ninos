@@ -78,16 +78,34 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
             switch (quizze.getTitle().toLowerCase()) {
                 default:
                 case "general knowledge":
-                    drawableId = R.drawable.gk;
+                    drawableId = R.drawable.ic_gk;
                     break;
                 case "science":
-                    drawableId = R.drawable.science;
+                    drawableId = R.drawable.ic_science;
                     break;
                 case "technology":
-                    drawableId = R.drawable.technology;
+                    drawableId = R.drawable.ic_technology;
                     break;
                 case "sports":
-                    drawableId = R.drawable.sports;
+                    drawableId = R.drawable.ic_sports;
+                    break;
+                case "english":
+                    drawableId = R.drawable.ic_english;
+                    break;
+                case "entertainment":
+                    drawableId = R.drawable.ic_entertainment;
+                    break;
+                case "india":
+                    drawableId = R.drawable.ic_india;
+                    break;
+                case "numbers":
+                    drawableId = R.drawable.ic_numbers;
+                    break;
+                case "puzzles":
+                    drawableId = R.drawable.ic_puzzles;
+                    break;
+                case "social science":
+                    drawableId = R.drawable.ic_social_science;
                     break;
             }
 

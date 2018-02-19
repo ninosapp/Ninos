@@ -19,7 +19,7 @@
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin8dp"
-        android:src="@drawable/gk" />
+        android:src="@drawable/ic_gk" />
 
     <TextView
         android:id="@+id/tv_quiz_name"
