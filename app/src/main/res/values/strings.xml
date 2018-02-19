@@ -40,7 +40,6 @@
     <string name="profile_aws_url_suffix_PI128">/PI128.png</string>
     <string name="profile_aws_url_suffix_PI64">/PI64.png</string>
     <string name="profile_aws_url_suffix_PI192">/PI192.png</string>
-    <string name="profile_aws_url_suffix_PI256">/PI256.png</string>
     <string name="profile_aws_url_suffix_PI512">/PI512.png</string>
     <string name="comments">Comments</string>
     <string name="leave_a_comment">Leave a comment…</string>
@@ -138,6 +137,7 @@
     <string name="share_post"> has shared you a post from Ninos App. Click the following link to open it.   \n\nhttp://ninosapp.in/?postId=</string>
     <string name="encorage">\n\n Encourage children\'s talent &amp; creativity on Ninos App.</string>
     <string name="mail_us_dob_edit">For DOB change mail us info@ninosapp.in</string>
+    <string name="finished">finished</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

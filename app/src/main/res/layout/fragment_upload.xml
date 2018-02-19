@@ -48,7 +48,6 @@
             android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             android:hint="@string/about"
-            android:inputType="textCapWords|textMultiLine"
             android:padding="@dimen/margin16dp"
             android:textColor="@color/midnight_blue"
             android:textSize="18sp" />

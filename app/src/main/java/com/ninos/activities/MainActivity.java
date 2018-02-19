@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.ninos.R;
 import com.ninos.firebase.Database;
 import com.ninos.fragments.AllChallengesFragment;
@@ -112,12 +114,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void updateProfile() {
         tv_user_name.setText(PreferenceUtil.getUserName(this));
         tv_user_email.setText(PreferenceUtil.getUserEmail(this));
+        iv_nav_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_account));
+        iv_profile.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_account));
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_account)
                 .centerCrop()
                 .error(R.drawable.ic_account)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
                 .skipMemoryCache(true);
 
         Glide.with(this)

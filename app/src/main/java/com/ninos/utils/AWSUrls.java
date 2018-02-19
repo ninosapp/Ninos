@@ -42,18 +42,6 @@ public class AWSUrls {
         return imageUrl;
     }
 
-    /**
-     * User 256X256 resolution image url
-     *
-     * @param context in which class the method is invoked
-     * @param userId  id of user
-     * @return
-     */
-    public static String GetPI256(Context context, String userId) {
-        String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI512);
-        return imageUrl;
-    }
-
     public static String GetPI512(Context context, String userId) {
         String imageUrl = "https://s3.amazonaws.com/" + BuildConfig.ams_profile_bucket + "/" + userId + context.getResources().getString(R.string.profile_aws_url_suffix_PI512);
         return imageUrl;

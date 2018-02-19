@@ -186,7 +186,7 @@ public class AWSClient {
                             mBitmap = BitmapFactory.decodeFile(file.getPath());
                             String userId = Database.getUserId();
                             File path256 = resizeImage(256);
-                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI256), path256, CannedAccessControlList.PublicRead);
+                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path256, CannedAccessControlList.PublicRead);
                             mTransfer.setTransferListener(new UploadListener());
                         }
                     }, new Consumer<Throwable>() {

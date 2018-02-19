@@ -1,6 +1,8 @@
 package com.ninos.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,11 +23,11 @@ import java.util.List;
 
 public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
-    private Context mContext;
+    private Context context;
     private List<String> deletedLinks;
 
     public EditPostAdapter(Context context) {
-        mContext = context;
+        this.context = context;
         deletedLinks = new ArrayList<>();
     }
 
@@ -60,7 +62,7 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
         private void bindData(int position) {
             String path = getItem(position);
-            Glide.with(mContext).load(path).into(iv_image);
+            Glide.with(context).load(path).into(iv_image);
 
             if (getItemCount() == 1) {
                 fab_delete.setVisibility(View.GONE);
@@ -71,12 +73,28 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
         @Override
         public void onClick(View view) {
-            String item = getItem(getAdapterPosition());
+            final String item = getItem(getAdapterPosition());
+
             if (getItemCount() > 1) {
-                deletedLinks.add(item);
-                removeItem(item);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                        .setMessage(R.string.are_you_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deletedLinks.add(item);
+                                removeItem(item);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+
             } else {
-                Toast.makeText(mContext, R.string.cannot_delete_image, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.cannot_delete_image, Toast.LENGTH_SHORT).show();
             }
         }
     }

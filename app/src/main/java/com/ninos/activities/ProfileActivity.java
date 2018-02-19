@@ -182,7 +182,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)
                 .asBitmap()
-                .load(AWSUrls.GetPI256(ProfileActivity.this, userId))
+                .load(AWSUrls.GetPI512(ProfileActivity.this, userId))
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {

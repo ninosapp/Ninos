@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,8 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
     private QuestionsAdapter questionsAdapter;
     private ViewPager view_pager;
     private TabLayout tabLayout;
-    private ImageView iv_previous, iv_next, iv_done;
+    private ImageView iv_previous, iv_next;
+    private AppCompatButton btn_done;
 
     public static QuizFragment newInstance(String quizId, int duration, String title, String evaluationId) {
         QuizFragment quizFragment = new QuizFragment();
@@ -101,13 +103,15 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             mTimeCounter = new TimeCounter(duration);
 
             iv_previous = view.findViewById(R.id.iv_previous);
+            iv_previous.setVisibility(View.GONE);
             iv_previous.setOnClickListener(this);
 
             iv_next = view.findViewById(R.id.iv_next);
             iv_next.setOnClickListener(this);
 
-            iv_done = view.findViewById(R.id.iv_done);
-            iv_done.setOnClickListener(this);
+            btn_done = view.findViewById(R.id.btn_done);
+            btn_done.setVisibility(View.GONE);
+            btn_done.setOnClickListener(this);
 
             view_pager = view.findViewById(R.id.view_pager);
             view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -124,12 +128,19 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                         count = questionsAdapter.getCount();
                     }
 
+                    if (count == 1) {
+                        iv_next.setVisibility(View.VISIBLE);
+                        btn_done.setVisibility(View.GONE);
+                        iv_previous.setVisibility(View.GONE);
+                    }
                     if (position == count - 1) {
                         iv_next.setVisibility(View.GONE);
-                        iv_done.setVisibility(View.VISIBLE);
+                        btn_done.setVisibility(View.VISIBLE);
+                        iv_previous.setVisibility(View.VISIBLE);
                     } else {
+                        iv_previous.setVisibility(View.VISIBLE);
                         iv_next.setVisibility(View.VISIBLE);
-                        iv_done.setVisibility(View.GONE);
+                        btn_done.setVisibility(View.GONE);
                     }
                 }
 
@@ -210,7 +221,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             case R.id.iv_next:
                 view_pager.setCurrentItem(view_pager.getCurrentItem() + 1, true);
                 break;
-            case R.id.iv_done:
+            case R.id.btn_done:
                 submitQuiz();
                 break;
         }
@@ -288,6 +299,8 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                             dialog.setCancelable(false);
                             dialog.show();
                         }
+                    } else {
+                        finishActivity();
                     }
                 }
 
