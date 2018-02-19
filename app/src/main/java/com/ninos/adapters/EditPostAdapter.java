@@ -1,6 +1,7 @@
 package com.ninos.adapters;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,13 +48,14 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
     }
 
     private class EditPostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView iv_image, iv_delete;
+        ImageView iv_image;
+        FloatingActionButton fab_delete;
 
         EditPostViewHolder(View itemView) {
             super(itemView);
             iv_image = itemView.findViewById(R.id.iv_image);
-            iv_delete = itemView.findViewById(R.id.iv_delete);
-            iv_delete.setOnClickListener(this);
+            fab_delete = itemView.findViewById(R.id.fab_delete);
+            fab_delete.setOnClickListener(this);
         }
 
         private void bindData(int position) {
@@ -61,16 +63,16 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
             Glide.with(mContext).load(path).into(iv_image);
 
             if (getItemCount() == 1) {
-                iv_delete.setVisibility(View.GONE);
+                fab_delete.setVisibility(View.GONE);
             } else {
-                iv_delete.setVisibility(View.VISIBLE);
+                fab_delete.setVisibility(View.VISIBLE);
             }
         }
 
         @Override
         public void onClick(View view) {
             String item = getItem(getAdapterPosition());
-            if (getItemCount() > 2) {
+            if (getItemCount() > 1) {
                 deletedLinks.add(item);
                 removeItem(item);
             } else {
