@@ -87,7 +87,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
         tv_description = findViewById(R.id.tv_description);
         tv_description.setText(description);
 
-        findViewById(R.id.fab_upload).setOnClickListener(this);
+        findViewById(R.id.btn_upload).setOnClickListener(this);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
             case R.id.tv_cancel:
                 onBackPressed();
                 break;
-            case R.id.fab_upload:
+            case R.id.btn_upload:
                 String desc = tv_description.getText().toString().trim();
                 boolean hasBadWords = false;
 

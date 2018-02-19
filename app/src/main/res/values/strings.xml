@@ -138,6 +138,7 @@
     <string name="encorage">\n\n Encourage children\'s talent &amp; creativity on Ninos App.</string>
     <string name="mail_us_dob_edit">For DOB change mail us info@ninosapp.in</string>
     <string name="finished">finished</string>
+    <string name="update">Update</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
