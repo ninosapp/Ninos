@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.ninos.R;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.QuizActivity;
+import com.ninos.activities.QuizViewActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.EvaluateResult;
@@ -73,6 +75,12 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
             Quizze quizze = getItem(position);
             tv_quiz_name.setText(quizze.getTitle());
 
+            if (quizze.isQuizTaken()) {
+                tv_quiz_name.setTextColor(Color.GRAY);
+            } else {
+                tv_quiz_name.setTextColor(Color.BLACK);
+            }
+
             int drawableId;
 
             switch (quizze.getTitle().toLowerCase()) {
@@ -107,6 +115,9 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
                 case "social science":
                     drawableId = R.drawable.ic_social_science;
                     break;
+                case "more":
+                    drawableId = R.drawable.ic_more;
+                    break;
             }
 
             iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(context, drawableId));
@@ -116,51 +127,56 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
         public void onClick(View view) {
             Quizze quizze = getItem(getAdapterPosition());
 
-            if (quizze.isQuizTaken()) {
-                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                service.getQuizResult(quizze.get_id(), Database.getUserId(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<QuizEvaluateResultResponse>() {
-                    @Override
-                    public void onResponse(Call<QuizEvaluateResultResponse> call, Response<QuizEvaluateResultResponse> response) {
-                        if (response.body() != null) {
-                            final Dialog dialog = new Dialog(context);
-                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                            if (dialog.getWindow() != null) {
-                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                            }
-
-                            dialog.setContentView(R.layout.dialog_score);
-                            TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
-
-                            EvaluateResult eInfo = response.body().getEvaluateResult();
-
-                            if (eInfo != null) {
-                                tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
-                            }
-
-                            dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            dialog.setCancelable(false);
-                            dialog.show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<QuizEvaluateResultResponse> call, Throwable t) {
-                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            if (quizze.get_id().equals("more")) {
+                Intent intent = new Intent(context, QuizViewActivity.class);
+                context.startActivity(intent);
             } else {
-                Intent intent = new Intent(context, QuizActivity.class);
-                intent.putExtra(QuizActivity.QUIZ_ID, quizze.get_id());
-                intent.putExtra(QuizActivity.QUIZ_DURATION, quizze.getDuration());
-                intent.putExtra(QuizActivity.QUIZ_TITLE, quizze.getTitle());
-                activity.startActivityForResult(intent, MainActivity.QUIZ_COMPLETE);
+                if (quizze.isQuizTaken()) {
+                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.getQuizResult(quizze.get_id(), Database.getUserId(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<QuizEvaluateResultResponse>() {
+                        @Override
+                        public void onResponse(Call<QuizEvaluateResultResponse> call, Response<QuizEvaluateResultResponse> response) {
+                            if (response.body() != null) {
+                                final Dialog dialog = new Dialog(context);
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                                if (dialog.getWindow() != null) {
+                                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                }
+
+                                dialog.setContentView(R.layout.dialog_score);
+                                TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
+
+                                EvaluateResult eInfo = response.body().getEvaluateResult();
+
+                                if (eInfo != null) {
+                                    tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
+                                }
+
+                                dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                dialog.setCancelable(false);
+                                dialog.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<QuizEvaluateResultResponse> call, Throwable t) {
+                            Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Intent intent = new Intent(context, QuizActivity.class);
+                    intent.putExtra(QuizActivity.QUIZ_ID, quizze.get_id());
+                    intent.putExtra(QuizActivity.QUIZ_DURATION, quizze.getDuration());
+                    intent.putExtra(QuizActivity.QUIZ_TITLE, quizze.getTitle());
+                    activity.startActivityForResult(intent, MainActivity.QUIZ_COMPLETE);
+                }
             }
         }
     }

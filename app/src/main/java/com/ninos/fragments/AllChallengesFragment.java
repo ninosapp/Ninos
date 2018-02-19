@@ -157,6 +157,14 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     for (Quizze quizze : quizzes) {
                         quizAdapter.addItem(quizze);
                     }
+
+//                    if (quizzes.size() >= 10) {
+                    Quizze quizze = new Quizze();
+                    quizze.setQuizTaken(false);
+                    quizze.setTitle("More");
+                    quizze.set_id("more");
+                    quizAdapter.addItem(quizze);
+//                    }
                 }
 
             }

@@ -139,6 +139,9 @@
     <string name="mail_us_dob_edit">For DOB change mail us info@ninosapp.in</string>
     <string name="finished">finished</string>
     <string name="update">Update</string>
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="no_quiz_in_this_category">No quiz in this category</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
