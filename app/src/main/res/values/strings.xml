@@ -142,6 +142,7 @@
     <string name="active">Active</string>
     <string name="completed">Completed</string>
     <string name="no_quiz_in_this_category">No quiz in this category</string>
+    <string name="posted_in_challenge"><b>%s</b> posted in <b>%s</b> challenge></string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

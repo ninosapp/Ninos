@@ -259,7 +259,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(ShowPostActivity.this, R.drawable.pattern_11);
+                ImageAdapter imageAdapter = new ImageAdapter(ShowPostActivity.this, R.drawable.pattern_11, postInfo.get_id());
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {

@@ -18,12 +18,11 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -45,6 +44,7 @@ import com.ninos.activities.CommentActivity;
 import com.ninos.activities.EditPostActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
+import com.ninos.activities.ShowPostActivity;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
@@ -224,7 +224,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     }
 
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment;
+        TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_msg;
         ImageView ic_clap_anim, iv_clap, iv_menu;
         CircleImageView iv_profile;
         RecyclerView recyclerView;
@@ -232,7 +232,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         View itemView;
         RelativeLayout rl_challenge;
         JZVideoPlayerStandard video_view;
-        GestureDetector gd;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -250,6 +249,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             ll_comment = itemView.findViewById(R.id.ll_comment);
             ll_share = itemView.findViewById(R.id.ll_share);
             ll_options = itemView.findViewById(R.id.ll_options);
+            tv_msg = itemView.findViewById(R.id.tv_msg);
+            itemView.setOnClickListener(this);
             iv_menu.setOnClickListener(this);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
@@ -261,6 +262,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             video_view.mRetryLayout.setVisibility(View.GONE);
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
+            rl_challenge.setOnClickListener(this);
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -276,6 +278,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             } else {
                 tv_title.setText(postInfo.getTitle().trim());
                 tv_title.setVisibility(View.VISIBLE);
+            }
+
+            if (postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
+                String msg = String.format(context.getString(R.string.posted_in_challenge), postInfo.getUserName(), postInfo.getChallengeTitle());
+                tv_msg.setText(Html.fromHtml(msg));
+                tv_msg.setVisibility(View.VISIBLE);
+            } else {
+                tv_msg.setVisibility(View.GONE);
             }
 
             if (postInfo.getCreatedAt() != null) {
@@ -317,7 +327,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(context, resId);
+                ImageAdapter imageAdapter = new ImageAdapter(context, resId, postInfo.get_id());
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -339,32 +349,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     .into(iv_profile);
 
             setClap(postInfo, iv_clap, tv_clap);
-
-
-            gd = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onDown(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-
-                    clapAnimation(postInfo);
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    super.onLongPress(e);
-
-                }
-
-                @Override
-                public boolean onDoubleTapEvent(MotionEvent e) {
-                    return true;
-                }
-            });
         }
 
         private void clapAnimation(final PostInfo postInfo) {
@@ -403,6 +387,13 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             final PostInfo postInfo = getItem(position);
 
             switch (id) {
+                case R.id.rl_challenge:
+                default:
+                    Intent showPostIntent = new Intent(context, ShowPostActivity.class);
+                    showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, postInfo.get_id());
+                    context.startActivity(showPostIntent);
+                    break;
+
                 case R.id.tv_name:
                 case R.id.iv_profile:
                     Intent intent = new Intent(context, ProfileActivity.class);
@@ -411,11 +402,13 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     intent.putExtra(ProfileActivity.PROFILE_ID, postInfo.getUserId());
                     context.startActivity(intent);
                     break;
+
                 case R.id.ll_comment:
                     Intent commentIntent = new Intent(context, CommentActivity.class);
                     commentIntent.putExtra(CommentActivity.POST_ID, postInfo.get_id());
                     activity.startActivityForResult(commentIntent, MainActivity.COMMENT_ADDED);
                     break;
+
                 case R.id.ll_clap:
                 case R.id.iv_clap:
                     clapAnimation(postInfo);
@@ -426,6 +419,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         addClap(postInfo, iv_clap, tv_clap);
                     }
                     break;
+
                 case R.id.iv_menu:
                     MenuBuilder menuBuilder = new MenuBuilder(context);
                     menuBuilder.setCallback(new MenuBuilder.Callback() {
@@ -567,6 +561,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     optionsMenu.setForceShowIcon(true);
                     optionsMenu.show();
                     break;
+
                 case R.id.ll_share:
                     String text = PreferenceUtil.getUserName(context) + " " + context.getString(R.string.share_post) + postInfo.get_id() + context.getString(R.string.encorage);
                     Intent sendIntent = new Intent();
