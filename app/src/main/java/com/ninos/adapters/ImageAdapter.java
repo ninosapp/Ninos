@@ -1,5 +1,6 @@
 package com.ninos.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.activities.MainActivity;
 import com.ninos.activities.ShowPostActivity;
 
 /**
@@ -22,10 +24,12 @@ import com.ninos.activities.ShowPostActivity;
 public class ImageAdapter extends CommonRecyclerAdapter<String> {
 
     private Context context;
+    private Activity activity;
     private int resId;
     private String postId;
 
-    public ImageAdapter(Context context, int resId, String postId) {
+    public ImageAdapter(Context context, Activity activity, int resId, String postId) {
+        this.activity = activity;
         this.context = context;
         this.resId = resId;
         this.postId = postId;
@@ -56,7 +60,7 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
 
         private void bindData(int position) {
             String path = getItem(position);
-            iv_challenge.setImageDrawable(ContextCompat.getDrawable(context, resId));
+            iv_challenge.setImageDrawable(ContextCompat.getDrawable(activity, resId));
 
             RequestOptions requestOptions = new RequestOptions()
                     .placeholder(resId)
@@ -64,16 +68,16 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
                     .fallback(resId)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-            Glide.with(context)
+            Glide.with(activity)
                     .setDefaultRequestOptions(requestOptions)
                     .load(path).into(iv_challenge);
         }
 
         @Override
         public void onClick(View v) {
-            Intent showPostIntent = new Intent(context, ShowPostActivity.class);
+            Intent showPostIntent = new Intent(activity, ShowPostActivity.class);
             showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, postId);
-            context.startActivity(showPostIntent);
+            activity.startActivityForResult(showPostIntent, MainActivity.POST_UPDATE);
         }
     }
 }

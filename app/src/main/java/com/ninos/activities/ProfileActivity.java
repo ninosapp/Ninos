@@ -215,7 +215,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         intent.putExtra(IS_PROFILE_UPDATED, isProfileUpdated);
         setResult(MainActivity.PROFILE_UPDATED, intent);
         finish();
-
     }
 
     @Override

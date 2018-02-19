@@ -76,6 +76,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private JZVideoPlayerStandard video_view;
     private String accessToken;
     private int color_accent, color_dark_grey;
+    private boolean isUpdated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         } else {
                             addClap(postInfo, iv_clap, tv_clap);
                         }
+
+                        isUpdated = true;
                     }
                 });
 
@@ -259,7 +262,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(ShowPostActivity.this, R.drawable.pattern_11, postInfo.get_id());
+                ImageAdapter imageAdapter = new ImageAdapter(ShowPostActivity.this, this, R.drawable.pattern_11, postInfo.get_id());
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -404,6 +407,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
                     commentAdapter.resetItems();
                     getComments(postId);
+                    isUpdated = true;
                 }
 
                 break;
@@ -474,7 +478,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                                 editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                 editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                 editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                startActivityForResult(editPostIntent, MainActivity.POST_UPDATE);
+                                startActivityForResult(editPostIntent, MainActivity.POST_EDIT);
 
                                 break;
                             case R.id.action_report:
@@ -582,6 +586,17 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isUpdated) {
+            Intent intent = new Intent();
+            intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+            setResult(MainActivity.POST_UPDATE, intent);
+        }
+
+        finish();
     }
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {

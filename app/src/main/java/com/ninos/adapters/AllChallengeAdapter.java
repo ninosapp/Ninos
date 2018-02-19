@@ -336,7 +336,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(context, resId, postInfo.get_id());
+                ImageAdapter imageAdapter = new ImageAdapter(context, activity, resId, postInfo.get_id());
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -400,7 +400,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 default:
                     Intent showPostIntent = new Intent(context, ShowPostActivity.class);
                     showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, postInfo.get_id());
-                    context.startActivity(showPostIntent);
+                    activity.startActivityForResult(showPostIntent, MainActivity.POST_UPDATE);
                     break;
 
                 case R.id.tv_name:
@@ -482,7 +482,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                     editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
                                     editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
                                     editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                    activity.startActivityForResult(editPostIntent, MainActivity.POST_UPDATE);
+                                    activity.startActivityForResult(editPostIntent, MainActivity.POST_EDIT);
 
                                     break;
                                 case R.id.action_report:

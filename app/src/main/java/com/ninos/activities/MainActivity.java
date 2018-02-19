@@ -54,7 +54,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final int COMMENT_ADDED = 8526;
     public static final int PROFILE_UPDATED = 8527;
     public static final int QUIZ_COMPLETE = 8528;
-    public static final int POST_UPDATE = 8529;
+    public static final int POST_EDIT = 8529;
+    public static final int POST_UPDATE = 3651;
     private final int RC_STORAGE_PERM = 4531;
     private Fragment challengeFragment;
     private ImageView iv_home, iv_challenges;
@@ -292,6 +293,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         allChallengeFragment.newPostAdded(postId);
                     }
                 }
+            case POST_UPDATE:
+                if (data != null) {
+                    String postId = data.getStringExtra(FilePickerActivity.POST_ID);
+
+                    if (allChallengeFragment != null && postId != null) {
+                        allChallengeFragment.newPostAdded(postId);
+                        allChallengeFragment.newCommentAdded(postId);
+                    }
+                }
+                break;
             case COMMENT_ADDED:
                 if (data != null) {
                     String postId = data.getStringExtra(FilePickerActivity.POST_ID);
@@ -302,7 +313,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
 
                 break;
-            case POST_UPDATE:
+            case POST_EDIT:
                 if (data != null) {
                     String postId = data.getStringExtra(FilePickerActivity.POST_ID);
                     String desc = data.getStringExtra(EditPostActivity.DESCRIPTION);

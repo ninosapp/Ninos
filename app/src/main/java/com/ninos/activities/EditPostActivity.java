@@ -154,7 +154,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
                                 intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
                                 intent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
                                 intent.putExtra(EditPostActivity.LINKS, new ArrayList<>(uploadAdapter.getDeletedLinks()));
-                                setResult(MainActivity.POST_UPDATE, intent);
+                                setResult(MainActivity.POST_EDIT, intent);
                                 finish();
                             }
                         }
