@@ -32,15 +32,12 @@
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="2dp" />
 
-                <com.ninos.views.FontTextView
+                <ImageView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    app:fontValue="noraviyel.ttf" />
+                    android:background="@drawable/ic_tool_bar_logo" />
 
                 <ImageView
                     android:id="@+id/iv_search"

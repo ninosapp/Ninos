@@ -1,38 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/colorAccent"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:padding="@dimen/margin16dp">
+    android:background="@color/colorAccent">
 
-    <com.ninos.views.CircleImageView
-        android:id="@+id/iv_nav_image"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/ic_account"
-        app:civ_border_color="@android:color/white"
-        app:civ_border_overlay="false"
-        app:civ_border_width="2dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="176dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin8dp"
+        android:background="@drawable/ic_nav_logo" />
 
-    <TextView
-        android:id="@+id/tv_user_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:textColor="@android:color/white"
-        tools:text="Android Studio" />
+        android:layout_height="@dimen/nav_header_height"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="@dimen/margin16dp">
 
-    <TextView
-        android:id="@+id/tv_user_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/silver"
-        tools:text="android.studio@android.com" />
+        <com.ninos.views.CircleImageView
+            android:id="@+id/iv_nav_image"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/ic_account"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_overlay="false"
+            app:civ_border_width="2dp"
+            app:srcCompat="@mipmap/ic_launcher_round" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textColor="@android:color/white"
+            tools:text="Android Studio" />
+
+        <TextView
+            android:id="@+id/tv_user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/silver"
+            tools:text="android.studio@android.com" />
+
+    </LinearLayout>
+</RelativeLayout>
+
