@@ -75,21 +75,37 @@
             android:layout_marginTop="@dimen/margin8dp"
             android:background="@color/silver" />
 
-        <TextView
-            android:id="@+id/tv_dob"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="@dimen/margin8dp"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_cake"
-            android:drawablePadding="@dimen/margin16dp"
-            android:drawableStart="@drawable/ic_cake"
-            android:gravity="center_vertical"
-            android:hint="@string/date_of_birth"
-            android:maxLines="1"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            tools:text="May 06, 1994" />
+            android:layout_marginTop="@dimen/margin8dp">
+
+            <TextView
+                android:id="@+id/tv_dob"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_cake"
+                android:drawablePadding="@dimen/margin16dp"
+                android:drawableStart="@drawable/ic_cake"
+                android:gravity="center_vertical"
+                android:hint="@string/date_of_birth"
+                android:maxLines="1"
+                android:textColor="@color/dark_grey"
+                android:textSize="18sp"
+                tools:text="May 06, 1994" />
+
+            <ImageView
+                android:id="@+id/iv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_info" />
+
+        </RelativeLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -131,7 +147,7 @@
             android:gravity="center_vertical"
             android:hint="@string/email"
             android:maxLines="1"
-            android:textColor="@android:color/black"
+            android:textColor="@color/dark_grey"
             android:textSize="18sp"
             tools:text="meesalasumanth1@gmail.com" />
 

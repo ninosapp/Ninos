@@ -65,6 +65,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         tv_gender = findViewById(R.id.tv_gender);
         tv_dob = findViewById(R.id.tv_dob);
         tv_email = findViewById(R.id.tv_email);
+        findViewById(R.id.iv_info).setOnClickListener(this);
 
         tv_gender.setOnClickListener(this);
         findViewById(R.id.tv_save).setOnClickListener(this);
@@ -182,6 +183,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                         }
                     });
                 }
+                break;
+            case R.id.iv_info:
+                showToast(R.string.mail_us_dob_edit);
                 break;
         }
     }
