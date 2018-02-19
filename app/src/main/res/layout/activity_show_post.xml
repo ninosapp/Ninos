@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,23 +10,79 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:descendantFocusability="blocksDescendants"
-        tools:context="com.ninos.activities.ProfileActivity">
+        android:paddingTop="@dimen/margin6dp">
+
+        <com.ninos.views.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="@dimen/margin6dp"
+            android:layout_marginStart="@dimen/margin6dp"
+            android:paddingBottom="@dimen/margin4dp"
+            android:paddingTop="@dimen/margin4dp" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin6dp"
+            android:layout_marginStart="@dimen/margin6dp"
+            android:layout_toEndOf="@+id/iv_profile"
+            android:layout_toRightOf="@+id/iv_profile"
+            android:orientation="vertical"
+            android:paddingTop="6dp">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/app_name"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_created_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="12sp"
+                tools:text="May 06, 2017" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/margin8dp"
+            android:src="@drawable/ic_menu" />
 
         <RelativeLayout
-            android:id="@+id/rl_post"
+            android:id="@+id/rl_challenge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_profile"
+            android:layout_marginTop="@dimen/margin4dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true">
 
             <cn.jzvd.JZVideoPlayerStandard
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:layout_marginTop="@dimen/margin8dp"
                 android:background="@android:color/white" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/image_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin8dp"
+                android:background="@android:color/white"
                 android:clipToPadding="false"
                 android:minHeight="300dp"
                 android:scrollbars="vertical" />
@@ -41,122 +96,128 @@
                 android:src="@drawable/ic_clap_anim"
                 android:visibility="invisible"
                 tools:visibility="visible" />
+
         </RelativeLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin16dp"
-            android:src="@drawable/ic_back"
-            android:tint="@color/dark_grey"
-            app:backgroundTint="@android:color/white"
-            app:elevation="8dp"
-            app:fabSize="mini" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <LinearLayout
+            android:id="@+id/ll_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_post"
-            android:paddingBottom="@dimen/margin6dp"
-            android:paddingEnd="@dimen/margin16dp"
-            android:paddingStart="@dimen/margin16dp"
-            android:paddingTop="@dimen/margin6dp">
+            android:layout_below="@+id/rl_challenge"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_clap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:drawableLeft="@drawable/ic_clap"
-                android:drawablePadding="@dimen/margin8dp"
-                android:drawableStart="@drawable/ic_clap"
-                android:paddingBottom="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin8dp"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                tools:text="24" />
-
-            <TextView
-                android:id="@+id/tv_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_clap"
-                android:layout_toRightOf="@+id/tv_clap"
-                android:drawableLeft="@drawable/ic_comment"
-                android:drawablePadding="@dimen/margin8dp"
-                android:drawableStart="@drawable/ic_comment"
-                android:paddingBottom="@dimen/margin8dp"
-                android:paddingTop="@dimen/margin8dp"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                tools:text="24" />
-
-            <com.ninos.views.CircleImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:paddingBottom="@dimen/margin4dp"
-                android:paddingTop="@dimen/margin4dp"
-                android:src="@drawable/ic_account" />
-
-            <LinearLayout
-                android:id="@+id/ll_profile"
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_comment"
-                android:layout_toLeftOf="@+id/iv_profile"
-                android:layout_toRightOf="@+id/tv_comment"
-                android:layout_toStartOf="@+id/iv_profile"
-                android:gravity="end"
-                android:orientation="vertical"
-                android:paddingTop="6dp">
+                android:layout_marginLeft="@dimen/margin16dp"
+                android:layout_marginRight="@dimen/margin16dp"
+                android:layout_marginTop="@dimen/margin8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/dummy_text"
+                android:textColor="@color/dark_grey"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif"
-                    android:maxLines="1"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tv_created_time"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:paddingBottom="@dimen/margin16dp"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:id="@+id/ll_clap"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textSize="12sp"
-                    tools:text="May 06, 2017" />
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_clap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_clap"
+                        android:tint="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/tv_clap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin4dp"
+                        android:layout_marginStart="@dimen/margin4dp"
+                        android:gravity="center"
+                        android:text="@string/s_claps"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_comment"
+                        android:tint="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/tv_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin4dp"
+                        android:layout_marginStart="@dimen/margin4dp"
+                        android:gravity="center"
+                        android:text="@string/s_comments"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_share"
+                        android:tint="@color/dark_grey" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin4dp"
+                        android:layout_marginStart="@dimen/margin4dp"
+                        android:gravity="center"
+                        android:text="@string/share"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayout"
-            android:paddingEnd="@dimen/margin16dp"
-            android:paddingStart="@dimen/margin16dp"
-            android:textSize="16sp"
-            tools:text="Sample text view " />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_marginTop="@dimen/margin24dp"
+            android:layout_below="@+id/ll_options"
+            android:layout_marginTop="@dimen/margin8dp"
             android:paddingEnd="@dimen/margin16dp"
             android:paddingStart="@dimen/margin16dp"
             android:text="@string/comments"
@@ -169,6 +230,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_comments"
             android:padding="@dimen/margin16dp" />
+
     </RelativeLayout>
+
 </android.support.v4.widget.NestedScrollView>
+
 

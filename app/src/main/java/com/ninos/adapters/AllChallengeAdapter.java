@@ -568,7 +568,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     optionsMenu.show();
                     break;
                 case R.id.ll_share:
-                    String text = PreferenceUtil.getUserName(context) + " has shared you a post from Ninos App. Click the following link to open it.\n\n http://ninosapp.in/?postId=" + postInfo.get_id() + "\n\nEncourage children's talent & creativity on Ninos App.";
+                    String text = PreferenceUtil.getUserName(context) + " " + context.getString(R.string.share_post) + postInfo.get_id() + context.getString(R.string.encorage);
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT, text);

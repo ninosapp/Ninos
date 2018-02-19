@@ -135,6 +135,8 @@
     <string name="_00">00</string>
     <string name="empty_following">You are following none</string>
     <string name="empty_follower">You have no followers</string>
+    <string name="share_post"> has shared you a post from Ninos App. Click the following link to open it.   \n\nhttp://ninosapp.in/?postId=</string>
+    <string name="encorage">\n\n Encourage children\'s talent &amp; creativity on Ninos App.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

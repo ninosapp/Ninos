@@ -1,7 +1,9 @@
 package com.ninos.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatButton;
@@ -112,20 +114,34 @@ public class FollowAdapter extends CommonRecyclerAdapter<Follow> {
             switch (view.getId()) {
                 case R.id.btn_follow:
                     if (follow.isFollowing()) {
-                        service.unFollow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
-                            @Override
-                            public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
-                                if (response.body() != null && response.isSuccessful()) {
-                                    follow.setFollowing(false);
-                                    removeItem(position);
-                                }
-                            }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                .setMessage(R.string.are_you_sure)
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        service.unFollow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                                            @Override
+                                            public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                                if (response.body() != null && response.isSuccessful()) {
+                                                    follow.setFollowing(false);
+                                                    removeItem(position);
+                                                }
+                                            }
 
-                            @Override
-                            public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                            @Override
+                                            public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
 
-                            }
-                        });
+                                            }
+                                        });
+                                    }
+                                })
+                                .setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        builder.create().show();
                     }
 
                     break;

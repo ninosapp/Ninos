@@ -1,22 +1,33 @@
 package com.ninos.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,11 +35,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.adapters.CommentAdapter;
 import com.ninos.adapters.ImageAdapter;
+import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.Comment;
 import com.ninos.models.CommentsResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
+import com.ninos.models.PostReport;
 import com.ninos.models.PostResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
@@ -38,6 +51,7 @@ import com.ninos.utils.PreferenceUtil;
 import com.ninos.views.PagerIndicatorDecoration;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.jzvd.JZVideoPlayer;
@@ -58,21 +72,15 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private RetrofitService service;
     private CommentAdapter commentAdapter;
     private TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_comments;
-    private ImageView iv_profile;
-    private FloatingActionButton fab_back;
+    private ImageView iv_profile, iv_clap, iv_menu;
     private JZVideoPlayerStandard video_view;
     private String accessToken;
+    private int color_accent, color_dark_grey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_post);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.BLACK);
-        }
 
         Intent intent = getIntent();
         String id = intent.getStringExtra(POST_PROFILE_ID);
@@ -84,6 +92,9 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 id = uri.getQueryParameter(POST_ID);
             }
         }
+
+        color_accent = ContextCompat.getColor(this, R.color.colorAccent);
+        color_dark_grey = ContextCompat.getColor(this, R.color.dark_grey);
 
         final String postId = id;
         accessToken = PreferenceUtil.getAccessToken(this);
@@ -109,17 +120,18 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             tv_comments = findViewById(R.id.tv_comments);
             tv_comments.setVisibility(View.GONE);
             iv_profile = findViewById(R.id.iv_profile);
-            fab_back = findViewById(R.id.fab_back);
-            fab_back.setOnClickListener(this);
+            iv_clap = findViewById(R.id.iv_clap);
+            iv_menu = findViewById(R.id.iv_menu);
+            findViewById(R.id.ll_share).setOnClickListener(this);
 
             if (accessToken != null) {
                 tv_clap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (postInfo.isMyRating()) {
-                            removeClap(postInfo, tv_clap);
+                            removeClap(postInfo, iv_clap, tv_clap);
                         } else {
-                            addClap(postInfo, tv_clap);
+                            addClap(postInfo, iv_clap, tv_clap);
                         }
                     }
                 });
@@ -132,6 +144,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         startActivityForResult(commentIntent, COMMENT_ADDED);
                     }
                 });
+
+                iv_menu.setOnClickListener(this);
             }
 
             LinearLayoutManager commentLayoutManager = new LinearLayoutManager(this);
@@ -209,8 +223,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 tv_created_time.setText(date);
             }
 
-            tv_comment.setText(String.valueOf(postInfo.getTotalCommentCount()));
-            setClap(postInfo, tv_clap);
+            tv_comment.setText(String.format(getString(R.string.s_comments), postInfo.getTotalCommentCount()));
+            setClap(postInfo, iv_clap, tv_clap);
 
             RequestOptions requestOptions = new RequestOptions()
                     .placeholder(R.drawable.ic_account)
@@ -275,6 +289,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         commentAdapter.addItems(commentList);
                         tv_comments.setVisibility(View.VISIBLE);
                     }
+
+                    tv_comment.setText(String.format(getString(R.string.s_comments), commentList.size()));
                 }
             }
 
@@ -285,7 +301,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
-    private void addClap(final PostInfo postInfo, final TextView tv_clap) {
+    private void addClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
             service.addPostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(this)).enqueue(new Callback<PostClapResponse>() {
@@ -295,7 +311,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         postInfo.setMyRating(true);
                         int clapCount = postInfo.getTotalClapsCount() + 1;
                         postInfo.setTotalClapsCount(clapCount);
-                        setClap(postInfo, tv_clap);
+                        setClap(postInfo, iv_clap, tv_clap);
                     }
                 }
 
@@ -309,22 +325,51 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void setClap(final PostInfo postInfo, final TextView tv_clap) {
-        int drawableId;
+    private void setClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_clap);
+        iv_clap.setImageDrawable(drawable);
+        int color;
 
         if (postInfo.isMyRating()) {
-            tv_clap.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-            drawableId = R.drawable.ic_clap_tint;
+            tv_clap.setTextColor(color_accent);
+            color = color_accent;
         } else {
-            tv_clap.setTextColor(Color.BLACK);
-            drawableId = R.drawable.ic_clap;
+            tv_clap.setTextColor(color_dark_grey);
+            color = color_dark_grey;
         }
 
-        tv_clap.setText(String.valueOf(postInfo.getTotalClapsCount()));
-        tv_clap.setCompoundDrawablesWithIntrinsicBounds(drawableId, 0, 0, 0);
+        iv_clap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (postInfo.isMyRating()) {
+                    removeClap(postInfo, iv_clap, tv_clap);
+                } else {
+                    addClap(postInfo, iv_clap, tv_clap);
+                }
+            }
+        });
+
+        if (drawable != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                DrawableCompat.setTint(drawable, color);
+
+            } else {
+                drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
+
+        int clapStringId;
+
+        if (postInfo.getTotalClapsCount() > 1) {
+            clapStringId = R.string.s_claps;
+        } else {
+            clapStringId = R.string.s_clap;
+        }
+
+        tv_clap.setText(String.format(getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
-    private void removeClap(final PostInfo postInfo, final TextView tv_clap) {
+    private void removeClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
             service.removePostClaps(postInfo.get_id(), PreferenceUtil.getAccessToken(this)).enqueue(new Callback<PostClapResponse>() {
@@ -334,7 +379,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         postInfo.setMyRating(false);
                         int clapCount = postInfo.getTotalClapsCount() - 1;
                         postInfo.setTotalClapsCount(clapCount);
-                        setClap(postInfo, tv_clap);
+                        setClap(postInfo, iv_clap, tv_clap);
                     }
                 }
 
@@ -365,13 +410,178 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    private void hideKeyboard(EditText et_report) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(et_report.getWindowToken(), 0);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab_back:
-                super.onBackPressed();
+            case R.id.iv_menu:
+                MenuBuilder menuBuilder = new MenuBuilder(this);
+                menuBuilder.setCallback(new MenuBuilder.Callback() {
+                    @Override
+                    public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.action_delete:
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ShowPostActivity.this);
+                                builder.setTitle(R.string.delete);
+                                builder.setMessage(R.string.are_you_sure);
+                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                        service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(ShowPostActivity.this)).enqueue(new Callback<com.ninos.models.Response>() {
+                                            @Override
+                                            public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                                if (response.isSuccessful() && response.body() != null) {
+
+                                                    if (postInfo.getLinks().size() > 1) {
+                                                        awsClient.removeImage(postInfo.get_id(), postInfo.getLinks());
+                                                    }
+
+                                                    finish();
+                                                } else {
+                                                    Toast.makeText(ShowPostActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                                Toast.makeText(ShowPostActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                                builder.create().show();
+
+                                break;
+                            case R.id.action_edit:
+
+                                Intent editPostIntent = new Intent(ShowPostActivity.this, EditPostActivity.class);
+                                editPostIntent.putStringArrayListExtra(EditPostActivity.PATHS, new ArrayList<>(postInfo.getLinks()));
+                                editPostIntent.putExtra(EditPostActivity.POST_ID, postInfo.get_id());
+                                editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
+                                startActivityForResult(editPostIntent, MainActivity.COMMENT_ADDED);
+
+                                break;
+                            case R.id.action_report:
+
+                                final Dialog dialog = new Dialog(ShowPostActivity.this);
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                dialog.setContentView(R.layout.dialog_report);
+                                final EditText et_report = dialog.findViewById(R.id.et_report);
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                                if (imm != null) {
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                                }
+
+                                dialog.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        hideKeyboard(et_report);
+
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                dialog.findViewById(R.id.btn_report).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String text = et_report.getText().toString().trim();
+
+                                        if (text.isEmpty()) {
+                                            Toast.makeText(ShowPostActivity.this, R.string.provide_reason_for_report, Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            PostReport postReport = new PostReport();
+                                            postReport.setPostId(postInfo.get_id());
+                                            postReport.setUserReport(text);
+
+                                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                            service.reportPost(postReport, PreferenceUtil.getAccessToken(ShowPostActivity.this)).enqueue(new Callback<com.ninos.models.Response>() {
+                                                @Override
+                                                public void onResponse(@NonNull Call<com.ninos.models.Response> call, @NonNull Response<com.ninos.models.Response> response) {
+                                                    if (response.body() != null && response.body().isSuccess()) {
+                                                        finish();
+                                                        hideKeyboard(et_report);
+                                                        dialog.dismiss();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                                    hideKeyboard(et_report);
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                                dialog.show();
+                                break;
+                        }
+
+                        return false;
+                    }
+
+                    @Override
+                    public void onMenuModeChange(MenuBuilder menu) {
+
+                    }
+                });
+
+                MenuInflater inflater = new MenuInflater(ShowPostActivity.this);
+                inflater.inflate(R.menu.menu_post, menuBuilder);
+
+                if (postInfo.getUserId().equals(Database.getUserId())) {
+                    menuBuilder.findItem(R.id.action_edit).setVisible(true);
+                    menuBuilder.findItem(R.id.action_report).setVisible(false);
+                    menuBuilder.findItem(R.id.action_delete).setVisible(true);
+                } else {
+                    menuBuilder.findItem(R.id.action_edit).setVisible(false);
+                    menuBuilder.findItem(R.id.action_report).setVisible(true);
+                    menuBuilder.findItem(R.id.action_delete).setVisible(false);
+                }
+
+                MenuPopupHelper optionsMenu = new MenuPopupHelper(ShowPostActivity.this, menuBuilder, iv_menu);
+                optionsMenu.setForceShowIcon(true);
+                optionsMenu.show();
+                break;
+            case R.id.ll_share:
+                String text = PreferenceUtil.getUserName(this) + " " + getString(R.string.share_post) + postInfo.get_id() + getString(R.string.encorage);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_to)));
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
