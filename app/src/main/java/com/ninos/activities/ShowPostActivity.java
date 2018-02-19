@@ -123,6 +123,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             iv_profile = findViewById(R.id.iv_profile);
             iv_clap = findViewById(R.id.iv_clap);
             iv_menu = findViewById(R.id.iv_menu);
+            findViewById(R.id.iv_back).setOnClickListener(this);
             findViewById(R.id.ll_share).setOnClickListener(this);
 
             if (accessToken != null) {
@@ -425,6 +426,9 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_back:
+                onBackPressed();
+                break;
             case R.id.iv_menu:
                 MenuBuilder menuBuilder = new MenuBuilder(this);
                 menuBuilder.setCallback(new MenuBuilder.Callback() {

@@ -12,12 +12,23 @@
         android:descendantFocusability="blocksDescendants"
         android:paddingTop="@dimen/margin6dp">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:padding="@dimen/margin16dp"
+            android:src="@drawable/ic_back"
+            android:tint="@color/dark_grey" />
+
         <com.ninos.views.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="@dimen/margin6dp"
-            android:layout_marginStart="@dimen/margin6dp"
+            android:layout_toEndOf="@+id/iv_back"
+            android:layout_toRightOf="@+id/iv_back"
             android:paddingBottom="@dimen/margin4dp"
             android:paddingTop="@dimen/margin4dp" />
 
