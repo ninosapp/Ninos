@@ -96,7 +96,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin16dp"
             android:src="@drawable/ic_check_done"
-            android:text="@string/finished"
+            android:text="@string/submit"
             android:textColor="@android:color/white"
             android:theme="@style/BaseButtonTheme" />
     </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.QuizAdapter;
-import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.Quizze;
@@ -30,7 +28,7 @@ import retrofit2.Response;
  * Created by FAMILY on 19-02-2018.
  */
 
-public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener {
+public class QuizViewFragment extends BaseFragment {
 
     public static final String ACTIVE = "ACTIVE";
     public static final String COMPLETED = "COMPLETED";
@@ -40,7 +38,6 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
     private String accessToken;
     private RetrofitService service;
     private TextView tv_empty;
-    private int from = 0, size = 15;
 
     public static QuizViewFragment newInstance(String type) {
         QuizViewFragment quizViewFragment = new QuizViewFragment();
@@ -94,46 +91,51 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
 
     private void getQuizzes() {
         if (type.equals(COMPLETED)) {
+            service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                @Override
+                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<Quizze> quizzes = response.body().getQuizeData();
 
-        } else {
+                        for (Quizze quizze : quizzes) {
+                            quizAdapter.addItem(quizze);
+                        }
 
-        }
-
-        service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
-            @Override
-            public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Quizze> quizzes = response.body().getQuizeData();
-
-                    for (Quizze quizze : quizzes) {
-                        quizAdapter.addItem(quizze);
+                        if (quizzes.size() > 0) {
+                            tv_empty.setVisibility(View.GONE);
+                        }
                     }
 
-                    if (quizzes.size() > 0) {
-                        tv_empty.setVisibility(View.GONE);
-                    }
-
-                    from = from + size;
                 }
 
-            }
+                @Override
+                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                }
+            });
+        } else {
+            service.getActiveQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                @Override
+                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<Quizze> quizzes = response.body().getQuizeData();
 
-            }
-        });
-    }
+                        for (Quizze quizze : quizzes) {
+                            quizAdapter.addItem(quizze);
+                        }
 
-    @Override
-    public void onLoadMore() {
-        quizAdapter.addItem(null);
+                        if (quizzes.size() > 0) {
+                            tv_empty.setVisibility(View.GONE);
+                        }
+                    }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getQuizzes();
-            }
-        }, 2000);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+
+                }
+            });
+        }
     }
 }

@@ -128,18 +128,20 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                         count = questionsAdapter.getCount();
                     }
 
-                    if (position == 1) {
-                        iv_next.setVisibility(View.VISIBLE);
-                        btn_done.setVisibility(View.GONE);
+                    if (position == 0) {
                         iv_previous.setVisibility(View.GONE);
-                    } else if (position == count - 1) {
+                        btn_done.setVisibility(View.GONE);
+                        iv_next.setVisibility(View.VISIBLE);
+                    } else {
+                        iv_previous.setVisibility(View.VISIBLE);
+                        btn_done.setVisibility(View.GONE);
+                        iv_next.setVisibility(View.VISIBLE);
+                    }
+
+                    if (position == count - 1) {
                         iv_next.setVisibility(View.GONE);
                         btn_done.setVisibility(View.VISIBLE);
                         iv_previous.setVisibility(View.VISIBLE);
-                    } else {
-                        iv_previous.setVisibility(View.VISIBLE);
-                        iv_next.setVisibility(View.VISIBLE);
-                        btn_done.setVisibility(View.GONE);
                     }
                 }
 

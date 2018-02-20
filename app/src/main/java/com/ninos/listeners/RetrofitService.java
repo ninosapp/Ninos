@@ -93,8 +93,11 @@ public interface RetrofitService {
     @DELETE("/posts/{postId}/claps")
     Call<PostClapResponse> removePostClaps(@Path("postId") String postId, @Query("token") String token);
 
-    @GET("/quizzes")
-    Call<QuizResponse> getQuizzes(@Query("token") String token);
+    @GET("/quizzes-active")
+    Call<QuizResponse> getActiveQuizzes(@Query("token") String token);
+
+    @GET("/quizzes-completed")
+    Call<QuizResponse> getCompletedQuizzes(@Query("token") String token);
 
     @GET("/users")
     Call<PeopleResponse> searchUsers(@Query("from") int from, @Query("size") int size, @Query("userName") String userName, @Query("token") String token);

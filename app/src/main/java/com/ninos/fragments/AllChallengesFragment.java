@@ -149,7 +149,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getQuizzes() {
-        service.getQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+        service.getActiveQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
             @Override
             public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -159,13 +159,13 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                         quizAdapter.addItem(quizze);
                     }
 
-//                    if (quizzes.size() >= 10) {
-                    Quizze quizze = new Quizze();
-                    quizze.setQuizTaken(false);
-                    quizze.setTitle("more");
-                    quizze.set_id("more");
-                    quizAdapter.addItem(quizze);
-//                    }
+                    if (quizzes.size() >= 10) {
+                        Quizze quizze = new Quizze();
+                        quizze.setQuizTaken(false);
+                        quizze.setTitle("more");
+                        quizze.set_id("more");
+                        quizAdapter.addItem(quizze);
+                    }
                 }
 
             }
