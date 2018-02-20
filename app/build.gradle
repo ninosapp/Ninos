@@ -116,6 +116,7 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
     implementation 'com.infullmobile.android:videokit-release:1.1.2'
     implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.7.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

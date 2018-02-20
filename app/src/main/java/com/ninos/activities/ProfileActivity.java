@@ -164,20 +164,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void updateImage() {
-        RequestOptions requestOptions;
-
-        if (Database.getUserId().equals(userId)) {
-            requestOptions = new RequestOptions()
+        RequestOptions requestOptions = new RequestOptions()
                     .placeholder(placeHolderId)
                     .error(placeHolderId)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true);
-        } else {
-            requestOptions = new RequestOptions()
-                    .placeholder(placeHolderId)
-                    .error(placeHolderId)
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-        }
 
         Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)
