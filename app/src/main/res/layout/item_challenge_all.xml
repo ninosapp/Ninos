@@ -19,18 +19,20 @@
         android:paddingTop="@dimen/margin6dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:padding="@dimen/margin8dp">
 
             <TextView
                 android:id="@+id/tv_msg"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingLeft="@dimen/margin8dp"
+                android:paddingRight="@dimen/margin8dp"
                 android:textColor="@color/midnight_blue"
                 android:textSize="16sp"
-                tools:text="Sumanth Kumar" />
+                tools:text="Sumanth Kumar posted in story book challenge challen" />
 
 
         </RelativeLayout>

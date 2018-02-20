@@ -35,6 +35,7 @@ import com.ninos.fragments.ChallengesFragment;
 import com.ninos.fragments.QuizFragment;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.PreferenceUtil;
+import com.ninos.utils.TourUtil;
 import com.ninos.views.CircleImageView;
 
 import java.io.File;
@@ -74,6 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         findViewById(R.id.fl_home).setOnClickListener(this);
         findViewById(R.id.fl_add).setOnClickListener(this);
         findViewById(R.id.fl_challenges).setOnClickListener(this);
@@ -90,6 +92,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         ImageView iv_search = findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
+
+        new TourUtil(this).showHomePrompt();
 
         drawer_layout = findViewById(R.id.drawer_layout);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

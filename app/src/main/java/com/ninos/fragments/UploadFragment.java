@@ -42,32 +42,36 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
     public final static String VIDEOS = "VIDEOS";
     private final static String TYPE = "TYPE";
     private final static String CHALLENGE_ID = "CHALLENGE_ID";
+    private final static String CHALLENGE_NAME = "CHALLENGE_NAME";
     private View cl_home;
     private ArrayList<String> paths;
     private TextView tv_description;
     private String path;
     private String type;
     private String challengeId;
+    private String challengeName;
 
-    public static UploadFragment newInstance(ArrayList<String> paths, String challengeId) {
+    public static UploadFragment newInstance(ArrayList<String> paths, String challengeId, String challengeName) {
         UploadFragment uploadFragment = new UploadFragment();
 
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(IMAGES, paths);
         bundle.putString(TYPE, IMAGES);
         bundle.putString(CHALLENGE_ID, challengeId);
+        bundle.putString(CHALLENGE_NAME, challengeName);
         uploadFragment.setArguments(bundle);
 
         return uploadFragment;
     }
 
-    public static UploadFragment newInstance(String path, String challengeId) {
+    public static UploadFragment newInstance(String path, String challengeId, String challengeName) {
         UploadFragment uploadFragment = new UploadFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(VIDEOS, path);
         bundle.putString(TYPE, VIDEOS);
         bundle.putString(CHALLENGE_ID, challengeId);
+        bundle.putString(CHALLENGE_NAME, challengeName);
         uploadFragment.setArguments(bundle);
 
         return uploadFragment;
@@ -79,6 +83,7 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
         if (getArguments() != null) {
 
+            challengeName = getArguments().getString(CHALLENGE_NAME);
             challengeId = getArguments().getString(CHALLENGE_ID);
             type = getArguments().getString(TYPE);
             path = getArguments().getString(VIDEOS);
@@ -171,13 +176,15 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                                 PostInfo postInfo = response.body().getPostInfo();
                                 postInfo.setTitle(title);
                                 postInfo.setCreatedAt(new Date());
-                                postInfo.setIsChallenge(false);
                                 postInfo.setUserId(Database.getUserId());
 
                                 if (challengeId == null) {
                                     postInfo.setType("post");
+                                    postInfo.setIsChallenge(false);
                                 } else {
+                                    postInfo.setIsChallenge(true);
                                     postInfo.setType("challenge");
+                                    postInfo.setChallengeTitle(challengeName);
                                     postInfo.setChallengeId(challengeId);
                                 }
 

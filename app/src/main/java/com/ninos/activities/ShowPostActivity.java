@@ -106,6 +106,9 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             awsClient.awsInit();
 
             video_view = findViewById(R.id.video_view);
+            video_view.batteryLevel.setVisibility(View.GONE);
+            video_view.mRetryLayout.setVisibility(View.GONE);
+            video_view.tinyBackImageView.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.image_list);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

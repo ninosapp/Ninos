@@ -121,7 +121,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             challenge_list.setNestedScrollingEnabled(false);
             challenge_list.setLayoutManager(challengeLayoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this);
+            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this, AllChallengeAdapter.Type.POST);
 
             challenge_list.setAdapter(allChallengeAdapter);
 
@@ -153,19 +153,50 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
             @Override
             public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Quizze> quizzes = response.body().getQuizeData();
+                    final List<Quizze> quizzes = response.body().getQuizeData();
 
                     for (Quizze quizze : quizzes) {
                         quizAdapter.addItem(quizze);
                     }
 
-                    if (quizzes.size() >= 10) {
-                        Quizze quizze = new Quizze();
-                        quizze.setQuizTaken(false);
-                        quizze.setTitle("more");
-                        quizze.set_id("more");
-                        quizAdapter.addItem(quizze);
-                    }
+                    quizAdapter.addItem(null);
+                    service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                        @Override
+                        public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                quizAdapter.removeItem(null);
+
+                                List<Quizze> quizzes = response.body().getQuizeData();
+
+                                for (Quizze quizze : quizzes) {
+                                    quizAdapter.addItem(quizze);
+                                }
+
+                                if (quizzes.size() >= 10) {
+                                    Quizze quizze = new Quizze();
+                                    quizze.setQuizTaken(false);
+                                    quizze.setTitle("more");
+                                    quizze.set_id("more");
+                                    quizAdapter.addItem(quizze);
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                            quizAdapter.removeItem(null);
+
+                            if (quizzes.size() >= 10) {
+                                Quizze quizze = new Quizze();
+                                quizze.setQuizTaken(false);
+                                quizze.setTitle("more");
+                                quizze.set_id("more");
+                                quizAdapter.addItem(quizze);
+                            }
+                        }
+                    });
+
                 }
 
             }

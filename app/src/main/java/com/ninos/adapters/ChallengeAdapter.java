@@ -85,6 +85,7 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<ChallengeInfo> {
 
             Intent intent = new Intent(context, ChallengeActivity.class);
             intent.putExtra(ChallengeActivity.CHALLENGE_ID, postInfo.get_id());
+            intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, postInfo.getTitle());
             context.startActivity(intent);
         }
     }

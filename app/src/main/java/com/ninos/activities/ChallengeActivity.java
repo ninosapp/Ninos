@@ -50,12 +50,13 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
 
 
     public static final String CHALLENGE_ID = "CHALLENGE_ID";
+    public static final String CHALLENGE_TITLE = "CHALLENGE_TITLE";
     private final int RC_STORAGE_PERM = 4531;
     private RetrofitService service;
     private int placeHolderId;
     private ImageView iv_challenge;
     private AllChallengeAdapter allChallengeAdapter;
-    private String accessToken, challengeId;
+    private String accessToken, challengeId, challengeName;
     private int from = 0, size = 10;
 
     @Override
@@ -66,6 +67,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         accessToken = PreferenceUtil.getAccessToken(this);
         placeHolderId = R.drawable.pattern_5;
         challengeId = getIntent().getStringExtra(CHALLENGE_ID);
+        challengeName = getIntent().getStringExtra(CHALLENGE_TITLE);
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), placeHolderId);
         setBitmapPalette(bitmap);
@@ -84,7 +86,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         challenge_list.setNestedScrollingEnabled(false);
         challenge_list.setLayoutManager(challengeLayoutManager);
 
-        allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this);
+        allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this, AllChallengeAdapter.Type.CHALLENGE);
 
         challenge_list.setAdapter(allChallengeAdapter);
 
@@ -224,6 +226,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
         if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Intent intent = new Intent(this, FilePickerActivity.class);
             intent.putExtra(CHALLENGE_ID, challengeId);
+            intent.putExtra(CHALLENGE_TITLE, challengeName);
             startActivityForResult(intent, POST_ADDED);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);

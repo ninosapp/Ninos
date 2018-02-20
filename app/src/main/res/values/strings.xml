@@ -142,7 +142,13 @@
     <string name="active">Active</string>
     <string name="completed">Completed</string>
     <string name="no_quiz_in_this_category">No quiz in this category</string>
-    <string name="posted_in_challenge"><b>%s</b> posted in <b>%s</b> challenge></string>
+    <string name="search_prompt_description">Search People, Posts and Challenges</string>
+    <string name="add_post">Add Post</string>
+    <string name="add_post_prompt_description">Click here to add a post</string>
+    <string name="challenges_prompt_description">Add a post to challenge</string>
+    <string name="welcome">Welcome</string>
+    <string name="add_welcome_prompt_description">Click home button to continue</string>
+    <string name="notifications_prompt_description">All the latest notifications available</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

@@ -20,7 +20,7 @@ public class FilePickerActivity extends BaseActivity {
     public static final int TRIMMER_RESULT = 2563;
     public static final String POST_ID = "POST_ID";
     private BucketFragment bucketFragment;
-    private String challengeId;
+    private String challengeId, challengeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class FilePickerActivity extends BaseActivity {
         setContentView(R.layout.activity_file_picker);
         bucketFragment = new BucketFragment();
         challengeId = getIntent().getStringExtra(ChallengeActivity.CHALLENGE_ID);
+        challengeName = getIntent().getStringExtra(ChallengeActivity.CHALLENGE_TITLE);
 
 
         FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
@@ -63,7 +64,7 @@ public class FilePickerActivity extends BaseActivity {
     public void setSelectedImages(ArrayList<String> selectedImages) {
         if (selectedImages.size() > 0) {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedImages, challengeId));
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedImages, challengeId, challengeName));
             fts.commit();
         } else {
             finish();
@@ -75,7 +76,7 @@ public class FilePickerActivity extends BaseActivity {
             finish();
         } else {
             FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideo, challengeId));
+            fts.add(R.id.fl_file_pick, UploadFragment.newInstance(selectedVideo, challengeId, challengeName));
             fts.commit();
         }
     }

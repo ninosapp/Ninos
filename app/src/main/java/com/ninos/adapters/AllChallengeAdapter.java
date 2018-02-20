@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.activities.ChallengeActivity;
 import com.ninos.activities.CommentActivity;
 import com.ninos.activities.EditPostActivity;
 import com.ninos.activities.MainActivity;
@@ -82,8 +83,9 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
     private RequestOptions requestOptions;
     private int color_accent, color_dark_grey;
     private Activity activity;
+    private Type type;
 
-    public AllChallengeAdapter(Context context, Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+    public AllChallengeAdapter(Context context, Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener, Type type) {
         super(recyclerView, onLoadMoreListener);
         this.context = context;
         this.activity = activity;
@@ -101,6 +103,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         color_accent = ContextCompat.getColor(context, R.color.colorAccent);
         color_dark_grey = ContextCompat.getColor(context, R.color.dark_grey);
 
+        this.type = type;
     }
 
     @Override
@@ -232,6 +235,11 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
+    public enum Type {
+        POST,
+        CHALLENGE
+    }
+
     private class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_msg;
         ImageView ic_clap_anim, iv_clap, iv_menu;
@@ -269,6 +277,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             video_view = itemView.findViewById(R.id.video_view);
             video_view.batteryLevel.setVisibility(View.GONE);
             video_view.mRetryLayout.setVisibility(View.GONE);
+            video_view.tinyBackImageView.setVisibility(View.GONE);
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
             rl_challenge.setOnClickListener(this);
@@ -289,12 +298,22 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 tv_title.setVisibility(View.VISIBLE);
             }
 
-            if (postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
-                String msg = String.format(context.getString(R.string.posted_in_challenge), postInfo.getUserName(), postInfo.getChallengeTitle());
+            if (type.equals(Type.POST) && postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
+                String msg = String.format("<b>%s</b> posted in <b>%s</b> challenge", postInfo.getUserName(), postInfo.getChallengeTitle());
                 tv_msg.setText(Html.fromHtml(msg));
                 tv_msg.setVisibility(View.VISIBLE);
+                tv_msg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, ChallengeActivity.class);
+                        intent.putExtra(ChallengeActivity.CHALLENGE_ID, postInfo.get_id());
+                        intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, postInfo.getTitle());
+                        context.startActivity(intent);
+                    }
+                });
             } else {
                 tv_msg.setVisibility(View.GONE);
+                tv_msg.setOnClickListener(null);
             }
 
             if (postInfo.getCreatedAt() != null) {

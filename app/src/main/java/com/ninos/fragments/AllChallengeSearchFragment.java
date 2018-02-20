@@ -63,7 +63,7 @@ public class AllChallengeSearchFragment extends BaseFragment implements OnLoadMo
             challenge_list.setNestedScrollingEnabled(false);
             challenge_list.setLayoutManager(layoutManager);
 
-            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this);
+            allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this, AllChallengeAdapter.Type.CHALLENGE);
 
             challenge_list.setAdapter(allChallengeAdapter);
 

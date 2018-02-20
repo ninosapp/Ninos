@@ -27,6 +27,14 @@ public class PreferenceUtil {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("user_warn", true).apply();
     }
 
+    public static boolean isTourShown(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("user_tour", false);
+    }
+
+    public static void setTourShown(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("user_tour", true).apply();
+    }
+
     public static UserInfo getUserInfo(Context context) {
         String userInfoValue = PreferenceManager.getDefaultSharedPreferences(context).getString("user_info", null);
         UserInfo userInfo = new Gson().fromJson(userInfoValue, UserInfo.class);
