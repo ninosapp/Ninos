@@ -117,7 +117,7 @@
 
         <activity
             android:name=".activities.ScoreActivity"
-            android:theme="@style/CommentsTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
