@@ -1,6 +1,7 @@
 package com.ninos.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -21,9 +22,10 @@ import retrofit2.Response;
 
 public class QuizActivity extends BaseActivity {
 
-    public static String QUIZ_ID = "QUIZ_ID";
-    public static String QUIZ_DURATION = "QUIZ_DURATION";
-    public static String QUIZ_TITLE = "QUIZ_TITLE";
+    public static final String QUIZ_ID = "QUIZ_ID";
+    public static final String QUIZ_DURATION = "QUIZ_DURATION";
+    public static final String QUIZ_TITLE = "QUIZ_TITLE";
+    public static final int QUIZ_CLOSE = 6542;
     private String quizId, title;
     private int duration;
 
@@ -82,5 +84,22 @@ public class QuizActivity extends BaseActivity {
                 showToast(R.string.error_message);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case QUIZ_CLOSE:
+                FragmentManager manager = getSupportFragmentManager();
+                Fragment fragment = manager.findFragmentById(R.id.frame_layout);
+
+                if (fragment instanceof QuizFragment) {
+                    QuizFragment quizFragment = (QuizFragment) fragment;
+                    quizFragment.finishActivity();
+                }
+                break;
+        }
     }
 }

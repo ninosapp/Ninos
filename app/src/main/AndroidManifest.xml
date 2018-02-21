@@ -42,65 +42,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.EditProfileActivity"
             android:theme="@style/AppTheme.EditProfile" />
-
         <activity
             android:name=".activities.FilePickerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.QuizViewActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
-
         <activity
             android:name=".activities.QuizActivity"
             android:theme="@style/AppTheme.Quiz" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.EditPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.SettingsActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.ChallengeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.AboutActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.FollowActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
-
         <activity
             android:name=".activities.ShowPostActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -124,13 +109,15 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
         <service android:name=".notification.NinosMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".activities.ScoreActivity"
+            android:theme="@style/CommentsTheme" />
     </application>
 
 </manifest>

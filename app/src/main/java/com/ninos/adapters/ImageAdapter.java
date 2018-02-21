@@ -2,7 +2,6 @@ package com.ninos.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
-import com.ninos.activities.MainActivity;
-import com.ninos.activities.ShowPostActivity;
 
 /**
  * Created by FAMILY on 04-01-2018.
@@ -49,12 +46,11 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
         sampleViewHolder.bindData(position);
     }
 
-    private class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_challenge;
 
         ImageViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             iv_challenge = itemView.findViewById(R.id.iv_challenge);
         }
 
@@ -71,13 +67,6 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
             Glide.with(activity)
                     .setDefaultRequestOptions(requestOptions)
                     .load(path).into(iv_challenge);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent showPostIntent = new Intent(activity, ShowPostActivity.class);
-            showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, postId);
-            activity.startActivityForResult(showPostIntent, MainActivity.POST_UPDATE);
         }
     }
 }

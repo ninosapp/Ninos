@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/margin8dp"
+    android:paddingLeft="@dimen/margin16dp"
+    android:paddingRight="@dimen/margin16dp"
+    android:paddingTop="@dimen/margin8dp">
+
+    <TextView
+        android:id="@+id/tv_question_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/margin8dp"
+        android:textSize="24sp"
+        tools:text="1." />
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tv_question_count"
+        android:layout_toRightOf="@+id/tv_question_count"
+        android:padding="@dimen/margin8dp"
+        android:textColor="@color/midnight_blue"
+        android:textSize="16sp"
+        tools:text="Sample question Sample question Sample question Sample question " />
+
+    <TextView
+        android:id="@+id/tv_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_question"
+        android:layout_toEndOf="@+id/tv_question_count"
+        android:layout_toRightOf="@+id/tv_question_count"
+        android:paddingLeft="@dimen/margin8dp"
+        android:paddingRight="@dimen/margin8dp"
+        android:textColor="@color/dark_grey"
+        android:textSize="14sp"
+        tools:text="Sumanth" />
+</RelativeLayout>

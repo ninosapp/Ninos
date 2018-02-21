@@ -1,10 +1,8 @@
 package com.ninos.fragments;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,15 +13,15 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.activities.MainActivity;
+import com.ninos.activities.QuizActivity;
+import com.ninos.activities.ScoreActivity;
 import com.ninos.adapters.QuestionsAdapter;
 import com.ninos.listeners.RetrofitService;
-import com.ninos.models.EvaluateInfo;
 import com.ninos.models.EvaluateResponse;
 import com.ninos.models.MCQSolution;
 import com.ninos.models.QuestionResponse;
@@ -190,7 +188,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void finishActivity() {
+    public void finishActivity() {
         if (getActivity() != null) {
             Intent intent = new Intent();
             intent.putExtra(QUIZ_ID, quizId);
@@ -272,33 +270,11 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
                 public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
                     if (response.isSuccessful()) {
                         if (getContext() != null) {
-                            final Dialog dialog = new Dialog(getContext());
-                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                            if (dialog.getWindow() != null) {
-                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            if (getActivity() != null) {
+                                Intent intent = new Intent(getContext(), ScoreActivity.class);
+                                intent.putExtra(ScoreActivity.QUIZ_ID, quizId);
+                                getActivity().startActivityForResult(intent, QuizActivity.QUIZ_CLOSE);
                             }
-
-                            dialog.setContentView(R.layout.dialog_score);
-                            TextView tv_score_one = dialog.findViewById(R.id.tv_score_one);
-
-                            EvaluateInfo eInfo = response.body().getEvaluateInfo();
-
-                            if (eInfo != null) {
-                                tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
-                            }
-
-                            dialog.findViewById(R.id.fab_close).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-
-                                    finishActivity();
-                                }
-                            });
-
-                            dialog.setCancelable(false);
-                            dialog.show();
                         }
                     } else {
                         finishActivity();

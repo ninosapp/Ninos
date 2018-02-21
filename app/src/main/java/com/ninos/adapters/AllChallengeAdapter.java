@@ -267,7 +267,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             ll_share = itemView.findViewById(R.id.ll_share);
             ll_options = itemView.findViewById(R.id.ll_options);
             tv_msg = itemView.findViewById(R.id.tv_msg);
-            itemView.setOnClickListener(this);
             iv_menu.setOnClickListener(this);
             ll_comment.setOnClickListener(this);
             iv_profile.setOnClickListener(this);
@@ -280,7 +279,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             video_view.tinyBackImageView.setVisibility(View.GONE);
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
-            rl_challenge.setOnClickListener(this);
             recyclerView = itemView.findViewById(R.id.image_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);

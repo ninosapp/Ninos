@@ -149,6 +149,7 @@
     <string name="welcome">Welcome</string>
     <string name="add_welcome_prompt_description">Click home button to continue</string>
     <string name="notifications_prompt_description">All the latest notifications available</string>
+    <string name="summary">Summary</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
