@@ -36,7 +36,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
 import com.ninos.adapters.CommentAdapter;
-import com.ninos.adapters.ImageAdapter;
+import com.ninos.adapters.ShowPostImageAdapter;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.Comment;
@@ -271,7 +271,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(ShowPostActivity.this, this, R.drawable.pattern_11, postInfo.get_id());
+                ShowPostImageAdapter imageAdapter = new ShowPostImageAdapter(ShowPostActivity.this, R.drawable.pattern_11);
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -642,10 +642,10 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
 
-        ImageAdapter imageAdapter;
+        ShowPostImageAdapter imageAdapter;
         PostInfo postInfo;
 
-        LoadImage(ImageAdapter imageAdapter, PostInfo postInfo) {
+        LoadImage(ShowPostImageAdapter imageAdapter, PostInfo postInfo) {
             this.imageAdapter = imageAdapter;
             this.postInfo = postInfo;
         }

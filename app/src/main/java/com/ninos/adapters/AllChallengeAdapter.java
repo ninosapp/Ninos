@@ -353,7 +353,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(context, activity, resId, postInfo.get_id());
+                ImageAdapter imageAdapter = new ImageAdapter(activity, resId, postInfo.get_id());
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
