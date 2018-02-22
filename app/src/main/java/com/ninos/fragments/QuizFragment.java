@@ -79,7 +79,7 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
             title = getArguments().getString(QUIZ_TITLE);
 
             int value = getArguments().getInt(QUIZ_DURATION);
-            duration = value * 100;
+            duration = value * 60000;
         }
     }
 

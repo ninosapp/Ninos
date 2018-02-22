@@ -159,24 +159,52 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 if (response.isSuccessful() && response.body() != null) {
                     final List<Quizze> quizzes = response.body().getQuizeData();
 
-                    for (Quizze quizze : quizzes) {
+                    if (quizzes.size() > 10) {
+                        for (int i = 0; i < 10; i++) {
+                            Quizze quizze = quizzes.get(i);
+                            quizAdapter.addItem(quizze);
+                        }
+
+                        Quizze quizze = new Quizze();
+                        quizze.setQuizTaken(false);
+                        quizze.setTitle("more");
+                        quizze.set_id("more");
                         quizAdapter.addItem(quizze);
-                    }
+                    } else {
+                        for (Quizze quizze : quizzes) {
+                            quizAdapter.addItem(quizze);
+                        }
 
-                    quizAdapter.addItem(null);
-                    service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
-                        @Override
-                        public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                quizAdapter.removeItem(null);
+                        quizAdapter.addItem(null);
 
-                                List<Quizze> quizzes = response.body().getQuizeData();
+                        service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                            @Override
+                            public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    quizAdapter.removeItem(null);
 
-                                for (Quizze quizze : quizzes) {
-                                    quizAdapter.addItem(quizze);
+                                    List<Quizze> quizzes = response.body().getQuizeData();
+
+                                    for (Quizze quizze : quizzes) {
+                                        quizAdapter.addItem(quizze);
+                                    }
+
+                                    if (quizAdapter.getItemCount() >= 10) {
+                                        Quizze quizze = new Quizze();
+                                        quizze.setQuizTaken(false);
+                                        quizze.setTitle("more");
+                                        quizze.set_id("more");
+                                        quizAdapter.addItem(quizze);
+                                    }
                                 }
 
-                                if (quizzes.size() >= 10) {
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                                quizAdapter.removeItem(null);
+
+                                if (quizAdapter.getItemCount() >= 10) {
                                     Quizze quizze = new Quizze();
                                     quizze.setQuizTaken(false);
                                     quizze.setTitle("more");
@@ -184,23 +212,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                                     quizAdapter.addItem(quizze);
                                 }
                             }
-
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-                            quizAdapter.removeItem(null);
-
-                            if (quizzes.size() >= 10) {
-                                Quizze quizze = new Quizze();
-                                quizze.setQuizTaken(false);
-                                quizze.setTitle("more");
-                                quizze.set_id("more");
-                                quizAdapter.addItem(quizze);
-                            }
-                        }
-                    });
-
+                        });
+                    }
                 }
 
             }
