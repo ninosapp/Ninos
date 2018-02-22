@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
     private Profile profile;
     private DateUtil dateUtil;
     private ImageView iv_upload_image, iv_placeholder;
+    private AppCompatCheckBox cb_agree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
 //            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
         }
 
+        cb_agree = findViewById(R.id.cb_agree);
         et_child_name = findViewById(R.id.et_child_name);
         tv_dob = findViewById(R.id.tv_dob);
         cl_edit_profile = findViewById(R.id.cl_edit_profile);
@@ -113,47 +116,52 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
             case R.id.fab_update:
                 String childName = et_child_name.getText().toString().trim();
                 String dob = tv_dob.getText().toString().trim();
+                boolean isAgreed = cb_agree.isChecked();
 
-                if (childName.isEmpty()) {
-                    showSnackBar(R.string.enter_child_name, cl_edit_profile);
-                } else if (dob.isEmpty()) {
-                    showSnackBar(R.string.select_dob, cl_edit_profile);
-                } else {
-                    if (!isNetworkAvailable()) {
-                        showSnackBar(R.string.network_down, cl_edit_profile);
+                if (isAgreed) {
+                    if (childName.isEmpty()) {
+                        showSnackBar(R.string.enter_child_name, cl_edit_profile);
+                    } else if (dob.isEmpty()) {
+                        showSnackBar(R.string.select_dob, cl_edit_profile);
                     } else {
-                        Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
+                        if (!isNetworkAvailable()) {
+                            showSnackBar(R.string.network_down, cl_edit_profile);
+                        } else {
+                            Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
 
-                        profile.setDOB(date.getTime());
-                        profile.setChildName(childName);
-                        profile.setFirstLogin(true);
+                            profile.setDOB(date.getTime());
+                            profile.setChildName(childName);
+                            profile.setFirstLogin(true);
 
-                        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                        service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
-                            @Override
-                            public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
-                                if (response.isSuccessful()) {
-                                    RegisterResponse rR = response.body();
+                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                            service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
+                                @Override
+                                public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        RegisterResponse rR = response.body();
 
-                                    if (rR != null) {
-                                        PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
-                                        PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
-                                        PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
-                                        PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
-                                        startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
-                                        finish();
+                                        if (rR != null) {
+                                            PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
+                                            PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
+                                            PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
+                                            PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
+                                            startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                                            finish();
+                                        }
+                                    } else {
+                                        showSnackBar(R.string.error_message, cl_edit_profile);
                                     }
-                                } else {
-                                    showSnackBar(R.string.error_message, cl_edit_profile);
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                                CrashUtil.report(t.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
+                                    CrashUtil.report(t.getMessage());
+                                }
+                            });
+                        }
                     }
+                } else {
+                    showToast(R.string.accept_terms_conditons);
                 }
                 break;
             case R.id.iv_upload_image:
