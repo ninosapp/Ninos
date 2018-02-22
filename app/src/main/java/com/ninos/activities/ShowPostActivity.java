@@ -160,6 +160,14 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
 
+                tv_comment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(et_comment, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+
                 rl_comment.setVisibility(View.VISIBLE);
                 et_comment.setOnEditorActionListener(this);
                 iv_menu.setOnClickListener(this);

@@ -235,6 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_options"
                 android:layout_marginTop="@dimen/margin8dp"
+                android:paddingBottom="@dimen/margin16dp"
                 android:paddingEnd="@dimen/margin16dp"
                 android:paddingStart="@dimen/margin16dp"
                 android:text="@string/comments"
@@ -245,8 +246,7 @@
                 android:id="@+id/list_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_comments"
-                android:padding="@dimen/margin16dp" />
+                android:layout_below="@+id/tv_comments" />
 
         </RelativeLayout>
 
@@ -256,17 +256,19 @@
         android:id="@+id/rl_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/margin8dp">
 
         <EditText
             android:id="@+id/et_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin8dp"
             android:layout_toLeftOf="@+id/iv_send"
             android:layout_toStartOf="@+id/iv_send"
-            android:background="@android:color/white"
-            android:hint="@string/comment"
+            android:background="@drawable/ic_rectangle_grey"
+            android:hint="@string/type_your_comment_here"
             android:imeOptions="actionSend"
             android:maxLines="1"
             android:padding="@dimen/margin16dp"

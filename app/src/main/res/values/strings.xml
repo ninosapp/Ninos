@@ -162,6 +162,7 @@
     <string name="delete_comment">Delete comment?</string>
     <string name="edit_comment">Edit Comment</string>
     <string name="comment_is_empty">Comment is empty</string>
+    <string name="type_your_comment_here">Type your comment here</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
