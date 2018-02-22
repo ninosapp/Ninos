@@ -31,6 +31,7 @@ import com.ninos.utils.PreferenceUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jzvd.JZVideoPlayer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,6 +104,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     } else {
                         iv_move_up.setVisibility(View.GONE);
                     }
+
+                    JZVideoPlayer.releaseAllVideos();
                 }
             });
 
@@ -119,7 +122,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             challenge_list = view.findViewById(R.id.challenge_list);
             challenge_list.setNestedScrollingEnabled(false);
-
 
             challenge_list.setLayoutManager(challengeLayoutManager);
 

@@ -40,6 +40,7 @@ import com.ninos.utils.PreferenceUtil;
 
 import java.util.List;
 
+import cn.jzvd.JZVideoPlayer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -147,6 +148,8 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     iv_move_up.setVisibility(View.GONE);
                 }
+
+                JZVideoPlayer.releaseAllVideos();
             }
         });
 
