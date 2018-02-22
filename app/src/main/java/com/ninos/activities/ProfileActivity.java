@@ -4,15 +4,21 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -62,7 +68,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private static final int RC_STORAGE_PERM = 4523;
     private int placeHolderId;
     private String userId;
-    private ImageView iv_profile;
+    private ImageView iv_profile, iv_profile_bg;
     private RelativeLayout rl_progress;
     private FloatingActionButton fab_update_Image;
     private TextView tv_name;
@@ -75,6 +81,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private Button btn_follow;
     private AWSClient awsClient;
     private TextView tv_follower_count, tv_following_count;
+    private RecyclerView challenge_list;
+    private NestedScrollView ns_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +95,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
         userId = getIntent().getStringExtra(PROFILE_ID);
 
+        iv_profile_bg = findViewById(R.id.iv_profile_bg);
         tv_name = findViewById(R.id.tv_name);
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
+        tv_post_count.setOnClickListener(this);
         tv_follower_count = findViewById(R.id.tv_follower_count);
         tv_following_count = findViewById(R.id.tv_following_count);
         final TextView tv_points = findViewById(R.id.tv_points);
@@ -98,9 +108,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
         rl_progress.setVisibility(View.VISIBLE);
+        ns_view = findViewById(R.id.ns_view);
         findViewById(R.id.fab_back).setOnClickListener(this);
         findViewById(R.id.ll_followers).setOnClickListener(this);
         findViewById(R.id.ll_following).setOnClickListener(this);
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
+        iv_profile.setImageBitmap(bm);
+        iv_profile_bg.setImageBitmap(bm);
 
         iv_profile.setImageDrawable(ContextCompat.getDrawable(this, placeHolderId));
 
@@ -116,13 +131,15 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         GridLayoutManager challengeLayoutManager = new GridLayoutManager(this, 3);
 
-        RecyclerView challenge_list = findViewById(R.id.challenge_list);
+        challenge_list = findViewById(R.id.challenge_list);
         challenge_list.setNestedScrollingEnabled(false);
         challenge_list.setLayoutManager(challengeLayoutManager);
 
         allChallengeAdapter = new ChallengeImageAdapter(this, challenge_list, this);
 
         challenge_list.setAdapter(allChallengeAdapter);
+
+        setBitmapPalette(bm);
 
         accessToken = PreferenceUtil.getAccessToken(this);
 
@@ -178,8 +195,26 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         iv_profile.setImageBitmap(resource);
                         rl_progress.setVisibility(View.GONE);
+                        iv_profile_bg.setImageBitmap(resource);
+                        setBitmapPalette(resource);
                     }
                 });
+    }
+
+    private void setBitmapPalette(Bitmap resource) {
+        if (resource != null) {
+            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Window window = getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -193,7 +228,17 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_post_count:
+                ns_view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ns_view.fullScroll(View.FOCUS_UP);
+                    }
+                });
+                break;
+
             case R.id.fab_back:
+
                 onBackPressed();
                 break;
             case R.id.btn_follow:

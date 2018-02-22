@@ -8,39 +8,60 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:descendantFocusability="blocksDescendants"
         tools:context="com.ninos.activities.ProfileActivity">
 
         <RelativeLayout
-            android:id="@+id/rl_profile"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp">
+            android:id="@+id/rl_images"
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_update_Image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_camera"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/blue" />
-
-            <com.ninos.views.CircleImageView
-                android:id="@+id/iv_profile"
+            <ImageView
+                android:id="@+id/iv_profile_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:scaleType="centerCrop"
-                tools:background="@drawable/pattern_12" />
+                android:src="@drawable/pattern_12" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B3000000"
+                android:scaleType="centerCrop" />
+
+
+            <RelativeLayout
+                android:id="@+id/rl_profile"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_update_Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_camera"
+                    android:tint="@android:color/white"
+                    app:backgroundTint="@color/blue" />
+
+                <com.ninos.views.CircleImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    tools:background="@drawable/pattern_12" />
+            </RelativeLayout>
         </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/rl_progress"
@@ -70,7 +91,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_profile"
+            android:layout_below="@+id/rl_images"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin8dp"
             android:maxLength="20"
