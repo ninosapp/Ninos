@@ -87,13 +87,14 @@
             android:orientation="vertical">
 
             <com.ninos.views.FontTextView
+                android:id="@+id/tv_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ff507e"
+                android:background="@color/pink"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/margin16dp"
                 android:text="@string/summary"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:fontValue="noraviyel.ttf" />

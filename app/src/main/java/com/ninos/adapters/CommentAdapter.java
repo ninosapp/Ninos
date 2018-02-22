@@ -1,6 +1,7 @@
 package com.ninos.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.activities.ProfileActivity;
 import com.ninos.models.Comment;
 import com.ninos.utils.AWSUrls;
 import com.ninos.utils.DateUtil;
@@ -22,12 +24,12 @@ import com.ninos.utils.DateUtil;
 
 public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
 
-    private Context mContext;
+    private Context context;
     private RequestOptions requestOptions;
     private DateUtil dateUtil;
 
     public CommentAdapter(Context context) {
-        mContext = context;
+        this.context = context;
 
         requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_account)
@@ -52,12 +54,13 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
         sampleViewHolder.bindData(position);
     }
 
-    private class CommentViewHolder extends RecyclerView.ViewHolder {
+    private class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv_image;
         TextView tv_user_name, tv_time, tv_comment;
 
         CommentViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             iv_image = itemView.findViewById(R.id.iv_image);
             tv_user_name = itemView.findViewById(R.id.tv_user_name);
             tv_time = itemView.findViewById(R.id.tv_time);
@@ -73,7 +76,18 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
             String time = dateUtil.formatDateToString(comment.getCreatedAt(), DateUtil.FULL_DATE);
             tv_time.setText(time);
 
-            Glide.with(mContext).load(AWSUrls.GetPI64(mContext, comment.getUserId())).apply(requestOptions).into(iv_image);
+            Glide.with(context).load(AWSUrls.GetPI64(context, comment.getUserId())).apply(requestOptions).into(iv_image);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Comment comment = getItem(getAdapterPosition());
+
+            Intent intent = new Intent(context, ProfileActivity.class);
+            int resId = R.drawable.pattern_13;
+            intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
+            intent.putExtra(ProfileActivity.PROFILE_ID, comment.getUserId());
+            context.startActivity(intent);
         }
     }
 }

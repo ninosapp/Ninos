@@ -15,7 +15,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ninos.R;
+import com.ninos.activities.ChallengeActivity;
 import com.ninos.activities.LoginActivity;
+import com.ninos.activities.QuizActivity;
 import com.ninos.utils.CrashUtil;
 
 import java.io.InputStream;
@@ -45,14 +47,29 @@ public class NinosMessagingService extends FirebaseMessagingService {
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("message");
         String imageUri = remoteMessage.getData().get("image");
+        String challengeId = remoteMessage.getData().get("challengeId");
+        String challengeTitle = remoteMessage.getData().get("challengeTitle");
+        String quizId = remoteMessage.getData().get("quizId");
+        String quizDuration = remoteMessage.getData().get("quizDuration");
+        String quizTitle = remoteMessage.getData().get("quizTitle");
         Bitmap bitmap = getBitmapfromUrl(imageUri);
 
-        sendNotification(title, message, bitmap);
-    }
+        Intent intent;
+        if (challengeId == null && quizId == null) {
+            intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        } else if (challengeId != null) {
+            intent = new Intent(this, ChallengeActivity.class);
+            intent.putExtra(ChallengeActivity.CHALLENGE_ID, challengeId);
+            intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, challengeTitle);
 
-    private void sendNotification(String title, String message, Bitmap image) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        } else {
+            intent = new Intent(this, QuizActivity.class);
+            intent.putExtra(QuizActivity.QUIZ_ID, quizId);
+            intent.putExtra(QuizActivity.QUIZ_DURATION, quizDuration);
+            intent.putExtra(QuizActivity.QUIZ_TITLE, quizTitle);
+        }
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -62,7 +79,7 @@ public class NinosMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image).setBigContentTitle(title).setSummaryText(message))
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).setBigContentTitle(title).setSummaryText(message))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

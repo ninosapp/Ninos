@@ -4,19 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.graphics.Palette;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -106,8 +102,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.ll_followers).setOnClickListener(this);
         findViewById(R.id.ll_following).setOnClickListener(this);
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
-        iv_profile.setImageBitmap(bm);
+        iv_profile.setImageDrawable(ContextCompat.getDrawable(this, placeHolderId));
 
         if (Database.getUserId().equals(userId)) {
             fab_update_Image.setOnClickListener(this);
@@ -129,8 +124,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         challenge_list.setAdapter(allChallengeAdapter);
 
-        setBitmapPalette(bm);
-
         accessToken = PreferenceUtil.getAccessToken(this);
 
         service = RetrofitInstance.createService(RetrofitService.class);
@@ -141,7 +134,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     userProfile = response.body().getUserProfile();
 
                     if (userProfile != null) {
-                        tv_points.setText(userProfile.getUserPoints());
+                        String userPoints = "0";
+
+                        if (userProfile.getUserPoints() != null) {
+                            userPoints = userProfile.getUserPoints();
+                        }
+
+                        tv_points.setText(userPoints);
                         tv_post_count.setText(userProfile.getPostCount());
                         tv_follower_count.setText(userProfile.getFollowersCount());
                         tv_following_count.setText(userProfile.getFollowingCount());
@@ -165,39 +164,22 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     private void updateImage() {
         RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(placeHolderId)
-                    .error(placeHolderId)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true);
+                .placeholder(placeHolderId)
+                .error(placeHolderId)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true);
 
         Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)
                 .asBitmap()
-                .load(AWSUrls.GetPI512(ProfileActivity.this, userId))
+                .load(AWSUrls.GetPI192(ProfileActivity.this, userId))
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                         iv_profile.setImageBitmap(resource);
                         rl_progress.setVisibility(View.GONE);
-                        setBitmapPalette(resource);
                     }
                 });
-    }
-
-    private void setBitmapPalette(Bitmap resource) {
-        if (resource != null) {
-            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Window window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -333,7 +315,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     if (file.exists()) {
                         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         iv_profile.setImageBitmap(bitmap);
-                        setBitmapPalette(bitmap);
                     }
                 }
                 break;

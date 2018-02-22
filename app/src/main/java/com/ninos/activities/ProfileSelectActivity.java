@@ -83,7 +83,7 @@ public class ProfileSelectActivity extends BaseActivity {
                 String path = resultUri.getPath();
                 AWSClient awsClient = new AWSClient(this, path);
                 awsClient.awsInit();
-                awsClient.upload256Image();
+                awsClient.upload192Image();
             } else {
                 showToast(R.string.error_message);
             }

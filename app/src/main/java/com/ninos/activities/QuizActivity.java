@@ -71,7 +71,7 @@ public class QuizActivity extends BaseActivity {
 
                 if (response.body() != null) {
                     FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-                    fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, quizId));
+                    fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, response.body().getQuizStarted().get_id()));
                     fts.commit();
                 } else {
                     showToast(R.string.error_message);

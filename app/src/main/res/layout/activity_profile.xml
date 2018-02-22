@@ -13,37 +13,40 @@
         android:descendantFocusability="blocksDescendants"
         tools:context="com.ninos.activities.ProfileActivity">
 
-        <com.ninos.views.DiagonalCutLayout
-            android:id="@+id/diagonal_cut_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rl_profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp">
 
-            <ImageView
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_update_Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_camera"
+                android:tint="@android:color/white"
+                app:backgroundTint="@color/blue" />
+
+            <com.ninos.views.CircleImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="match_parent"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:scaleType="centerCrop" />
-        </com.ninos.views.DiagonalCutLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_update_Image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/relativeLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="36dp"
-            android:src="@drawable/ic_add"
-            android:tint="@color/dark_grey"
-            app:backgroundTint="@android:color/white"
-            app:elevation="8dp" />
+                android:scaleType="centerCrop"
+                tools:background="@drawable/pattern_12" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_progress"
             android:layout_width="match_parent"
-            android:layout_height="350dp">
+            android:layout_height="150dp"
+            android:layout_marginTop="80dp">
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -67,8 +70,9 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/diagonal_cut_layout"
+            android:layout_below="@+id/rl_profile"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin8dp"
             android:maxLength="20"
             android:padding="@dimen/margin4dp"
             android:textColor="@android:color/black"

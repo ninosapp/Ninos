@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class ScoreActivity extends BaseActivity {
     public static final String QUIZ_ID = "QUIZ_ID";
 
@@ -34,8 +35,20 @@ public class ScoreActivity extends BaseActivity {
         String quizId = getIntent().getStringExtra(QUIZ_ID);
         final TextView tv_score_one = findViewById(R.id.tv_score_one);
         View bottomSheet = findViewById(R.id.bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(170);
+
+        TextView tv_summary = findViewById(R.id.tv_summary);
+        tv_summary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
 
         LinearLayoutManager scoreLayoutManager = new LinearLayoutManager(this);
 

@@ -27,7 +27,7 @@ public class InstructionFragment extends BaseFragment implements View.OnClickLis
         try {
             ImageView iv_back = view.findViewById(R.id.iv_back);
             iv_back.setOnClickListener(this);
-            view.findViewById(R.id.btn_start).setOnClickListener(this);
+            view.findViewById(R.id.tv_start).setOnClickListener(this);
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
@@ -44,7 +44,7 @@ public class InstructionFragment extends BaseFragment implements View.OnClickLis
                 }
 
                 break;
-            case R.id.btn_start:
+            case R.id.tv_start:
                 if (getActivity() != null) {
                     QuizActivity quizActivity = (QuizActivity) getActivity();
                     quizActivity.startQuiz();

@@ -297,8 +297,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             }
 
             if (type.equals(Type.POST) && postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
-                String msg = String.format("<b>%s</b> posted in <b>%s</b> challenge", postInfo.getUserName(), postInfo.getChallengeTitle());
-                tv_msg.setText(Html.fromHtml(msg));
+                String msg = String.format("<b>%s</b> posted in <b style=\"color:#f76707\"><font color='#f76707'>%s</font></b> challenge", postInfo.getUserName(), postInfo.getChallengeTitle());
+                tv_msg.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
                 tv_msg.setVisibility(View.VISIBLE);
                 tv_msg.setOnClickListener(new View.OnClickListener() {
                     @Override

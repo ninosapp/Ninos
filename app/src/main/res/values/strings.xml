@@ -37,10 +37,8 @@
     <string name="posts">Posts</string>
     <string name="followers">followers</string>
     <string name="following">following</string>
-    <string name="profile_aws_url_suffix_PI128">/PI128.png</string>
     <string name="profile_aws_url_suffix_PI64">/PI64.png</string>
     <string name="profile_aws_url_suffix_PI192">/PI192.png</string>
-    <string name="profile_aws_url_suffix_PI512">/PI512.png</string>
     <string name="comments">Comments</string>
     <string name="leave_a_comment">Leave a comment…</string>
     <string name="comment_validation">Comment is empty</string>
@@ -93,7 +91,7 @@
     <string name="notifications">Notifications</string>
     <string name="starting_quiz">Starting quiz…</string>
     <string name="your_score">Your Score</string>
-    <string name="_0">0</string>
+    <string name="_0">00</string>
     <string name="name">Name</string>
     <string name="location">Location</string>
     <string name="email">Email</string>
@@ -119,11 +117,11 @@
     <string name="play_store_link">https://play.google.com/store/apps/details?id=com.ninos</string>
     <string name="invite_text">Hey! I\'ve found the best app to showcase children\'s talent. Display your Talent, Play Quizzes, Challenges &amp; Win PRIZES EVERY WEEK. Download Ninos App - India\'s 1st Talent App For Children. https://play.google.com/store/apps/details?id=com.ninos</string>
     <string name="send_email_using">Send email using…</string>
-    <string name="_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers">2. You will be awarded 2 points for every correct answer. There are NO negative points for wrong answers.</string>
-    <string name="_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"><![CDATA[1. The quizzes are carefully designed to educate & entertain you.]]></string>
-    <string name="_3_the_timer_is_set_once_you_start_the_quiz">3. The timer is set once you start the quiz.</string>
-    <string name="_4_you_can_change_answers_any_number_of_times_within_the_time_limit">4. You can change answers any number of times within the time limit.</string>
-    <string name="_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"><![CDATA[5. You can attempt one quiz only once. However, you can always view questions & answers of attempted quizzes.]]></string>
+    <string name="_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers">You will be awarded 2 points for every correct answer. There are NO negative points for wrong answers.</string>
+    <string name="_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"><![CDATA[The quizzes are carefully designed to educate & entertain you.]]></string>
+    <string name="_3_the_timer_is_set_once_you_start_the_quiz">The timer is set once you start the quiz.</string>
+    <string name="_4_you_can_change_answers_any_number_of_times_within_the_time_limit">You can change answers any number of times within the time limit.</string>
+    <string name="_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"><![CDATA[You can attempt one quiz only once. However, you can always view questions & answers of attempted quizzes.]]></string>
     <string name="about_description">First of it\’s kind talent app for children. A talent app for children like never before. There is something for every child. \n\n Ninos App is the perfect platform for children to showcase their creativity and become superstars. Our motto is to Entertain, Educate &amp; Encourage. \n Entertain: Publish and share anything, just anything – Painting, Singing, Dancing, Acting, Cooking, Spelling Bee, Sporting events, Martial Arts, Fashion, Photography and Everything under the sun. \n\n Educate: We do our bit to keep children engaged with a range of daily educative quizzes, weekly creative challenges, monthly interesting contests exclusively designed to suit children of all ages. \n\n Encourage: We encourage children by rewarding them generously. There are thousands of prizes in the store for them. Ninos app also encourages parents to identify their children’s hidden and unexplored talent. We bestow a novel responsibility upon the parents to share their children’s creativity and innovations on Ninos App. \n\n Children are born stars. Parents identify them. Ninos App makes them superstars.</string>
     <string name="submitted_challenges">Submitted Challenges</string>
     <string name="good_luck">Good Luck!</string>
@@ -143,13 +141,18 @@
     <string name="completed">Completed</string>
     <string name="no_quiz_in_this_category">No quiz in this category</string>
     <string name="search_prompt_description">Search People, Posts and Challenges</string>
-    <string name="add_post">Add Post</string>
-    <string name="add_post_prompt_description">Click here to add a post</string>
+    <string name="add_post">Add Talent</string>
+    <string name="add_post_prompt_description">Upload your talent here…</string>
     <string name="challenges_prompt_description">Add a post to challenge</string>
     <string name="welcome">Welcome</string>
     <string name="add_welcome_prompt_description">Click home button to continue</string>
     <string name="notifications_prompt_description">All the latest notifications available</string>
-    <string name="summary">Summary</string>
+    <string name="summary">Quiz Summary</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

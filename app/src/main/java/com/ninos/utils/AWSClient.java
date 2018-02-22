@@ -149,31 +149,7 @@ public class AWSClient {
         }
     }
 
-    /*Uploading 128X128 resolution image*/
-    private void upload128Image() {
-        try {
-            String userId = Database.getUserId();
-            File path128 = resizeImage(128);
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI128), path128, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new UploadListener());
-        } catch (Exception e) {
-            Log.e(TAG, "upload128Image() - " + e.getMessage(), e);
-        }
-    }
-
-    private void upload192Image() {
-        try {
-            String userId = Database.getUserId();
-            File path192 = resizeImage(192);
-            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI192), path192, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new UploadListener());
-        } catch (Exception e) {
-            Log.e(TAG, "upload192Image() - " + e.getMessage(), e);
-        }
-    }
-
-    /*Uploading 512X512 resolution image*/
-    public void upload256Image() {
+    public void upload192Image() {
         try {
             new Compressor(mContext)
                     .compressToFileAsFlowable(new File(mPath))
@@ -185,8 +161,8 @@ public class AWSClient {
                             fileName = file.getName();
                             mBitmap = BitmapFactory.decodeFile(file.getPath());
                             String userId = Database.getUserId();
-                            File path256 = resizeImage(256);
-                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI512), path256, CannedAccessControlList.PublicRead);
+                            File path192 = resizeImage(192);
+                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI192), path192, CannedAccessControlList.PublicRead);
                             mTransfer.setTransferListener(new UploadListener());
                         }
                     }, new Consumer<Throwable>() {
@@ -196,7 +172,7 @@ public class AWSClient {
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "upload256Image() - " + e.getMessage(), e);
+            Log.e(TAG, "upload192Image() - " + e.getMessage(), e);
         }
     }
 
@@ -279,42 +255,6 @@ public class AWSClient {
                     }
                 }
             });
-
-//            new TrimVideoUtils().startTrim(mContext, mPath, StorageUtils.getPostPath(mContext, postInfo.get_id()), new OnTrimVideoListener() {
-//                @Override
-//                public void onTrimStarted() {
-//                    if (mProgressDialog != null && !mProgressDialog.isShowing()) {
-//                        mProgressDialog.show();
-//                    }
-//                }
-//
-//                @Override
-//                public void getResult(String uri) {
-//                    mFolder = new File(uri);
-//                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
-//                    new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
-//                }
-//
-//                @Override
-//                public void cancelAction() {
-//                    if (mProgressDialog != null) {
-//                        mProgressDialog.dismiss();
-//                    }
-//                }
-//
-//                @Override
-//                public void finished() {
-//
-//                }
-//
-//                @Override
-//                public void onError(String message) {
-//                    if (mProgressDialog != null) {
-//                        mProgressDialog.dismiss();
-//                    }
-//                }
-//            });
-
         } catch (Exception e) {
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
@@ -372,12 +312,6 @@ public class AWSClient {
                             upload64Image();
                             break;
                         case 2:
-                            upload128Image();
-                            break;
-                        case 3:
-                            upload192Image();
-                            break;
-                        case 4:
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();
                             }

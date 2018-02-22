@@ -59,16 +59,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public static final int POST_UPDATE = 3651;
     private final int RC_STORAGE_PERM = 4531;
     private Fragment challengeFragment;
-    private ImageView iv_home, iv_challenges;
     private AllChallengesFragment allChallengeFragment;
     private boolean doubleBackToExit;
     private CircleImageView iv_profile;
     private DrawerLayout drawer_layout;
     private RelativeLayout rl_no_network;
-    private TextView tv_try_again;
     private TextView tv_user_name;
     private TextView tv_user_email;
     private CircleImageView iv_nav_image;
+    private ImageView iv_challenge_dot, iv_home_dot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +79,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.fl_add).setOnClickListener(this);
         findViewById(R.id.fl_challenges).setOnClickListener(this);
 
-        iv_home = findViewById(R.id.iv_home);
-        iv_challenges = findViewById(R.id.iv_challenges);
+        ImageView iv_home = findViewById(R.id.iv_home);
+        ImageView iv_challenges = findViewById(R.id.iv_challenges);
+        iv_challenge_dot = findViewById(R.id.iv_challenge_dot);
+        iv_home_dot = findViewById(R.id.iv_home_dot);
         iv_profile = findViewById(R.id.iv_profile);
+        iv_home_dot.setVisibility(View.VISIBLE);
+        iv_challenge_dot.setVisibility(View.GONE);
         iv_profile.setOnClickListener(this);
         rl_no_network = findViewById(R.id.rl_no_network);
         rl_no_network.setVisibility(View.GONE);
-        tv_try_again = findViewById(R.id.tv_try_again);
+        TextView tv_try_again = findViewById(R.id.tv_try_again);
         tv_try_again.setOnClickListener(this);
         findViewById(R.id.iv_notification).setOnClickListener(this);
 
@@ -134,7 +137,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         Glide.with(this)
                 .setDefaultRequestOptions(requestOptions)
-                .load(AWSUrls.GetPI128(this, Database.getUserId()))
+                .load(AWSUrls.GetPI192(this, Database.getUserId()))
                 .into(iv_nav_image);
 
         Glide.with(this)
@@ -247,6 +250,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             ft.hide(challengeFragment);
         }
         ft.commit();
+
+        iv_home_dot.setVisibility(View.VISIBLE);
+        iv_challenge_dot.setVisibility(View.GONE);
     }
 
     private void displayChallengeFragment() {
@@ -261,6 +267,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             ft.hide(allChallengeFragment);
         }
         ft.commit();
+
+        iv_home_dot.setVisibility(View.GONE);
+        iv_challenge_dot.setVisibility(View.VISIBLE);
     }
 
     @Override
