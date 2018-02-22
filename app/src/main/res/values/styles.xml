@@ -86,7 +86,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="colorControlNormal">@color/clouds</item>
         <item name="colorControlActivated">@android:color/white</item>
-        <item name="colorButtonNormal">@color/blue</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="android:colorButtonNormal" tools:targetApi="lollipop">@color/colorAccent
         </item>
     </style>

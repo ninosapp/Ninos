@@ -12,11 +12,22 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_flat_report" />
 
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_report"
+        android:gravity="center"
+        android:padding="@dimen/margin8dp"
+        android:text="@string/when_you_report_you_cannot_see_this_post_again"
+        android:textColor="@color/midnight_blue"
+        android:textSize="16sp" />
+
     <EditText
         android:id="@+id/et_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_report"
+        android:layout_below="@+id/tv_info"
         android:layout_marginTop="@dimen/margin16dp"
         android:background="@android:color/transparent"
         android:gravity="center"

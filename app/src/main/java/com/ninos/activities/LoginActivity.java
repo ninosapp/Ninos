@@ -255,7 +255,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void onError(FacebookException e) {
                     enableButton();
-                    showToast(R.string.error_message);
+                    if (e.getMessage() != null && e.getMessage().contains("hash")) {
+                        showToast(R.string.error_message);
+                    } else {
+                        showToast(e.getMessage());
+                    }
                 }
             });
         } catch (Exception e) {

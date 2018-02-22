@@ -81,7 +81,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
         final RecyclerView recyclerView = findViewById(R.id.upload_list);
         recyclerView.setLayoutManager(layoutManager);
 
-        uploadAdapter = new EditPostAdapter(this);
+        uploadAdapter = new EditPostAdapter(this, postId, this);
 
         recyclerView.setAdapter(uploadAdapter);
 

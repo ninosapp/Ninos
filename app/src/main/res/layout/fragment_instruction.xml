@@ -3,223 +3,235 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/margin16dp">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/margin16dp">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/ic_back_grey"
-                android:tint="@color/silver" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_list"
-                android:drawablePadding="@dimen/margin8dp"
-                android:drawableStart="@drawable/ic_list"
-                android:fontFamily="sans-serif-condensed"
-                android:padding="@dimen/margin8dp"
-                android:text="@string/instructions"
-                android:textColor="@color/blue"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin16dp">
-
-            <TextView
-                android:id="@+id/tv_1"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_circle_line"
-                android:gravity="center"
-                android:text="@string/_1"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp" />
-
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_1"
-                android:layout_toRightOf="@+id/tv_1"
-                android:text="@string/_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"
-                android:textColor="@color/midnight_blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_back_grey"
+                    android:tint="@color/silver" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="@dimen/margin16dp"
-            android:background="@color/silver" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_list"
+                    android:drawablePadding="@dimen/margin8dp"
+                    android:drawableStart="@drawable/ic_list"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="@dimen/margin8dp"
+                    android:text="@string/instructions"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin16dp">
-
-            <TextView
-                android:id="@+id/tv_2"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_circle_line"
-                android:gravity="center"
-                android:text="@string/_2"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp" />
-
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_2"
-                android:layout_toRightOf="@+id/tv_2"
-                android:text="@string/_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers"
-                android:textColor="@color/midnight_blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/margin16dp">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_circle_line"
+                    android:gravity="center"
+                    android:text="@string/_1"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="@dimen/margin16dp"
-            android:background="@color/silver" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8dp"
+                    android:layout_marginStart="@dimen/margin8dp"
+                    android:layout_toEndOf="@+id/tv_1"
+                    android:layout_toRightOf="@+id/tv_1"
+                    android:text="@string/_1_the_quizzes_are_carefully_designed_to_educate_entertain_you"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin16dp">
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_4"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_circle_line"
-                android:gravity="center"
-                android:text="@string/_3"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:background="@color/silver" />
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_4"
-                android:layout_toRightOf="@+id/tv_4"
-                android:text="@string/_4_you_can_change_answers_any_number_of_times_within_the_time_limit"
-                android:textColor="@color/midnight_blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/margin16dp">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_circle_line"
+                    android:gravity="center"
+                    android:text="@string/_2"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="@dimen/margin16dp"
-            android:background="@color/silver" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8dp"
+                    android:layout_marginStart="@dimen/margin8dp"
+                    android:layout_toEndOf="@+id/tv_2"
+                    android:layout_toRightOf="@+id/tv_2"
+                    android:text="@string/_2_you_will_be_awarded_2_points_for_every_correct_answer_there_are_no_negative_points_for_wrong_answers"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin16dp">
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_5"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_circle_line"
-                android:gravity="center"
-                android:text="@string/_4"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:background="@color/silver" />
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_toEndOf="@+id/tv_5"
-                android:layout_toRightOf="@+id/tv_5"
-                android:text="@string/_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"
-                android:textColor="@color/midnight_blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/margin16dp">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_4"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_circle_line"
+                    android:gravity="center"
+                    android:text="@string/_3"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginTop="@dimen/margin16dp"
-            android:background="@color/silver" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8dp"
+                    android:layout_marginStart="@dimen/margin8dp"
+                    android:layout_toEndOf="@+id/tv_4"
+                    android:layout_toRightOf="@+id/tv_4"
+                    android:text="@string/_4_you_can_change_answers_any_number_of_times_within_the_time_limit"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin16dp">
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_3"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_circle_line"
-                android:gravity="center"
-                android:text="@string/_5"
-                android:textColor="@color/midnight_blue"
-                android:textSize="18sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:background="@color/silver" />
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin8dp"
-                android:layout_marginStart="@dimen/margin8dp"
-                android:layout_marginTop="6dp"
-                android:layout_toEndOf="@+id/tv_3"
-                android:layout_toRightOf="@+id/tv_3"
-                android:text="@string/_3_the_timer_is_set_once_you_start_the_quiz"
-                android:textColor="@color/midnight_blue"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/margin16dp">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_5"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_circle_line"
+                    android:gravity="center"
+                    android:text="@string/_4"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8dp"
+                    android:layout_marginStart="@dimen/margin8dp"
+                    android:layout_toEndOf="@+id/tv_5"
+                    android:layout_toRightOf="@+id/tv_5"
+                    android:text="@string/_5_you_can_attempt_one_quiz_only_once_however_you_can_always_view_questions_answers_of_attempted_quizzes"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="@dimen/margin16dp"
+                android:background="@color/silver" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin16dp">
+
+                <TextView
+                    android:id="@+id/tv_3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_circle_line"
+                    android:gravity="center"
+                    android:text="@string/_5"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8dp"
+                    android:layout_marginStart="@dimen/margin8dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_toEndOf="@+id/tv_3"
+                    android:layout_toRightOf="@+id/tv_3"
+                    android:text="@string/_3_the_timer_is_set_once_you_start_the_quiz"
+                    android:textColor="@color/midnight_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/tv_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/blue"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_right_arrow"
+        android:drawableRight="@drawable/ic_right_arrow"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:padding="@dimen/margin16dp"
         android:text="@string/start"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

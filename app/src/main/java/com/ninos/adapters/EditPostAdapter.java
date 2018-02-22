@@ -1,5 +1,6 @@
 package com.ninos.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +14,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ninos.R;
+import com.ninos.listeners.RetrofitService;
+import com.ninos.models.Response;
+import com.ninos.reterofit.RetrofitInstance;
+import com.ninos.utils.AWSClient;
+import com.ninos.utils.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * Created by FAMILY on 23-01-2018.
@@ -25,9 +34,13 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
 
     private Context context;
     private List<String> deletedLinks;
+    private String postId;
+    private Activity activity;
 
-    public EditPostAdapter(Context context) {
+    public EditPostAdapter(Context context, String postId, Activity activity) {
         this.context = context;
+        this.activity = activity;
+        this.postId = postId;
         deletedLinks = new ArrayList<>();
     }
 
@@ -63,12 +76,6 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
         private void bindData(int position) {
             String path = getItem(position);
             Glide.with(context).load(path).into(iv_image);
-
-            if (getItemCount() == 1) {
-                fab_delete.setVisibility(View.GONE);
-            } else {
-                fab_delete.setVisibility(View.VISIBLE);
-            }
         }
 
         @Override
@@ -94,7 +101,41 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
                 builder.create().show();
 
             } else {
-                Toast.makeText(context, R.string.cannot_delete_image, Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                        .setMessage(R.string.delete_image_will_delete_post)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                service.deletePost(postId, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
+                                    @Override
+                                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                        if (response.isSuccessful() && response.body() != null) {
+
+                                            AWSClient awsClient = new AWSClient(context);
+                                            awsClient.awsInit();
+                                            awsClient.removeImage(postId, getDataSet());
+
+                                            activity.finish();
+                                        } else {
+                                            Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
             }
         }
     }

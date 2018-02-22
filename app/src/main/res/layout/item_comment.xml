@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/margin8dp"
-    android:paddingEnd="@dimen/margin16dp"
-    android:paddingStart="@dimen/margin16dp"
-    android:paddingTop="@dimen/margin8dp">
+    android:padding="@dimen/margin8dp">
 
     <ImageView
         android:id="@+id/iv_image"

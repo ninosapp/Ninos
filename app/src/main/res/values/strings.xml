@@ -16,7 +16,7 @@
     <string name="share">Share</string>
     <string name="playservice_error">Google Play Services error.</string>
     <string name="child_name">Child Name</string>
-    <string name="date_of_birth">Date of Birth</string>
+    <string name="date_of_birth">Child Date of Birth</string>
     <string name="enter_child_name">Enter child name</string>
     <string name="select_dob">Select date of birth</string>
     <string name="rationale_storage">This app needs External Storage permission to select photos and videos.</string>
@@ -28,15 +28,15 @@
     <string name="select_count">Select (%d)</string>
     <string name="select">Select</string>
     <string name="loading_image_upload">Uploading …</string>
-    <string name="s_clap">%d clap</string>
-    <string name="s_claps">%d claps</string>
-    <string name="s_comments">%d comments</string>
-    <string name="s_comment">%d comment</string>
+    <string name="s_clap">%d Clap</string>
+    <string name="s_claps">%d Claps</string>
+    <string name="s_comments">%d Comments</string>
+    <string name="s_comment">%d Comment</string>
     <string name="done">Done</string>
     <string name="about">About…</string>
     <string name="posts">Posts</string>
-    <string name="followers">followers</string>
-    <string name="following">following</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
     <string name="profile_aws_url_suffix_PI64">/PI64.png</string>
     <string name="profile_aws_url_suffix_PI192">/PI192.png</string>
     <string name="comments">Comments</string>
@@ -82,7 +82,7 @@
     <string name="points">Points</string>
     <string name="quiz">Quiz</string>
     <string name="instructions">Instructions</string>
-    <string name="start">Start</string>
+    <string name="start">Start Quiz</string>
     <string name="exit_quiz">Exit quiz?</string>
     <string name="exit_quiz_message">Quiz progress will be lost.</string>
     <string name="offensive_words">About contains offensive words.</string>
@@ -110,7 +110,7 @@
     <string name="rate_us">Rate us on play store</string>
     <string name="twitter">Twitter</string>
     <string name="contact">Contact</string>
-    <string name="feed_back">Feed Back</string>
+    <string name="feed_back">Feedback</string>
     <string name="about_us">About us</string>000000
     <string name="policies">Policies</string>
     <string name="invite_friends">Invite Friends</string>
@@ -153,6 +153,11 @@
     <string name="_3">3</string>
     <string name="_4">4</string>
     <string name="_5">5</string>
+    <string name="when_you_report_you_cannot_see_this_post_again">When you report, you cannot see this post again!</string>
+    <string name="see_who_s_commenting">See who\'s commenting...</string>
+    <string name="delete_image_will_delete_post">Delete Image or video will delete the post</string>
+    <string name="i_accept_the_terms_and_conditions_privacy_and_content_policy">I accept the Terms and Conditions, Privacy and Content Policy</string>
+    <string name="accept_terms_conditons">Please accept terms and conditions.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

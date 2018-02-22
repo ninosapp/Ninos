@@ -21,7 +21,6 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
 
     private static final int ITEM_VIEW_TYPE_DELEGATE = 0;
     private static final int ITEM_VIEW_TYPE_PROGRESS_FOOTER = 1;
-
     private List<T> dataSet;
     private OnLoadMoreListener onLoadMoreListener;
     private RecyclerView recyclerView;
@@ -141,6 +140,10 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
             dataSet.remove(indexOfItem);
             notifyItemRemoved(indexOfItem);
         }
+    }
+
+    public List<T> getDataSet() {
+        return dataSet;
     }
 
     public abstract RecyclerView.ViewHolder onCreateBasicItemViewHolder(ViewGroup parent, int viewType);
