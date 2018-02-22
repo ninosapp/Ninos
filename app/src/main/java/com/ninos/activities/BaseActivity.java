@@ -78,6 +78,14 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    protected void showNetworkDown() {
+        try {
+            showToast(R.string.network_down);
+        } catch (Exception e) {
+            Log.e(TAG, "showNetworkDownSnackBar() - " + e.toString(), e);
+        }
+    }
+
     public void logError(Exception exception) {
         report(exception);
     }

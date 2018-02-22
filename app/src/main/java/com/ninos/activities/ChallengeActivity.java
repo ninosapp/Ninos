@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,6 +59,7 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
     private AllChallengeAdapter allChallengeAdapter;
     private String accessToken, challengeId, challengeName;
     private int from = 0, size = 10;
+    private SwipeRefreshLayout sr_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,24 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFailure(@NonNull Call<ChallengeResponse> call, @NonNull Throwable t) {
 
+            }
+        });
+
+        sr_layout = findViewById(R.id.sr_layout);
+        sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (isNetworkAvailable()) {
+                    from = 0;
+                    allChallengeAdapter.resetItems();
+                    allChallengeAdapter.resetItems();
+
+                    getPosts();
+
+                    sr_layout.setRefreshing(false);
+                } else {
+                    showNetworkDown();
+                }
             }
         });
 
