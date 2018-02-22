@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ninos.R;
+import com.ninos.activities.FollowActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.activities.ProfileActivity;
 import com.ninos.listeners.RetrofitService;
@@ -41,10 +42,12 @@ public class FollowAdapter extends CommonRecyclerAdapter<Follow> {
     private TypedArray typedArray;
     private RetrofitService service;
     private String accessToken;
+    private String type;
 
-    public FollowAdapter(Context context, Activity activity) {
+    public FollowAdapter(Context context, Activity activity, String type) {
         this.activity = activity;
         this.context = context;
+        this.type = type;
         typedArray = context.getResources().obtainTypedArray(R.array.patterns);
         accessToken = PreferenceUtil.getAccessToken(context);
 
@@ -113,37 +116,84 @@ public class FollowAdapter extends CommonRecyclerAdapter<Follow> {
 
             switch (view.getId()) {
                 case R.id.btn_follow:
-                    if (follow.isFollowing()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                                .setMessage(R.string.are_you_sure)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        service.unFollow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
-                                            @Override
-                                            public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
-                                                if (response.body() != null && response.isSuccessful()) {
-                                                    follow.setFollowing(false);
-                                                    removeItem(position);
+                    if (type.equals(FollowActivity.FOLLOWERS)) {
+                        if (follow.isFollowing()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                    .setMessage(R.string.are_you_sure)
+                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            service.unFollow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                                                @Override
+                                                public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                                    if (response.body() != null && response.isSuccessful()) {
+                                                        follow.setFollowing(false);
+                                                        updateItem(position, follow);
+                                                    }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                                                @Override
+                                                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
 
-                                            }
-                                        });
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            builder.create().show();
+                        } else {
+                            service.follow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                                @Override
+                                public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                    if (response.body() != null && response.isSuccessful()) {
+                                        follow.setFollowing(true);
+                                        updateItem(position, follow);
                                     }
-                                })
-                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        builder.create().show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    } else {
+                        if (follow.isFollowing()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                    .setMessage(R.string.are_you_sure)
+                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            service.unFollow(follow.getUserId(), accessToken).enqueue(new Callback<com.ninos.models.Response>() {
+                                                @Override
+                                                public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                                                    if (response.body() != null && response.isSuccessful()) {
+                                                        follow.setFollowing(false);
+                                                        removeItem(position);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            builder.create().show();
+                        }
                     }
-
                     break;
                 default:
                     Intent intent = new Intent(context, ProfileActivity.class);

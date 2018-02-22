@@ -158,6 +158,7 @@
     <string name="delete_image_will_delete_post">Delete Image or video will delete the post</string>
     <string name="i_accept_the_terms_and_conditions_privacy_and_content_policy">I accept the Terms and Conditions, Privacy and Content Policy</string>
     <string name="accept_terms_conditons">Please accept terms and conditions.</string>
+    <string name="email_already_registered">An account already exists with the same email address but with Google credentials. Sign in using Google associated with this email address.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

@@ -35,7 +35,6 @@ public class FollowActivity extends BaseActivity {
     private FollowAdapter followAdapter;
     private RetrofitService service;
     private String accessToken;
-    private int from = 0, size = 20;
     private String type;
     private TextView tv_empty;
     private RecyclerView recyclerView;
@@ -77,7 +76,7 @@ public class FollowActivity extends BaseActivity {
         recyclerView = findViewById(R.id.people_list);
         recyclerView.setLayoutManager(layoutManager);
 
-        followAdapter = new FollowAdapter(this, this);
+        followAdapter = new FollowAdapter(this, this, type);
 
         recyclerView.setAdapter(followAdapter);
 
@@ -117,11 +116,9 @@ public class FollowActivity extends BaseActivity {
                                     }
                                 });
                             }
-                        } else if (from == 0) {
+                        } else {
                             tv_empty.setVisibility(View.VISIBLE);
                         }
-
-                        from = from + size;
                     }
                 }
 
@@ -150,11 +147,9 @@ public class FollowActivity extends BaseActivity {
                                     }
                                 });
                             }
-                        } else if (from == 0) {
+                        } else {
                             tv_empty.setVisibility(View.VISIBLE);
                         }
-
-                        from = from + size;
                     }
                 }
 
@@ -187,7 +182,6 @@ public class FollowActivity extends BaseActivity {
                     boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
 
                     if (isProfileUpdated) {
-                        from = 0;
                         followAdapter.resetItems();
                         followAdapter.addItem(null);
                         getUsers();

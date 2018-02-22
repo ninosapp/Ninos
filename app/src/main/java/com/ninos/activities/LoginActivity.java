@@ -255,11 +255,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void onError(FacebookException e) {
                     enableButton();
-                    if (e.getMessage() != null && e.getMessage().contains("hash")) {
-                        showToast(R.string.error_message);
-                    } else {
-                        showToast(e.getMessage());
-                    }
+                    showToast(R.string.error_message);
                 }
             });
         } catch (Exception e) {
@@ -285,7 +281,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             if (!task.isSuccessful()) {
                                 enableButton();
                                 Log.w(TAG, "signInWithCredential", task.getException());
-                                showToast(R.string.error_message);
+
+                                if (task.getException() != null && task.getException().getMessage().contains("already")) {
+                                    showToast(R.string.email_already_registered);
+                                } else {
+                                    showToast(R.string.error_message);
+                                }
                             } else {
                                 signInUser();
                             }
