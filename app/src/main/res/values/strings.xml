@@ -159,6 +159,9 @@
     <string name="i_accept_the_terms_and_conditions_privacy_and_content_policy">I accept the Terms and Conditions, Privacy and Content Policy</string>
     <string name="accept_terms_conditons">Please accept terms and conditions.</string>
     <string name="email_already_registered">An account already exists with the same email address but with Google credentials. Sign in using Google associated with this email address.</string>
+    <string name="delete_comment">Delete comment?</string>
+    <string name="edit_comment">Edit Comment</string>
+    <string name="comment_is_empty">Comment is empty</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

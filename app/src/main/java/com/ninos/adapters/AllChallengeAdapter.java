@@ -218,6 +218,14 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
+    public void updateClap(RecyclerView.ViewHolder viewHolder, int clapCount) {
+        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+
+        if (challengeViewHolder != null) {
+            challengeViewHolder.tv_clap.setText(String.format(context.getString(R.string.s_claps), clapCount));
+        }
+    }
+
     public void updateComment(RecyclerView.ViewHolder viewHolder, int commentCount) {
         ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
 
@@ -492,7 +500,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                     });
                                     builder.create().show();
 
-                                    break;
+                                    return true;
+
                                 case R.id.action_edit:
 
                                     Intent editPostIntent = new Intent(context, EditPostActivity.class);
@@ -501,7 +510,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                     editPostIntent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
                                     activity.startActivityForResult(editPostIntent, MainActivity.POST_EDIT);
 
-                                    break;
+                                    return true;
+
                                 case R.id.action_report:
 
                                     final Dialog dialog = new Dialog(context);
@@ -557,8 +567,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                         }
                                     });
 
-                                    dialog.show();
-                                    break;
+                                    return true;
                             }
 
                             return false;

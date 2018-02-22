@@ -119,6 +119,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
             challenge_list = view.findViewById(R.id.challenge_list);
             challenge_list.setNestedScrollingEnabled(false);
+
+
             challenge_list.setLayoutManager(challengeLayoutManager);
 
             allChallengeAdapter = new AllChallengeAdapter(getContext(), getActivity(), challenge_list, this, AllChallengeAdapter.Type.POST);
@@ -341,5 +343,32 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 break;
             }
         }
+    }
+
+
+    public void newClapAdded(String postId) {
+        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
+                    PostInfo postInfo = response.body().getPostInfo();
+
+                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                        PostInfo pf = allChallengeAdapter.getItem(i);
+
+                        if (pf.get_id().equals(postInfo.get_id())) {
+                            RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                            allChallengeAdapter.updateClap(viewHolder, postInfo.getTotalClapsCount());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

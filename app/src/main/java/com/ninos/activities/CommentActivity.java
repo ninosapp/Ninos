@@ -55,7 +55,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         list_comment.setNestedScrollingEnabled(true);
         list_comment.setLayoutManager(layoutManager);
 
-        commentAdapter = new CommentAdapter(this);
+        commentAdapter = new CommentAdapter(this, postId);
         list_comment.setAdapter(commentAdapter);
 
         service = RetrofitInstance.createService(RetrofitService.class);

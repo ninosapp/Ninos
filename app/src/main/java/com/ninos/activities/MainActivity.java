@@ -311,7 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     String postId = data.getStringExtra(FilePickerActivity.POST_ID);
 
                     if (allChallengeFragment != null && postId != null) {
-                        allChallengeFragment.newPostAdded(postId);
+                        allChallengeFragment.newClapAdded(postId);
                         allChallengeFragment.newCommentAdded(postId);
                     }
                 }

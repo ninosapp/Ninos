@@ -84,6 +84,12 @@ public interface RetrofitService {
     @POST("/posts/{postId}/comments")
     Call<CommentResponse> addPostComments(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);
 
+    @PATCH("/posts/{postId}/comments")
+    Call<CommentResponse> updatePostComment(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);
+
+    @DELETE("/posts/{postId}/comments/{commentId}")
+    Call<Response> deleteComment(@Path("postId") String postId, @Path("commentId") String commentId, @Query("token") String token);
+
     @POST("/report-post")
     Call<Response> reportPost(@Body PostReport postReport, @Query("token") String token);
 

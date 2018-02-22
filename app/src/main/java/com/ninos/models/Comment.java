@@ -8,11 +8,12 @@ import java.util.Date;
 
 public class Comment {
     private String comment;
-    private String commentId;
+    private String _id;
     private String userId;
     private String postId;
     private String userName;
     private Date createdAt;
+    private String commentId;
 
     public String getComment() {
         return comment;
@@ -23,7 +24,7 @@ public class Comment {
     }
 
     public String getCommentId() {
-        return commentId;
+        return _id;
     }
 
     public void setCommentId(String commentId) {
@@ -62,15 +63,24 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
                 "comment='" + comment + '\'' +
-                ", commentId='" + commentId + '\'' +
+                ", _id='" + _id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", postId='" + postId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", createdAt=" + createdAt +
+                ", commentId='" + commentId + '\'' +
                 '}';
     }
 }

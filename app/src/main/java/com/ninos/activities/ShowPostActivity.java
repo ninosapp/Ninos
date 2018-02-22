@@ -19,15 +19,18 @@ import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import com.ninos.adapters.ShowPostImageAdapter;
 import com.ninos.firebase.Database;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.Comment;
+import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
@@ -64,7 +68,7 @@ import retrofit2.Response;
 
 import static com.ninos.activities.MainActivity.COMMENT_ADDED;
 
-public class ShowPostActivity extends BaseActivity implements View.OnClickListener {
+public class ShowPostActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
     public static final String POST_PROFILE_ID = "POST_PROFILE_ID";
     private static final String POST_ID = "postId";
@@ -74,11 +78,13 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private RetrofitService service;
     private CommentAdapter commentAdapter;
     private TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_comments;
-    private ImageView iv_profile, iv_clap, iv_menu, ic_clap_anim;
+    private ImageView iv_profile, iv_clap, iv_menu, ic_clap_anim, iv_send;
     private JZVideoPlayerStandard video_view;
     private String accessToken;
     private int color_accent, color_dark_grey;
     private boolean isUpdated;
+    private EditText et_comment;
+    private RelativeLayout rl_comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +135,12 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             iv_profile = findViewById(R.id.iv_profile);
             iv_clap = findViewById(R.id.iv_clap);
             iv_menu = findViewById(R.id.iv_menu);
+            rl_comment = findViewById(R.id.rl_comment);
+            rl_comment.setVisibility(View.VISIBLE);
+
+            et_comment = findViewById(R.id.et_comment);
+            iv_send = findViewById(R.id.iv_send);
+            iv_send.setOnClickListener(this);
             findViewById(R.id.iv_back).setOnClickListener(this);
             findViewById(R.id.ll_share).setOnClickListener(this);
 
@@ -148,15 +160,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
 
-                tv_comment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent commentIntent = new Intent(ShowPostActivity.this, CommentActivity.class);
-                        commentIntent.putExtra(CommentActivity.POST_ID, postInfo.get_id());
-                        startActivityForResult(commentIntent, COMMENT_ADDED);
-                    }
-                });
-
+                rl_comment.setVisibility(View.VISIBLE);
+                et_comment.setOnEditorActionListener(this);
                 iv_menu.setOnClickListener(this);
             }
 
@@ -166,7 +171,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             list_comment.setNestedScrollingEnabled(true);
             list_comment.setLayoutManager(commentLayoutManager);
 
-            commentAdapter = new CommentAdapter(this);
+            commentAdapter = new CommentAdapter(this, postId);
             list_comment.setAdapter(commentAdapter);
 
             service = RetrofitInstance.createService(RetrofitService.class);
@@ -214,6 +219,16 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             showToast(R.string.no_network);
             finish();
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+            addComment();
+            return true;
+        }
+
+        return false;
     }
 
     public void setView(Response<PostResponse> response) {
@@ -299,7 +314,10 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
                     if (commentList != null) {
                         commentAdapter.addItems(commentList);
-                        tv_comments.setVisibility(View.VISIBLE);
+
+                        if (commentList.size() > 0) {
+                            tv_comments.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     tv_comment.setText(String.format(getString(R.string.s_comments), commentList.size()));
@@ -434,6 +452,9 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_send:
+                addComment();
+                break;
             case R.id.iv_back:
                 onBackPressed();
                 break;
@@ -638,6 +659,41 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
 
         finish();
+    }
+
+    public void addComment() {
+        String commentValue = et_comment.getText().toString().trim();
+
+        if (commentValue.isEmpty()) {
+            showToast(R.string.comment_validation);
+        } else {
+            et_comment.setText("");
+            Comment comment = new Comment();
+            comment.setComment(commentValue);
+            comment.setUserId(Database.getUserId());
+            comment.setPostId(postInfo.get_id());
+
+            service.addPostComments(postInfo.get_id(), accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Comment comment = response.body().getPostComment();
+                        commentAdapter.addItem(comment, 0);
+                        et_comment.setText("");
+
+                        tv_comments.setVisibility(View.VISIBLE);
+
+                        tv_comment.setText(String.format(getString(R.string.s_comments), commentAdapter.getItemCount()));
+                        isUpdated = true;
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+
+                }
+            });
+        }
     }
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
