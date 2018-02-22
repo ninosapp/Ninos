@@ -23,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,7 +74,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private RetrofitService service;
     private CommentAdapter commentAdapter;
     private TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_comments;
-    private ImageView iv_profile, iv_clap, iv_menu;
+    private ImageView iv_profile, iv_clap, iv_menu, ic_clap_anim;
     private JZVideoPlayerStandard video_view;
     private String accessToken;
     private int color_accent, color_dark_grey;
@@ -105,6 +107,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             awsClient = new AWSClient(this);
             awsClient.awsInit();
 
+            ic_clap_anim = findViewById(R.id.ic_clap_anim);
             video_view = findViewById(R.id.video_view);
             video_view.batteryLevel.setVisibility(View.GONE);
             video_view.mRetryLayout.setVisibility(View.GONE);
@@ -133,6 +136,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 tv_clap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        clapAnimation(postInfo);
+
                         if (postInfo.isMyRating()) {
                             removeClap(postInfo, iv_clap, tv_clap);
                         } else {
@@ -593,6 +598,35 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void clapAnimation(final PostInfo postInfo) {
+        Animation pulse_fade = AnimationUtils.loadAnimation(this, R.anim.pulse_fade_in);
+        pulse_fade.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+                if (postInfo.isMyRating()) {
+                    ic_clap_anim.setImageDrawable(ContextCompat.getDrawable(ShowPostActivity.this, R.drawable.ic_clap_full_anim));
+                } else {
+                    ic_clap_anim.setImageDrawable(ContextCompat.getDrawable(ShowPostActivity.this, R.drawable.ic_clap_anim));
+                }
+
+                ic_clap_anim.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ic_clap_anim.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        ic_clap_anim.startAnimation(pulse_fade);
     }
 
     @Override
