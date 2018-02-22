@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -81,8 +80,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private Button btn_follow;
     private AWSClient awsClient;
     private TextView tv_follower_count, tv_following_count;
-    private RecyclerView challenge_list;
-    private NestedScrollView ns_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +105,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         iv_profile = findViewById(R.id.iv_profile);
         rl_progress = findViewById(R.id.rl_progress);
         rl_progress.setVisibility(View.VISIBLE);
-        ns_view = findViewById(R.id.ns_view);
         findViewById(R.id.fab_back).setOnClickListener(this);
         findViewById(R.id.ll_followers).setOnClickListener(this);
         findViewById(R.id.ll_following).setOnClickListener(this);
@@ -131,7 +127,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         GridLayoutManager challengeLayoutManager = new GridLayoutManager(this, 3);
 
-        challenge_list = findViewById(R.id.challenge_list);
+        RecyclerView challenge_list = findViewById(R.id.challenge_list);
         challenge_list.setNestedScrollingEnabled(false);
         challenge_list.setLayoutManager(challengeLayoutManager);
 
@@ -228,15 +224,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_post_count:
-                ns_view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ns_view.fullScroll(View.FOCUS_UP);
-                    }
-                });
-                break;
-
             case R.id.fab_back:
 
                 onBackPressed();
