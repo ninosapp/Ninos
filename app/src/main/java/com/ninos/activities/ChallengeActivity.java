@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +62,8 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
     private String accessToken, challengeId, challengeName;
     private int from = 0, size = 10;
     private SwipeRefreshLayout sr_layout;
+    private ImageView iv_move_up;
+    private NestedScrollView ns_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +134,22 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
+        iv_move_up = findViewById(R.id.iv_move_up);
+        iv_move_up.setOnClickListener(this);
+        iv_move_up.setVisibility(View.GONE);
+
+        ns_view = findViewById(R.id.ns_view);
+        ns_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    iv_move_up.setVisibility(View.VISIBLE);
+                } else {
+                    iv_move_up.setVisibility(View.GONE);
+                }
+            }
+        });
+
         getPosts();
     }
 
@@ -194,6 +214,16 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.fab_challenge:
                 addFile();
+                break;
+            case R.id.iv_move_up:
+                iv_move_up.setVisibility(View.GONE);
+                ns_view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ns_view.scrollTo(0, 0);
+                        ns_view.fullScroll(ScrollView.FOCUS_UP);
+                    }
+                });
                 break;
         }
     }
