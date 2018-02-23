@@ -88,6 +88,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
                         getPosts();
 
+                        mBaseActivity.getNotifications();
+
                         sr_layout.setRefreshing(false);
                     } else {
                         mBaseActivity.showNoNetwork();

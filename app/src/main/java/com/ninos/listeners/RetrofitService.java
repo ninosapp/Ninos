@@ -9,6 +9,8 @@ import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
 import com.ninos.models.EvaluateResponse;
 import com.ninos.models.FollowingResponse;
+import com.ninos.models.NotificationCount;
+import com.ninos.models.NotificationResponse;
 import com.ninos.models.PeopleResponse;
 import com.ninos.models.PostClapResponse;
 import com.ninos.models.PostInfo;
@@ -144,10 +146,21 @@ public interface RetrofitService {
     @DELETE("/posts/{postId}")
     Call<Response> deletePost(@Path("postId") String postId, @Query("token") String token);
 
-
     @GET("/following-users")
     Call<FollowingResponse> getFollowing(@Query("token") String token);
 
     @GET("/followers-users")
     Call<FollowingResponse> getFollowers(@Query("token") String token);
+
+    @GET("/notifications")
+    Call<NotificationResponse> getNotifications(@Query("token") String token);
+
+    @GET("/notifications-count")
+    Call<NotificationCount> getNotificationsCount(@Query("token") String token);
+
+    @PUT("/notifications/{notificationId}/mark")
+    Call<Response> markNotificationAsRead(@Path("notificationId") String notificationId, @Query("token") String token);
+
+    @PATCH("/notifications/mark-all")
+    Call<Response> markAllNotificationsAsRead(@Query("token") String token);
 }

@@ -163,6 +163,7 @@
     <string name="edit_comment">Edit Comment</string>
     <string name="comment_is_empty">Comment is empty</string>
     <string name="type_your_comment_here">Type your comment here</string>
+    <string name="ago">%d hr ago</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
