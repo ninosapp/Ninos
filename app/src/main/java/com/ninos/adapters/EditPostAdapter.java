@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ninos.R;
+import com.ninos.activities.FilePickerActivity;
+import com.ninos.activities.MainActivity;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.Response;
 import com.ninos.reterofit.RetrofitInstance;
@@ -116,6 +119,9 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
                                             awsClient.awsInit();
                                             awsClient.removeImage(postId, getDataSet());
 
+                                            Intent intent = new Intent();
+                                            intent.putExtra(FilePickerActivity.POST_ID, postId);
+                                            activity.setResult(MainActivity.POST_EDIT, intent);
                                             activity.finish();
                                         } else {
                                             Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();

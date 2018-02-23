@@ -332,7 +332,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     String desc = data.getStringExtra(EditPostActivity.DESCRIPTION);
                     ArrayList<String> links = data.getStringArrayListExtra(EditPostActivity.LINKS);
 
-                    if (allChallengeFragment != null && postId != null) {
+                    if (links == null) {
+                        if (postId != null) {
+                            allChallengeFragment.postDeleted(postId);
+                        }
+                    } else if (allChallengeFragment != null && postId != null) {
                         allChallengeFragment.postUpdated(postId, desc, links);
                     }
                 }

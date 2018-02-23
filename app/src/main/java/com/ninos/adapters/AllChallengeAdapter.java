@@ -567,6 +567,8 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                         }
                                     });
 
+                                    dialog.show();
+
                                     return true;
                             }
 

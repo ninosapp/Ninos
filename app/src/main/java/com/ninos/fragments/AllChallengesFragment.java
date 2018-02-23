@@ -360,6 +360,17 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         }
     }
 
+    public void postDeleted(String postId) {
+        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+            PostInfo postInfo = allChallengeAdapter.getItem(i);
+
+            if (postInfo.get_id().equals(postId)) {
+                allChallengeAdapter.removeItem(i);
+                break;
+            }
+        }
+    }
+
 
     public void newClapAdded(String postId) {
         service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
