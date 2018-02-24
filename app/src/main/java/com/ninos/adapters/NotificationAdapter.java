@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,14 +89,21 @@ public class NotificationAdapter extends CommonRecyclerAdapter<Notification> {
             Notification notification = getItem(position);
 
             String msg;
+            String postTitle;
+
+            if (TextUtils.isEmpty(notification.getData().getPostTitle())) {
+                postTitle = "one of your post";
+            } else {
+                postTitle = notification.getData().getPostTitle();
+            }
 
             switch (notification.getNotificationType()) {
-                case "POST_COMMENTS":
-                    msg = String.format("<b>%s</b> has commented on <b>%s</b>", notification.getFromUserName(), notification.getData().getPostTitle());
+                case "POST_COMMENT":
+                    msg = String.format("<b>%s</b> has commented on <b>%s</b>", notification.getFromUserName(), postTitle);
                     break;
                 default:
                 case "POST_CLAPS":
-                    msg = String.format("<b>%s</b> has clapped for <b>%s</b>", notification.getFromUserName(), notification.getData().getPostTitle());
+                    msg = String.format("<b>%s</b> has clapped for <b>%s</b>", notification.getFromUserName(), postTitle);
                     break;
                 case "USER_FOLLOWING":
                     msg = String.format("<b>%s</b> is following you", notification.getFromUserName());
@@ -118,7 +126,13 @@ public class NotificationAdapter extends CommonRecyclerAdapter<Notification> {
 
                 if (diff > 0) {
                     int diffHours = (int) (diff / (60 * 60 * 1000) % 24);
-                    tv_time.setText(String.format(context.getString(R.string.ago), diffHours));
+
+                    if (diffHours > 0) {
+                        tv_time.setText(String.format(context.getString(R.string.ago), diffHours));
+                    } else {
+                        long diffMinutes = diff / (60 * 1000) % 60;
+                        tv_time.setText(String.format(context.getString(R.string.ago_min), diffMinutes));
+                    }
                 } else {
                     String date = dateUtil.formatDateToString(notification.getCreatedAt(), DateUtil.FULL_DATE);
                     tv_time.setText(date);
