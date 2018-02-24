@@ -18,7 +18,7 @@ import java.util.List;
 public class QuizViewAdapter extends FragmentStatePagerAdapter {
 
     private List<String> titles;
-    private List<Fragment> fragments;
+    private List<QuizViewFragment> fragments;
 
     public QuizViewAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -44,5 +44,9 @@ public class QuizViewAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return titles.get(position);
+    }
+
+    public List<QuizViewFragment> getFragments() {
+        return fragments;
     }
 }

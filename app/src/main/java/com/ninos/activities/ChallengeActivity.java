@@ -124,7 +124,6 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
                 if (isNetworkAvailable()) {
                     from = 0;
                     allChallengeAdapter.resetItems();
-                    allChallengeAdapter.resetItems();
 
                     getPosts();
 

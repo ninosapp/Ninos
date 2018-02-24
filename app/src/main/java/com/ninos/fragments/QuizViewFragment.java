@@ -1,8 +1,10 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ public class QuizViewFragment extends BaseFragment {
     private String accessToken;
     private RetrofitService service;
     private TextView tv_empty;
+    private SwipeRefreshLayout sr_layout;
 
     public static QuizViewFragment newInstance(String type) {
         QuizViewFragment quizViewFragment = new QuizViewFragment();
@@ -83,9 +86,36 @@ public class QuizViewFragment extends BaseFragment {
             quiz_list.setAdapter(quizAdapter);
 
             getQuizzes();
+
+            sr_layout = view.findViewById(R.id.sr_layout);
+            sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetworkAvailable(getContext())) {
+
+                        getQuizzes();
+
+                    } else {
+                        showNetworkDownSnackBar(sr_layout);
+                    }
+                }
+            });
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
+        }
+    }
+
+
+    public void quizUpdated(String quizId) {
+        for (int i = 0; i < quizAdapter.getItemCount(); i++) {
+            Quizze quizze = quizAdapter.getItem(i);
+
+            if (quizze.get_id().equals(quizId)) {
+                quizze.setQuizTaken(true);
+                quizAdapter.updateItem(i, quizze);
+                break;
+            }
         }
     }
 
@@ -94,29 +124,43 @@ public class QuizViewFragment extends BaseFragment {
             service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
                 @Override
                 public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    quizAdapter.resetItems();
+
                     if (response.isSuccessful() && response.body() != null) {
                         List<Quizze> quizzes = response.body().getQuizeData();
 
-                        for (Quizze quizze : quizzes) {
-                            quizAdapter.addItem(quizze);
+                        for (final Quizze quizze : quizzes) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    quizAdapter.addItem(quizze);
+                                }
+                            });
                         }
 
                         if (quizzes.size() > 0) {
                             tv_empty.setVisibility(View.GONE);
+                        } else {
+                            tv_empty.setVisibility(View.VISIBLE);
                         }
                     }
 
+                    sr_layout.setRefreshing(false);
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-
+                    quizAdapter.resetItems();
+                    sr_layout.setRefreshing(false);
+                    tv_empty.setVisibility(View.VISIBLE);
                 }
             });
         } else {
             service.getActiveQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
                 @Override
                 public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    quizAdapter.resetItems();
+
                     if (response.isSuccessful() && response.body() != null) {
                         List<Quizze> quizzes = response.body().getQuizeData();
 
@@ -126,14 +170,19 @@ public class QuizViewFragment extends BaseFragment {
 
                         if (quizzes.size() > 0) {
                             tv_empty.setVisibility(View.GONE);
+                        } else {
+                            tv_empty.setVisibility(View.VISIBLE);
                         }
                     }
 
+                    sr_layout.setRefreshing(false);
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-
+                    quizAdapter.resetItems();
+                    sr_layout.setRefreshing(false);
+                    tv_empty.setVisibility(View.VISIBLE);
                 }
             });
         }

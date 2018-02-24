@@ -1,5 +1,6 @@
 package com.ninos.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,8 +15,16 @@ import android.view.WindowManager;
 
 import com.ninos.R;
 import com.ninos.adapters.QuizViewAdapter;
+import com.ninos.fragments.QuizFragment;
+import com.ninos.fragments.QuizViewFragment;
+
+import java.util.List;
+
+import static com.ninos.activities.MainActivity.QUIZ_COMPLETE;
 
 public class QuizViewActivity extends BaseActivity {
+
+    private QuizViewAdapter quizViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +50,8 @@ public class QuizViewActivity extends BaseActivity {
         }
 
         ViewPager viewPager = findViewById(R.id.view_pager);
-        QuizViewAdapter searchAdapter = new QuizViewAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(searchAdapter);
+        quizViewAdapter = new QuizViewAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(quizViewAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -58,6 +67,27 @@ public class QuizViewActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case QUIZ_COMPLETE:
+                if (data != null) {
+                    String quizId = data.getStringExtra(QuizFragment.QUIZ_ID);
+
+                    List<QuizViewFragment> fragments = quizViewAdapter.getFragments();
+
+                    if (fragments != null) {
+                        for (QuizViewFragment quizViewFragment : fragments) {
+                            quizViewFragment.quizUpdated(quizId);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     @Override
