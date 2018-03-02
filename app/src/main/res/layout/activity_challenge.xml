@@ -40,6 +40,14 @@
                     app:fabSize="mini" />
 
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:layout_toEndOf="@+id/fab_back"
+                    android:layout_toRightOf="@+id/fab_back"
+                    android:text="@string/challenge" />
+
                 <RelativeLayout
                     android:id="@+id/rl_progress"
                     android:layout_width="match_parent"
