@@ -33,6 +33,7 @@ import com.ninos.adapters.NotificationAdapter;
 import com.ninos.firebase.Database;
 import com.ninos.fragments.AllChallengesFragment;
 import com.ninos.fragments.ChallengesFragment;
+import com.ninos.fragments.PolicyFragment;
 import com.ninos.fragments.QuizFragment;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.Notification;
@@ -566,6 +567,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             case R.id.nav_aboutus:
                 startActivity(new Intent(this, AboutActivity.class));
+
+                closeDrawer();
+                return true;
+            case R.id.nav_policies:
+                PolicyFragment policyFragment = new PolicyFragment();
+                policyFragment.show(getSupportFragmentManager(), policyFragment.getTag());
 
                 closeDrawer();
                 return true;

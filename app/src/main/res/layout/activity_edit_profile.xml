@@ -92,7 +92,6 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/margin16dp"
                 android:text="@string/i_accept_the_terms_and_conditions_privacy_and_content_policy" />
-
         </LinearLayout>
 
     </RelativeLayout>

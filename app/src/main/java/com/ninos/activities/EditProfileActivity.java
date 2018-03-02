@@ -50,6 +50,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
     private DateUtil dateUtil;
     private ImageView iv_upload_image, iv_placeholder;
     private AppCompatCheckBox cb_agree;
+    private boolean isProfilePicUpdated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,50 +119,54 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 String dob = tv_dob.getText().toString().trim();
                 boolean isAgreed = cb_agree.isChecked();
 
-                if (isAgreed) {
-                    if (childName.isEmpty()) {
-                        showSnackBar(R.string.enter_child_name, cl_edit_profile);
-                    } else if (dob.isEmpty()) {
-                        showSnackBar(R.string.select_dob, cl_edit_profile);
-                    } else {
-                        if (!isNetworkAvailable()) {
-                            showSnackBar(R.string.network_down, cl_edit_profile);
+                if (isProfilePicUpdated) {
+                    if (isAgreed) {
+                        if (childName.isEmpty()) {
+                            showSnackBar(R.string.enter_child_name, cl_edit_profile);
+                        } else if (dob.isEmpty()) {
+                            showSnackBar(R.string.select_dob, cl_edit_profile);
                         } else {
-                            Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
+                            if (!isNetworkAvailable()) {
+                                showSnackBar(R.string.network_down, cl_edit_profile);
+                            } else {
+                                Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
 
-                            profile.setDOB(date.getTime());
-                            profile.setChildName(childName);
-                            profile.setFirstLogin(true);
+                                profile.setDOB(date.getTime());
+                                profile.setChildName(childName);
+                                profile.setFirstLogin(true);
 
-                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                            service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
-                                @Override
-                                public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
-                                    if (response.isSuccessful()) {
-                                        RegisterResponse rR = response.body();
+                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                                        if (response.isSuccessful()) {
+                                            RegisterResponse rR = response.body();
 
-                                        if (rR != null) {
-                                            PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
-                                            PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
-                                            PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
-                                            PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
-                                            startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
-                                            finish();
+                                            if (rR != null) {
+                                                PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
+                                                PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
+                                                PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
+                                                PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
+                                                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                                                finish();
+                                            }
+                                        } else {
+                                            showSnackBar(R.string.error_message, cl_edit_profile);
                                         }
-                                    } else {
-                                        showSnackBar(R.string.error_message, cl_edit_profile);
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                                    CrashUtil.report(t.getMessage());
-                                }
-                            });
+                                    @Override
+                                    public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
+                                        CrashUtil.report(t.getMessage());
+                                    }
+                                });
+                            }
                         }
+                    } else {
+                        showToast(R.string.accept_terms_conditons);
                     }
                 } else {
-                    showToast(R.string.accept_terms_conditons);
+                    showToast(R.string.add_profile_pic);
                 }
                 break;
             case R.id.iv_upload_image:
@@ -208,6 +213,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 break;
             case ProfileActivity.IMAGE_UPDATED:
                 if (data != null) {
+                    isProfilePicUpdated = true;
                     iv_placeholder.setVisibility(View.GONE);
                     String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
 

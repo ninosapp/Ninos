@@ -165,6 +165,10 @@
     <string name="type_your_comment_here">Type your comment here</string>
     <string name="ago">%d hr ago</string>
     <string name="ago_min">%d min ago</string>
+    <string name="add_profile_pic">Add a profile pic</string>
+    <string name="please_read_the_following_policies_at">Please read the following policies at</string>
+    <string name="terms_of_usage_privacy_policy_content_policy"> * Terms of Usage\n* Privacy Policy\n* Content Policy</string>
+    <string name="policy_link">http://ninosapp.in/policies/</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

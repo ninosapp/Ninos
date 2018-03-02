@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:minHeight="350dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin8dp"
+        android:text="@string/please_read_the_following_policies_at"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_policy_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/policy_link"
+        android:textColor="@color/blue"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin8dp"
+        android:text="@string/terms_of_usage_privacy_policy_content_policy"
+        android:textSize="16sp" />
+
+</LinearLayout>
