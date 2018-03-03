@@ -1,6 +1,8 @@
 package com.ninos.activities;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -131,6 +133,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         iv_notifications = findViewById(R.id.iv_notifications);
         iv_notifications.setVisibility(View.GONE);
+
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                iv_notifications,
+                PropertyValuesHolder.ofFloat("scaleX", 1.5f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.5f));
+        scaleDown.setDuration(310);
+
+        scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+
+        scaleDown.start();
 
         getNotifications();
     }

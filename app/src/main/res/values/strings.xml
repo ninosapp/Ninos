@@ -142,10 +142,10 @@
     <string name="search_prompt_description">Search People, Posts and Challenges</string>
     <string name="add_post">Add Talent</string>
     <string name="add_post_prompt_description">Upload your talent here…</string>
-    <string name="challenges_prompt_description">Add a post to challenge</string>
+    <string name="challenges_prompt_description">Take up exciting challenges here!</string>
     <string name="welcome">Welcome</string>
     <string name="add_welcome_prompt_description">Click home button to continue</string>
-    <string name="notifications_prompt_description">All the latest notifications available</string>
+    <string name="notifications_prompt_description">Check out all the notifications!</string>
     <string name="summary">Quiz Summary</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -153,8 +153,8 @@
     <string name="_4">4</string>
     <string name="_5">5</string>
     <string name="when_you_report_you_cannot_see_this_post_again">When you report, you cannot see this post again!</string>
-    <string name="see_who_s_commenting">See who\'s commenting...</string>
-    <string name="delete_image_will_delete_post">Delete Image or video will delete the post</string>
+    <string name="see_who_s_commenting">See who\'s commenting…</string>
+    <string name="delete_image_will_delete_post">Deleting this Image or video will delete the post</string>
     <string name="i_accept_the_terms_and_conditions_privacy_and_content_policy">I accept the Terms and Conditions, Privacy and Content Policy</string>
     <string name="accept_terms_conditons">Please accept terms and conditions.</string>
     <string name="email_already_registered">An account already exists with the same email address but with Google credentials. Sign in using Google associated with this email address.</string>
