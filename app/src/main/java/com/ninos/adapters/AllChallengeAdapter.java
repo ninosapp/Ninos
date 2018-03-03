@@ -290,6 +290,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             video_view = itemView.findViewById(R.id.video_view);
             video_view.batteryLevel.setVisibility(View.GONE);
             video_view.mRetryLayout.setVisibility(View.GONE);
+            video_view.backButton.setVisibility(View.GONE);
             video_view.tinyBackImageView.setVisibility(View.GONE);
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
