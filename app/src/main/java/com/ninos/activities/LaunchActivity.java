@@ -43,7 +43,7 @@ public class LaunchActivity extends BaseActivity {
                     }
                 });
             } else {
-                startHome();
+                startLogin();
             }
         }
     }

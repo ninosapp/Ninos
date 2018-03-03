@@ -3,9 +3,12 @@ package com.ninos.activities;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ninos.R;
@@ -50,6 +53,10 @@ public class ScoreActivity extends BaseActivity {
             }
         });
 
+        final ImageView iv_congrats = findViewById(R.id.iv_congrats);
+        final RelativeLayout rl_loading = findViewById(R.id.rl_loading);
+        rl_loading.setVisibility(View.VISIBLE);
+
         LinearLayoutManager scoreLayoutManager = new LinearLayoutManager(this);
 
         final RecyclerView question_list = findViewById(R.id.question_list);
@@ -70,6 +77,17 @@ public class ScoreActivity extends BaseActivity {
                     if (eInfo != null) {
                         tv_score_one.setText(String.format("%02d", Integer.parseInt(eInfo.getAcquiredScore())));
                         summaryAdapter.addItems(eInfo.getQuestions());
+
+                        int drawableId;
+
+                        if (eInfo.getAcquiredScore().equals("0")) {
+                            drawableId = R.drawable.ic_better_luck;
+                        } else {
+                            drawableId = R.drawable.ic_congrats;
+                        }
+
+                        iv_congrats.setImageDrawable(ContextCompat.getDrawable(ScoreActivity.this, drawableId));
+                        rl_loading.setVisibility(View.GONE);
                     }
                 }
             }
