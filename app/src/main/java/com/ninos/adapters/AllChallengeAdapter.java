@@ -142,7 +142,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 @Override
                 public void onFailure(@NonNull Call<PostClapResponse> call, @NonNull Throwable t) {
-
+                    setClapListener(postInfo, iv_clap, tv_clap);
                 }
             });
         } catch (Exception e) {
@@ -163,16 +163,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             color = color_dark_grey;
         }
 
-        iv_clap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (postInfo.isMyRating()) {
-                    removeClap(postInfo, iv_clap, tv_clap);
-                } else {
-                    addClap(postInfo, iv_clap, tv_clap);
-                }
-            }
-        });
+        setClapListener(postInfo, iv_clap, tv_clap);
 
         if (drawable != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -194,6 +185,21 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         tv_clap.setText(String.format(context.getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
+    private void setClapListener(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
+        iv_clap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_clap.setOnClickListener(null);
+
+                if (postInfo.isMyRating()) {
+                    removeClap(postInfo, iv_clap, tv_clap);
+                } else {
+                    addClap(postInfo, iv_clap, tv_clap);
+                }
+            }
+        });
+    }
+
     private void removeClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
         try {
             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
@@ -210,7 +216,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 @Override
                 public void onFailure(@NonNull Call<PostClapResponse> call, @NonNull Throwable t) {
-
+                    setClapListener(postInfo, iv_clap, tv_clap);
                 }
             });
         } catch (Exception e) {

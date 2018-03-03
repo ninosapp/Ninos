@@ -6,6 +6,18 @@
     android:background="@color/clouds"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_submit_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:padding="@dimen/margin16dp"
+        android:text="@string/your_challenges"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/challenge_list"

@@ -65,4 +65,28 @@ public class PreferenceUtil {
     public static void clear(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
+
+    static int getAppRaterLaunchCount(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt("launch_count", 0);
+    }
+
+    static boolean isDontShowEnabled(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("dont_show_again", false);
+    }
+
+    static void setAppRaterLaunchCount(Context context, int count) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("launch_count", count).apply();
+    }
+
+    static long getAppRaterDateFirstLaunch(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong("date_first_launch", 0);
+    }
+
+    static void setAppRaterDateFirstLaunch(Context context, long count) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong("date_first_launch", count).apply();
+    }
+
+    static void setDontShowEnabled(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("dont_show_again", true).apply();
+    }
 }

@@ -13,15 +13,36 @@
         android:src="@drawable/ic_flat_report" />
 
     <TextView
-        android:id="@+id/et_report"
+        android:id="@+id/tv_report1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_report"
         android:layout_marginTop="@dimen/margin16dp"
         android:background="@android:color/transparent"
-        android:gravity="center"
-        android:padding="@dimen/margin16dp"
-        android:text="@string/user_warn"
+        android:gravity="start"
+        android:text="@string/you_will_be_blocked_if_you_upload_bad_abusive_offensive_violent_pictures_or_videos_or_comments"
+        android:textColor="@color/midnight_blue" />
+
+    <TextView
+        android:id="@+id/tv_report2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_report1"
+        android:layout_marginTop="@dimen/margin8dp"
+        android:background="@android:color/transparent"
+        android:gravity="start"
+        android:text="@string/your_post_should_display_talent"
+        android:textColor="@color/midnight_blue" />
+
+    <TextView
+        android:id="@+id/tv_report3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_report2"
+        android:layout_marginTop="@dimen/margin8dp"
+        android:background="@android:color/transparent"
+        android:gravity="start"
+        android:text="@string/make_this_app_a_safe_place_for_children"
         android:textColor="@color/midnight_blue" />
 
     <LinearLayout
@@ -29,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/et_report"
+        android:layout_below="@+id/tv_report3"
         android:layout_marginBottom="@dimen/margin4dp"
         android:layout_marginTop="@dimen/margin16dp"
         android:orientation="horizontal">

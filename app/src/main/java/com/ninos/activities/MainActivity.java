@@ -41,6 +41,7 @@ import com.ninos.models.NotificationCount;
 import com.ninos.models.NotificationResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSUrls;
+import com.ninos.utils.AppRaterUtils;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.utils.TourUtil;
 import com.ninos.views.CircleImageView;
@@ -104,6 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         iv_search.setOnClickListener(this);
 
         new TourUtil(this).showHomePrompt();
+        AppRaterUtils.appLaunched(this);
 
         drawer_layout = findViewById(R.id.drawer_layout);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

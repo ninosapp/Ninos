@@ -38,7 +38,7 @@ public class QuizViewActivity extends BaseActivity {
         }
 
         Toolbar toolbar_quiz_view = findViewById(R.id.toolbar_quiz_view);
-        toolbar_quiz_view.setTitle(R.string.quiz);
+        toolbar_quiz_view.setTitle(R.string.your_quizzes);
         toolbar_quiz_view.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar_quiz_view);
 

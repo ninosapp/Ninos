@@ -87,7 +87,6 @@
     <string name="exit_quiz_message">Quiz progress will be lost.</string>
     <string name="offensive_words">About contains offensive words.</string>
     <string name="accept">Accept</string>
-    <string name="user_warn">you will be blocked if you upload bad, abusive, offensive, violent pictures or videos or comments. You will be blocked. Your post should display talent. Make this app a safe place for children.</string>
     <string name="notifications">Notifications</string>
     <string name="starting_quiz">Starting quiz…</string>
     <string name="your_score">Your Score</string>
@@ -169,6 +168,15 @@
     <string name="please_read_the_following_policies_at">Please read the following policies at</string>
     <string name="terms_of_usage_privacy_policy_content_policy"> * Terms of Usage\n* Privacy Policy\n* Content Policy</string>
     <string name="policy_link">http://ninosapp.in/policies/</string>
+    <string name="your_quizzes">Your Quizzes</string>
+    <string name="your_challenges">Your Challenges</string>
+    <string name="how_is_your_experience_with_us">Please take a moment to rate us. Thanks for your support!</string>
+    <string name="later">Later</string>
+    <string name="never">Never</string>
+    <string name="rate_us_now">Rate Us!</string>
+    <string name="you_will_be_blocked_if_you_upload_bad_abusive_offensive_violent_pictures_or_videos_or_comments">\u2022 You will be blocked if you upload bad, abusive, offensive, violent pictures or videos or comments.</string>
+    <string name="your_post_should_display_talent">\u2022 Your post should display talent.</string>
+    <string name="make_this_app_a_safe_place_for_children">\u2022 Make this app a safe place for children.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
