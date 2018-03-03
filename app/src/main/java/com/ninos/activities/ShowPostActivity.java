@@ -136,7 +136,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             iv_clap = findViewById(R.id.iv_clap);
             iv_menu = findViewById(R.id.iv_menu);
             rl_comment = findViewById(R.id.rl_comment);
-            rl_comment.setVisibility(View.VISIBLE);
+            rl_comment.setVisibility(View.GONE);
 
             et_comment = findViewById(R.id.et_comment);
             iv_send = findViewById(R.id.iv_send);
