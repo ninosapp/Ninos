@@ -89,4 +89,12 @@ public class PreferenceUtil {
     static void setDontShowEnabled(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("dont_show_again", true).apply();
     }
+
+    public static boolean isInviteShown(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("invite", false);
+    }
+
+    public static void setInviteShown(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("invite", true).apply();
+    }
 }

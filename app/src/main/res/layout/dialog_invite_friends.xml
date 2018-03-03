@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="@dimen/margin16dp"
+        android:background="@color/colorAccent"
+        android:minWidth="350dp"
+        android:src="@drawable/ic_network" />
+
+    <TextView
+        android:id="@+id/tv_invite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="@dimen/margin16dp"
+        android:text="@string/invite"
+        android:textColor="@color/midnight_blue" />
+
+</LinearLayout>

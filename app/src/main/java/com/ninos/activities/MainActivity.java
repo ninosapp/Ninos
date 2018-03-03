@@ -469,14 +469,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else if (challengeFragment.isVisible()) {
             displayAllChallengeFragment();
         } else if (!doubleBackToExit) {
-            doubleBackToExit = true;
-            showToast(R.string.app_exit_msg);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackToExit = false;
+            if (PreferenceUtil.isInviteShown(this)) {
+                doubleBackToExit = true;
+                showToast(R.string.app_exit_msg);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExit = false;
+                    }
+                }, 2000);
+            } else {
+                PreferenceUtil.setInviteShown(this);
+
+                try {
+                    final Dialog dialog = new Dialog(this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_invite_friends);
+
+                    dialog.findViewById(R.id.tv_invite).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                Intent shareIntent = new Intent();
+                                shareIntent.setAction(Intent.ACTION_SEND);
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_text));
+                                shareIntent.setType("text/*");
+                                startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_friends)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }, 2000);
+            }
         } else {
             finish();
         }

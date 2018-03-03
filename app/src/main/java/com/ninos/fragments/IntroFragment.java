@@ -1,12 +1,13 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ninos.R;
-import com.ninos.activities.BaseActivity;
 
 /**
  * Created by smeesala on 6/30/2017.
@@ -47,40 +48,29 @@ public class IntroFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BaseActivity baseActivity = (BaseActivity) getActivity();
-//        int titleId;
-//        int descriptionId;
-//        int imageId;
-//
-//        switch (mPage) {
-//            default:
-//            case 0:
-//                titleId = R.string.app_name;
-//                break;
-//            case 1:
-//                imageId = R.drawable.ic_intro_trophy;
-//                titleId = R.string.win_a_movie_ticket;
-//                descriptionId = R.string.desc_intro_1;
-//                break;
-//            case 2:
-//                imageId = R.drawable.ic_intro_hourglass;
-//                titleId = R.string.win_a_movie_ticket;
-//                descriptionId = R.string.desc_intro_1;
-//                break;
-//            case 3:
-//                imageId = R.drawable.ic_intro_music;
-//                titleId = R.string.win_a_movie_ticket;
-//                descriptionId = R.string.desc_intro_1;
-//                break;
-//        }
-//
-//        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
-//        TextView tv_description = (TextView) view.findViewById(R.id.tv_description);
-//        ImageView iv_songs = (ImageView) view.findViewById(R.id.iv_image);
-//
-//        tv_title.setText(titleId);
-//        tv_description.setText(descriptionId);
-//        iv_songs.setImageDrawable(ContextCompat.getDrawable(baseActivity, imageId));
+        int imageId;
+
+        switch (mPage) {
+            default:
+            case 0:
+                imageId = R.drawable.onboarding1;
+                break;
+            case 1:
+                imageId = R.drawable.onboarding1;
+                break;
+            case 2:
+                imageId = R.drawable.onboarding2;
+                break;
+            case 3:
+                imageId = R.drawable.onboarding3;
+                break;
+        }
+
+        ImageView iv_songs = view.findViewById(R.id.iv_image);
+
+        if (getContext() != null) {
+            iv_songs.setImageDrawable(ContextCompat.getDrawable(getContext(), imageId));
+        }
     }
 
 }

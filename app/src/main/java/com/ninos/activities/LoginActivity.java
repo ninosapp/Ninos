@@ -2,11 +2,11 @@ package com.ninos.activities;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +37,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ninos.R;
 import com.ninos.adapters.IntroAdapter;
-import com.ninos.adapters.IntroPageTransformer;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.UserCheckResponse;
 import com.ninos.reterofit.RetrofitInstance;
@@ -83,17 +82,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             view_pager = findViewById(R.id.view_pager);
             view_pager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
-            view_pager.setPageTransformer(false, new IntroPageTransformer());
             view_pager.addOnPageChangeListener(this);
 
             TabLayout tabLayout = findViewById(R.id.tab_layout);
             tabLayout.setupWithViewPager(view_pager, true);
 
             mColors = new ArrayList<>();
-            mColors.add(ContextCompat.getColor(this, R.color.colorAccent));
-            mColors.add(ContextCompat.getColor(this, R.color.teal));
-            mColors.add(ContextCompat.getColor(this, R.color.grape));
-            mColors.add(ContextCompat.getColor(this, R.color.green));
+            mColors.add(Color.parseColor("#FF4C36"));
+            mColors.add(Color.parseColor("#FF4C36"));
+            mColors.add(Color.parseColor("#007807"));
+            mColors.add(Color.parseColor("#FF8E01"));
 
             setStatusColorByIndex(0);
             mARGBEvaluator = new ArgbEvaluator();
