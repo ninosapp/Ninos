@@ -79,7 +79,6 @@ public class QuizViewFragment extends BaseFragment {
             GridLayoutManager quizLayoutManager = new GridLayoutManager(getContext(), 3);
 
             RecyclerView quiz_list = view.findViewById(R.id.quiz_list);
-            quiz_list.setNestedScrollingEnabled(false);
             quiz_list.setLayoutManager(quizLayoutManager);
 
             quizAdapter = new QuizAdapter(getContext(), getActivity());
