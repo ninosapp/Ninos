@@ -605,7 +605,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "info@ninosapp.in", null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, " Feed back from " + PreferenceUtil.getUserName(this));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, " Feedback from " + PreferenceUtil.getUserName(this));
                 startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_using)));
                 closeDrawer();
 
