@@ -2,6 +2,7 @@ package com.ninos.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -77,6 +78,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
 
         tv_dob.setOnClickListener(this);
         findViewById(R.id.fab_update).setOnClickListener(this);
+        findViewById(R.id.tv_terms).setOnClickListener(this);
 
         Intent intent = getIntent();
         String email = intent.getStringExtra(EMAIL);
@@ -131,35 +133,41 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                             } else {
                                 Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
 
-                                profile.setDOB(date.getTime());
-                                profile.setChildName(childName);
-                                profile.setFirstLogin(true);
+                                int age = dateUtil.getAge(date);
 
-                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
-                                    @Override
-                                    public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
-                                        if (response.isSuccessful()) {
-                                            RegisterResponse rR = response.body();
+                                if (age <= 18) {
+                                    profile.setDOB(date.getTime());
+                                    profile.setChildName(childName);
+                                    profile.setFirstLogin(true);
 
-                                            if (rR != null) {
-                                                PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
-                                                PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
-                                                PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
-                                                PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
-                                                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
-                                                finish();
+                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                    service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                                            if (response.isSuccessful()) {
+                                                RegisterResponse rR = response.body();
+
+                                                if (rR != null) {
+                                                    PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
+                                                    PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
+                                                    PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
+                                                    PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
+                                                    startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                                                    finish();
+                                                }
+                                            } else {
+                                                showSnackBar(R.string.error_message, cl_edit_profile);
                                             }
-                                        } else {
-                                            showSnackBar(R.string.error_message, cl_edit_profile);
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                                        CrashUtil.report(t.getMessage());
-                                    }
-                                });
+                                        @Override
+                                        public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
+                                            CrashUtil.report(t.getMessage());
+                                        }
+                                    });
+                                } else {
+                                    showToast(R.string.valid_age);
+                                }
                             }
                         }
                     } else {
@@ -171,6 +179,10 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 break;
             case R.id.iv_upload_image:
                 addFile();
+                break;
+            case R.id.tv_terms:
+                Intent policyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.policy_link)));
+                startActivity(policyIntent);
                 break;
         }
     }

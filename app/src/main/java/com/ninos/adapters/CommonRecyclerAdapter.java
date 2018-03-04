@@ -92,7 +92,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
     }
 
     public T getItem(int index) {
-        if (dataSet != null && dataSet.size() > 0 && dataSet.size() >= index && dataSet.get(index) != null) {
+        if (dataSet != null && dataSet.size() > 0 && dataSet.size() > index && dataSet.get(index) != null) {
             return dataSet.get(index);
         } else {
             return null;

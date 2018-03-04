@@ -131,9 +131,9 @@
                     android:layout_marginRight="@dimen/margin16dp"
                     android:layout_marginTop="@dimen/margin8dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="@string/dummy_text"
                     android:textColor="@color/dark_grey"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="@string/dummy_text" />
 
 
                 <LinearLayout

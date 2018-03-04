@@ -148,4 +148,20 @@ public class DateUtil {
 
         return dateWithoutTimeStamp;
     }
+
+    public int getAge(Date date) {
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.setTime(date);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+
+        return age;
+    }
 }
