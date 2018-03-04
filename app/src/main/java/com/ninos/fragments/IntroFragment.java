@@ -61,7 +61,7 @@ public class IntroFragment extends BaseFragment {
                 break;
             case 1:
                 imageId = R.drawable.onboarding2;
-                colour = "#E95DA7";
+                colour = "#22C0FF";
                 break;
             case 2:
                 imageId = R.drawable.onboarding3;

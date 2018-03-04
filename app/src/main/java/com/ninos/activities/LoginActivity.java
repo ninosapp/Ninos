@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             mColors = new ArrayList<>();
             mColors.add(Color.parseColor("#EB5333"));
-            mColors.add(Color.parseColor("#E95DA7"));
+            mColors.add(Color.parseColor("#22C0FF"));
             mColors.add(Color.parseColor("#387106"));
             mColors.add(Color.parseColor("#F19233"));
 
