@@ -1,12 +1,14 @@
 package com.ninos.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.ninos.R;
 
 /**
@@ -49,27 +51,34 @@ public class IntroFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         int imageId;
+        String colour;
 
         switch (mPage) {
             default:
             case 0:
                 imageId = R.drawable.onboarding1;
+                colour = "#EB5333";
                 break;
             case 1:
-                imageId = R.drawable.onboarding1;
+                imageId = R.drawable.onboarding2;
+                colour = "#E95DA7";
                 break;
             case 2:
-                imageId = R.drawable.onboarding2;
+                imageId = R.drawable.onboarding3;
+                colour = "#387106";
                 break;
             case 3:
-                imageId = R.drawable.onboarding3;
+                imageId = R.drawable.onboarding4;
+                colour = "#F19233";
                 break;
         }
 
         ImageView iv_songs = view.findViewById(R.id.iv_image);
+        FrameLayout intro_background = view.findViewById(R.id.intro_background);
 
         if (getContext() != null) {
-            iv_songs.setImageDrawable(ContextCompat.getDrawable(getContext(), imageId));
+            Glide.with(getContext()).load(imageId).into(iv_songs);
+            intro_background.setBackgroundColor(Color.parseColor(colour));
         }
     }
 

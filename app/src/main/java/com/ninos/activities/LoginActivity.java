@@ -1,6 +1,5 @@
 package com.ninos.activities;
 
-import android.animation.ArgbEvaluator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -60,7 +59,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private View cl_login;
     private List<Integer> mColors;
     private ViewPager view_pager;
-    private ArgbEvaluator mARGBEvaluator;
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallbackManager;
@@ -82,19 +80,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             view_pager = findViewById(R.id.view_pager);
             view_pager.setAdapter(new IntroAdapter(getSupportFragmentManager()));
+            view_pager.setOffscreenPageLimit(4);
             view_pager.addOnPageChangeListener(this);
 
             TabLayout tabLayout = findViewById(R.id.tab_layout);
             tabLayout.setupWithViewPager(view_pager, true);
 
             mColors = new ArrayList<>();
-            mColors.add(Color.parseColor("#FF4C36"));
-            mColors.add(Color.parseColor("#FF4C36"));
-            mColors.add(Color.parseColor("#007807"));
-            mColors.add(Color.parseColor("#FF8E01"));
+            mColors.add(Color.parseColor("#EB5333"));
+            mColors.add(Color.parseColor("#E95DA7"));
+            mColors.add(Color.parseColor("#387106"));
+            mColors.add(Color.parseColor("#F19233"));
 
             setStatusColorByIndex(0);
-            mARGBEvaluator = new ArgbEvaluator();
 
             mAuth = FirebaseAuth.getInstance();
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -299,12 +297,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (position < (mColors.size() - 1)) {
-            int color = (Integer) mARGBEvaluator.evaluate(positionOffset, mColors.get(position), mColors.get(position + 1));
-            setStatusColor(color);
-        } else {
-            setStatusColorByIndex(position);
-        }
+
     }
 
     @Override
