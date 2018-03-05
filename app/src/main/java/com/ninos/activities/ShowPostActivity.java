@@ -102,6 +102,10 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             }
         }
 
+        if (id == null) {
+            finish();
+        }
+
         color_accent = ContextCompat.getColor(this, R.color.colorAccent);
         color_dark_grey = ContextCompat.getColor(this, R.color.dark_grey);
 
