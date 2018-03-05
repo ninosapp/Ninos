@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -531,8 +532,32 @@ public class AWSClient {
             }
 
             String filePath = null;
+
             try {
-                filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                Bitmap bmp;
+                int videoHeight = 0;
+                int videoWidth = 0;
+
+                try {
+                    retriever.setDataSource(paths[0]);
+                    bmp = retriever.getFrameAtTime();
+                    videoHeight = bmp.getHeight() / 5;
+                    videoWidth = bmp.getWidth() / 5;
+                } catch (Exception ignored) {
+
+                }
+
+                if ((videoHeight > 640 && videoWidth > 360) || (videoHeight > 360 && videoWidth > 640)) {
+                    if (videoHeight > videoWidth) {
+                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1], 360, 640, 0);
+                    } else {
+                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
+                    }
+                } else {
+                    filePath = paths[0];
+                }
+
             } catch (URISyntaxException e) {
                 if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
@@ -540,7 +565,6 @@ public class AWSClient {
             }
 
             return filePath;
-
         }
 
 
