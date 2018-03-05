@@ -52,6 +52,7 @@ import com.ninos.models.PostResponse;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
 import com.ninos.utils.AWSUrls;
+import com.ninos.utils.BadWordUtil;
 import com.ninos.utils.DateUtil;
 import com.ninos.utils.PreferenceUtil;
 import com.ninos.views.PagerIndicatorDecoration;
@@ -679,32 +680,47 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         if (commentValue.isEmpty()) {
             showToast(R.string.comment_validation);
         } else {
-            et_comment.setText("");
-            Comment comment = new Comment();
-            comment.setComment(commentValue);
-            comment.setUserId(Database.getUserId());
-            comment.setPostId(postInfo.get_id());
+            boolean hasBadWords = false;
 
-            service.addPostComments(postInfo.get_id(), accessToken, comment).enqueue(new Callback<CommentResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Comment comment = response.body().getPostComment();
-                        commentAdapter.addItem(comment, 0);
-                        et_comment.setText("");
+            List<String> badWords = BadWordUtil.getBardWords();
 
-                        tv_comments.setVisibility(View.VISIBLE);
+            for (String word : commentValue.toLowerCase().split(" ")) {
+                if (badWords.contains(word)) {
+                    hasBadWords = true;
+                    break;
+                }
+            }
 
-                        tv_comment.setText(String.format(getString(R.string.s_comments), commentAdapter.getItemCount()));
-                        isUpdated = true;
+            if (hasBadWords) {
+                showToast(R.string.offensive_words);
+            } else {
+                et_comment.setText("");
+                Comment comment = new Comment();
+                comment.setComment(commentValue);
+                comment.setUserId(Database.getUserId());
+                comment.setPostId(postInfo.get_id());
+
+                service.addPostComments(postInfo.get_id(), accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Comment comment = response.body().getPostComment();
+                            commentAdapter.addItem(comment, 0);
+                            et_comment.setText("");
+
+                            tv_comments.setVisibility(View.VISIBLE);
+
+                            tv_comment.setText(String.format(getString(R.string.s_comments), commentAdapter.getItemCount()));
+                            isUpdated = true;
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+                    @Override
+                    public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 

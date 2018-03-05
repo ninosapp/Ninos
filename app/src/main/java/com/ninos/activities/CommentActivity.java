@@ -19,6 +19,7 @@ import com.ninos.models.Comment;
 import com.ninos.models.CommentResponse;
 import com.ninos.models.CommentsResponse;
 import com.ninos.reterofit.RetrofitInstance;
+import com.ninos.utils.BadWordUtil;
 import com.ninos.utils.PreferenceUtil;
 
 import java.util.List;
@@ -110,27 +111,42 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         if (commentValue.isEmpty()) {
             showToast(R.string.comment_validation);
         } else {
-            et_leave_comment.setText("");
-            Comment comment = new Comment();
-            comment.setComment(commentValue);
-            comment.setUserId(Database.getUserId());
-            comment.setPostId(postId);
-            isCommentAdded = true;
-            service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Comment comment = response.body().getPostComment();
-                        commentAdapter.addItem(comment, 0);
-                        et_leave_comment.setText("");
+            boolean hasBadWords = false;
+
+            List<String> badWords = BadWordUtil.getBardWords();
+
+            for (String word : commentValue.toLowerCase().split(" ")) {
+                if (badWords.contains(word)) {
+                    hasBadWords = true;
+                    break;
+                }
+            }
+
+            if (hasBadWords) {
+                showToast(R.string.offensive_words);
+            } else {
+                et_leave_comment.setText("");
+                Comment comment = new Comment();
+                comment.setComment(commentValue);
+                comment.setUserId(Database.getUserId());
+                comment.setPostId(postId);
+                isCommentAdded = true;
+                service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Comment comment = response.body().getPostComment();
+                            commentAdapter.addItem(comment, 0);
+                            et_leave_comment.setText("");
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+                    @Override
+                    public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
