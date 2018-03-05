@@ -556,10 +556,6 @@ public class AWSClient {
 
             mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new VideoUploadListener(postInfo));
-
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
         }
     }
 }
