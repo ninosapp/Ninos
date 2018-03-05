@@ -224,12 +224,10 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
     }
 
-    public void updateClap(RecyclerView.ViewHolder viewHolder, int clapCount) {
+    public void updateClap(RecyclerView.ViewHolder viewHolder, PostInfo postInfo) {
         ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
 
-        if (challengeViewHolder != null) {
-            challengeViewHolder.tv_clap.setText(String.format(context.getString(R.string.s_claps), clapCount));
-        }
+        setClap(postInfo, challengeViewHolder.iv_clap, challengeViewHolder.tv_clap);
     }
 
     public void updateComment(RecyclerView.ViewHolder viewHolder, int commentCount) {

@@ -386,7 +386,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
                         if (pf.get_id().equals(postInfo.get_id())) {
                             RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
-                            allChallengeAdapter.updateClap(viewHolder, postInfo.getTotalClapsCount());
+                            allChallengeAdapter.updateClap(viewHolder, postInfo);
                             break;
                         }
                     }
