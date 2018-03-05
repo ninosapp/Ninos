@@ -114,7 +114,7 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
         public void onClick(View view) {
             Quizze quizze = getItem(getAdapterPosition());
 
-            if (quizze.get_id().equals("more")) {
+            if (quizze.get_id().equals("More")) {
                 Intent intent = new Intent(context, QuizViewActivity.class);
                 context.startActivity(intent);
             } else {

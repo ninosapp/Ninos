@@ -169,8 +169,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
                         Quizze quizze = new Quizze();
                         quizze.setQuizTaken(false);
-                        quizze.setTitle("more");
-                        quizze.set_id("more");
+                        quizze.setTitle("More");
+                        quizze.set_id("More");
                         quizAdapter.addItem(quizze);
                     } else {
                         for (Quizze quizze : quizzes) {
@@ -194,8 +194,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                                     if (quizAdapter.getItemCount() >= 10) {
                                         Quizze quizze = new Quizze();
                                         quizze.setQuizTaken(false);
-                                        quizze.setTitle("more");
-                                        quizze.set_id("more");
+                                        quizze.setTitle("More");
+                                        quizze.set_id("More");
                                         quizAdapter.addItem(quizze);
                                     }
                                 }
@@ -209,8 +209,8 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                                 if (quizAdapter.getItemCount() >= 10) {
                                     Quizze quizze = new Quizze();
                                     quizze.setQuizTaken(false);
-                                    quizze.setTitle("more");
-                                    quizze.set_id("more");
+                                    quizze.setTitle("More");
+                                    quizze.set_id("More");
                                     quizAdapter.addItem(quizze);
                                 }
                             }

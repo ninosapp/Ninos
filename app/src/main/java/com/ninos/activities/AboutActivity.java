@@ -18,7 +18,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         Toolbar toolbar_about = findViewById(R.id.toolbar_about);
-        toolbar_about.setTitle(R.string.about);
+        toolbar_about.setTitle(R.string.about_us);
         toolbar_about.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar_about);
 
