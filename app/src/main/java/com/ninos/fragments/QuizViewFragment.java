@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.QuizAdapter;
+import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.Quizze;
@@ -30,7 +31,7 @@ import retrofit2.Response;
  * Created by FAMILY on 19-02-2018.
  */
 
-public class QuizViewFragment extends BaseFragment {
+public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener {
 
     public static final String ACTIVE = "ACTIVE";
     public static final String COMPLETED = "COMPLETED";
@@ -41,6 +42,7 @@ public class QuizViewFragment extends BaseFragment {
     private RetrofitService service;
     private TextView tv_empty;
     private SwipeRefreshLayout sr_layout;
+    private int from = 0, size = 21;
 
     public static QuizViewFragment newInstance(String type) {
         QuizViewFragment quizViewFragment = new QuizViewFragment();
@@ -81,7 +83,7 @@ public class QuizViewFragment extends BaseFragment {
             RecyclerView quiz_list = view.findViewById(R.id.quiz_list);
             quiz_list.setLayoutManager(quizLayoutManager);
 
-            quizAdapter = new QuizAdapter(getContext(), getActivity());
+            quizAdapter = new QuizAdapter(getContext(), getActivity(), quiz_list, this);
             quiz_list.setAdapter(quizAdapter);
 
             getQuizzes();
@@ -91,6 +93,8 @@ public class QuizViewFragment extends BaseFragment {
                 @Override
                 public void onRefresh() {
                     if (isNetworkAvailable(getContext())) {
+                        from = 0;
+                        quizAdapter.resetItems();
 
                         getQuizzes();
 
@@ -120,24 +124,19 @@ public class QuizViewFragment extends BaseFragment {
 
     private void getQuizzes() {
         if (type.equals(COMPLETED)) {
-            service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+            service.getCompletedQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
                 @Override
                 public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                    quizAdapter.resetItems();
+                    quizAdapter.removeItem(null);
 
                     if (response.isSuccessful() && response.body() != null) {
                         List<Quizze> quizzes = response.body().getQuizeData();
 
                         for (final Quizze quizze : quizzes) {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    quizAdapter.addItem(quizze);
-                                }
-                            });
+                            quizAdapter.addItem(quizze);
                         }
 
-                        if (quizzes.size() > 0) {
+                        if (quizAdapter.getItemCount() > 0) {
                             tv_empty.setVisibility(View.GONE);
                         } else {
                             tv_empty.setVisibility(View.VISIBLE);
@@ -145,6 +144,7 @@ public class QuizViewFragment extends BaseFragment {
                     }
 
                     sr_layout.setRefreshing(false);
+                    from = from + size;
                 }
 
                 @Override
@@ -155,19 +155,19 @@ public class QuizViewFragment extends BaseFragment {
                 }
             });
         } else {
-            service.getActiveQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+            service.getActiveQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
                 @Override
                 public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                    quizAdapter.resetItems();
+                    quizAdapter.removeItem(null);
 
                     if (response.isSuccessful() && response.body() != null) {
                         List<Quizze> quizzes = response.body().getQuizeData();
 
-                        for (Quizze quizze : quizzes) {
+                        for (final Quizze quizze : quizzes) {
                             quizAdapter.addItem(quizze);
                         }
 
-                        if (quizzes.size() > 0) {
+                        if (quizAdapter.getItemCount() > 0) {
                             tv_empty.setVisibility(View.GONE);
                         } else {
                             tv_empty.setVisibility(View.VISIBLE);
@@ -175,6 +175,7 @@ public class QuizViewFragment extends BaseFragment {
                     }
 
                     sr_layout.setRefreshing(false);
+                    from = from + size;
                 }
 
                 @Override
@@ -185,5 +186,17 @@ public class QuizViewFragment extends BaseFragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onLoadMore() {
+        quizAdapter.addItem(null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getQuizzes();
+            }
+        }, 2000);
+
     }
 }

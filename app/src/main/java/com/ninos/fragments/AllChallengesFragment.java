@@ -155,7 +155,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getQuizzes() {
-        service.getActiveQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+        service.getActiveQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
             @Override
             public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -179,7 +179,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
 
                         quizAdapter.addItem(null);
 
-                        service.getCompletedQuizzes(accessToken).enqueue(new Callback<QuizResponse>() {
+                        service.getCompletedQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
                             @Override
                             public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
                                 if (response.isSuccessful() && response.body() != null) {
@@ -188,6 +188,10 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                                     List<Quizze> quizzes = response.body().getQuizeData();
 
                                     for (Quizze quizze : quizzes) {
+                                        if (quizAdapter.getItemCount() >= 10) {
+                                            break;
+                                        }
+
                                         quizAdapter.addItem(quizze);
                                     }
 

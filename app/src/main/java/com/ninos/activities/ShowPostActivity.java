@@ -316,7 +316,12 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 }
             }
 
-            rl_loading.setVisibility(View.GONE);
+            rl_loading.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    rl_loading.setVisibility(View.GONE);
+                }
+            }, 3000);
         } else {
             showToast(R.string.error_message);
             finish();

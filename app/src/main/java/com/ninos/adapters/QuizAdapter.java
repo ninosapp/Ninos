@@ -17,6 +17,7 @@ import com.ninos.activities.MainActivity;
 import com.ninos.activities.QuizActivity;
 import com.ninos.activities.QuizViewActivity;
 import com.ninos.activities.ScoreActivity;
+import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.models.Quizze;
 
 /**
@@ -27,6 +28,12 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
 
     private Context context;
     private Activity activity;
+
+    public QuizAdapter(Context context, Activity activity, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+        super(recyclerView, onLoadMoreListener);
+        this.context = context;
+        this.activity = activity;
+    }
 
     public QuizAdapter(Context context, Activity activity) {
         this.context = context;
