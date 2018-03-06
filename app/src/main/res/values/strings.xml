@@ -131,7 +131,7 @@
     <string name="_00">00</string>
     <string name="empty_following">You are following none</string>
     <string name="empty_follower">You have no followers</string>
-    <string name="share_post"> has shared you a post from Ninos App. Click the following link to open it.   \n\nhttp://ninosapp.in/?postId=</string>
+    <string name="share_post"> has shared you a post from Ninos App. Click the following link to open it.   \n\nhttp://ninosapp.in/post/?postId=</string>
     <string name="encorage">\n\n Encourage children\'s talent &amp; creativity on Ninos App.</string>
     <string name="mail_us_dob_edit">For DOB change mail us info@ninosapp.in</string>
     <string name="submit">Submit</string>
@@ -179,6 +179,7 @@
     <string name="make_this_app_a_safe_place_for_children">\u2022 Make this app a safe place for children.</string>
     <string name="valid_age">Child age must be less than 18</string>
     <string name="terms_conditions"><![CDATA[Terms & conditions]]></string>
+    <string name="urls_not_allowed">Urls not allowed in comments</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

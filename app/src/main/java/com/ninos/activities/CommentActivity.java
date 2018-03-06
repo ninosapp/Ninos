@@ -23,6 +23,8 @@ import com.ninos.utils.BadWordUtil;
 import com.ninos.utils.PreferenceUtil;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -125,29 +127,41 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             if (hasBadWords) {
                 showToast(R.string.offensive_words);
             } else {
-                et_leave_comment.setText("");
-                Comment comment = new Comment();
-                comment.setComment(commentValue);
-                comment.setUserId(Database.getUserId());
-                comment.setPostId(postId);
-                isCommentAdded = true;
-                service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Comment comment = response.body().getPostComment();
-                            commentAdapter.addItem(comment, 0);
-                            et_leave_comment.setText("");
+                if (containsUrl(commentValue)) {
+                    showToast(R.string.urls_not_allowed);
+                } else {
+                    et_leave_comment.setText("");
+                    Comment comment = new Comment();
+                    comment.setComment(commentValue);
+                    comment.setUserId(Database.getUserId());
+                    comment.setPostId(postId);
+                    isCommentAdded = true;
+                    service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Comment comment = response.body().getPostComment();
+                                commentAdapter.addItem(comment, 0);
+                                et_leave_comment.setText("");
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+                        @Override
+                        public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
+    }
+
+    public boolean containsUrl(String text) {
+        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        Matcher urlMatcher = pattern.matcher(text);
+
+        return urlMatcher.find();
     }
 
     @Override

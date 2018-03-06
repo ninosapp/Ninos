@@ -27,6 +27,7 @@
         android:layout_toEndOf="@+id/iv_image"
         android:layout_toRightOf="@+id/iv_image"
         android:textColor="@color/midnight_blue"
+        android:textStyle="bold"
         tools:text="Sumanth" />
 
     <TextView
@@ -50,6 +51,7 @@
         android:layout_marginTop="@dimen/margin8dp"
         android:layout_toEndOf="@+id/iv_image"
         android:layout_toRightOf="@+id/iv_image"
+        android:textColor="@color/midnight_blue"
         tools:text="Sumanth sample coment text example Sumanth sample coment text example" />
 
     <ImageView

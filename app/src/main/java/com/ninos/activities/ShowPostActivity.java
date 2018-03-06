@@ -60,6 +60,8 @@ import com.ninos.views.PagerIndicatorDecoration;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
@@ -85,7 +87,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private int color_accent, color_dark_grey;
     private boolean isUpdated;
     private EditText et_comment;
-    private RelativeLayout rl_comment;
+    private RelativeLayout rl_comment, rl_loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         }
 
         if (id == null) {
-            finish();
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.policy_link)));
+            startActivity(browserIntent);
         }
 
         color_accent = ContextCompat.getColor(this, R.color.colorAccent);
@@ -124,6 +127,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             video_view.mRetryLayout.setVisibility(View.GONE);
             video_view.tinyBackImageView.setVisibility(View.GONE);
             recyclerView = findViewById(R.id.image_list);
+            rl_loading = findViewById(R.id.rl_loading);
+            rl_loading.setVisibility(View.VISIBLE);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -311,6 +316,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 }
             }
 
+            rl_loading.setVisibility(View.GONE);
         } else {
             showToast(R.string.error_message);
             finish();
@@ -694,34 +700,46 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             if (hasBadWords) {
                 showToast(R.string.offensive_words);
             } else {
-                et_comment.setText("");
-                Comment comment = new Comment();
-                comment.setComment(commentValue);
-                comment.setUserId(Database.getUserId());
-                comment.setPostId(postInfo.get_id());
+                if (containsUrl(commentValue)) {
+                    showToast(R.string.urls_not_allowed);
+                } else {
+                    et_comment.setText("");
+                    Comment comment = new Comment();
+                    comment.setComment(commentValue);
+                    comment.setUserId(Database.getUserId());
+                    comment.setPostId(postInfo.get_id());
 
-                service.addPostComments(postInfo.get_id(), accessToken, comment).enqueue(new Callback<CommentResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Comment comment = response.body().getPostComment();
-                            commentAdapter.addItem(comment, 0);
-                            et_comment.setText("");
+                    service.addPostComments(postInfo.get_id(), accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Comment comment = response.body().getPostComment();
+                                commentAdapter.addItem(comment, 0);
+                                et_comment.setText("");
 
-                            tv_comments.setVisibility(View.VISIBLE);
+                                tv_comments.setVisibility(View.VISIBLE);
 
-                            tv_comment.setText(String.format(getString(R.string.s_comments), commentAdapter.getItemCount()));
-                            isUpdated = true;
+                                tv_comment.setText(String.format(getString(R.string.s_comments), commentAdapter.getItemCount()));
+                                isUpdated = true;
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+                        @Override
+                        public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
+    }
+
+    public boolean containsUrl(String text) {
+        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        Matcher urlMatcher = pattern.matcher(text);
+
+        return urlMatcher.find();
     }
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {

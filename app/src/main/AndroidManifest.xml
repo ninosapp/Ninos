@@ -100,7 +100,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="ninosapp.in" />
+                <data
+                    android:host="ninosapp.in"
+                    android:pathPrefix="/post/" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
@@ -109,6 +111,7 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
+
         <service android:name=".notification.NinosMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
