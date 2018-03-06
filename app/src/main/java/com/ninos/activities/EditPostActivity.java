@@ -53,6 +53,10 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                 if (response.body() != null) {
                     postInfo = response.body().getPostInfo();
+
+                    if (uploadAdapter != null) {
+                        uploadAdapter.setPostId(postInfo);
+                    }
                 }
             }
 
@@ -81,7 +85,7 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
         final RecyclerView recyclerView = findViewById(R.id.upload_list);
         recyclerView.setLayoutManager(layoutManager);
 
-        uploadAdapter = new EditPostAdapter(this, postId, this);
+        uploadAdapter = new EditPostAdapter(this, postInfo, this);
 
         recyclerView.setAdapter(uploadAdapter);
 

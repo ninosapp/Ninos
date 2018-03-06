@@ -143,8 +143,8 @@ public interface RetrofitService {
     @DELETE("/follow/{followingId}")
     Call<Response> unFollow(@Path("followingId") String followingId, @Query("token") String token);
 
-    @DELETE("/posts/{postId}")
-    Call<Response> deletePost(@Path("postId") String postId, @Query("token") String token);
+    @DELETE("/posts/{postId}/{isChallenge}")
+    Call<Response> deletePost(@Path("postId") String postId, @Path("isChallenge") boolean isChallenge, @Query("token") String token);
 
     @GET("/following-users")
     Call<FollowingResponse> getFollowing(@Query("token") String token);

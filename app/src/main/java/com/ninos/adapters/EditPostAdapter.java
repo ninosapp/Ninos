@@ -18,6 +18,7 @@ import com.ninos.R;
 import com.ninos.activities.FilePickerActivity;
 import com.ninos.activities.MainActivity;
 import com.ninos.listeners.RetrofitService;
+import com.ninos.models.PostInfo;
 import com.ninos.models.Response;
 import com.ninos.reterofit.RetrofitInstance;
 import com.ninos.utils.AWSClient;
@@ -38,13 +39,24 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
     private Context context;
     private List<String> deletedLinks;
     private String postId;
+    private boolean isChallenge;
     private Activity activity;
 
-    public EditPostAdapter(Context context, String postId, Activity activity) {
+    public EditPostAdapter(Context context, PostInfo postInfo, Activity activity) {
         this.context = context;
         this.activity = activity;
-        this.postId = postId;
+
+        if (postInfo != null) {
+            postId = postInfo.get_id();
+            isChallenge = postInfo.getIsChallenge();
+        }
+
         deletedLinks = new ArrayList<>();
+    }
+
+    public void setPostId(PostInfo postInfo) {
+        postId = postInfo.get_id();
+        isChallenge = postInfo.getIsChallenge();
     }
 
     @Override
@@ -110,7 +122,7 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                service.deletePost(postId, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
+                                service.deletePost(postId, isChallenge, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
                                     @Override
                                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                         if (response.isSuccessful() && response.body() != null) {

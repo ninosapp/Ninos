@@ -504,7 +504,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                        service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(ShowPostActivity.this)).enqueue(new Callback<com.ninos.models.Response>() {
+                                        service.deletePost(postInfo.get_id(), postInfo.getIsChallenge(), PreferenceUtil.getAccessToken(ShowPostActivity.this)).enqueue(new Callback<com.ninos.models.Response>() {
                                             @Override
                                             public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
                                                 if (response.isSuccessful() && response.body() != null) {
