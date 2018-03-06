@@ -90,6 +90,9 @@ public class QuestionFragment extends BaseFragment implements View.OnClickListen
             cv_option3.setOnClickListener(this);
             cv_option4.setOnClickListener(this);
 
+            mcqSolution = new MCQSolution();
+            mcqSolution.setStatus(QuestionsAdapter.incorrect);
+            mcqSolution.setQuestionId(quizId);
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
