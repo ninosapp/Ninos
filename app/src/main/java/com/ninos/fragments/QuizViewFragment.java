@@ -1,7 +1,6 @@
 package com.ninos.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.QuizAdapter;
-import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.Quizze;
@@ -31,7 +29,7 @@ import retrofit2.Response;
  * Created by FAMILY on 19-02-2018.
  */
 
-public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener {
+public class QuizViewFragment extends BaseFragment {
 
     public static final String ACTIVE = "ACTIVE";
     public static final String COMPLETED = "COMPLETED";
@@ -43,6 +41,7 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
     private TextView tv_empty;
     private SwipeRefreshLayout sr_layout;
     private int from = 0, size = 21;
+    private boolean isLoading;
 
     public static QuizViewFragment newInstance(String type) {
         QuizViewFragment quizViewFragment = new QuizViewFragment();
@@ -78,12 +77,12 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
 
             tv_empty = view.findViewById(R.id.tv_empty);
 
-            GridLayoutManager quizLayoutManager = new GridLayoutManager(getContext(), 3);
+            final GridLayoutManager quizLayoutManager = new GridLayoutManager(getContext(), 3);
 
             RecyclerView quiz_list = view.findViewById(R.id.quiz_list);
             quiz_list.setLayoutManager(quizLayoutManager);
 
-            quizAdapter = new QuizAdapter(getContext(), getActivity(), quiz_list, this);
+            quizAdapter = new QuizAdapter(getContext(), getActivity());
             quiz_list.setAdapter(quizAdapter);
 
             getQuizzes();
@@ -100,6 +99,20 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
 
                     } else {
                         showNetworkDownSnackBar(sr_layout);
+                    }
+                }
+            });
+
+            quiz_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int totalItemCount = quizLayoutManager.getItemCount();
+                    int lastVisibleItem = quizLayoutManager.findLastVisibleItemPosition();
+                    if (!isLoading && totalItemCount <= (lastVisibleItem + 5)) {
+                        isLoading = true;
+                        quizAdapter.addItem(null);
+                        getQuizzes();
                     }
                 }
             });
@@ -143,6 +156,7 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
                         }
                     }
 
+                    isLoading = false;
                     sr_layout.setRefreshing(false);
                     from = from + size;
                 }
@@ -186,17 +200,5 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
                 }
             });
         }
-    }
-
-    @Override
-    public void onLoadMore() {
-        quizAdapter.addItem(null);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getQuizzes();
-            }
-        }, 2000);
-
     }
 }
