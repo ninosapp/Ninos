@@ -191,7 +191,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             public void onClick(View v) {
                 iv_clap.setOnClickListener(null);
 
-                if (postInfo.isMyRating()) {
+                if (postInfo.isMyRating() && postInfo.getTotalClapsCount() > 0) {
                     removeClap(postInfo, iv_clap, tv_clap);
                 } else {
                     addClap(postInfo, iv_clap, tv_clap);
@@ -454,7 +454,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 case R.id.iv_clap:
                     clapAnimation(postInfo);
 
-                    if (postInfo.isMyRating()) {
+                    if (postInfo.isMyRating() && postInfo.getTotalClapsCount() > 0) {
                         removeClap(postInfo, iv_clap, tv_clap);
                     } else {
                         addClap(postInfo, iv_clap, tv_clap);

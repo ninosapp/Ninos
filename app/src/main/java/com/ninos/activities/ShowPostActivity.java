@@ -160,7 +160,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     public void onClick(View v) {
                         clapAnimation(postInfo);
 
-                        if (postInfo.isMyRating()) {
+                        if (postInfo.isMyRating() && postInfo.getTotalClapsCount() > 0) {
                             removeClap(postInfo, iv_clap, tv_clap);
                         } else {
                             addClap(postInfo, iv_clap, tv_clap);
@@ -395,7 +395,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         iv_clap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (postInfo.isMyRating()) {
+                if (postInfo.isMyRating() && postInfo.getTotalClapsCount() > 0) {
                     removeClap(postInfo, iv_clap, tv_clap);
                 } else {
                     addClap(postInfo, iv_clap, tv_clap);
