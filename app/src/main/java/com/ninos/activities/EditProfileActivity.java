@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
@@ -52,6 +53,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
     private ImageView iv_upload_image, iv_placeholder;
     private AppCompatCheckBox cb_agree;
     private boolean isProfilePicUpdated;
+    private FloatingActionButton fab_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,8 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
         iv_upload_image.setOnClickListener(this);
 
         tv_dob.setOnClickListener(this);
-        findViewById(R.id.fab_update).setOnClickListener(this);
+        fab_update = findViewById(R.id.fab_update);
+        fab_update.setOnClickListener(this);
         findViewById(R.id.tv_terms).setOnClickListener(this);
 
         Intent intent = getIntent();
@@ -117,6 +120,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 dateUtil.datePicker(this, this, null);
                 break;
             case R.id.fab_update:
+                fab_update.setOnClickListener(null);
                 String childName = et_child_name.getText().toString().trim();
                 String dob = tv_dob.getText().toString().trim();
                 boolean isAgreed = cb_agree.isChecked();
@@ -157,24 +161,29 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                                                 }
                                             } else {
                                                 showSnackBar(R.string.error_message, cl_edit_profile);
+                                                fab_update.setOnClickListener(EditProfileActivity.this);
                                             }
                                         }
 
                                         @Override
                                         public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
                                             CrashUtil.report(t.getMessage());
+                                            fab_update.setOnClickListener(EditProfileActivity.this);
                                         }
                                     });
                                 } else {
                                     showToast(R.string.valid_age);
+                                    fab_update.setOnClickListener(this);
                                 }
                             }
                         }
                     } else {
                         showToast(R.string.accept_terms_conditons);
+                        fab_update.setOnClickListener(this);
                     }
                 } else {
                     showToast(R.string.add_profile_pic);
+                    fab_update.setOnClickListener(this);
                 }
                 break;
             case R.id.iv_upload_image:

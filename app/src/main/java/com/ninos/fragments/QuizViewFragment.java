@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ninos.R;
 import com.ninos.adapters.QuizAdapter;
+import com.ninos.listeners.OnLoadMoreListener;
 import com.ninos.listeners.RetrofitService;
 import com.ninos.models.QuizResponse;
 import com.ninos.models.Quizze;
@@ -29,11 +30,12 @@ import retrofit2.Response;
  * Created by FAMILY on 19-02-2018.
  */
 
-public class QuizViewFragment extends BaseFragment {
+public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener {
 
     public static final String ACTIVE = "ACTIVE";
     public static final String COMPLETED = "COMPLETED";
     private static final String TYPE = "TYPE";
+    final int visibleThreshold = 2;
     private String type;
     private QuizAdapter quizAdapter;
     private String accessToken;
@@ -41,7 +43,6 @@ public class QuizViewFragment extends BaseFragment {
     private TextView tv_empty;
     private SwipeRefreshLayout sr_layout;
     private int from = 0, size = 21;
-    private boolean isLoading;
 
     public static QuizViewFragment newInstance(String type) {
         QuizViewFragment quizViewFragment = new QuizViewFragment();
@@ -81,6 +82,21 @@ public class QuizViewFragment extends BaseFragment {
 
             RecyclerView quiz_list = view.findViewById(R.id.quiz_list);
             quiz_list.setLayoutManager(quizLayoutManager);
+            quiz_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if (dy > 0) {
+                        int lastItem = quizLayoutManager.findLastCompletelyVisibleItemPosition();
+                        int currentTotalCount = quizLayoutManager.getItemCount();
+
+                        if (currentTotalCount <= lastItem + visibleThreshold) {
+                            quizAdapter.addItem(null);
+                            from = from + size;
+                            getQuizzes();
+                        }
+                    }
+                }
+            });
 
             quizAdapter = new QuizAdapter(getContext(), getActivity());
             quiz_list.setAdapter(quizAdapter);
@@ -94,28 +110,13 @@ public class QuizViewFragment extends BaseFragment {
                     if (isNetworkAvailable(getContext())) {
                         from = 0;
                         quizAdapter.resetItems();
-
                         getQuizzes();
-
                     } else {
                         showNetworkDownSnackBar(sr_layout);
                     }
                 }
             });
 
-            quiz_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    int totalItemCount = quizLayoutManager.getItemCount();
-                    int lastVisibleItem = quizLayoutManager.findLastVisibleItemPosition();
-                    if (!isLoading && totalItemCount <= (lastVisibleItem + 5)) {
-                        isLoading = true;
-                        quizAdapter.addItem(null);
-                        getQuizzes();
-                    }
-                }
-            });
         } catch (Exception e) {
             logError(e);
             showToast(R.string.error_message);
@@ -156,9 +157,7 @@ public class QuizViewFragment extends BaseFragment {
                         }
                     }
 
-                    isLoading = false;
                     sr_layout.setRefreshing(false);
-                    from = from + size;
                 }
 
                 @Override
@@ -189,7 +188,6 @@ public class QuizViewFragment extends BaseFragment {
                     }
 
                     sr_layout.setRefreshing(false);
-                    from = from + size;
                 }
 
                 @Override
@@ -200,5 +198,10 @@ public class QuizViewFragment extends BaseFragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 }

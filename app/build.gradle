@@ -15,7 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = false
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
@@ -35,7 +34,7 @@ android {
             buildConfigField 'String', 'ROOT_PATH', '"/dvl"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
             buildConfigField 'String', 'AWS_IDENTITY_POOL ', '"us-east-1:c2f5f165-2cc7-450b-a3fb-e213e34d8e31"'
-            versionName "i$appVersionName"
+            versionName "$appVersionName"
         }
 
         prd {
@@ -57,13 +56,13 @@ android {
 
     signingConfigs {
         debug {
-            keyAlias 'NinosKeyStore'
+            keyAlias 'ninosdev'
             keyPassword 'N!0ns123'
-            storeFile file('../artifacts/ninos_internal.jks"')
+            storeFile file('../artifacts/ninos_dev.jks"')
             storePassword 'N!0ns123'
         }
         release {
-            keyAlias 'ninos'
+            keyAlias 'ninosproduction'
             keyPassword 'N!0ns123'
             storeFile file('../artifacts/ninos_production.jks"')
             storePassword 'N!0ns123'
@@ -109,18 +108,13 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'pub.devrel:easypermissions:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-    implementation 'com.android.support:support-v4:27.0.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     implementation 'com.github.yalantis:ucrop:2.2.1'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
-    implementation 'com.infullmobile.android:videokit-release:1.1.2'
     implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.7.0'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation project(':videokit')
 }
 
 apply plugin: 'com.google.gms.google-services'
