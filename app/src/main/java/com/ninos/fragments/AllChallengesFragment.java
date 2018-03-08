@@ -269,20 +269,32 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
         }, 2000);
     }
 
-    public void newPostAdded(String postId) {
+    public void newPostAdded(final String postId) {
         service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
                 if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    PostInfo postInfo = response.body().getPostInfo();
-                    allChallengeAdapter.addItem(postInfo, 0);
+                    boolean postAdded = false;
 
-                    new Handler().postAtTime(new Runnable() {
-                        @Override
-                        public void run() {
-                            ns_view.scrollTo(0, 0);
+                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                        PostInfo postInfo = allChallengeAdapter.getItem(i);
+
+                        if (postInfo.get_id().equals(postId)) {
+                            postAdded = true;
                         }
-                    }, 1000);
+                    }
+
+                    if (!postAdded) {
+                        PostInfo postInfo = response.body().getPostInfo();
+                        allChallengeAdapter.addItem(postInfo, 0);
+
+                        new Handler().postAtTime(new Runnable() {
+                            @Override
+                            public void run() {
+                                ns_view.scrollTo(0, 0);
+                            }
+                        }, 1000);
+                    }
                 }
             }
 

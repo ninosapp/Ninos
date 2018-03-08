@@ -483,7 +483,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                            service.deletePost(postInfo.get_id(), postInfo.getIsChallenge(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
+                                            service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<com.ninos.models.Response>() {
                                                 @Override
                                                 public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
                                                     if (response.isSuccessful() && response.body() != null) {

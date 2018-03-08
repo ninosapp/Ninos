@@ -122,7 +122,7 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                service.deletePost(postId, isChallenge, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
+                                service.deletePost(postId, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
                                     @Override
                                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                         if (response.isSuccessful() && response.body() != null) {
