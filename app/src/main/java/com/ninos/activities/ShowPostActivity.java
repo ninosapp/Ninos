@@ -300,11 +300,13 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     }
                 }
+
+                rl_loading.setVisibility(View.GONE);
             } else {
                 video_view.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                ShowPostImageAdapter imageAdapter = new ShowPostImageAdapter(ShowPostActivity.this, R.drawable.pattern_11);
+                ShowPostImageAdapter imageAdapter = new ShowPostImageAdapter(ShowPostActivity.this, R.drawable.pattern_11, rl_loading);
                 recyclerView.setAdapter(imageAdapter);
 
                 if (postInfo.getLinks() == null) {
@@ -316,12 +318,6 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 }
             }
 
-            rl_loading.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    rl_loading.setVisibility(View.GONE);
-                }
-            }, 3000);
         } else {
             showToast(R.string.error_message);
             finish();

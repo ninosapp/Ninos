@@ -1,16 +1,20 @@
 package com.ninos.adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.ninos.R;
 
 /**
@@ -21,10 +25,12 @@ public class ShowPostImageAdapter extends CommonRecyclerAdapter<String> {
 
     private Activity activity;
     private int resId;
+    private RelativeLayout rl_loading;
 
-    public ShowPostImageAdapter(Activity activity, int resId) {
+    public ShowPostImageAdapter(Activity activity, int resId, RelativeLayout rl_loading) {
         this.activity = activity;
         this.resId = resId;
+        this.rl_loading = rl_loading;
     }
 
     @Override
@@ -61,7 +67,15 @@ public class ShowPostImageAdapter extends CommonRecyclerAdapter<String> {
 
             Glide.with(activity)
                     .setDefaultRequestOptions(requestOptions)
-                    .load(path).into(iv_challenge);
+                    .asBitmap()
+                    .load(path)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            iv_challenge.setImageBitmap(resource);
+                            rl_loading.setVisibility(View.GONE);
+                        }
+                    });
         }
     }
 }

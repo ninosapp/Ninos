@@ -301,6 +301,29 @@ public class AWSClient {
         new DeleteImage(post, paths).execute();
     }
 
+    private void deletePost(final PostInfo postInfo) {
+        if (postInfo != null) {
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<com.ninos.models.Response>() {
+                @Override
+                public void onResponse(Call<com.ninos.models.Response> call, Response<com.ninos.models.Response> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+
+                        if (postInfo.getLinks().size() > 1) {
+                            removeImage(postInfo.get_id(), postInfo.getLinks());
+                        }
+
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<com.ninos.models.Response> call, Throwable t) {
+                }
+            });
+        }
+    }
+
     private class UploadListener implements TransferListener {
 
         @Override
@@ -392,6 +415,8 @@ public class AWSClient {
 
                         @Override
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            deletePost(postInfo);
+
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();
                             }
@@ -419,9 +444,12 @@ public class AWSClient {
 
         @Override
         public void onError(int id, Exception ex) {
+            deletePost(postInfo);
+
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }
+
             Log.e(TAG, ex.toString(), ex);
             Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -458,6 +486,8 @@ public class AWSClient {
 
                         @Override
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            deletePost(postInfo);
+
                             if (mProgressDialog != null) {
                                 mProgressDialog.dismiss();
                             }
@@ -478,6 +508,8 @@ public class AWSClient {
 
         @Override
         public void onError(int id, Exception ex) {
+            deletePost(postInfo);
+
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();
             }

@@ -381,6 +381,23 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     if (postInfo.getLinks().size() > 1) {
                         recyclerView.addItemDecoration(new PagerIndicatorDecoration());
                     }
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                            if (postInfo.getLinks().size() > 0) {
+                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                                itemView.setVisibility(View.VISIBLE);
+                            } else {
+                                itemView.setVisibility(View.GONE);
+                                param.height = 0;
+                                param.width = 0;
+                            }
+                            itemView.setLayoutParams(param);
+                        }
+                    });
                 }
             }
 
@@ -639,7 +656,7 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected List<String> doInBackground(String... strings) {
                 String path = strings[0];
 
-                List<String> links = awsClient.getBucket(path);
+                final List<String> links = awsClient.getBucket(path);
 
                 if (getItemCount() > position) {
                     PostInfo postInfo = getItem(position);
@@ -648,6 +665,25 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                         postInfo.setLinks(links);
                     }
                 }
+
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                        if (links.size() > 0) {
+                            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                            itemView.setVisibility(View.VISIBLE);
+                        } else {
+                            itemView.setVisibility(View.GONE);
+                            param.height = 0;
+                            param.width = 0;
+                        }
+                        itemView.setLayoutParams(param);
+                    }
+                });
+
                 return links;
             }
 
@@ -686,13 +722,30 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected List<String> doInBackground(String... strings) {
                 String path = strings[0];
 
-                List<String> links = awsClient.getBucket(path);
+                final List<String> links = awsClient.getBucket(path);
 
                 PostInfo postInfo = getItem(position);
 
                 if (postInfo != null) {
                     postInfo.setLinks(links);
                 }
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                        if (links.size() > 0) {
+                            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                            itemView.setVisibility(View.VISIBLE);
+                        } else {
+                            itemView.setVisibility(View.GONE);
+                            param.height = 0;
+                            param.width = 0;
+                        }
+                        itemView.setLayoutParams(param);
+                    }
+                });
 
                 return links;
             }

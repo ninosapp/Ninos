@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -281,7 +282,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                 if (task.getException() != null && task.getException().getMessage().contains("already")) {
                                     showToast(R.string.email_already_registered);
                                 } else {
-                                    showToast(R.string.error_message);
+                                    Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             } else {
                                 signInUser();
