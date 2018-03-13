@@ -121,14 +121,15 @@ public class AWSClient {
     /*Settting TransferUtility api for upload and download a file*/
     public void awsInit() {
         try {
-            //for caching the session credentials
-            CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(mContext, BuildConfig.AWS_IDENTITY_POOL, Regions.US_EAST_1);
-
-            //creating new aws client
-            mAmazonS3 = new AmazonS3Client(credentialsProvider);
-
-            //choose a region for an existing AWS client
-            mAmazonS3.setRegion(Region.getRegion(Regions.US_EAST_1));
+            if (BuildConfig.FLAVOR.equals("prd")) {
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(mContext, BuildConfig.AWS_IDENTITY_POOL, Regions.AP_SOUTH_1);
+                mAmazonS3 = new AmazonS3Client(credentialsProvider);
+                mAmazonS3.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
+            } else {
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(mContext, BuildConfig.AWS_IDENTITY_POOL, Regions.US_EAST_1);
+                mAmazonS3 = new AmazonS3Client(credentialsProvider);
+                mAmazonS3.setRegion(Region.getRegion(Regions.US_EAST_1));
+            }
 
             //provides api for uploading and downloading content
             mTransferUtility = new TransferUtility(mAmazonS3, mContext);
@@ -275,7 +276,7 @@ public class AWSClient {
 
         try {
             for (S3ObjectSummary summary : S3Objects.withPrefix(mAmazonS3, BuildConfig.ams_challenge_bucket, prefix)) {
-                links.add(String.format("%s/%s/%s", "https://s3.amazonaws.com", BuildConfig.ams_challenge_bucket, summary.getKey()));
+                links.add(String.format("%s/%s/%s", BuildConfig.AWS_URL, BuildConfig.ams_challenge_bucket, summary.getKey()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -370,6 +371,8 @@ public class AWSClient {
         @Override
         public void onError(int id, Exception ex) {
             deleteDir();
+
+            Toast.makeText(mContext, R.string.error_message, Toast.LENGTH_SHORT).show();
 
             if (mProgressDialog != null) {
                 mProgressDialog.dismiss();

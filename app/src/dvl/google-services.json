@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "203814168247",
-    "firebase_url": "https://ninos-cfc60.firebaseio.com",
-    "project_id": "ninos-cfc60",
-    "storage_bucket": "ninos-cfc60.appspot.com"
+    "project_number": "509410414696",
+    "firebase_url": "https://ninos-dvl.firebaseio.com",
+    "project_id": "ninos-dvl",
+    "storage_bucket": "ninos-dvl.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:203814168247:android:91db23211d2acd9a",
+        "mobilesdk_app_id": "1:509410414696:android:f2affdc0f47aef48",
         "android_client_info": {
-          "package_name": "com.ninos"
+          "package_name": "com.ninos.dvl"
         }
       },
       "oauth_client": [
         {
-          "client_id": "203814168247-md9u69a2b01le4u0odglruihb018iobv.apps.googleusercontent.com",
+          "client_id": "509410414696-8dkd5bihtolos4lb06i7m3i4gjnum1q5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA_w4l-9pgLLVDWBYwGUBD9sNHjQu6e5Q0"
+          "current_key": "AIzaSyB9p5aBXo_a83210o3WK_xjwIrgabYazJ0"
         }
       ],
       "services": {

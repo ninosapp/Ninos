@@ -42,7 +42,6 @@
     <string name="comments">Comments</string>
     <string name="leave_a_comment">Leave a comment…</string>
     <string name="comment_validation">Comment is empty</string>
-    <string name="facebook_app_id">2021224038166624</string>
     <string name="fb_login_protocol_scheme">fb2021224038166624</string>
     <string name="save">Save</string>
     <string name="Ok">OK</string>
@@ -179,7 +178,8 @@
     <string name="valid_age">Child age must be less than 18</string>
     <string name="terms_conditions"><![CDATA[Terms & conditions]]></string>
     <string name="urls_not_allowed">Urls not allowed in comments</string>
-    <string name="about_description"><![CDATA[Ninos App – India’s 1st network of talented children. We aim to bring millions of creative children together.\n\nNinos App is the perfect platform for children to showcase their creativity and become superstars. Our motto is to Entertain, Educate & Encourage. Ninos App entertains children by letting them publish and share anything! just anything – Painting, Singing, Dancing, Acting, Cooking, Spelling Bee, Sporting events, Martial Arts, Fashion, Photography and Everything under the sun.\n\nNinos App do educate children by keeping them engaged with a range of daily educative quizzes, weekly creative challenges, monthly interesting contests exclusively designed to suit children of all ages.\n\nNinos App encourages children by rewarding them generously. There are thousands of prizes in the store for them. Ninos App also encourages parents to identify their children’s hidden and unexplored talent. We bestow a novel responsibility upon the parents to share their children’s creativity and innovations on Ninos App.\n\nChildren are born stars. Parents identify them. Ninos App makes them superstars]]></string>
+    <string name="about_description"><![CDATA[Ninos App – India’s First Talent App For Children. We aim to build a digital space to bring millions of creative children together.\n\nNinos App is the perfect platform for children to showcase their creativity and become superstars. Our motto is to Entertain, Educate & Encourage. Ninos App entertains children by letting them publish and share anything! just anything – Painting, Singing, Dancing, Acting, Cooking, Spelling Bee, Sporting events, Martial Arts, Fashion, Photography and Everything under the sun.\n\nNinos App do educate children by keeping them engaged with a range of daily educative quizzes, weekly creative challenges, monthly interesting contests exclusively designed to suit children of all ages.\n\nNinos App encourages children by rewarding them generously. There are thousands of prizes in the store for them. Ninos App also encourages parents to identify their children’s hidden and unexplored talent. We bestow a novel responsibility upon the parents to share their children’s creativity and innovations on Ninos App.\n\nChildren are born stars. Parents identify them. Ninos App makes them superstars]]></string>
+    <string name="registration">Registration</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
