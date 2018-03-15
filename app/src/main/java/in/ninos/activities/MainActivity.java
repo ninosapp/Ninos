@@ -580,8 +580,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 return true;
             case R.id.nav_rate_us:
-                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_store_link)));
-                startActivity(playStoreIntent);
+                final String appPackageName = getPackageName();
+
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
 
                 closeDrawer();
 

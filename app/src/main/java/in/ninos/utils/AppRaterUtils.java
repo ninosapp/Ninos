@@ -123,8 +123,14 @@ public class AppRaterUtils {
                     @Override
                     public void onClick(View view) {
                         PreferenceUtil.setDontShowEnabled(context);
-                        String appLink = context.getString(R.string.play_store_link);
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(appLink)));
+                        final String appPackageName = context.getPackageName();
+
+                        try {
+                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+
                         dialog.dismiss();
                     }
                 });
