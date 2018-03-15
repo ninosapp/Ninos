@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.ninos.activities.FilePickerActivity">
+    tools:context="com.ninos.in.ninos.activities.FilePickerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"

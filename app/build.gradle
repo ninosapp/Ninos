@@ -5,14 +5,14 @@ def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], pr
 
 ext {
     appVersionName = '1.0'
-    appPackageId = 'com.ninos'
+    appPackageId = 'in.ninos'
 }
 
 android {
     compileSdkVersion 27
     flavorDimensions "default"
     defaultConfig {
-        applicationId "com.ninos"
+        applicationId "in.ninos"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode gitCommitCount
@@ -38,7 +38,7 @@ android {
             buildConfigField 'String', 'ROOT_PATH', '"/dvl"'
             buildConfigField 'String', 'BASE_URL ', '"http://ninosapi.schoolsuperstars.com/"'
             buildConfigField 'String', 'AWS_IDENTITY_POOL', '"us-east-1:c2f5f165-2cc7-450b-a3fb-e213e34d8e31"'
-            buildConfigField 'String', 'AWS_URL', '"https://s3.amazonaws.com"'
+            buildConfigField 'String', 'AWS_URL', '"https://s3.amazonaws.com/"'
             resValue "string", "facebook_app_id", "2021224038166624"
             versionName "$appVersionName"
         }
@@ -50,7 +50,7 @@ android {
             buildConfigField 'String', 'ROOT_PATH', '"/prd"'
             buildConfigField 'String', 'BASE_URL ', '"http://api.ninosapp.in/"'
             buildConfigField 'String', 'AWS_IDENTITY_POOL ', '"ap-south-1:f8986046-8593-458c-b89f-033810a24f56"'
-            buildConfigField 'String', 'AWS_URL', '"https://s3.ap-south-1.amazonaws.com"'
+            buildConfigField 'String', 'AWS_URL', '"https://s3.ap-south-1.amazonaws.com/"'
             resValue "string", "facebook_app_id", "172122150257048"
             versionName "$appVersionName"
         }

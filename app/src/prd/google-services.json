@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:975228509245:android:91db23211d2acd9a",
+        "mobilesdk_app_id": "1:975228509245:android:dd3a1850deaa5436",
         "android_client_info": {
-          "package_name": "com.ninos"
+          "package_name": "in.ninos"
         }
       },
       "oauth_client": [

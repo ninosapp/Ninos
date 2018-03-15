@@ -63,3 +63,6 @@
 
 -dontwarn okio.**
 -dontwarn retrofit2.Platform$Java8
+
+-dontwarn com.squareup.**
+-dontwarn org.joda.**

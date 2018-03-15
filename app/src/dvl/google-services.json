@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "509410414696",
-    "firebase_url": "https://ninos-dvl.firebaseio.com",
-    "project_id": "ninos-dvl",
-    "storage_bucket": "ninos-dvl.appspot.com"
+    "project_number": "977875390736",
+    "firebase_url": "https://ninos-dvl-19cd9.firebaseio.com",
+    "project_id": "ninos-dvl-19cd9",
+    "storage_bucket": "ninos-dvl-19cd9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:509410414696:android:f2affdc0f47aef48",
+        "mobilesdk_app_id": "1:977875390736:android:5fbd1adb9b5a8d17",
         "android_client_info": {
-          "package_name": "com.ninos.dvl"
+          "package_name": "in.ninos.dvl"
         }
       },
       "oauth_client": [
         {
-          "client_id": "509410414696-8dkd5bihtolos4lb06i7m3i4gjnum1q5.apps.googleusercontent.com",
+          "client_id": "977875390736-66c3q04qr6b0i1gbe65mc03ja9u7bht4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB9p5aBXo_a83210o3WK_xjwIrgabYazJ0"
+          "current_key": "AIzaSyB_2M3kyuG8C6fLzGWVS_muaa7tK13MkNI"
         }
       ],
       "services": {

@@ -1,0 +1,620 @@
+package in.ninos.utils;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.iterable.S3Objects;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.iceteck.silicompressorr.SiliCompressor;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import id.zelory.compressor.Compressor;
+import in.ninos.BuildConfig;
+import in.ninos.R;
+import in.ninos.activities.FilePickerActivity;
+import in.ninos.activities.MainActivity;
+import in.ninos.activities.ProfileActivity;
+import in.ninos.firebase.Database;
+import in.ninos.listeners.OnTrimVideoListener;
+import in.ninos.listeners.RetrofitService;
+import in.ninos.models.AddPostResponse;
+import in.ninos.models.PostInfo;
+import in.ninos.reterofit.RetrofitInstance;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
+/**
+ * Created by smeesala on 23-Jun-16.
+ * Class for uploading files to aws for user profile image and send a report
+ */
+public class AWSClient {
+    private static final String TAG = AWSClient.class.getSimpleName();
+    private static final String COMPLETED = "COMPLETED";
+
+    private TransferUtility mTransferUtility;
+    private Context mContext;
+    private ProgressDialog mProgressDialog;
+    private TransferObserver mTransfer;
+    private String mPostId, mPath;
+    private AmazonS3 mAmazonS3;
+    private int mCount = 0;
+    private File mFolder;
+    private Bitmap mBitmap;
+    private String fileName;
+
+
+    public AWSClient(Context context, String postId, String path) {
+        try {
+            mContext = context;
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            mPostId = postId;
+            mPath = path;
+            File dir = mContext.getCacheDir();
+            mFolder = new File(dir, "images");
+        } catch (Exception e) {
+            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+        }
+    }
+
+    public AWSClient(Context context, String path) {
+        try {
+            mContext = context;
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage(context.getString(R.string.loading_image_upload));
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            mPath = path;
+
+            //creating a cache dir
+            File dir = mContext.getCacheDir();
+            mFolder = new File(dir, "images");
+        } catch (Exception e) {
+            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+        }
+    }
+
+    public AWSClient(Context context) {
+        try {
+            mContext = context;
+        } catch (Exception e) {
+            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+        }
+    }
+
+    /*Settting TransferUtility api for upload and download a file*/
+    public void awsInit() {
+        try {
+            if (BuildConfig.FLAVOR.equals("prd")) {
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(mContext, BuildConfig.AWS_IDENTITY_POOL, Regions.AP_SOUTH_1);
+                mAmazonS3 = new AmazonS3Client(credentialsProvider);
+                mAmazonS3.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
+            } else {
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(mContext, BuildConfig.AWS_IDENTITY_POOL, Regions.US_EAST_1);
+                mAmazonS3 = new AmazonS3Client(credentialsProvider);
+                mAmazonS3.setRegion(Region.getRegion(Regions.US_EAST_1));
+            }
+
+            //provides api for uploading and downloading content
+            mTransferUtility = new TransferUtility(mAmazonS3, mContext);
+        } catch (Exception e) {
+            Log.e(TAG, "awsInit() - " + e.toString(), e);
+        }
+    }
+
+    private void upload64Image() {
+        try {
+            String userId = Database.getUserId();
+            File path64 = resizeImage(64);
+
+            //setting the path to which bucket file need to be uploaded
+            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI64), path64, CannedAccessControlList.PublicRead);
+            mTransfer.setTransferListener(new UploadListener());
+        } catch (Exception e) {
+            Log.e(TAG, "upload64Image() - " + e.getMessage(), e);
+        }
+    }
+
+    public void upload192Image() {
+        try {
+            new Compressor(mContext)
+                    .compressToFileAsFlowable(new File(mPath))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(new Consumer<File>() {
+                        @Override
+                        public void accept(File file) {
+                            fileName = file.getName();
+                            mBitmap = BitmapFactory.decodeFile(file.getPath());
+                            String userId = Database.getUserId();
+                            File path192 = resizeImage(192);
+                            mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI192), path192, CannedAccessControlList.PublicRead);
+                            mTransfer.setTransferListener(new UploadListener());
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, "upload192Image() - " + e.getMessage(), e);
+        }
+    }
+
+    private File resizeImage(int dimension) {
+        File file = null;
+
+        try {
+            Bitmap resizedBitmap;
+            mFolder.createNewFile();
+            file = new File(mFolder, fileName);
+            file.createNewFile();
+
+            if (dimension != 0) {
+                resizedBitmap = Bitmap.createScaledBitmap(mBitmap, dimension, dimension, true);
+            } else {
+                resizedBitmap = Bitmap.createBitmap(mBitmap);
+            }
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bitmapdata = stream.toByteArray();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+        } catch (IOException e) {
+            Log.e(TAG, "resizeImage() - " + e.toString(), e);
+        }
+        return file;
+    }
+
+    public void uploadImage(final PostInfo postInfo) {
+        try {
+            new Compressor(mContext)
+                    .compressToFileAsFlowable(new File(mPath))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe(new Consumer<File>() {
+                        @Override
+                        public void accept(File image) {
+                            String fileName = image.getName();
+                            String userId = Database.getUserId();
+                            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+
+                            mTransfer = mTransferUtility.upload(path, fileName, image, CannedAccessControlList.PublicRead);
+                            mTransfer.setTransferListener(new ImageUploadListener(postInfo));
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                    });
+
+        } catch (Exception e) {
+            Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
+        }
+    }
+
+    public void uploadVideo(final PostInfo postInfo) {
+        try {
+            if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+            final String folderPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
+
+            new TrimVideoUtils().startTrim(mPath, folderPath, new OnTrimVideoListener() {
+                @Override
+                public void getResult(String uri) {
+                    mFolder = new File(folderPath);
+                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
+                    new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
+                }
+
+                @Override
+                public void onError(int message) {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.dismiss();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+
+            Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
+        }
+    }
+
+    public List<String> getBucket(String prefix) {
+        List<String> links = new ArrayList<>();
+
+        String delimiter = "/";
+        if (!prefix.endsWith(delimiter)) {
+            prefix += delimiter;
+        }
+
+        try {
+            for (S3ObjectSummary summary : S3Objects.withPrefix(mAmazonS3, BuildConfig.ams_challenge_bucket, prefix)) {
+                links.add(String.format("%s/%s/%s", BuildConfig.AWS_URL, BuildConfig.ams_challenge_bucket, summary.getKey()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return links;
+    }
+
+    /*clearing the cache after completion of upload*/
+    private void deleteDir() {
+        if (mFolder != null && mFolder.isDirectory()) {
+            mFolder.delete();
+        }
+
+        if (mPath != null) {
+            File imagePath = new File(mPath);
+            imagePath.delete();
+        }
+
+    }
+
+    public void removeImage(String post, List<String> paths) {
+        new DeleteImage(post, paths).execute();
+    }
+
+    private void deletePost(final PostInfo postInfo) {
+        if (postInfo != null) {
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<in.ninos.models.Response>() {
+                @Override
+                public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+
+                        if (postInfo.getLinks().size() > 1) {
+                            removeImage(postInfo.get_id(), postInfo.getLinks());
+                        }
+
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
+                }
+            });
+        }
+    }
+
+    private class UploadListener implements TransferListener {
+
+        @Override
+        public void onStateChanged(int id, TransferState state) {
+            try {
+                if (state.toString().contentEquals(COMPLETED)) {
+                    mCount = mCount + 1;
+                    switch (mCount) {
+                        case 1:
+                            upload64Image();
+                            break;
+                        case 2:
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+
+                            Activity activity = ((Activity) mContext);
+                            Intent intent = new Intent();
+                            intent.putExtra(ProfileActivity.PROFILE_PATH, mPath);
+                            activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
+                            activity.finish();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteDir();
+                                }
+                            }, 3000);
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+                deleteDir();
+
+                Log.e(TAG, "UploadListener() - onStateChanged(): " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            //int percentage = (int) (bytesCurrent / bytesTotal * 100);
+        }
+
+        @Override
+        public void onError(int id, Exception ex) {
+            deleteDir();
+
+            Toast.makeText(mContext, R.string.error_message, Toast.LENGTH_SHORT).show();
+
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+        }
+    }
+
+    private class VideoUploadListener implements TransferListener {
+
+        PostInfo postInfo;
+
+        VideoUploadListener(PostInfo postInfo) {
+            this.postInfo = postInfo;
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState state) {
+            try {
+                if (state.toString().contentEquals(COMPLETED)) {
+                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<AddPostResponse>() {
+                        @Override
+                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+
+                                Activity activity = ((Activity) mContext);
+                                Intent intent = new Intent();
+                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                activity.setResult(FilePickerActivity.TRIMMER_RESULT, intent);
+                                activity.finish();
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        deleteDir();
+                                    }
+                                }, 3000);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            deletePost(postInfo);
+
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+
+                            ((Activity) mContext).finish();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteDir();
+                                }
+                            }, 3000);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            Log.i(TAG, "Progress changed" + bytesCurrent);
+        }
+
+        @Override
+        public void onError(int id, Exception ex) {
+            deletePost(postInfo);
+
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+
+            Log.e(TAG, ex.toString(), ex);
+            Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class ImageUploadListener implements TransferListener {
+
+        PostInfo postInfo;
+
+        ImageUploadListener(PostInfo postInfo) {
+            this.postInfo = postInfo;
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState state) {
+            try {
+                if (state.toString().contentEquals(COMPLETED)) {
+                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<AddPostResponse>() {
+                        @Override
+                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+
+                                Activity activity = ((Activity) mContext);
+                                Intent intent = new Intent();
+                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                activity.setResult(MainActivity.POST_ADDED, intent);
+                                activity.finish();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            deletePost(postInfo);
+
+                            if (mProgressDialog != null) {
+                                mProgressDialog.dismiss();
+                            }
+
+                            ((Activity) mContext).finish();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+        }
+
+        @Override
+        public void onError(int id, Exception ex) {
+            deletePost(postInfo);
+
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+            Log.e(TAG, ex.toString(), ex);
+            Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class DeleteImage extends AsyncTask<String, Void, Void> {
+
+        List<String> links;
+        String postId;
+
+        DeleteImage(String postId, List<String> links) {
+            this.links = links;
+            this.postId = postId;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String bucket = BuildConfig.ams_challenge_bucket + "/" + Database.getUserId() + "/" + postId;
+
+            for (String link : links) {
+                String url = link.substring(link.lastIndexOf('/') + 1);
+                try {
+                    mAmazonS3.deleteObject(new DeleteObjectRequest(bucket, url));
+                } catch (AmazonClientException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
+
+        private Context mContext;
+        private PostInfo postInfo;
+
+        public VideoCompressAsyncTask(Context context, PostInfo postInfo) {
+            mContext = context;
+            this.postInfo = postInfo;
+        }
+
+        @Override
+        protected String doInBackground(String... paths) {
+            if (mProgressDialog != null) {
+                mProgressDialog.show();
+            }
+
+            String filePath = null;
+
+            try {
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                Bitmap bmp;
+                int videoHeight = 0;
+                int videoWidth = 0;
+
+                try {
+                    retriever.setDataSource(paths[0]);
+                    bmp = retriever.getFrameAtTime();
+                    videoHeight = bmp.getHeight() / 5;
+                    videoWidth = bmp.getWidth() / 5;
+                } catch (Exception ignored) {
+
+                }
+
+                if ((videoHeight > 640 && videoWidth > 360) || (videoHeight > 360 && videoWidth > 640)) {
+                    if (videoHeight > videoWidth) {
+                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1], 360, 640, 0);
+                    } else {
+                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
+                    }
+                } else {
+                    filePath = paths[0];
+                }
+
+            } catch (URISyntaxException e) {
+                if (mProgressDialog != null) {
+                    mProgressDialog.dismiss();
+                }
+            }
+
+            return filePath;
+        }
+
+
+        @Override
+        protected void onPostExecute(String compressedFilePath) {
+            super.onPostExecute(compressedFilePath);
+            mPath = compressedFilePath;
+
+            File file = new File(compressedFilePath);
+            String fileName = file.getName();
+            String userId = Database.getUserId();
+            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+
+            mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
+            mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+        }
+    }
+}

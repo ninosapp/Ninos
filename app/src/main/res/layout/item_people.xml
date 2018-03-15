@@ -17,7 +17,7 @@
         android:background="@android:color/white"
         android:padding="@dimen/margin8dp">
 
-        <com.ninos.views.CircleImageView
+        <in.ninos.views.CircleImageView
             android:id="@+id/iv_user"
             android:layout_width="64dp"
             android:layout_height="64dp"

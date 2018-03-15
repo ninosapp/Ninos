@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/margin16dp"
     android:paddingTop="@dimen/margin8dp">
 
-    <com.ninos.views.CircleImageView
+    <in.ninos.views.CircleImageView
         android:id="@+id/iv_profile"
         android:layout_width="48dp"
         android:layout_height="48dp"

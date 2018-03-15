@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ninos">
+    package="in.ninos">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".NinosApp"
+        android:name="in.ninos.NinosApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,16 +24,16 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="in.ninos.activities.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DarkActionBar" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="in.ninos.activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.LaunchActivity"
+            android:name="in.ninos.activities.LaunchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme">
             <intent-filter>
@@ -43,56 +43,56 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ProfileActivity"
+            android:name="in.ninos.activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name="in.ninos.activities.EditProfileActivity"
             android:theme="@style/AppTheme.EditProfile" />
         <activity
-            android:name=".activities.FilePickerActivity"
+            android:name="in.ninos.activities.FilePickerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.QuizViewActivity"
+            android:name="in.ninos.activities.QuizViewActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
         <activity
-            android:name=".activities.ProfileSelectActivity"
+            android:name="in.ninos.activities.ProfileSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.CommentActivity"
+            android:name="in.ninos.activities.CommentActivity"
             android:theme="@style/CommentsTheme"
             android:windowSoftInputMode="adjustUnspecified" />
         <activity
-            android:name=".activities.QuizActivity"
+            android:name="in.ninos.activities.QuizActivity"
             android:theme="@style/AppTheme.Quiz" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".activities.SearchActivity"
+            android:name="in.ninos.activities.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.EditPostActivity"
+            android:name="in.ninos.activities.EditPostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="in.ninos.activities.SettingsActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
         <activity
-            android:name=".activities.ChallengeActivity"
+            android:name="in.ninos.activities.ChallengeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.AboutActivity"
+            android:name="in.ninos.activities.AboutActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
         <activity
-            android:name=".activities.FollowActivity"
+            android:name="in.ninos.activities.FollowActivity"
             android:theme="@style/AppTheme.DarkActionBar" />
         <activity
-            android:name=".activities.ShowPostActivity"
+            android:name="in.ninos.activities.ShowPostActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value="in.ninos.activities.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -112,14 +112,14 @@
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
 
-        <service android:name=".notification.NinosMessagingService">
+        <service android:name="in.ninos.notification.NinosMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".activities.ScoreActivity"
+            android:name="in.ninos.activities.ScoreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        tools:context="com.ninos.activities.EditProfileActivity">
+        tools:context="com.ninos.in.ninos.activities.EditProfileActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_edit_profile"
