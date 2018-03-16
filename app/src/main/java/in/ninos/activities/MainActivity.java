@@ -627,6 +627,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                 closeDrawer();
                 return true;
+
+            case R.id.nav_faq:
+                Intent faqIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://ninosapp.in/faq"));
+                startActivity(faqIntent);
+
+                closeDrawer();
+
+                return true;
         }
 
         return false;

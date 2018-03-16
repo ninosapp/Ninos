@@ -62,7 +62,7 @@ class TrimVideoUtils {
             final String destination = outputFile + "/" + fileName;
 
             String start = convertSecondsToTime(0);
-            String duration = convertSecondsToTime(60000 / 1000);
+            String duration = convertSecondsToTime(600000 / 1000);
 
             final VideoKit videoKit = new VideoKit();
             final Command command = videoKit.createCommand()
