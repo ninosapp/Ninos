@@ -58,11 +58,14 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
 
             for (int i = 0; i < questionFragments.size(); i++) {
                 QuestionFragment questionFragment = questionFragments.get(i);
-                String questionValue = questionFragment.getQuestion();
-                MCQSolution mcq = questionFragment.getMCQSolution();
 
-                if (questionValue.equals(question.getQuestion())) {
-                    mcqSolution = mcq;
+                if (questionFragment != null) {
+                    String questionValue = questionFragment.getQuestion();
+                    MCQSolution mcq = questionFragment.getMCQSolution();
+
+                    if (questionValue.equals(question.getQuestion())) {
+                        mcqSolution = mcq;
+                    }
                 }
             }
 
