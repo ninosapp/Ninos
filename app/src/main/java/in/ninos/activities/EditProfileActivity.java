@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,7 +30,6 @@ import in.ninos.listeners.RetrofitService;
 import in.ninos.models.Profile;
 import in.ninos.models.RegisterResponse;
 import in.ninos.reterofit.RetrofitInstance;
-import in.ninos.utils.CrashUtil;
 import in.ninos.utils.DateUtil;
 import in.ninos.utils.PreferenceUtil;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -54,6 +54,7 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
     private AppCompatCheckBox cb_agree;
     private boolean isProfilePicUpdated;
     private FloatingActionButton fab_update;
+    private ProgressBar progress_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,8 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
 //            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
         }
 
+        progress_bar = findViewById(R.id.progress_bar);
+        progress_bar.setVisibility(View.GONE);
         cb_agree = findViewById(R.id.cb_agree);
         et_child_name = findViewById(R.id.et_child_name);
         tv_dob = findViewById(R.id.tv_dob);
@@ -120,6 +123,8 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 dateUtil.datePicker(this, this, null);
                 break;
             case R.id.fab_update:
+                progress_bar.setVisibility(View.VISIBLE);
+                fab_update.setVisibility(View.GONE);
                 fab_update.setOnClickListener(null);
                 String childName = et_child_name.getText().toString().trim();
                 String dob = tv_dob.getText().toString().trim();
@@ -161,28 +166,37 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                                                 }
                                             } else {
                                                 showSnackBar(R.string.error_message, cl_edit_profile);
+                                                progress_bar.setVisibility(View.GONE);
+                                                fab_update.setVisibility(View.VISIBLE);
                                                 fab_update.setOnClickListener(EditProfileActivity.this);
                                             }
                                         }
 
                                         @Override
                                         public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                                            CrashUtil.report(t.getMessage());
+                                            progress_bar.setVisibility(View.GONE);
+                                            fab_update.setVisibility(View.VISIBLE);
                                             fab_update.setOnClickListener(EditProfileActivity.this);
                                         }
                                     });
                                 } else {
                                     showToast(R.string.valid_age);
+                                    progress_bar.setVisibility(View.GONE);
+                                    fab_update.setVisibility(View.VISIBLE);
                                     fab_update.setOnClickListener(this);
                                 }
                             }
                         }
                     } else {
                         showToast(R.string.accept_terms_conditons);
+                        progress_bar.setVisibility(View.GONE);
+                        fab_update.setVisibility(View.VISIBLE);
                         fab_update.setOnClickListener(this);
                     }
                 } else {
                     showToast(R.string.add_profile_pic);
+                    progress_bar.setVisibility(View.GONE);
+                    fab_update.setVisibility(View.VISIBLE);
                     fab_update.setOnClickListener(this);
                 }
                 break;
