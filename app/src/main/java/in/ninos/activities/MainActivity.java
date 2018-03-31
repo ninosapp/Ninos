@@ -307,10 +307,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     if (allChallengeFragment.isAdded()) {
                         allChallengeFragment.refresh();
                     }
-
-                    if (challengeFragment.isAdded()) {
-
-                    }
                 }
                 break;
         }

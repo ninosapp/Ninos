@@ -66,11 +66,6 @@ public class PostInfo {
     }
 
     public List<String> getLinks() {
-
-        if (links == null) {
-            links = new ArrayList<>();
-        }
-
         return links;
     }
 
