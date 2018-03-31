@@ -1,5 +1,6 @@
 package in.ninos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,11 @@ public class NotificationResponse {
     }
 
     public List<Notification> getNotifications() {
+
+        if (notifications == null) {
+            notifications = new ArrayList<>();
+        }
+
         return notifications;
     }
 

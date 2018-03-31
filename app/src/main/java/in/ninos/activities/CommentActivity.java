@@ -2,6 +2,7 @@ package in.ninos.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
 import in.ninos.R;
 import in.ninos.adapters.CommentAdapter;
 import in.ninos.firebase.Database;
+import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.listeners.RetrofitService;
 import in.ninos.models.Comment;
 import in.ninos.models.CommentResponse;
@@ -29,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommentActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class CommentActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener, OnLoadMoreListener {
 
     public static final String POST_ID = "POST_ID";
     private EditText et_leave_comment;
@@ -38,6 +40,7 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     private CommentAdapter commentAdapter;
     private boolean isCommentAdded;
     private RecyclerView list_comment;
+    private int from = 0, size = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,29 +60,38 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
         list_comment.setNestedScrollingEnabled(true);
         list_comment.setLayoutManager(layoutManager);
 
-        commentAdapter = new CommentAdapter(this, postId);
+        commentAdapter = new CommentAdapter(this, postId, list_comment, this);
         list_comment.setAdapter(commentAdapter);
 
         service = RetrofitInstance.createService(RetrofitService.class);
-        service.getPostComments(postId, accessToken).enqueue(new Callback<CommentsResponse>() {
+
+        getComments();
+
+        findViewById(R.id.iv_back).setOnClickListener(this);
+    }
+
+    private void getComments() {
+        service.getPostComments(postId, from, size, accessToken).enqueue(new Callback<CommentsResponse>() {
             @Override
             public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
+                commentAdapter.removeItem(null);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Comment> commentList = response.body().getPostComments();
 
                     if (commentList != null) {
                         commentAdapter.addItems(commentList);
                     }
+
+                    from = from + size;
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CommentsResponse> call, @NonNull Throwable t) {
-
+                commentAdapter.removeItem(null);
             }
         });
-
-        findViewById(R.id.iv_back).setOnClickListener(this);
     }
 
     @Override
@@ -171,5 +183,16 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
             setResult(MainActivity.COMMENT_ADDED, intent);
         }
         finish();
+    }
+
+    @Override
+    public void onLoadMore() {
+        commentAdapter.addItem(null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getComments();
+            }
+        }, 3000);
     }
 }

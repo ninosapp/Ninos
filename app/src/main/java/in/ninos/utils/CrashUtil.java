@@ -1,9 +1,11 @@
 package in.ninos.utils;
 
-import android.support.v4.BuildConfig;
+
 import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
+
+import in.ninos.BuildConfig;
 
 /**
  * Created by smeesala on 6/30/2017.

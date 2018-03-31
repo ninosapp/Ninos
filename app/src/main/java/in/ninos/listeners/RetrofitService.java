@@ -80,7 +80,7 @@ public interface RetrofitService {
     Call<RegisterResponse> refreshToken(@Query("token") String token);
 
     @GET("/posts/{postId}/comments")
-    Call<CommentsResponse> getPostComments(@Path("postId") String postId, @Query("token") String token);
+    Call<CommentsResponse> getPostComments(@Path("postId") String postId, @Query("from") int from, @Query("size") int size, @Query("token") String token);
 
     @POST("/posts/{postId}/comments")
     Call<CommentResponse> addPostComments(@Path("postId") String postId, @Query("token") String token, @Body Comment comment);

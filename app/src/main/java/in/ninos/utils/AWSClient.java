@@ -252,13 +252,17 @@ public class AWSClient {
 
                 @Override
                 public void onError(int message) {
-                    if (mProgressDialog != null) {
+                    Activity activity = ((Activity) mContext);
+
+                    if (mProgressDialog != null && !activity.isFinishing()) {
                         mProgressDialog.dismiss();
                     }
                 }
             });
         } catch (Exception e) {
-            if (mProgressDialog != null) {
+            Activity activity = ((Activity) mContext);
+
+            if (mProgressDialog != null && !activity.isFinishing()) {
                 mProgressDialog.dismiss();
             }
 
@@ -337,11 +341,12 @@ public class AWSClient {
                             upload64Image();
                             break;
                         case 2:
-                            if (mProgressDialog != null) {
+                            Activity activity = ((Activity) mContext);
+
+                            if (mProgressDialog != null && !activity.isFinishing()) {
                                 mProgressDialog.dismiss();
                             }
 
-                            Activity activity = ((Activity) mContext);
                             Intent intent = new Intent();
                             intent.putExtra(ProfileActivity.PROFILE_PATH, mPath);
                             activity.setResult(ProfileActivity.IMAGE_UPDATED, intent);
@@ -374,7 +379,9 @@ public class AWSClient {
 
             Toast.makeText(mContext, R.string.error_message, Toast.LENGTH_SHORT).show();
 
-            if (mProgressDialog != null) {
+            Activity activity = ((Activity) mContext);
+
+            if (mProgressDialog != null && !activity.isFinishing()) {
                 mProgressDialog.dismiss();
             }
         }
@@ -397,11 +404,12 @@ public class AWSClient {
                         @Override
                         public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                             if (response.body() != null && response.isSuccessful()) {
-                                if (mProgressDialog != null) {
+                                Activity activity = ((Activity) mContext);
+
+                                if (mProgressDialog != null && !activity.isFinishing()) {
                                     mProgressDialog.dismiss();
                                 }
 
-                                Activity activity = ((Activity) mContext);
                                 Intent intent = new Intent();
                                 intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
                                 activity.setResult(FilePickerActivity.TRIMMER_RESULT, intent);
@@ -420,11 +428,13 @@ public class AWSClient {
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
                             deletePost(postInfo);
 
-                            if (mProgressDialog != null) {
+                            Activity activity = ((Activity) mContext);
+
+                            if (mProgressDialog != null && !activity.isFinishing()) {
                                 mProgressDialog.dismiss();
                             }
 
-                            ((Activity) mContext).finish();
+                            activity.finish();
 
                             new Handler().postDelayed(new Runnable() {
                                 @Override
@@ -449,7 +459,9 @@ public class AWSClient {
         public void onError(int id, Exception ex) {
             deletePost(postInfo);
 
-            if (mProgressDialog != null) {
+            Activity activity = ((Activity) mContext);
+
+            if (mProgressDialog != null && !activity.isFinishing()) {
                 mProgressDialog.dismiss();
             }
 
@@ -475,11 +487,12 @@ public class AWSClient {
                         @Override
                         public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
                             if (response.body() != null && response.isSuccessful()) {
-                                if (mProgressDialog != null) {
+                                Activity activity = ((Activity) mContext);
+
+                                if (mProgressDialog != null && !activity.isFinishing()) {
                                     mProgressDialog.dismiss();
                                 }
 
-                                Activity activity = ((Activity) mContext);
                                 Intent intent = new Intent();
                                 intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
                                 activity.setResult(MainActivity.POST_ADDED, intent);
@@ -491,11 +504,13 @@ public class AWSClient {
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
                             deletePost(postInfo);
 
-                            if (mProgressDialog != null) {
+                            Activity activity = ((Activity) mContext);
+
+                            if (mProgressDialog != null && !activity.isFinishing()) {
                                 mProgressDialog.dismiss();
                             }
 
-                            ((Activity) mContext).finish();
+                            activity.finish();
                         }
                     });
                 }
@@ -513,9 +528,12 @@ public class AWSClient {
         public void onError(int id, Exception ex) {
             deletePost(postInfo);
 
-            if (mProgressDialog != null) {
+            Activity activity = ((Activity) mContext);
+
+            if (mProgressDialog != null && !activity.isFinishing()) {
                 mProgressDialog.dismiss();
             }
+
             Log.e(TAG, ex.toString(), ex);
             Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -594,7 +612,9 @@ public class AWSClient {
                 }
 
             } catch (URISyntaxException e) {
-                if (mProgressDialog != null) {
+                Activity activity = ((Activity) mContext);
+
+                if (mProgressDialog != null && !activity.isFinishing()) {
                     mProgressDialog.dismiss();
                 }
             }

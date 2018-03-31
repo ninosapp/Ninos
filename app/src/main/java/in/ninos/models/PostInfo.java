@@ -1,5 +1,6 @@
 package in.ninos.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,11 @@ public class PostInfo {
     }
 
     public List<String> getLinks() {
+
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+
         return links;
     }
 

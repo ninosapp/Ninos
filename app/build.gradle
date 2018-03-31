@@ -93,18 +93,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:design:27.0.2'
-    implementation 'com.android.support:cardview-v7:27.0.2'
-    implementation 'com.android.support:support-vector-drawable:27.0.2'
-    implementation 'com.android.support:palette-v7:27.0.2'
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation 'com.android.support:support-vector-drawable:27.1.0'
+    implementation 'com.android.support:palette-v7:27.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.google.firebase:firebase-auth:11.8.0'
-    implementation 'com.google.android.gms:play-services-auth:11.8.0'
-    implementation 'com.google.firebase:firebase-database:11.8.0'
-    implementation "com.google.firebase:firebase-messaging:11.8.0"
-    implementation 'com.google.firebase:firebase-crash:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:12.0.0'
+    implementation 'com.google.android.gms:play-services-auth:12.0.0'
+    implementation 'com.google.firebase:firebase-database:12.0.0'
+    implementation "com.google.firebase:firebase-messaging:12.0.0"
+    implementation 'com.google.firebase:firebase-crash:12.0.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -115,8 +115,8 @@ dependencies {
 
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'pub.devrel:easypermissions:1.1.1'
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.github.yalantis:ucrop:2.2.1'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'

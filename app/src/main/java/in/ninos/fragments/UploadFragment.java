@@ -173,37 +173,44 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                                 String title = tv_description.getText().toString();
 
                                 PostInfo postInfo = response.body().getPostInfo();
-                                postInfo.setTitle(title);
-                                postInfo.setCreatedAt(new Date());
-                                postInfo.setUserId(Database.getUserId());
 
-                                if (challengeId == null) {
-                                    postInfo.setType("post");
-                                    postInfo.setIsChallenge(false);
-                                } else {
-                                    postInfo.setIsChallenge(true);
-                                    postInfo.setType("challenge");
-                                    postInfo.setChallengeTitle(challengeName);
-                                    postInfo.setChallengeId(challengeId);
-                                }
+                                if (postInfo != null) {
+                                    postInfo.setTitle(title);
+                                    postInfo.setCreatedAt(new Date());
+                                    postInfo.setUserId(Database.getUserId());
 
-                                if (type.equals(IMAGES)) {
-                                    for (String path : paths) {
+                                    if (challengeId == null) {
+                                        postInfo.setType("post");
+                                        postInfo.setIsChallenge(false);
+                                    } else {
+                                        postInfo.setIsChallenge(true);
+                                        postInfo.setType("challenge");
+                                        postInfo.setChallengeTitle(challengeName);
+                                        postInfo.setChallengeId(challengeId);
+                                    }
+
+                                    if (type.equals(IMAGES)) {
+                                        for (String path : paths) {
+                                            AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
+                                            awsClient.awsInit();
+                                            awsClient.uploadImage(postInfo);
+                                        }
+                                    } else {
+                                        postInfo.setVideo(true);
                                         AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
                                         awsClient.awsInit();
-                                        awsClient.uploadImage(postInfo);
+                                        awsClient.uploadVideo(postInfo);
                                     }
-                                } else {
-                                    postInfo.setVideo(true);
-                                    AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
-                                    awsClient.awsInit();
-                                    awsClient.uploadVideo(postInfo);
+                                }
+                                else{
+                                    showToast(R.string.error_message);
                                 }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                            showToast(R.string.error_message);
                         }
                     });
                 }

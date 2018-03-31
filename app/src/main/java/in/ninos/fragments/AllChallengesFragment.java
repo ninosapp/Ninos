@@ -105,8 +105,6 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     } else {
                         iv_move_up.setVisibility(View.GONE);
                     }
-
-                    JZVideoPlayer.releaseAllVideos();
                 }
             });
 
@@ -278,7 +276,7 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                     for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
                         PostInfo postInfo = allChallengeAdapter.getItem(i);
 
-                        if (postInfo.get_id().equals(postId)) {
+                        if (postInfo != null && postInfo.get_id().equals(postId)) {
                             postAdded = true;
                         }
                     }
@@ -396,13 +394,15 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                 if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
                     PostInfo postInfo = response.body().getPostInfo();
 
-                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-                        PostInfo pf = allChallengeAdapter.getItem(i);
+                    if (postInfo != null) {
+                        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                            PostInfo pf = allChallengeAdapter.getItem(i);
 
-                        if (pf.get_id().equals(postInfo.get_id())) {
-                            RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
-                            allChallengeAdapter.updateClap(viewHolder, postInfo);
-                            break;
+                            if (pf != null && pf.get_id().equals(postInfo.get_id())) {
+                                RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                                allChallengeAdapter.updateClap(viewHolder, postInfo);
+                                break;
+                            }
                         }
                     }
                 }

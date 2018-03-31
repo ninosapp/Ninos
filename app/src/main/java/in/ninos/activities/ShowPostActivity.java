@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -50,6 +51,7 @@ import in.ninos.R;
 import in.ninos.adapters.CommentAdapter;
 import in.ninos.adapters.ShowPostImageAdapter;
 import in.ninos.firebase.Database;
+import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.listeners.RetrofitService;
 import in.ninos.models.Comment;
 import in.ninos.models.CommentResponse;
@@ -69,7 +71,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowPostActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class ShowPostActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener, OnLoadMoreListener {
 
     public static final String POST_PROFILE_ID = "POST_PROFILE_ID";
     private static final String POST_ID = "postId";
@@ -86,6 +88,8 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private boolean isUpdated;
     private EditText et_comment;
     private RelativeLayout rl_comment, rl_loading;
+    private String postId;
+    private int from = 0, size = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +115,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         color_accent = ContextCompat.getColor(this, R.color.colorAccent);
         color_dark_grey = ContextCompat.getColor(this, R.color.dark_grey);
 
-        final String postId = id;
+        postId = id;
         accessToken = PreferenceUtil.getAccessToken(this);
 
         if (isNetworkAvailable()) {
@@ -187,7 +191,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             list_comment.setNestedScrollingEnabled(true);
             list_comment.setLayoutManager(commentLayoutManager);
 
-            commentAdapter = new CommentAdapter(this, postId);
+            commentAdapter = new CommentAdapter(this, postId, list_comment, this);
             list_comment.setAdapter(commentAdapter);
 
             service = RetrofitInstance.createService(RetrofitService.class);
@@ -229,7 +233,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 });
             }
 
-            getComments(postId);
+            getComments();
 
         } else {
             showToast(R.string.no_network);
@@ -275,10 +279,12 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true);
 
-            Glide.with(ShowPostActivity.this)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI64(ShowPostActivity.this, postInfo.getUserId()))
-                    .into(iv_profile);
+            if (!this.isFinishing()) {
+                Glide.with(ShowPostActivity.this)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(AWSUrls.GetPI64(ShowPostActivity.this, postInfo.getUserId()))
+                        .into(iv_profile);
+            }
 
             String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
 
@@ -293,7 +299,10 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     if (links.size() > 0) {
                         String link = links.get(0);
                         RequestOptions rO = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-                        Glide.with(ShowPostActivity.this).setDefaultRequestOptions(rO).load(link).into(video_view.thumbImageView);
+
+                        if (!this.isFinishing()) {
+                            Glide.with(ShowPostActivity.this).setDefaultRequestOptions(rO).load(link).into(video_view.thumbImageView);
+                        }
 
                         video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                     }
@@ -323,10 +332,12 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void getComments(String postId) {
-        service.getPostComments(postId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<CommentsResponse>() {
+    private void getComments() {
+        service.getPostComments(postId, from, size, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<CommentsResponse>() {
             @Override
             public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
+                commentAdapter.removeItem(null);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Comment> commentList = response.body().getPostComments();
 
@@ -338,13 +349,13 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                         }
                     }
 
-                    tv_comment.setText(String.format(getString(R.string.s_comments), commentList.size()));
+                    from = from + size;
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CommentsResponse> call, @NonNull Throwable t) {
-
+                commentAdapter.removeItem(null);
             }
         });
     }
@@ -451,7 +462,7 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     String postId = data.getStringExtra(FilePickerActivity.POST_ID);
 
                     commentAdapter.resetItems();
-                    getComments(postId);
+                    getComments();
                     isUpdated = true;
                 }
 
@@ -741,6 +752,17 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
         return urlMatcher.find();
     }
 
+    @Override
+    public void onLoadMore() {
+        commentAdapter.addItem(null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getComments();
+            }
+        }, 3000);
+    }
+
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
 
         ShowPostImageAdapter imageAdapter;
@@ -804,7 +826,9 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
                 RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
 
-                Glide.with(ShowPostActivity.this).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
+                if (!ShowPostActivity.this.isFinishing()) {
+                    Glide.with(ShowPostActivity.this).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
+                }
             }
 
             postInfo.setLinks(links);

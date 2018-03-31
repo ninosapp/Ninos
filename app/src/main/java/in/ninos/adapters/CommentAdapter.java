@@ -24,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import in.ninos.R;
 import in.ninos.activities.ProfileActivity;
 import in.ninos.firebase.Database;
+import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.listeners.RetrofitService;
 import in.ninos.models.Comment;
 import in.ninos.models.CommentResponse;
@@ -47,7 +48,9 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
     private String userId;
     private String postId;
 
-    public CommentAdapter(Context context, String postId) {
+    public CommentAdapter(Context context, String postId, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+        super(recyclerView, onLoadMoreListener);
+
         this.context = context;
         userId = Database.getUserId();
 
