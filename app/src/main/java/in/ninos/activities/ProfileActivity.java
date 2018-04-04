@@ -92,6 +92,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
         userId = getIntent().getStringExtra(PROFILE_ID);
 
+        if (placeHolderId == 0) {
+            placeHolderId = R.drawable.pattern_13;
+        }
+
         iv_profile_bg = findViewById(R.id.iv_profile_bg);
         tv_name = findViewById(R.id.tv_name);
         final TextView tv_post_count = findViewById(R.id.tv_post_count);
