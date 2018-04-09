@@ -116,80 +116,92 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        try {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                Log.w(TAG, "Google sign in failed", e);
-                showSnackBar(R.string.error_message, cl_login);
+            if (requestCode == RC_SIGN_IN) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    Log.w(TAG, "Google sign in failed", e);
+                    showSnackBar(R.string.error_message, cl_login);
+                }
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        disableButton();
+        try {
+            disableButton();
 
-        Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+            Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
-                            signInUser();
-                        } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            showSnackBar(R.string.error_message, cl_login);
-                            enableButton();
+            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "signInWithCredential:success");
+                                signInUser();
+                            } else {
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                showSnackBar(R.string.error_message, cl_login);
+                                enableButton();
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void signInUser() {
-        final FirebaseUser user = mAuth.getCurrentUser();
+        try {
+            final FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null) {
+            if (user != null) {
 
-            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-            service.userCheck(user.getUid()).enqueue(new Callback<UserCheckResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
-                    if (response.body() != null) {
+                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                service.userCheck(user.getUid()).enqueue(new Callback<UserCheckResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<UserCheckResponse> call, @NonNull Response<UserCheckResponse> response) {
+                        if (response.body() != null) {
 
-                        UserCheckResponse uCR = response.body();
+                            UserCheckResponse uCR = response.body();
 
-                        if (uCR != null && uCR.getSuccess()) {
-                            PreferenceUtil.setUserName(LoginActivity.this, uCR.getUserInfo().getChildName());
-                            PreferenceUtil.setUserEmail(LoginActivity.this, uCR.getUserInfo().getEmail());
-                            PreferenceUtil.setAccessToken(LoginActivity.this, uCR.getToken());
-                            PreferenceUtil.setUserInfo(LoginActivity.this, uCR.getUserInfo());
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        } else {
-                            Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
-                            intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
-                            intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
-                            intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
-                            startActivity(intent);
-                            finish();
+                            if (uCR != null && uCR.getSuccess()) {
+                                PreferenceUtil.setUserName(LoginActivity.this, uCR.getUserInfo().getChildName());
+                                PreferenceUtil.setUserEmail(LoginActivity.this, uCR.getUserInfo().getEmail());
+                                PreferenceUtil.setAccessToken(LoginActivity.this, uCR.getToken());
+                                PreferenceUtil.setUserInfo(LoginActivity.this, uCR.getUserInfo());
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
+                                intent.putExtra(EditProfileActivity.EMAIL, user.getEmail());
+                                intent.putExtra(EditProfileActivity.P_NAME, user.getDisplayName());
+                                intent.putExtra(EditProfileActivity.USER_ID, user.getUid());
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<UserCheckResponse> call, Throwable t) {
-                    showSnackBar(R.string.error_message, cl_login);
-                    enableButton();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<UserCheckResponse> call, Throwable t) {
+                        showSnackBar(R.string.error_message, cl_login);
+                        enableButton();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -255,7 +267,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 }
             });
         } catch (Exception e) {
-            CrashUtil.report(e);
+            logError(e);
         }
     }
 
@@ -290,7 +302,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     });
         } catch (Exception e) {
             enableButton();
-            CrashUtil.report(e);
+            logError(e);
             showToast(R.string.error_message);
         }
     }
@@ -311,14 +323,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private void setStatusColor(int color) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            window.setStatusBarColor(color);
+                window.setStatusBarColor(color);
+            }
+
+            view_pager.setBackgroundColor(color);
+        } catch (Exception e) {
+            logError(e);
         }
-
-        view_pager.setBackgroundColor(color);
     }
 
     @Override

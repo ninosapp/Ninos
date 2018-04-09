@@ -30,75 +30,91 @@ public class QuizActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_quiz);
 
-        quizId = getIntent().getStringExtra(QUIZ_ID);
-        duration = getIntent().getIntExtra(QUIZ_DURATION, 6000);
-        title = getIntent().getStringExtra(QUIZ_TITLE);
+            quizId = getIntent().getStringExtra(QUIZ_ID);
+            duration = getIntent().getIntExtra(QUIZ_DURATION, 6000);
+            title = getIntent().getStringExtra(QUIZ_TITLE);
 
-        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-        fts.replace(R.id.frame_layout, new InstructionFragment());
-        fts.commit();
+            FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+            fts.replace(R.id.frame_layout, new InstructionFragment());
+            fts.commit();
+        }  catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.frame_layout);
+        try {
+            FragmentManager manager = getSupportFragmentManager();
+            Fragment fragment = manager.findFragmentById(R.id.frame_layout);
 
-        if (fragment instanceof QuizFragment) {
-            QuizFragment quizFragment = (QuizFragment) fragment;
-            quizFragment.onBackPressed();
-        } else {
-            super.onBackPressed();
-            finish();
+            if (fragment instanceof QuizFragment) {
+                QuizFragment quizFragment = (QuizFragment) fragment;
+                quizFragment.onBackPressed();
+            } else {
+                super.onBackPressed();
+                finish();
+            }
+        }  catch (Exception e) {
+            logError(e);
         }
     }
 
     public void startQuiz() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.starting_quiz));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        try {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.starting_quiz));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
 
-        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-        service.startQuiz(quizId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<QuizStartResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<QuizStartResponse> call, @NonNull Response<QuizStartResponse> response) {
-                progressDialog.dismiss();
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.startQuiz(quizId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<QuizStartResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<QuizStartResponse> call, @NonNull Response<QuizStartResponse> response) {
+                    progressDialog.dismiss();
 
-                if (response.body() != null) {
-                    FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-                    fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, response.body().getQuizStarted().get_id()));
-                    fts.commit();
-                } else {
+                    if (response.body() != null) {
+                        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
+                        fts.replace(R.id.frame_layout, QuizFragment.newInstance(quizId, duration, title, response.body().getQuizStarted().get_id()));
+                        fts.commit();
+                    } else {
+                        showToast(R.string.error_message);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<QuizStartResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismiss();
                     showToast(R.string.error_message);
                 }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<QuizStartResponse> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-                showToast(R.string.error_message);
-            }
-        });
+            });
+        }  catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case QUIZ_CLOSE:
-                FragmentManager manager = getSupportFragmentManager();
-                Fragment fragment = manager.findFragmentById(R.id.frame_layout);
+        try {
+            switch (requestCode) {
+                case QUIZ_CLOSE:
+                    FragmentManager manager = getSupportFragmentManager();
+                    Fragment fragment = manager.findFragmentById(R.id.frame_layout);
 
-                if (fragment instanceof QuizFragment) {
-                    QuizFragment quizFragment = (QuizFragment) fragment;
-                    quizFragment.finishActivity();
-                }
-                break;
+                    if (fragment instanceof QuizFragment) {
+                        QuizFragment quizFragment = (QuizFragment) fragment;
+                        quizFragment.finishActivity();
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 }

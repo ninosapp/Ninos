@@ -66,125 +66,137 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_challenge);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_challenge);
 
-        accessToken = PreferenceUtil.getAccessToken(this);
-        placeHolderId = R.drawable.pattern_5;
-        challengeId = getIntent().getStringExtra(CHALLENGE_ID);
-        challengeName = getIntent().getStringExtra(CHALLENGE_TITLE);
+            accessToken = PreferenceUtil.getAccessToken(this);
+            placeHolderId = R.drawable.pattern_5;
+            challengeId = getIntent().getStringExtra(CHALLENGE_ID);
+            challengeName = getIntent().getStringExtra(CHALLENGE_TITLE);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), placeHolderId);
-        setBitmapPalette(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), placeHolderId);
+            setBitmapPalette(bitmap);
 
-        final TextView tv_challenge = findViewById(R.id.tv_challenge);
-        final TextView tv_description = findViewById(R.id.tv_description);
-        iv_challenge = findViewById(R.id.iv_challenge);
-        iv_challenge.setImageBitmap(bitmap);
+            final TextView tv_challenge = findViewById(R.id.tv_challenge);
+            final TextView tv_description = findViewById(R.id.tv_description);
+            iv_challenge = findViewById(R.id.iv_challenge);
+            iv_challenge.setImageBitmap(bitmap);
 
-        findViewById(R.id.fab_back).setOnClickListener(this);
-        findViewById(R.id.fab_challenge).setOnClickListener(this);
+            findViewById(R.id.fab_back).setOnClickListener(this);
+            findViewById(R.id.fab_challenge).setOnClickListener(this);
 
-        LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
+            LinearLayoutManager challengeLayoutManager = new LinearLayoutManager(this);
 
-        RecyclerView challenge_list = findViewById(R.id.challenge_list);
-        challenge_list.setNestedScrollingEnabled(false);
-        challenge_list.setLayoutManager(challengeLayoutManager);
+            RecyclerView challenge_list = findViewById(R.id.challenge_list);
+            challenge_list.setNestedScrollingEnabled(false);
+            challenge_list.setLayoutManager(challengeLayoutManager);
 
-        allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this, AllChallengeAdapter.Type.CHALLENGE);
+            allChallengeAdapter = new AllChallengeAdapter(this, this, challenge_list, this, AllChallengeAdapter.Type.CHALLENGE);
 
-        challenge_list.setAdapter(allChallengeAdapter);
+            challenge_list.setAdapter(allChallengeAdapter);
 
-        service = RetrofitInstance.createService(RetrofitService.class);
-        service.getChallenge(challengeId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<ChallengeResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<ChallengeResponse> call, @NonNull Response<ChallengeResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ChallengeInfo challengeInfo = response.body().getChallengeInfo();
-
-                    tv_challenge.setText(challengeInfo.getTitle());
-                    tv_description.setText(challengeInfo.getDescription());
-
-                    updateImage(challengeInfo.getImageUrl());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ChallengeResponse> call, @NonNull Throwable t) {
-
-            }
-        });
-
-        sr_layout = findViewById(R.id.sr_layout);
-        sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (isNetworkAvailable()) {
-                    from = 0;
-                    allChallengeAdapter.resetItems();
-
-                    getPosts();
-
-                    sr_layout.setRefreshing(false);
-                } else {
-                    showNetworkDown();
-                }
-            }
-        });
-
-        iv_move_up = findViewById(R.id.iv_move_up);
-        iv_move_up.setOnClickListener(this);
-        iv_move_up.setVisibility(View.GONE);
-
-        ns_view = findViewById(R.id.ns_view);
-        ns_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    iv_move_up.setVisibility(View.VISIBLE);
-                } else {
-                    iv_move_up.setVisibility(View.GONE);
-                }
-
-                JZVideoPlayer.releaseAllVideos();
-            }
-        });
-
-        getPosts();
-    }
-
-    private void updateImage(String url) {
-        RequestOptions requestOptions = new RequestOptions()
-                .placeholder(placeHolderId)
-                .error(placeHolderId)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-
-        Glide.with(getApplicationContext())
-                .setDefaultRequestOptions(requestOptions)
-                .asBitmap()
-                .load(url)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        iv_challenge.setImageBitmap(resource);
-                        setBitmapPalette(resource);
-                    }
-                });
-    }
-
-    private void setBitmapPalette(Bitmap resource) {
-        if (resource != null) {
-            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+            service = RetrofitInstance.createService(RetrofitService.class);
+            service.getChallenge(challengeId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<ChallengeResponse>() {
                 @Override
-                public void onGenerated(Palette palette) {
+                public void onResponse(@NonNull Call<ChallengeResponse> call, @NonNull Response<ChallengeResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        ChallengeInfo challengeInfo = response.body().getChallengeInfo();
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Window window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                        tv_challenge.setText(challengeInfo.getTitle());
+                        tv_description.setText(challengeInfo.getDescription());
+
+                        updateImage(challengeInfo.getImageUrl());
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ChallengeResponse> call, @NonNull Throwable t) {
+
+                }
+            });
+
+            sr_layout = findViewById(R.id.sr_layout);
+            sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetworkAvailable()) {
+                        from = 0;
+                        allChallengeAdapter.resetItems();
+
+                        getPosts();
+
+                        sr_layout.setRefreshing(false);
+                    } else {
+                        showNetworkDown();
                     }
                 }
             });
+
+            iv_move_up = findViewById(R.id.iv_move_up);
+            iv_move_up.setOnClickListener(this);
+            iv_move_up.setVisibility(View.GONE);
+
+            ns_view = findViewById(R.id.ns_view);
+            ns_view.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > oldScrollY) {
+                        iv_move_up.setVisibility(View.VISIBLE);
+                    } else {
+                        iv_move_up.setVisibility(View.GONE);
+                    }
+
+                    JZVideoPlayer.releaseAllVideos();
+                }
+            });
+
+            getPosts();
+        }  catch (Exception e) {
+            logError(e);
+        }
+    }
+
+    private void updateImage(String url) {
+        try {
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(placeHolderId)
+                    .error(placeHolderId)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+
+            Glide.with(getApplicationContext())
+                    .setDefaultRequestOptions(requestOptions)
+                    .asBitmap()
+                    .load(url)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            iv_challenge.setImageBitmap(resource);
+                            setBitmapPalette(resource);
+                        }
+                    });
+        }  catch (Exception e) {
+            logError(e);
+        }
+    }
+
+    private void setBitmapPalette(Bitmap resource) {
+        try {
+            if (resource != null) {
+                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Window window = getWindow();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -273,40 +285,48 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
 
     @AfterPermissionGranted(RC_STORAGE_PERM)
     private void addFile() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Intent intent = new Intent(this, FilePickerActivity.class);
-            intent.putExtra(CHALLENGE_ID, challengeId);
-            intent.putExtra(CHALLENGE_TITLE, challengeName);
-            startActivityForResult(intent, MainActivity.POST_ADDED);
-        } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        try {
+            if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Intent intent = new Intent(this, FilePickerActivity.class);
+                intent.putExtra(CHALLENGE_ID, challengeId);
+                intent.putExtra(CHALLENGE_TITLE, challengeName);
+                startActivityForResult(intent, MainActivity.POST_ADDED);
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), RC_STORAGE_PERM, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+        }  catch (Exception e) {
+            logError(e);
         }
     }
 
     private void getPosts() {
-        service.getChallenges(from, size, "challenge", challengeId, accessToken).enqueue(new Callback<PostsResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.getChallenges(from, size, "challenge", challengeId, accessToken).enqueue(new Callback<PostsResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    for (final PostInfo postInfo : response.body().getPostInfo()) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                allChallengeAdapter.addItem(postInfo);
-                            }
-                        });
+                        for (final PostInfo postInfo : response.body().getPostInfo()) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    allChallengeAdapter.addItem(postInfo);
+                                }
+                            });
+                        }
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostsResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PostsResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        }  catch (Exception e) {
+            logError(e);
+        }
     }
 }

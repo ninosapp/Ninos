@@ -30,6 +30,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import in.ninos.R;
@@ -83,137 +84,149 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_profile);
 
-        awsClient = new AWSClient(this);
-        awsClient.awsInit();
+            awsClient = new AWSClient(this);
+            awsClient.awsInit();
 
-        placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
-        userId = getIntent().getStringExtra(PROFILE_ID);
+            placeHolderId = getIntent().getIntExtra(PROFILE_PLACE_HOLDER, R.drawable.pattern_2);
+            userId = getIntent().getStringExtra(PROFILE_ID);
 
-        if (placeHolderId == 0) {
-            placeHolderId = R.drawable.pattern_13;
-        }
+            if (placeHolderId == 0) {
+                placeHolderId = R.drawable.pattern_13;
+            }
 
-        iv_profile_bg = findViewById(R.id.iv_profile_bg);
-        tv_name = findViewById(R.id.tv_name);
-        final TextView tv_post_count = findViewById(R.id.tv_post_count);
-        tv_post_count.setOnClickListener(this);
-        tv_follower_count = findViewById(R.id.tv_follower_count);
-        tv_following_count = findViewById(R.id.tv_following_count);
-        final TextView tv_points = findViewById(R.id.tv_points);
-        btn_follow = findViewById(R.id.btn_follow);
-        btn_follow.setOnClickListener(this);
-        fab_update_Image = findViewById(R.id.fab_update_Image);
-        iv_profile = findViewById(R.id.iv_profile);
-        rl_progress = findViewById(R.id.rl_progress);
-        rl_progress.setVisibility(View.VISIBLE);
-        findViewById(R.id.fab_back).setOnClickListener(this);
-        findViewById(R.id.ll_followers).setOnClickListener(this);
-        findViewById(R.id.ll_following).setOnClickListener(this);
+            iv_profile_bg = findViewById(R.id.iv_profile_bg);
+            tv_name = findViewById(R.id.tv_name);
+            final TextView tv_post_count = findViewById(R.id.tv_post_count);
+            tv_post_count.setOnClickListener(this);
+            tv_follower_count = findViewById(R.id.tv_follower_count);
+            tv_following_count = findViewById(R.id.tv_following_count);
+            final TextView tv_points = findViewById(R.id.tv_points);
+            btn_follow = findViewById(R.id.btn_follow);
+            btn_follow.setOnClickListener(this);
+            fab_update_Image = findViewById(R.id.fab_update_Image);
+            iv_profile = findViewById(R.id.iv_profile);
+            rl_progress = findViewById(R.id.rl_progress);
+            rl_progress.setVisibility(View.VISIBLE);
+            findViewById(R.id.fab_back).setOnClickListener(this);
+            findViewById(R.id.ll_followers).setOnClickListener(this);
+            findViewById(R.id.ll_following).setOnClickListener(this);
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
-        iv_profile.setImageBitmap(bm);
-        iv_profile_bg.setImageBitmap(bm);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), placeHolderId);
+            iv_profile.setImageBitmap(bm);
+            iv_profile_bg.setImageBitmap(bm);
 
-        iv_profile.setImageDrawable(ContextCompat.getDrawable(this, placeHolderId));
+            iv_profile.setImageDrawable(ContextCompat.getDrawable(this, placeHolderId));
 
-        if (Database.getUserId().equals(userId)) {
-            fab_update_Image.setOnClickListener(this);
-            fab_update_Image.setVisibility(View.VISIBLE);
-            btn_follow.setVisibility(View.GONE);
-        } else {
-            fab_update_Image.setVisibility(View.GONE);
-            fab_update_Image.setOnClickListener(null);
-            btn_follow.setVisibility(View.VISIBLE);
-        }
+            if (Database.getUserId().equals(userId)) {
+                fab_update_Image.setOnClickListener(this);
+                fab_update_Image.setVisibility(View.VISIBLE);
+                btn_follow.setVisibility(View.GONE);
+            } else {
+                fab_update_Image.setVisibility(View.GONE);
+                fab_update_Image.setOnClickListener(null);
+                btn_follow.setVisibility(View.VISIBLE);
+            }
 
-        GridLayoutManager challengeLayoutManager = new GridLayoutManager(this, 3);
+            GridLayoutManager challengeLayoutManager = new GridLayoutManager(this, 3);
 
-        RecyclerView challenge_list = findViewById(R.id.challenge_list);
-        challenge_list.setNestedScrollingEnabled(false);
-        challenge_list.setLayoutManager(challengeLayoutManager);
+            RecyclerView challenge_list = findViewById(R.id.challenge_list);
+            challenge_list.setNestedScrollingEnabled(false);
+            challenge_list.setLayoutManager(challengeLayoutManager);
 
-        allChallengeAdapter = new ChallengeImageAdapter(this, challenge_list, this);
+            allChallengeAdapter = new ChallengeImageAdapter(this, challenge_list, this);
 
-        challenge_list.setAdapter(allChallengeAdapter);
+            challenge_list.setAdapter(allChallengeAdapter);
 
-        setBitmapPalette(bm);
+            setBitmapPalette(bm);
 
-        accessToken = PreferenceUtil.getAccessToken(this);
+            accessToken = PreferenceUtil.getAccessToken(this);
 
-        service = RetrofitInstance.createService(RetrofitService.class);
-        service.getUserProfile(userId, accessToken).enqueue(new Callback<UserProfileResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<UserProfileResponse> call, @NonNull Response<UserProfileResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    userProfile = response.body().getUserProfile();
+            service = RetrofitInstance.createService(RetrofitService.class);
+            service.getUserProfile(userId, accessToken).enqueue(new Callback<UserProfileResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<UserProfileResponse> call, @NonNull Response<UserProfileResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        userProfile = response.body().getUserProfile();
 
-                    if (userProfile != null) {
-                        String userPoints = "0";
+                        if (userProfile != null) {
+                            String userPoints = "0";
 
-                        if (userProfile.getUserPoints() != null) {
-                            userPoints = userProfile.getUserPoints();
+                            if (userProfile.getUserPoints() != null) {
+                                userPoints = userProfile.getUserPoints();
+                            }
+
+                            tv_points.setText(userPoints);
+                            tv_post_count.setText(userProfile.getPostCount());
+                            tv_follower_count.setText(userProfile.getFollowersCount());
+                            tv_following_count.setText(userProfile.getFollowingCount());
+                            tv_name.setText(userProfile.getChildName());
+
+                            updateImage();
+
+                            setFollow(userProfile.isFollowing());
                         }
-
-                        tv_points.setText(userPoints);
-                        tv_post_count.setText(userProfile.getPostCount());
-                        tv_follower_count.setText(userProfile.getFollowersCount());
-                        tv_following_count.setText(userProfile.getFollowingCount());
-                        tv_name.setText(userProfile.getChildName());
-
-                        updateImage();
-
-                        setFollow(userProfile.isFollowing());
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<UserProfileResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
 
-        getPosts();
+            getPosts();
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void updateImage() {
-        RequestOptions requestOptions = new RequestOptions()
-                .placeholder(placeHolderId)
-                .error(placeHolderId)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true);
+        try {
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(placeHolderId)
+                    .error(placeHolderId)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true);
 
-        Glide.with(getApplicationContext())
-                .setDefaultRequestOptions(requestOptions)
-                .asBitmap()
-                .load(AWSUrls.GetPI192(ProfileActivity.this, userId))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        iv_profile.setImageBitmap(resource);
-                        rl_progress.setVisibility(View.GONE);
-                        iv_profile_bg.setImageBitmap(resource);
-                        setBitmapPalette(resource);
-                    }
-                });
+            Glide.with(getApplicationContext())
+                    .setDefaultRequestOptions(requestOptions)
+                    .asBitmap()
+                    .load(AWSUrls.GetPI192(ProfileActivity.this, userId))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            iv_profile.setImageBitmap(resource);
+                            rl_progress.setVisibility(View.GONE);
+                            iv_profile_bg.setImageBitmap(resource);
+                            setBitmapPalette(resource);
+                        }
+                    });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void setBitmapPalette(Bitmap resource) {
-        if (resource != null) {
-            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
+        try {
+            if (resource != null) {
+                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Window window = getWindow();
-                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Window window = getWindow();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.setStatusBarColor(palette.getDominantColor(Color.BLACK));
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -227,79 +240,87 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fab_back:
+        try {
+            switch (view.getId()) {
+                case R.id.fab_back:
 
-                onBackPressed();
-                break;
-            case R.id.btn_follow:
+                    onBackPressed();
+                    break;
+                case R.id.btn_follow:
 
-                if (userProfile.isFollowing()) {
-                    service.unFollow(userProfile.getUserId(), accessToken).enqueue(new Callback<in.ninos.models.Response>() {
-                        @Override
-                        public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
-                            if (response.body() != null && response.isSuccessful()) {
-                                setFollow(false);
-                                isProfileUpdated = true;
+                    if (userProfile.isFollowing()) {
+                        service.unFollow(userProfile.getUserId(), accessToken).enqueue(new Callback<in.ninos.models.Response>() {
+                            @Override
+                            public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
+                                if (response.body() != null && response.isSuccessful()) {
+                                    setFollow(false);
+                                    isProfileUpdated = true;
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
 
-                        }
-                    });
-                } else {
-                    service.follow(userProfile.getUserId(), accessToken).enqueue(new Callback<in.ninos.models.Response>() {
-                        @Override
-                        public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
-                            if (response.body() != null && response.isSuccessful()) {
-                                setFollow(true);
-                                isProfileUpdated = true;
                             }
-                        }
+                        });
+                    } else {
+                        service.follow(userProfile.getUserId(), accessToken).enqueue(new Callback<in.ninos.models.Response>() {
+                            @Override
+                            public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
+                                if (response.body() != null && response.isSuccessful()) {
+                                    setFollow(true);
+                                    isProfileUpdated = true;
+                                }
+                            }
 
-                        @Override
-                        public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
 
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
 
-                break;
-            case R.id.ll_following:
-                if (Database.getUserId().equals(userId)) {
+                    break;
+                case R.id.ll_following:
+                    if (Database.getUserId().equals(userId)) {
 
-                    Intent followingIntent = new Intent(this, FollowActivity.class);
-                    followingIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWING);
-                    startActivityForResult(followingIntent, IS_FOLLOW_UPDATED);
-                }
-                break;
-            case R.id.ll_followers:
-                if (Database.getUserId().equals(userId)) {
+                        Intent followingIntent = new Intent(this, FollowActivity.class);
+                        followingIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWING);
+                        startActivityForResult(followingIntent, IS_FOLLOW_UPDATED);
+                    }
+                    break;
+                case R.id.ll_followers:
+                    if (Database.getUserId().equals(userId)) {
 
-                    Intent followerIntent = new Intent(this, FollowActivity.class);
-                    followerIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWERS);
-                    startActivityForResult(followerIntent, IS_FOLLOW_UPDATED);
-                }
-                break;
-            default:
-                addFile();
-                break;
+                        Intent followerIntent = new Intent(this, FollowActivity.class);
+                        followerIntent.putExtra(FollowActivity.TYPE, FollowActivity.FOLLOWERS);
+                        startActivityForResult(followerIntent, IS_FOLLOW_UPDATED);
+                    }
+                    break;
+                default:
+                    addFile();
+                    break;
+            }
+        }  catch (Exception e) {
+            logError(e);
         }
     }
 
     public void setFollow(boolean isFollowing) {
 
-        if (isFollowing) {
-            btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove_user, 0, 0, 0);
-            btn_follow.setText(R.string.unfollow);
-        } else {
-            btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
-            btn_follow.setText(R.string.follow);
-        }
+        try {
+            if (isFollowing) {
+                btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove_user, 0, 0, 0);
+                btn_follow.setText(R.string.unfollow);
+            } else {
+                btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
+                btn_follow.setText(R.string.follow);
+            }
 
-        userProfile.setFollowing(isFollowing);
+            userProfile.setFollowing(isFollowing);
+        }  catch (Exception e) {
+            logError(e);
+        }
     }
 
     @AfterPermissionGranted(RC_STORAGE_PERM)
@@ -334,41 +355,45 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case RC_STORAGE_PERM:
-                addFile();
-                break;
-            case IMAGE_UPDATED:
-                if (data != null) {
-                    isProfileUpdated = true;
-                    rl_progress.setVisibility(View.GONE);
+        try {
+            switch (requestCode) {
+                case RC_STORAGE_PERM:
+                    addFile();
+                    break;
+                case IMAGE_UPDATED:
+                    if (data != null) {
+                        isProfileUpdated = true;
+                        rl_progress.setVisibility(View.GONE);
 
-                    String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
-                    Glide.with(this).load(path).into(iv_profile);
+                        String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
+                        Glide.with(this).load(path).into(iv_profile);
 
-                    File file = new File(path);
+                        File file = new File(path);
 
-                    if (file.exists()) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        iv_profile.setImageBitmap(bitmap);
+                        if (file.exists()) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            iv_profile.setImageBitmap(bitmap);
+                        }
                     }
-                }
-                break;
-            case IS_FOLLOW_UPDATED:
-                if (data != null) {
-                    boolean isFollowersUpdated = data.getBooleanExtra(IS_FOLLOWERS_UPDATED, false);
-                    boolean isFollowingUpdated = data.getBooleanExtra(IS_FOLLOWING_UPDATED, false);
-                    String count = data.getStringExtra(IS_FOLLOW_COUNT);
+                    break;
+                case IS_FOLLOW_UPDATED:
+                    if (data != null) {
+                        boolean isFollowersUpdated = data.getBooleanExtra(IS_FOLLOWERS_UPDATED, false);
+                        boolean isFollowingUpdated = data.getBooleanExtra(IS_FOLLOWING_UPDATED, false);
+                        String count = data.getStringExtra(IS_FOLLOW_COUNT);
 
-                    if (isFollowersUpdated) {
-                        tv_follower_count.setText(count);
-                    }
+                        if (isFollowersUpdated) {
+                            tv_follower_count.setText(count);
+                        }
 
-                    if (isFollowingUpdated) {
-                        tv_following_count.setText(count);
+                        if (isFollowingUpdated) {
+                            tv_following_count.setText(count);
+                        }
                     }
-                }
-                break;
+                    break;
+            }
+        }  catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -388,25 +413,29 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void getPosts() {
-        service.getUserPosts(from, size, userId, accessToken).enqueue(new Callback<PostsResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.getUserPosts(from, size, userId, accessToken).enqueue(new Callback<PostsResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    for (final PostInfo postInfo : response.body().getPostInfo()) {
-                        new LoadImage(postInfo).execute();
+                        for (final PostInfo postInfo : response.body().getPostInfo()) {
+                            new LoadImage(postInfo).execute();
+                        }
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostsResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PostsResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        }  catch (Exception e) {
+            logError(e);
+        }
     }
 
     public class LoadImage extends AsyncTask<String, Void, List<String>> {
@@ -419,10 +448,16 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         protected List<String> doInBackground(String... strings) {
-            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
+            List<String> links = new ArrayList<>();
+
+            try {
+                String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
 
 
-            List<String> links = awsClient.getBucket(path);
+                links = awsClient.getBucket(path);
+            }  catch (Exception e) {
+                logError(e);
+            }
 
             return links;
         }

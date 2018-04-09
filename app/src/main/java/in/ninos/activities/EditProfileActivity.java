@@ -58,45 +58,49 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_edit_profile);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_edit_profile);
-        setSupportActionBar(toolbar);
+            Toolbar toolbar = findViewById(R.id.toolbar_edit_profile);
+            setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+            ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                //            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
+            }
+
+            progress_bar = findViewById(R.id.progress_bar);
+            progress_bar.setVisibility(View.GONE);
+            cb_agree = findViewById(R.id.cb_agree);
+            et_child_name = findViewById(R.id.et_child_name);
+            tv_dob = findViewById(R.id.tv_dob);
+            cl_edit_profile = findViewById(R.id.cl_edit_profile);
+            iv_placeholder = findViewById(R.id.iv_placeholder);
+            iv_upload_image = findViewById(R.id.iv_upload_image);
+            iv_upload_image.setOnClickListener(this);
+
+            tv_dob.setOnClickListener(this);
+            fab_update = findViewById(R.id.fab_update);
+            fab_update.setOnClickListener(this);
+            findViewById(R.id.tv_terms).setOnClickListener(this);
+
+            Intent intent = getIntent();
+            String email = intent.getStringExtra(EMAIL);
+            String pName = intent.getStringExtra(P_NAME);
+            String userId = intent.getStringExtra(USER_ID);
+
+            profile = new Profile();
+            profile.setParentName(pName);
+            profile.setEmail(email);
+            profile.setUserId(userId);
+
+            dateUtil = new DateUtil();
+        } catch (Exception e) {
+            logError(e);
         }
-
-        progress_bar = findViewById(R.id.progress_bar);
-        progress_bar.setVisibility(View.GONE);
-        cb_agree = findViewById(R.id.cb_agree);
-        et_child_name = findViewById(R.id.et_child_name);
-        tv_dob = findViewById(R.id.tv_dob);
-        cl_edit_profile = findViewById(R.id.cl_edit_profile);
-        iv_placeholder = findViewById(R.id.iv_placeholder);
-        iv_upload_image = findViewById(R.id.iv_upload_image);
-        iv_upload_image.setOnClickListener(this);
-
-        tv_dob.setOnClickListener(this);
-        fab_update = findViewById(R.id.fab_update);
-        fab_update.setOnClickListener(this);
-        findViewById(R.id.tv_terms).setOnClickListener(this);
-
-        Intent intent = getIntent();
-        String email = intent.getStringExtra(EMAIL);
-        String pName = intent.getStringExtra(P_NAME);
-        String userId = intent.getStringExtra(USER_ID);
-
-        profile = new Profile();
-        profile.setParentName(pName);
-        profile.setEmail(email);
-        profile.setUserId(userId);
-
-        dateUtil = new DateUtil();
     }
 
     @Override
@@ -123,81 +127,85 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 dateUtil.datePicker(this, this, null);
                 break;
             case R.id.fab_update:
-                progress_bar.setVisibility(View.VISIBLE);
-                fab_update.setVisibility(View.GONE);
-                fab_update.setOnClickListener(null);
-                String childName = et_child_name.getText().toString().trim();
-                String dob = tv_dob.getText().toString().trim();
-                boolean isAgreed = cb_agree.isChecked();
+                try {
+                    progress_bar.setVisibility(View.VISIBLE);
+                    fab_update.setVisibility(View.GONE);
+                    fab_update.setOnClickListener(null);
+                    String childName = et_child_name.getText().toString().trim();
+                    String dob = tv_dob.getText().toString().trim();
+                    boolean isAgreed = cb_agree.isChecked();
 
-                if (isProfilePicUpdated) {
-                    if (isAgreed) {
-                        if (childName.isEmpty()) {
-                            showSnackBar(R.string.enter_child_name, cl_edit_profile);
-                        } else if (dob.isEmpty()) {
-                            showSnackBar(R.string.select_dob, cl_edit_profile);
-                        } else {
-                            if (!isNetworkAvailable()) {
-                                showSnackBar(R.string.network_down, cl_edit_profile);
+                    if (isProfilePicUpdated) {
+                        if (isAgreed) {
+                            if (childName.isEmpty()) {
+                                showSnackBar(R.string.enter_child_name, cl_edit_profile);
+                            } else if (dob.isEmpty()) {
+                                showSnackBar(R.string.select_dob, cl_edit_profile);
                             } else {
-                                Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
+                                if (!isNetworkAvailable()) {
+                                    showSnackBar(R.string.network_down, cl_edit_profile);
+                                } else {
+                                    Date date = dateUtil.formatStringToDate(dob, DateUtil.FULL_DATE);
 
-                                int age = dateUtil.getAge(date);
+                                    int age = dateUtil.getAge(date);
 
-                                if (age <= 18) {
-                                    profile.setDOB(date.getTime());
-                                    profile.setChildName(childName);
-                                    profile.setFirstLogin(true);
+                                    if (age <= 18) {
+                                        profile.setDOB(date.getTime());
+                                        profile.setChildName(childName);
+                                        profile.setFirstLogin(true);
 
-                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                    service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
-                                        @Override
-                                        public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
-                                            if (response.isSuccessful()) {
-                                                RegisterResponse rR = response.body();
+                                        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                        service.registerChild(profile).enqueue(new Callback<RegisterResponse>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                                                if (response.isSuccessful()) {
+                                                    RegisterResponse rR = response.body();
 
-                                                if (rR != null) {
-                                                    PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
-                                                    PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
-                                                    PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
-                                                    PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
-                                                    startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
-                                                    finish();
+                                                    if (rR != null) {
+                                                        PreferenceUtil.setUserInfo(EditProfileActivity.this, rR.getUserInfo());
+                                                        PreferenceUtil.setUserName(EditProfileActivity.this, rR.getUserInfo().getChildName());
+                                                        PreferenceUtil.setUserEmail(EditProfileActivity.this, rR.getUserInfo().getEmail());
+                                                        PreferenceUtil.setAccessToken(EditProfileActivity.this, rR.getToken());
+                                                        startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                                                        finish();
+                                                    }
+                                                } else {
+                                                    showSnackBar(R.string.error_message, cl_edit_profile);
+                                                    progress_bar.setVisibility(View.GONE);
+                                                    fab_update.setVisibility(View.VISIBLE);
+                                                    fab_update.setOnClickListener(EditProfileActivity.this);
                                                 }
-                                            } else {
-                                                showSnackBar(R.string.error_message, cl_edit_profile);
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
                                                 progress_bar.setVisibility(View.GONE);
                                                 fab_update.setVisibility(View.VISIBLE);
                                                 fab_update.setOnClickListener(EditProfileActivity.this);
                                             }
-                                        }
-
-                                        @Override
-                                        public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
-                                            progress_bar.setVisibility(View.GONE);
-                                            fab_update.setVisibility(View.VISIBLE);
-                                            fab_update.setOnClickListener(EditProfileActivity.this);
-                                        }
-                                    });
-                                } else {
-                                    showToast(R.string.valid_age);
-                                    progress_bar.setVisibility(View.GONE);
-                                    fab_update.setVisibility(View.VISIBLE);
-                                    fab_update.setOnClickListener(this);
+                                        });
+                                    } else {
+                                        showToast(R.string.valid_age);
+                                        progress_bar.setVisibility(View.GONE);
+                                        fab_update.setVisibility(View.VISIBLE);
+                                        fab_update.setOnClickListener(this);
+                                    }
                                 }
                             }
+                        } else {
+                            showToast(R.string.accept_terms_conditons);
+                            progress_bar.setVisibility(View.GONE);
+                            fab_update.setVisibility(View.VISIBLE);
+                            fab_update.setOnClickListener(this);
                         }
                     } else {
-                        showToast(R.string.accept_terms_conditons);
+                        showToast(R.string.add_profile_pic);
                         progress_bar.setVisibility(View.GONE);
                         fab_update.setVisibility(View.VISIBLE);
                         fab_update.setOnClickListener(this);
                     }
-                } else {
-                    showToast(R.string.add_profile_pic);
-                    progress_bar.setVisibility(View.GONE);
-                    fab_update.setVisibility(View.VISIBLE);
-                    fab_update.setOnClickListener(this);
+                } catch (Exception e) {
+                    logError(e);
                 }
                 break;
             case R.id.iv_upload_image:
@@ -247,22 +255,26 @@ public class EditProfileActivity extends BaseActivity implements DateSetListener
                 addFile();
                 break;
             case ProfileActivity.IMAGE_UPDATED:
-                if (data != null) {
-                    isProfilePicUpdated = true;
-                    iv_placeholder.setVisibility(View.GONE);
-                    String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
+                try {
+                    if (data != null) {
+                        isProfilePicUpdated = true;
+                        iv_placeholder.setVisibility(View.GONE);
+                        String path = data.getStringExtra(ProfileActivity.PROFILE_PATH);
 
-                    RequestOptions requestOptions = new RequestOptions()
-                            .placeholder(R.drawable.ic_circle)
-                            .error(R.drawable.ic_circle)
-                            .circleCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true);
+                        RequestOptions requestOptions = new RequestOptions()
+                                .placeholder(R.drawable.ic_circle)
+                                .error(R.drawable.ic_circle)
+                                .circleCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true);
 
-                    Glide.with(this)
-                            .setDefaultRequestOptions(requestOptions)
-                            .load(path)
-                            .into(iv_upload_image);
+                        Glide.with(this)
+                                .setDefaultRequestOptions(requestOptions)
+                                .load(path)
+                                .into(iv_upload_image);
+                    }
+                } catch (Exception e) {
+                    logError(e);
                 }
                 break;
         }

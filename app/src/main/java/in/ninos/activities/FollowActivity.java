@@ -40,44 +40,48 @@ public class FollowActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_follow);
 
-        type = getIntent().getStringExtra(TYPE);
+            type = getIntent().getStringExtra(TYPE);
 
-        Toolbar toolbar_about = findViewById(R.id.toolbar_follow);
+            Toolbar toolbar_about = findViewById(R.id.toolbar_follow);
 
-        if (type.equals(FOLLOWERS)) {
-            toolbar_about.setTitle(R.string.followers);
-        } else {
-            toolbar_about.setTitle(R.string.following);
+            if (type.equals(FOLLOWERS)) {
+                toolbar_about.setTitle(R.string.followers);
+            } else {
+                toolbar_about.setTitle(R.string.following);
+            }
+
+            toolbar_about.setTitleTextColor(Color.WHITE);
+            setSupportActionBar(toolbar_about);
+
+            ActionBar actionBar = getSupportActionBar();
+
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back_white));
+            }
+
+            accessToken = PreferenceUtil.getAccessToken(this);
+            service = RetrofitInstance.createService(RetrofitService.class);
+
+            tv_empty = findViewById(R.id.tv_empty);
+
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
+            recyclerView = findViewById(R.id.people_list);
+            recyclerView.setLayoutManager(layoutManager);
+
+            followAdapter = new FollowAdapter(this, this, type);
+
+            recyclerView.setAdapter(followAdapter);
+
+            getUsers();
+        } catch (Exception e) {
+            logError(e);
         }
-
-        toolbar_about.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar_about);
-
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back_white));
-        }
-
-        accessToken = PreferenceUtil.getAccessToken(this);
-        service = RetrofitInstance.createService(RetrofitService.class);
-
-        tv_empty = findViewById(R.id.tv_empty);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-
-        recyclerView = findViewById(R.id.people_list);
-        recyclerView.setLayoutManager(layoutManager);
-
-        followAdapter = new FollowAdapter(this, this, type);
-
-        recyclerView.setAdapter(followAdapter);
-
-        getUsers();
     }
 
     @Override
@@ -92,69 +96,73 @@ public class FollowActivity extends BaseActivity {
     }
 
     private void getUsers() {
-        if (type.equals(FOLLOWERS)) {
-            tv_empty.setText(R.string.empty_following);
+        try {
+            if (type.equals(FOLLOWERS)) {
+                tv_empty.setText(R.string.empty_following);
 
-            service.getFollowers(accessToken).enqueue(new Callback<FollowingResponse>() {
-                @Override
-                public void onResponse(Call<FollowingResponse> call, Response<FollowingResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        followAdapter.removeItem(null);
+                service.getFollowers(accessToken).enqueue(new Callback<FollowingResponse>() {
+                    @Override
+                    public void onResponse(Call<FollowingResponse> call, Response<FollowingResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            followAdapter.removeItem(null);
 
-                        if (response.body().getFollowingList().size() > 0) {
+                            if (response.body().getFollowingList().size() > 0) {
 
-                            tv_empty.setVisibility(View.GONE);
+                                tv_empty.setVisibility(View.GONE);
 
-                            for (final Follow userInfo : response.body().getFollowingList()) {
-                                new Handler().post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        followAdapter.addItem(userInfo);
-                                    }
-                                });
+                                for (final Follow userInfo : response.body().getFollowingList()) {
+                                    new Handler().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            followAdapter.addItem(userInfo);
+                                        }
+                                    });
+                                }
+                            } else {
+                                tv_empty.setVisibility(View.VISIBLE);
                             }
-                        } else {
-                            tv_empty.setVisibility(View.VISIBLE);
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<FollowingResponse> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<FollowingResponse> call, Throwable t) {
 
-                }
-            });
-        } else {
-            tv_empty.setText(R.string.empty_follower);
+                    }
+                });
+            } else {
+                tv_empty.setText(R.string.empty_follower);
 
-            service.getFollowing(accessToken).enqueue(new Callback<FollowingResponse>() {
-                @Override
-                public void onResponse(Call<FollowingResponse> call, Response<FollowingResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        followAdapter.removeItem(null);
+                service.getFollowing(accessToken).enqueue(new Callback<FollowingResponse>() {
+                    @Override
+                    public void onResponse(Call<FollowingResponse> call, Response<FollowingResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            followAdapter.removeItem(null);
 
-                        if (response.body().getFollowingList().size() > 0) {
-                            tv_empty.setVisibility(View.GONE);
+                            if (response.body().getFollowingList().size() > 0) {
+                                tv_empty.setVisibility(View.GONE);
 
-                            for (final Follow userInfo : response.body().getFollowingList()) {
-                                new Handler().post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        followAdapter.addItem(userInfo);
-                                    }
-                                });
+                                for (final Follow userInfo : response.body().getFollowingList()) {
+                                    new Handler().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            followAdapter.addItem(userInfo);
+                                        }
+                                    });
+                                }
+                            } else {
+                                tv_empty.setVisibility(View.VISIBLE);
                             }
-                        } else {
-                            tv_empty.setVisibility(View.VISIBLE);
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<FollowingResponse> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<FollowingResponse> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -175,20 +183,24 @@ public class FollowActivity extends BaseActivity {
 
         switch (requestCode) {
             case MainActivity.PROFILE_UPDATED:
-                if (data != null) {
-                    boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
+                try {
+                    if (data != null) {
+                        boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
 
-                    if (isProfileUpdated) {
-                        followAdapter.resetItems();
-                        followAdapter.addItem(null);
-                        getUsers();
+                        if (isProfileUpdated) {
+                            followAdapter.resetItems();
+                            followAdapter.addItem(null);
+                            getUsers();
 
-                        if (type.equals(FOLLOWERS)) {
-                            isFollowersUpdated = true;
-                        } else {
-                            isFollowingUpdated = true;
+                            if (type.equals(FOLLOWERS)) {
+                                isFollowersUpdated = true;
+                            } else {
+                                isFollowingUpdated = true;
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    logError(e);
                 }
                 break;
         }

@@ -40,59 +40,63 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_post);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_edit_post);
 
-        String postId = getIntent().getStringExtra(POST_ID);
-        String description = getIntent().getStringExtra(DESCRIPTION);
+            String postId = getIntent().getStringExtra(POST_ID);
+            String description = getIntent().getStringExtra(DESCRIPTION);
 
-        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-        service.getPost(postId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
-                if (response.body() != null) {
-                    postInfo = response.body().getPostInfo();
+            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+            service.getPost(postId, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<PostResponse>() {
+                @Override
+                public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                    if (response.body() != null) {
+                        postInfo = response.body().getPostInfo();
 
-                    if (uploadAdapter != null) {
-                        uploadAdapter.setPostId(postInfo);
+                        if (uploadAdapter != null) {
+                            uploadAdapter.setPostId(postInfo);
+                        }
                     }
                 }
+
+                @Override
+                public void onFailure(Call<PostResponse> call, Throwable t) {
+
+                }
+            });
+
+            List<String> links = getIntent().getStringArrayListExtra(PATHS);
+
+            Toolbar toolbar = findViewById(R.id.toolbar_edit_post);
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            setSupportActionBar(toolbar);
+
+            ActionBar actionBar = getSupportActionBar();
+
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
             }
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-            }
-        });
+            final RecyclerView recyclerView = findViewById(R.id.upload_list);
+            recyclerView.setLayoutManager(layoutManager);
 
-        List<String> links = getIntent().getStringArrayListExtra(PATHS);
+            uploadAdapter = new EditPostAdapter(this, postInfo, this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_edit_post);
-        toolbar.setTitle(R.string.app_name);
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-        setSupportActionBar(toolbar);
+            recyclerView.setAdapter(uploadAdapter);
 
-        ActionBar actionBar = getSupportActionBar();
+            uploadAdapter.addItems(links);
+            tv_description = findViewById(R.id.tv_description);
+            tv_description.setText(description);
 
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_back));
+            findViewById(R.id.btn_upload).setOnClickListener(this);
+        }  catch (Exception e) {
+            logError(e);
         }
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        final RecyclerView recyclerView = findViewById(R.id.upload_list);
-        recyclerView.setLayoutManager(layoutManager);
-
-        uploadAdapter = new EditPostAdapter(this, postInfo, this);
-
-        recyclerView.setAdapter(uploadAdapter);
-
-        uploadAdapter.addItems(links);
-        tv_description = findViewById(R.id.tv_description);
-        tv_description.setText(description);
-
-        findViewById(R.id.btn_upload).setOnClickListener(this);
     }
 
     @Override
@@ -122,51 +126,55 @@ public class EditPostActivity extends BaseActivity implements View.OnClickListen
                 onBackPressed();
                 break;
             case R.id.btn_upload:
-                String desc = tv_description.getText().toString().trim();
-                boolean hasBadWords = false;
+                try {
+                    String desc = tv_description.getText().toString().trim();
+                    boolean hasBadWords = false;
 
-                if (!desc.isEmpty()) {
-                    List<String> badWords = BadWordUtil.getBardWords();
+                    if (!desc.isEmpty()) {
+                        List<String> badWords = BadWordUtil.getBardWords();
 
-                    for (String word : desc.toLowerCase().split(" ")) {
-                        if (badWords.contains(word)) {
-                            hasBadWords = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (hasBadWords) {
-                    showToast(R.string.offensive_words);
-                } else {
-                    postInfo.setTitle(tv_description.getText().toString().trim());
-
-                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                    service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<AddPostResponse>() {
-                        @Override
-                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
-                            if (response.body() != null && response.isSuccessful()) {
-                                AWSClient awsClient = new AWSClient(EditPostActivity.this);
-                                awsClient.awsInit();
-
-                                if (uploadAdapter.getDeletedLinks().size() > 1) {
-                                    awsClient.removeImage(postInfo.get_id(), uploadAdapter.getDeletedLinks());
-                                }
-
-                                Intent intent = new Intent();
-                                intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
-                                intent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
-                                intent.putExtra(EditPostActivity.LINKS, new ArrayList<>(uploadAdapter.getDeletedLinks()));
-                                setResult(MainActivity.POST_EDIT, intent);
-                                finish();
+                        for (String word : desc.toLowerCase().split(" ")) {
+                            if (badWords.contains(word)) {
+                                hasBadWords = true;
+                                break;
                             }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
-                            finish();
-                        }
-                    });
+                    if (hasBadWords) {
+                        showToast(R.string.offensive_words);
+                    } else {
+                        postInfo.setTitle(tv_description.getText().toString().trim());
+
+                        final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                        service.updatePost(postInfo.get_id(), postInfo, PreferenceUtil.getAccessToken(this)).enqueue(new Callback<AddPostResponse>() {
+                            @Override
+                            public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                                if (response.body() != null && response.isSuccessful()) {
+                                    AWSClient awsClient = new AWSClient(EditPostActivity.this);
+                                    awsClient.awsInit();
+
+                                    if (uploadAdapter.getDeletedLinks().size() > 1) {
+                                        awsClient.removeImage(postInfo.get_id(), uploadAdapter.getDeletedLinks());
+                                    }
+
+                                    Intent intent = new Intent();
+                                    intent.putExtra(FilePickerActivity.POST_ID, postInfo.get_id());
+                                    intent.putExtra(EditPostActivity.DESCRIPTION, postInfo.getTitle());
+                                    intent.putExtra(EditPostActivity.LINKS, new ArrayList<>(uploadAdapter.getDeletedLinks()));
+                                    setResult(MainActivity.POST_EDIT, intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                                finish();
+                            }
+                        });
+                    }
+                }  catch (Exception e) {
+                    logError(e);
                 }
 
                 break;

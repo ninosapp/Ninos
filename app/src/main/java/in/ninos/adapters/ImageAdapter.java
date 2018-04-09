@@ -57,18 +57,22 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
         }
 
         private void bindData(int position) {
-            String path = getItem(position);
-            iv_challenge.setImageDrawable(ContextCompat.getDrawable(activity, resId));
+            try {
+                String path = getItem(position);
+                iv_challenge.setImageDrawable(ContextCompat.getDrawable(activity, resId));
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(resId)
-                    .error(resId)
-                    .fallback(resId)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(resId)
+                        .error(resId)
+                        .fallback(resId)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-            Glide.with(activity)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(path).into(iv_challenge);
+                Glide.with(activity)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(path).into(iv_challenge);
+            } catch (Exception ignored) {
+
+            }
         }
 
         @Override

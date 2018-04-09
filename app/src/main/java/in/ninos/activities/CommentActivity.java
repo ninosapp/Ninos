@@ -44,54 +44,62 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_comment);
 
-        et_leave_comment = findViewById(R.id.et_leave_comment);
-        et_leave_comment.setOnEditorActionListener(this);
-        findViewById(R.id.iv_add_comment).setOnClickListener(this);
+            et_leave_comment = findViewById(R.id.et_leave_comment);
+            et_leave_comment.setOnEditorActionListener(this);
+            findViewById(R.id.iv_add_comment).setOnClickListener(this);
 
-        postId = getIntent().getStringExtra(POST_ID);
-        accessToken = PreferenceUtil.getAccessToken(this);
+            postId = getIntent().getStringExtra(POST_ID);
+            accessToken = PreferenceUtil.getAccessToken(this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
-        list_comment = findViewById(R.id.list_comment);
-        list_comment.setNestedScrollingEnabled(true);
-        list_comment.setLayoutManager(layoutManager);
+            list_comment = findViewById(R.id.list_comment);
+            list_comment.setNestedScrollingEnabled(true);
+            list_comment.setLayoutManager(layoutManager);
 
-        commentAdapter = new CommentAdapter(this, postId, list_comment, this);
-        list_comment.setAdapter(commentAdapter);
+            commentAdapter = new CommentAdapter(this, postId, list_comment, this);
+            list_comment.setAdapter(commentAdapter);
 
-        service = RetrofitInstance.createService(RetrofitService.class);
+            service = RetrofitInstance.createService(RetrofitService.class);
 
-        getComments();
+            getComments();
 
-        findViewById(R.id.iv_back).setOnClickListener(this);
+            findViewById(R.id.iv_back).setOnClickListener(this);
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void getComments() {
-        service.getPostComments(postId, from, size, accessToken).enqueue(new Callback<CommentsResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
-                commentAdapter.removeItem(null);
+        try {
+            service.getPostComments(postId, from, size, accessToken).enqueue(new Callback<CommentsResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<CommentsResponse> call, @NonNull Response<CommentsResponse> response) {
+                    commentAdapter.removeItem(null);
 
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Comment> commentList = response.body().getPostComments();
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<Comment> commentList = response.body().getPostComments();
 
-                    if (commentList != null) {
-                        commentAdapter.addItems(commentList);
+                        if (commentList != null) {
+                            commentAdapter.addItems(commentList);
+                        }
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<CommentsResponse> call, @NonNull Throwable t) {
-                commentAdapter.removeItem(null);
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<CommentsResponse> call, @NonNull Throwable t) {
+                    commentAdapter.removeItem(null);
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
@@ -119,51 +127,55 @@ public class CommentActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void addComment() {
-        String commentValue = et_leave_comment.getText().toString().trim();
+        try {
+            String commentValue = et_leave_comment.getText().toString().trim();
 
-        if (commentValue.isEmpty()) {
-            showToast(R.string.comment_validation);
-        } else {
-            boolean hasBadWords = false;
-
-            List<String> badWords = BadWordUtil.getBardWords();
-
-            for (String word : commentValue.toLowerCase().split(" ")) {
-                if (badWords.contains(word)) {
-                    hasBadWords = true;
-                    break;
-                }
-            }
-
-            if (hasBadWords) {
-                showToast(R.string.offensive_words);
+            if (commentValue.isEmpty()) {
+                showToast(R.string.comment_validation);
             } else {
-                if (containsUrl(commentValue)) {
-                    showToast(R.string.urls_not_allowed);
+                boolean hasBadWords = false;
+
+                List<String> badWords = BadWordUtil.getBardWords();
+
+                for (String word : commentValue.toLowerCase().split(" ")) {
+                    if (badWords.contains(word)) {
+                        hasBadWords = true;
+                        break;
+                    }
+                }
+
+                if (hasBadWords) {
+                    showToast(R.string.offensive_words);
                 } else {
-                    et_leave_comment.setText("");
-                    Comment comment = new Comment();
-                    comment.setComment(commentValue);
-                    comment.setUserId(Database.getUserId());
-                    comment.setPostId(postId);
-                    isCommentAdded = true;
-                    service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
-                        @Override
-                        public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                Comment comment = response.body().getPostComment();
-                                commentAdapter.addItem(comment, 0);
-                                et_leave_comment.setText("");
+                    if (containsUrl(commentValue)) {
+                        showToast(R.string.urls_not_allowed);
+                    } else {
+                        et_leave_comment.setText("");
+                        Comment comment = new Comment();
+                        comment.setComment(commentValue);
+                        comment.setUserId(Database.getUserId());
+                        comment.setPostId(postId);
+                        isCommentAdded = true;
+                        service.addPostComments(postId, accessToken, comment).enqueue(new Callback<CommentResponse>() {
+                            @Override
+                            public void onResponse(@NonNull Call<CommentResponse> call, @NonNull Response<CommentResponse> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    Comment comment = response.body().getPostComment();
+                                    commentAdapter.addItem(comment, 0);
+                                    et_leave_comment.setText("");
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
+                            @Override
+                            public void onFailure(@NonNull Call<CommentResponse> call, @NonNull Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
+        }  catch (Exception e) {
+            logError(e);
         }
     }
 

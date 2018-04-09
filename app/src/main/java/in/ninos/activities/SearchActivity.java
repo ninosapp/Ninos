@@ -32,27 +32,31 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_search);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.accent_dark));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(this, R.color.accent_dark));
+            }
+
+            et_search = findViewById(R.id.et_search);
+            et_search.setOnEditorActionListener(this);
+            findViewById(R.id.iv_back).setOnClickListener(this);
+
+            viewPager = findViewById(R.id.view_pager);
+            searchAdapter = new SearchAdapter(this, getSupportFragmentManager());
+            viewPager.setAdapter(searchAdapter);
+            viewPager.setOffscreenPageLimit(3);
+            viewPager.addOnPageChangeListener(this);
+
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
+            tabLayout.setupWithViewPager(viewPager);
+        } catch (Exception e) {
+            logError(e);
         }
-
-        et_search = findViewById(R.id.et_search);
-        et_search.setOnEditorActionListener(this);
-        findViewById(R.id.iv_back).setOnClickListener(this);
-
-        viewPager = findViewById(R.id.view_pager);
-        searchAdapter = new SearchAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(searchAdapter);
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.addOnPageChangeListener(this);
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -81,46 +85,50 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void search(String text) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
-        }
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+            }
 
-        int position = viewPager.getCurrentItem();
-        Fragment fragment = searchAdapter.getItem(position);
+            int position = viewPager.getCurrentItem();
+            Fragment fragment = searchAdapter.getItem(position);
 
-        switch (position) {
-            case 0:
-                if (fragment instanceof PeopleSearchFragment) {
-                    PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
-                    String userName = peopleSearchFragment.getUserName();
+            switch (position) {
+                case 0:
+                    if (fragment instanceof PeopleSearchFragment) {
+                        PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
+                        String userName = peopleSearchFragment.getUserName();
 
-                    if (userName == null || !userName.equals(text)) {
-                        peopleSearchFragment.userSearch(text);
+                        if (userName == null || !userName.equals(text)) {
+                            peopleSearchFragment.userSearch(text);
+                        }
                     }
-                }
-                break;
-            case 1:
-                if (fragment instanceof AllChallengeSearchFragment) {
-                    AllChallengeSearchFragment challengeSearchFragment = (AllChallengeSearchFragment) fragment;
-                    String postKeyword = challengeSearchFragment.getPostKeyword();
+                    break;
+                case 1:
+                    if (fragment instanceof AllChallengeSearchFragment) {
+                        AllChallengeSearchFragment challengeSearchFragment = (AllChallengeSearchFragment) fragment;
+                        String postKeyword = challengeSearchFragment.getPostKeyword();
 
-                    if (postKeyword == null || !postKeyword.equals(text)) {
-                        challengeSearchFragment.userSearch(text);
+                        if (postKeyword == null || !postKeyword.equals(text)) {
+                            challengeSearchFragment.userSearch(text);
+                        }
                     }
-                }
-                break;
-            case 2:
-                if (fragment instanceof ChallengesSearchFragment) {
-                    ChallengesSearchFragment challengeSearchFragment = (ChallengesSearchFragment) fragment;
+                    break;
+                case 2:
+                    if (fragment instanceof ChallengesSearchFragment) {
+                        ChallengesSearchFragment challengeSearchFragment = (ChallengesSearchFragment) fragment;
 
-                    String challengeKeyword = challengeSearchFragment.getChallengeKeyword();
+                        String challengeKeyword = challengeSearchFragment.getChallengeKeyword();
 
-                    if (challengeKeyword == null || !challengeKeyword.equals(text)) {
-                        challengeSearchFragment.userSearch(text);
+                        if (challengeKeyword == null || !challengeKeyword.equals(text)) {
+                            challengeSearchFragment.userSearch(text);
+                        }
                     }
-                }
-                break;
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -147,25 +155,29 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case MainActivity.PROFILE_UPDATED:
-                if (data != null) {
-                    boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
+        try {
+            switch (requestCode) {
+                case MainActivity.PROFILE_UPDATED:
+                    if (data != null) {
+                        boolean isProfileUpdated = data.getBooleanExtra(ProfileActivity.IS_PROFILE_UPDATED, false);
 
-                    if (isProfileUpdated) {
-                        Fragment fragment = searchAdapter.getItem(0);
+                        if (isProfileUpdated) {
+                            Fragment fragment = searchAdapter.getItem(0);
 
-                        if (fragment instanceof PeopleSearchFragment) {
-                            PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
-                            String userName = peopleSearchFragment.getUserName();
+                            if (fragment instanceof PeopleSearchFragment) {
+                                PeopleSearchFragment peopleSearchFragment = (PeopleSearchFragment) fragment;
+                                String userName = peopleSearchFragment.getUserName();
 
-                            if (userName != null) {
-                                peopleSearchFragment.userSearch(userName);
+                                if (userName != null) {
+                                    peopleSearchFragment.userSearch(userName);
+                                }
                             }
                         }
                     }
-                }
-                break;
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 }

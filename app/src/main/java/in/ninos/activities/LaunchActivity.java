@@ -18,32 +18,36 @@ public class LaunchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String accessToken = PreferenceUtil.getAccessToken(this);
+        try {
+            String accessToken = PreferenceUtil.getAccessToken(this);
 
-        if (accessToken == null) {
-            startLogin();
-        } else {
+            if (accessToken == null) {
+                startLogin();
+            } else {
 
-            if (isNetworkAvailable()) {
-                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                service.refreshToken(PreferenceUtil.getAccessToken(this)).enqueue(new Callback<RegisterResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
-                        if (response.body() != null && response.isSuccessful()) {
-                            PreferenceUtil.setAccessToken(LaunchActivity.this, response.body().getToken());
+                if (isNetworkAvailable()) {
+                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                    service.refreshToken(PreferenceUtil.getAccessToken(this)).enqueue(new Callback<RegisterResponse>() {
+                        @Override
+                        public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                PreferenceUtil.setAccessToken(LaunchActivity.this, response.body().getToken());
+                            }
+
+                            startHome();
                         }
 
-                        startHome();
-                    }
-
-                    @Override
-                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                        startLogin();
-                    }
-                });
-            } else {
-                startLogin();
+                        @Override
+                        public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                            startLogin();
+                        }
+                    });
+                } else {
+                    startLogin();
+                }
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
