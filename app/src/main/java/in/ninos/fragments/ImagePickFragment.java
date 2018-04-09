@@ -124,24 +124,26 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor != null && cursor.moveToFirst()) {
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
 
-            do {
-                String filePath = cursor.getString(1);
-                int id = cursor.getInt(0);
+                do {
+                    String filePath = cursor.getString(1);
+                    int id = cursor.getInt(0);
 
-                final MediaObject mO = new MediaObject(id, filePath);
+                    final MediaObject mO = new MediaObject(id, filePath);
 
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        imagePickAdapter.addItem(mO);
-                    }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imagePickAdapter.addItem(mO);
+                        }
+                    });
 
-            } while (cursor.moveToNext());
-
-            cursor.close();
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            showToast(R.string.error_message);
         }
     }
 

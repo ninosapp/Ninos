@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -101,25 +102,27 @@ public class ProfilePickFragment extends BaseFragment implements LoaderManager.L
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor != null && cursor.moveToFirst()) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
 
-            do {
-                String filePath = cursor.getString(1);
-                int id = cursor.getInt(0);
+                do {
+                    String filePath = cursor.getString(1);
+                    int id = cursor.getInt(0);
 
-                final MediaObject mO = new MediaObject(id, filePath);
+                    final MediaObject mO = new MediaObject(id, filePath);
 
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        profilePickAdapter.addItem(mO);
-                    }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            profilePickAdapter.addItem(mO);
+                        }
+                    });
 
-            } while (cursor.moveToNext());
-
-            cursor.close();
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            showToast(R.string.error_message);
         }
     }
 

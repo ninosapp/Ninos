@@ -3,6 +3,7 @@ package in.ninos.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -88,43 +89,45 @@ public class ProfileBucketFragment extends BaseFragment implements LoaderManager
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Bucket image;
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        try {
+            Bucket image;
 
-        if (cursor != null && cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
 
-            String bucket;
-            String path;
-            long bucketId;
+                String bucket;
+                String path;
+                long bucketId;
 
-            int bucketColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-            int dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            int bucketIdColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
+                int bucketColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+                int dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                int bucketIdColumn = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
 
-            do {
-                bucket = cursor.getString(bucketColumn);
-                path = cursor.getString(dataColumn);
-                bucketId = cursor.getInt(bucketIdColumn);
+                do {
+                    bucket = cursor.getString(bucketColumn);
+                    path = cursor.getString(dataColumn);
+                    bucketId = cursor.getInt(bucketIdColumn);
 
-                if (bucket != null && bucket.length() > 0) {
+                    if (bucket != null && bucket.length() > 0) {
 
-                    image = new Bucket();
-                    image.setBucketId(bucketId);
-                    image.setBucketName(bucket);
-                    image.setPath(path);
+                        image = new Bucket();
+                        image.setBucketId(bucketId);
+                        image.setBucketName(bucket);
+                        image.setPath(path);
 
-                    bucketAdapter.addItem(image);
-                }
-            } while (cursor.moveToNext());
-        }
+                        bucketAdapter.addItem(image);
+                    }
+                } while (cursor.moveToNext());
+            }
 
-        if (cursor != null) {
-            cursor.close();
+
+        } catch (Exception e) {
+            showToast(R.string.error_message);
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 }

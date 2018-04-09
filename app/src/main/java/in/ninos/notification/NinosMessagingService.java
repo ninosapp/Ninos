@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -71,6 +72,13 @@ public class NinosMessagingService extends FirebaseMessagingService {
             intent.putExtra(QuizActivity.QUIZ_TITLE, quizTitle);
         }
 
+        NotificationCompat.BigPictureStyle notificationCompat = new NotificationCompat.BigPictureStyle().setBigContentTitle(title).setSummaryText(message);
+
+        if (bitmap != null) {
+            notificationCompat.bigPicture(bitmap);
+        }
+
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -80,10 +88,11 @@ public class NinosMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).setBigContentTitle(title).setSummaryText(message))
+                .setStyle(notificationCompat)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -92,17 +101,21 @@ public class NinosMessagingService extends FirebaseMessagingService {
     }
 
     public Bitmap getBitmapfromUrl(String imageUrl) {
-        try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
-
-        } catch (Exception e) {
-            CrashUtil.report(e);
+        if (TextUtils.isEmpty(imageUrl)) {
             return null;
+        } else {
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                return BitmapFactory.decodeStream(input);
+
+            } catch (Exception e) {
+                CrashUtil.report(e);
+                return null;
+            }
         }
     }
 }

@@ -91,36 +91,37 @@ public class VideoBucketFragment extends BaseFragment implements LoaderManager.L
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Bucket image;
 
-        if (cursor != null && cursor.moveToFirst()) {
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
 
-            String bucket;
-            String path;
-            long bucketId;
+                String bucket;
+                String path;
+                long bucketId;
 
-            int bucketColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME);
-            int dataColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
-            int bucketIdColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.BUCKET_ID);
+                int bucketColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME);
+                int dataColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+                int bucketIdColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.BUCKET_ID);
 
-            do {
-                bucket = cursor.getString(bucketColumn);
-                path = cursor.getString(dataColumn);
-                bucketId = cursor.getInt(bucketIdColumn);
+                do {
+                    bucket = cursor.getString(bucketColumn);
+                    path = cursor.getString(dataColumn);
+                    bucketId = cursor.getInt(bucketIdColumn);
 
-                if (bucket != null && bucket.length() > 0) {
+                    if (bucket != null && bucket.length() > 0) {
 
-                    image = new Bucket();
-                    image.setBucketId(bucketId);
-                    image.setBucketName(bucket);
-                    image.setPath(path);
+                        image = new Bucket();
+                        image.setBucketId(bucketId);
+                        image.setBucketName(bucket);
+                        image.setPath(path);
 
-                    bucketAdapter.addItem(image);
-                }
-            } while (cursor.moveToNext());
+                        bucketAdapter.addItem(image);
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            showToast(R.string.error_message);
         }
 
-        if (cursor != null) {
-            cursor.close();
-        }
     }
 
     @Override
