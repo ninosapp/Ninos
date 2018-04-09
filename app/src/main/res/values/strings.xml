@@ -181,6 +181,8 @@
     <string name="about_description"><![CDATA[Ninos App – India’s First Talent App For Children. We aim to build a digital space to bring millions of creative children together.\n\nNinos App is the perfect platform for children to showcase their creativity and become superstars. Our motto is to Entertain, Educate & Encourage. Ninos App entertains children by letting them publish and share anything! just anything – Painting, Singing, Dancing, Acting, Cooking, Spelling Bee, Sporting events, Martial Arts, Fashion, Photography and Everything under the sun.\n\nNinos App do educate children by keeping them engaged with a range of daily educative quizzes, weekly creative challenges, monthly interesting contests exclusively designed to suit children of all ages.\n\nNinos App encourages children by rewarding them generously. There are thousands of prizes in the store for them. Ninos App also encourages parents to identify their children’s hidden and unexplored talent. We bestow a novel responsibility upon the parents to share their children’s creativity and innovations on Ninos App.\n\nChildren are born stars. Parents identify them. Ninos App makes them superstars]]></string>
     <string name="registration">Registration</string>
     <string name="faq">FAQ</string>
+    <string name="_6">6</string>
+    <string name="some_questions_may_not_be_suitable_for_non_indian_users">Some questions may not be suitable for non-indian users.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>
