@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import in.ninos.R;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 03-01-2018.
@@ -46,8 +47,12 @@ public class UploadAdapter extends CommonRecyclerAdapter<String> {
         }
 
         private void bindData(int position) {
-            String path = getItem(position);
-            Glide.with(mContext).load(path).into(iv_image);
+            try {
+                String path = getItem(position);
+                Glide.with(mContext).load(path).into(iv_image);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
     }
 }

@@ -144,77 +144,84 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fab_upload:
-                String desc = tv_description.getText().toString().trim();
-                boolean hasBadWords = false;
+        try {
+            switch (view.getId()) {
+                case R.id.fab_upload:
+                    String desc = tv_description.getText().toString().trim();
+                    boolean hasBadWords = false;
 
-                if (!desc.isEmpty()) {
-                    List<String> badWords = BadWordUtil.getBardWords();
+                    if (!desc.isEmpty()) {
+                        List<String> badWords = BadWordUtil.getBardWords();
 
-                    for (String word : desc.toLowerCase().split(" ")) {
-                        if (badWords.contains(word)) {
-                            hasBadWords = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (hasBadWords) {
-                    showToast(R.string.offensive_words);
-                } else {
-                    PostInfo postInfo = new PostInfo();
-                    final String token = PreferenceUtil.getAccessToken(getContext());
-                    final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                    service.addPost(postInfo, token).enqueue(new Callback<AddPostResponse>() {
-                        @Override
-                        public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
-                            if (response.body() != null && response.isSuccessful()) {
-                                String title = tv_description.getText().toString();
-
-                                PostInfo postInfo = response.body().getPostInfo();
-
-                                if (postInfo != null) {
-                                    postInfo.setTitle(title);
-                                    postInfo.setCreatedAt(new Date());
-                                    postInfo.setUserId(Database.getUserId());
-
-                                    if (challengeId == null) {
-                                        postInfo.setType("post");
-                                        postInfo.setIsChallenge(false);
-                                    } else {
-                                        postInfo.setIsChallenge(true);
-                                        postInfo.setType("challenge");
-                                        postInfo.setChallengeTitle(challengeName);
-                                        postInfo.setChallengeId(challengeId);
-                                    }
-
-                                    if (type.equals(IMAGES)) {
-                                        for (String path : paths) {
-                                            AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
-                                            awsClient.awsInit();
-                                            awsClient.uploadImage(postInfo);
-                                        }
-                                    } else {
-                                        postInfo.setVideo(true);
-                                        AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
-                                        awsClient.awsInit();
-                                        awsClient.uploadVideo(postInfo);
-                                    }
-                                }
-                                else{
-                                    showToast(R.string.error_message);
-                                }
+                        for (String word : desc.toLowerCase().split(" ")) {
+                            if (badWords.contains(word)) {
+                                hasBadWords = true;
+                                break;
                             }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<AddPostResponse> call, Throwable t) {
-                            showToast(R.string.error_message);
+                    if (hasBadWords) {
+                        showToast(R.string.offensive_words);
+                    } else {
+                        try {
+                            PostInfo postInfo = new PostInfo();
+                            final String token = PreferenceUtil.getAccessToken(getContext());
+                            final RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                            service.addPost(postInfo, token).enqueue(new Callback<AddPostResponse>() {
+                                @Override
+                                public void onResponse(Call<AddPostResponse> call, Response<AddPostResponse> response) {
+                                    if (response.body() != null && response.isSuccessful()) {
+                                        String title = tv_description.getText().toString();
+
+                                        PostInfo postInfo = response.body().getPostInfo();
+
+                                        if (postInfo != null) {
+                                            postInfo.setTitle(title);
+                                            postInfo.setCreatedAt(new Date());
+                                            postInfo.setUserId(Database.getUserId());
+
+                                            if (challengeId == null) {
+                                                postInfo.setType("post");
+                                                postInfo.setIsChallenge(false);
+                                            } else {
+                                                postInfo.setIsChallenge(true);
+                                                postInfo.setType("challenge");
+                                                postInfo.setChallengeTitle(challengeName);
+                                                postInfo.setChallengeId(challengeId);
+                                            }
+
+                                            if (type.equals(IMAGES)) {
+                                                for (String path : paths) {
+                                                    AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
+                                                    awsClient.awsInit();
+                                                    awsClient.uploadImage(postInfo);
+                                                }
+                                            } else {
+                                                postInfo.setVideo(true);
+                                                AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
+                                                awsClient.awsInit();
+                                                awsClient.uploadVideo(postInfo);
+                                            }
+                                        } else {
+                                            showToast(R.string.error_message);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<AddPostResponse> call, Throwable t) {
+                                    showToast(R.string.error_message);
+                                }
+                            });
+                        } catch (Exception e) {
+                            logError(e);
                         }
-                    });
-                }
-                break;
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 }

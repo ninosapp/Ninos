@@ -68,30 +68,34 @@ public class ChallengesFragment extends BaseFragment implements OnLoadMoreListen
     }
 
     private void getPosts() {
-        service.searchChallenges(from, size, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.searchChallenges(from, size, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    for (final ChallengeInfo postInfo : response.body().getChallenges()) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                allChallengeAdapter.addItem(postInfo);
-                            }
-                        });
+                        for (final ChallengeInfo postInfo : response.body().getChallenges()) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    allChallengeAdapter.addItem(postInfo);
+                                }
+                            });
+                        }
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override

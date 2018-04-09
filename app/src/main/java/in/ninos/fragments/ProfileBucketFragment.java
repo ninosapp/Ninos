@@ -69,20 +69,25 @@ public class ProfileBucketFragment extends BaseFragment implements LoaderManager
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String[] PROJECTION_BUCKET = {MediaStore.Images.ImageColumns.BUCKET_ID,
-                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATE_TAKEN,
-                    MediaStore.Images.ImageColumns.DATA};
+            try {
+                String[] PROJECTION_BUCKET = {MediaStore.Images.ImageColumns.BUCKET_ID,
+                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATE_TAKEN,
+                        MediaStore.Images.ImageColumns.DATA};
 
-            String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
+                String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
 
-            String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
+                String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    PROJECTION_BUCKET,
-                    BUCKET_GROUP_BY,
-                    null,
-                    BUCKET_ORDER_BY);
+                return new CursorLoader(getContext(),
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        PROJECTION_BUCKET,
+                        BUCKET_GROUP_BY,
+                        null,
+                        BUCKET_ORDER_BY);
+            } catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -122,7 +127,7 @@ public class ProfileBucketFragment extends BaseFragment implements LoaderManager
 
 
         } catch (Exception e) {
-            showToast(R.string.error_message);
+            logError(e);
         }
     }
 

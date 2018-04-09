@@ -87,15 +87,20 @@ public class ProfilePickFragment extends BaseFragment implements LoaderManager.L
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-            String searchParams = "bucket_display_name = \"" + bucketName + "\"";
+            try {
+                String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+                String searchParams = "bucket_display_name = \"" + bucketName + "\"";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    null,
-                    searchParams,
-                    null,
-                    orderBy);
+                return new CursorLoader(getContext(),
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        null,
+                        searchParams,
+                        null,
+                        orderBy);
+            }catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -121,8 +126,8 @@ public class ProfilePickFragment extends BaseFragment implements LoaderManager.L
 
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            showToast(R.string.error_message);
+        }catch (Exception e) {
+            logError(e);
         }
     }
 

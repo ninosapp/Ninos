@@ -80,37 +80,41 @@ public class ChallengesSearchFragment extends BaseFragment implements OnLoadMore
     }
 
     private void getPosts() {
-        service.searchAllChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.searchAllChallenges(from, size, challengeKeyword, accessToken).enqueue(new Callback<ChallengeSearchResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<ChallengeSearchResponse> call, @NonNull Response<ChallengeSearchResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    if (response.body().getChallenges().size() > 0) {
-                        rl_empty.setVisibility(View.GONE);
+                        if (response.body().getChallenges().size() > 0) {
+                            rl_empty.setVisibility(View.GONE);
 
-                        for (final ChallengeInfo postInfo : response.body().getChallenges()) {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    allChallengeAdapter.addItem(postInfo);
-                                }
-                            });
+                            for (final ChallengeInfo postInfo : response.body().getChallenges()) {
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        allChallengeAdapter.addItem(postInfo);
+                                    }
+                                });
+                            }
+                        } else if (from == 0) {
+                            tv_empty.setText(String.format(getString(R.string.unable_to_find_the_challenges_for_s), challengeKeyword));
+                            rl_empty.setVisibility(View.VISIBLE);
                         }
-                    } else if (from == 0) {
-                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_challenges_for_s), challengeKeyword));
-                        rl_empty.setVisibility(View.VISIBLE);
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<ChallengeSearchResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override

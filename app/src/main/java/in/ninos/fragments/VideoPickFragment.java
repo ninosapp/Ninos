@@ -106,15 +106,20 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String orderBy = MediaStore.Video.Media.DATE_TAKEN;
-            String searchParams = "bucket_display_name = \"" + bucketName + "\"";
+            try {
+                String orderBy = MediaStore.Video.Media.DATE_TAKEN;
+                String searchParams = "bucket_display_name = \"" + bucketName + "\"";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    null,
-                    searchParams,
-                    null,
-                    orderBy);
+                return new CursorLoader(getContext(),
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        null,
+                        searchParams,
+                        null,
+                        orderBy);
+            } catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -142,7 +147,7 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
 
             }
         } catch (Exception e) {
-            showToast(R.string.error_message);
+            logError(e);
         }
     }
 

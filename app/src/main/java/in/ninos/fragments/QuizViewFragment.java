@@ -124,78 +124,86 @@ public class QuizViewFragment extends BaseFragment implements OnLoadMoreListener
 
 
     public void quizUpdated(String quizId) {
-        for (int i = 0; i < quizAdapter.getItemCount(); i++) {
-            Quizze quizze = quizAdapter.getItem(i);
+        try {
+            for (int i = 0; i < quizAdapter.getItemCount(); i++) {
+                Quizze quizze = quizAdapter.getItem(i);
 
-            if (quizze.get_id().equals(quizId)) {
-                quizze.setQuizTaken(true);
-                quizAdapter.updateItem(i, quizze);
-                break;
+                if (quizze.get_id().equals(quizId)) {
+                    quizze.setQuizTaken(true);
+                    quizAdapter.updateItem(i, quizze);
+                    break;
+                }
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
     private void getQuizzes() {
-        if (type.equals(COMPLETED)) {
-            service.getCompletedQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
-                @Override
-                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                    quizAdapter.removeItem(null);
+        try {
+            if (type.equals(COMPLETED)) {
+                service.getCompletedQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
+                    @Override
+                    public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                        quizAdapter.removeItem(null);
 
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Quizze> quizzes = response.body().getQuizeData();
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<Quizze> quizzes = response.body().getQuizeData();
 
-                        for (final Quizze quizze : quizzes) {
-                            quizAdapter.addItem(quizze);
+                            for (final Quizze quizze : quizzes) {
+                                quizAdapter.addItem(quizze);
+                            }
+
+                            if (quizAdapter.getItemCount() > 0) {
+                                tv_empty.setVisibility(View.GONE);
+                            } else {
+                                tv_empty.setVisibility(View.VISIBLE);
+                            }
                         }
 
-                        if (quizAdapter.getItemCount() > 0) {
-                            tv_empty.setVisibility(View.GONE);
-                        } else {
-                            tv_empty.setVisibility(View.VISIBLE);
-                        }
+                        sr_layout.setRefreshing(false);
                     }
 
-                    sr_layout.setRefreshing(false);
-                }
+                    @Override
+                    public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                        quizAdapter.resetItems();
+                        sr_layout.setRefreshing(false);
+                        tv_empty.setVisibility(View.VISIBLE);
+                    }
+                });
+            } else {
+                service.getActiveQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
+                    @Override
+                    public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                        quizAdapter.removeItem(null);
 
-                @Override
-                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-                    quizAdapter.resetItems();
-                    sr_layout.setRefreshing(false);
-                    tv_empty.setVisibility(View.VISIBLE);
-                }
-            });
-        } else {
-            service.getActiveQuizzes(from, size, accessToken).enqueue(new Callback<QuizResponse>() {
-                @Override
-                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                    quizAdapter.removeItem(null);
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<Quizze> quizzes = response.body().getQuizeData();
 
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Quizze> quizzes = response.body().getQuizeData();
+                            for (final Quizze quizze : quizzes) {
+                                quizAdapter.addItem(quizze);
+                            }
 
-                        for (final Quizze quizze : quizzes) {
-                            quizAdapter.addItem(quizze);
+                            if (quizAdapter.getItemCount() > 0) {
+                                tv_empty.setVisibility(View.GONE);
+                            } else {
+                                tv_empty.setVisibility(View.VISIBLE);
+                            }
                         }
 
-                        if (quizAdapter.getItemCount() > 0) {
-                            tv_empty.setVisibility(View.GONE);
-                        } else {
-                            tv_empty.setVisibility(View.VISIBLE);
-                        }
+                        sr_layout.setRefreshing(false);
                     }
 
-                    sr_layout.setRefreshing(false);
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-                    quizAdapter.resetItems();
-                    sr_layout.setRefreshing(false);
-                    tv_empty.setVisibility(View.VISIBLE);
-                }
-            });
+                    @Override
+                    public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                        quizAdapter.resetItems();
+                        sr_layout.setRefreshing(false);
+                        tv_empty.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 

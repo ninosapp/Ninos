@@ -17,6 +17,7 @@ import in.ninos.fragments.ImagePickFragment;
 import in.ninos.fragments.ProfilePickFragment;
 import in.ninos.fragments.VideoPickFragment;
 import in.ninos.models.Bucket;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 30-12-2017.
@@ -64,10 +65,14 @@ public class BucketAdapter extends CommonRecyclerAdapter<Bucket> {
         }
 
         void bindData(Bucket bucket) {
-            tv_bucket.setText(bucket.getBucketName());
-            Glide.with(baseActivity)
-                    .load(bucket.getPath())
-                    .into(iv_image);
+            try {
+                tv_bucket.setText(bucket.getBucketName());
+                Glide.with(baseActivity)
+                        .load(bucket.getPath())
+                        .into(iv_image);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
 
         @Override

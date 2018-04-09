@@ -17,6 +17,7 @@ import java.util.List;
 import in.ninos.R;
 import in.ninos.activities.BaseActivity;
 import in.ninos.models.MediaObject;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 31-12-2017.
@@ -69,31 +70,39 @@ public class ImagePickAdapter extends CommonRecyclerAdapter<MediaObject> {
         }
 
         void bindData(MediaObject mediaObject) {
-            Glide.with(baseActivity)
-                    .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .load(mediaObject.getPath())
-                    .into(iv_image);
+            try {
+                Glide.with(baseActivity)
+                        .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                        .load(mediaObject.getPath())
+                        .into(iv_image);
 
-            if (selectedMedia.contains(mediaObject.getPath())) {
-                rl_selected.setVisibility(View.VISIBLE);
-            } else {
-                rl_selected.setVisibility(View.GONE);
+                if (selectedMedia.contains(mediaObject.getPath())) {
+                    rl_selected.setVisibility(View.VISIBLE);
+                } else {
+                    rl_selected.setVisibility(View.GONE);
+                }
+            }catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
 
         @Override
         public void onClick(View view) {
-            MediaObject mediaObject = getItem(getAdapterPosition());
+            try {
+                MediaObject mediaObject = getItem(getAdapterPosition());
 
-            if (selectedMedia.contains(mediaObject.getPath())) {
-                rl_selected.setVisibility(View.GONE);
-                selectedMedia.remove(mediaObject.getPath());
-            } else {
-                selectedMedia.add(mediaObject.getPath());
-                rl_selected.setVisibility(View.VISIBLE);
+                if (selectedMedia.contains(mediaObject.getPath())) {
+                    rl_selected.setVisibility(View.GONE);
+                    selectedMedia.remove(mediaObject.getPath());
+                } else {
+                    selectedMedia.add(mediaObject.getPath());
+                    rl_selected.setVisibility(View.VISIBLE);
+                }
+
+                iSetImageSelected.updateCount(selectedMedia.size());
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
-
-            iSetImageSelected.updateCount(selectedMedia.size());
         }
     }
 }

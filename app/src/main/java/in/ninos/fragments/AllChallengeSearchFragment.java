@@ -83,37 +83,41 @@ public class AllChallengeSearchFragment extends BaseFragment implements OnLoadMo
     }
 
     private void getPosts() {
-        service.searchChallenges(from, size, postKeyword, accessToken).enqueue(new Callback<AllChallengeSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<AllChallengeSearchResponse> call, @NonNull Response<AllChallengeSearchResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.searchChallenges(from, size, postKeyword, accessToken).enqueue(new Callback<AllChallengeSearchResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<AllChallengeSearchResponse> call, @NonNull Response<AllChallengeSearchResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    if (response.body().getChallenges().size() > 0) {
-                        rl_empty.setVisibility(View.GONE);
+                        if (response.body().getChallenges().size() > 0) {
+                            rl_empty.setVisibility(View.GONE);
 
-                        for (final PostInfo postInfo : response.body().getChallenges()) {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    allChallengeAdapter.addItem(postInfo);
-                                }
-                            });
+                            for (final PostInfo postInfo : response.body().getChallenges()) {
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        allChallengeAdapter.addItem(postInfo);
+                                    }
+                                });
+                            }
+                        } else if (from == 0) {
+                            tv_empty.setText(String.format(getString(R.string.unable_to_find_the_post_for_s), postKeyword));
+                            rl_empty.setVisibility(View.VISIBLE);
                         }
-                    } else if (from == 0) {
-                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_post_for_s), postKeyword));
-                        rl_empty.setVisibility(View.VISIBLE);
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AllChallengeSearchResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<AllChallengeSearchResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override

@@ -30,6 +30,7 @@ import in.ninos.models.Notification;
 import in.ninos.models.Response;
 import in.ninos.reterofit.RetrofitInstance;
 import in.ninos.utils.AWSUrls;
+import in.ninos.utils.CrashUtil;
 import in.ninos.utils.DateUtil;
 import in.ninos.utils.PreferenceUtil;
 import retrofit2.Call;
@@ -86,66 +87,70 @@ public class NotificationAdapter extends CommonRecyclerAdapter<Notification> {
         }
 
         private void bindData(int position) {
-            Notification notification = getItem(position);
+            try {
+                Notification notification = getItem(position);
 
-            String msg;
-            String postTitle;
+                String msg;
+                String postTitle;
 
-            if (TextUtils.isEmpty(notification.getData().getPostTitle())) {
-                postTitle = "one of your post";
-            } else {
-                postTitle = notification.getData().getPostTitle();
-            }
+                if (TextUtils.isEmpty(notification.getData().getPostTitle())) {
+                    postTitle = "one of your post";
+                } else {
+                    postTitle = notification.getData().getPostTitle();
+                }
 
-            switch (notification.getNotificationType()) {
-                case "POST_COMMENT":
-                    msg = String.format("<b>%s</b> has commented on <b>%s</b>", notification.getFromUserName(), postTitle);
-                    break;
-                default:
-                case "POST_CLAPS":
-                    msg = String.format("<b>%s</b> has clapped for <b>%s</b>", notification.getFromUserName(), postTitle);
-                    break;
-                case "USER_FOLLOWING":
-                    msg = String.format("<b>%s</b> is following you", notification.getFromUserName());
-                    break;
-            }
+                switch (notification.getNotificationType()) {
+                    case "POST_COMMENT":
+                        msg = String.format("<b>%s</b> has commented on <b>%s</b>", notification.getFromUserName(), postTitle);
+                        break;
+                    default:
+                    case "POST_CLAPS":
+                        msg = String.format("<b>%s</b> has clapped for <b>%s</b>", notification.getFromUserName(), postTitle);
+                        break;
+                    case "USER_FOLLOWING":
+                        msg = String.format("<b>%s</b> is following you", notification.getFromUserName());
+                        break;
+                }
 
-            tv_notification.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
+                tv_notification.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
 
-            if (notification.isRead()) {
-                tv_notification.setTextColor(ContextCompat.getColor(context, R.color.silver));
-            } else {
-                tv_notification.setTextColor(ContextCompat.getColor(context, R.color.midnight_blue));
-            }
+                if (notification.isRead()) {
+                    tv_notification.setTextColor(ContextCompat.getColor(context, R.color.silver));
+                } else {
+                    tv_notification.setTextColor(ContextCompat.getColor(context, R.color.midnight_blue));
+                }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-            int isDatesEqualed = sdf.format(notification.getCreatedAt()).compareTo(sdf.format(new Date()));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+                int isDatesEqualed = sdf.format(notification.getCreatedAt()).compareTo(sdf.format(new Date()));
 
-            if (isDatesEqualed == 0) {
-                long diff = new Date().getTime() - notification.getCreatedAt().getTime();
+                if (isDatesEqualed == 0) {
+                    long diff = new Date().getTime() - notification.getCreatedAt().getTime();
 
-                if (diff > 0) {
-                    int diffHours = (int) (diff / (60 * 60 * 1000) % 24);
+                    if (diff > 0) {
+                        int diffHours = (int) (diff / (60 * 60 * 1000) % 24);
 
-                    if (diffHours > 0) {
-                        tv_time.setText(String.format(context.getString(R.string.ago), diffHours));
+                        if (diffHours > 0) {
+                            tv_time.setText(String.format(context.getString(R.string.ago), diffHours));
+                        } else {
+                            long diffMinutes = diff / (60 * 1000) % 60;
+                            tv_time.setText(String.format(context.getString(R.string.ago_min), diffMinutes));
+                        }
                     } else {
-                        long diffMinutes = diff / (60 * 1000) % 60;
-                        tv_time.setText(String.format(context.getString(R.string.ago_min), diffMinutes));
+                        String date = dateUtil.formatDateToString(notification.getCreatedAt(), DateUtil.FULL_DATE);
+                        tv_time.setText(date);
                     }
                 } else {
                     String date = dateUtil.formatDateToString(notification.getCreatedAt(), DateUtil.FULL_DATE);
                     tv_time.setText(date);
                 }
-            } else {
-                String date = dateUtil.formatDateToString(notification.getCreatedAt(), DateUtil.FULL_DATE);
-                tv_time.setText(date);
-            }
 
-            Glide.with(context)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI64(context, notification.getFromUserId()))
-                    .into(iv_profile);
+                Glide.with(context)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(AWSUrls.GetPI64(context, notification.getFromUserId()))
+                        .into(iv_profile);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
 
         @Override
@@ -161,36 +166,40 @@ public class NotificationAdapter extends CommonRecyclerAdapter<Notification> {
                     context.startActivity(profileIntent);
                     break;
                 default:
-                    if (!notification.isRead()) {
-                        RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                        service.markNotificationAsRead(notification.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
-                            @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                notification.setRead(true);
-                                updateItem(position, notification);
-                            }
+                    try {
+                        if (!notification.isRead()) {
+                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                            service.markNotificationAsRead(notification.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    notification.setRead(true);
+                                    updateItem(position, notification);
+                                }
 
-                            @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    switch (notification.getNotificationType()) {
-                        default:
-                        case "POST_COMMENTS":
-                        case "POST_CLAPS":
-                            Intent showPostIntent = new Intent(context, ShowPostActivity.class);
-                            showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, notification.getData().getPostId());
-                            activity.startActivityForResult(showPostIntent, MainActivity.POST_UPDATE);
-                            break;
-                        case "USER_FOLLOWING":
-                            Intent intent = new Intent(context, ProfileActivity.class);
-                            intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, R.drawable.pattern_13);
-                            intent.putExtra(ProfileActivity.PROFILE_ID, notification.getFromUserId());
-                            context.startActivity(intent);
-                            break;
+                        switch (notification.getNotificationType()) {
+                            default:
+                            case "POST_COMMENTS":
+                            case "POST_CLAPS":
+                                Intent showPostIntent = new Intent(context, ShowPostActivity.class);
+                                showPostIntent.putExtra(ShowPostActivity.POST_PROFILE_ID, notification.getData().getPostId());
+                                activity.startActivityForResult(showPostIntent, MainActivity.POST_UPDATE);
+                                break;
+                            case "USER_FOLLOWING":
+                                Intent intent = new Intent(context, ProfileActivity.class);
+                                intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, R.drawable.pattern_13);
+                                intent.putExtra(ProfileActivity.PROFILE_ID, notification.getFromUserId());
+                                context.startActivity(intent);
+                                break;
+                        }
+                    } catch (Exception e) {
+                        CrashUtil.report(e);
                     }
                     break;
             }

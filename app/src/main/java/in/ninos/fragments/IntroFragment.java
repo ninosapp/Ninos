@@ -49,37 +49,41 @@ public class IntroFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        try {
+            super.onViewCreated(view, savedInstanceState);
 
-        int imageId;
-        String colour;
+            int imageId;
+            String colour;
 
-        switch (mPage) {
-            default:
-            case 0:
-                imageId = R.drawable.onboarding1;
-                colour = "#EB5333";
-                break;
-            case 1:
-                imageId = R.drawable.onboarding2;
-                colour = "#22C0FF";
-                break;
-            case 2:
-                imageId = R.drawable.onboarding3;
-                colour = "#387106";
-                break;
-            case 3:
-                imageId = R.drawable.onboarding4;
-                colour = "#F19233";
-                break;
-        }
+            switch (mPage) {
+                default:
+                case 0:
+                    imageId = R.drawable.onboarding1;
+                    colour = "#EB5333";
+                    break;
+                case 1:
+                    imageId = R.drawable.onboarding2;
+                    colour = "#22C0FF";
+                    break;
+                case 2:
+                    imageId = R.drawable.onboarding3;
+                    colour = "#387106";
+                    break;
+                case 3:
+                    imageId = R.drawable.onboarding4;
+                    colour = "#F19233";
+                    break;
+            }
 
-        ImageView iv_songs = view.findViewById(R.id.iv_image);
-        FrameLayout intro_background = view.findViewById(R.id.intro_background);
+            ImageView iv_songs = view.findViewById(R.id.iv_image);
+            FrameLayout intro_background = view.findViewById(R.id.intro_background);
 
-        if (getContext() != null) {
-            Glide.with(getContext()).load(imageId).into(iv_songs);
-            intro_background.setBackgroundColor(Color.parseColor(colour));
+            if (getContext() != null) {
+                Glide.with(getContext()).load(imageId).into(iv_songs);
+                intro_background.setBackgroundColor(Color.parseColor(colour));
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 

@@ -108,15 +108,20 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String searchParams = "bucket_display_name = \"" + bucketName + "\"";
-            String orderBy = "datetaken DESC";
+            try {
+                String searchParams = "bucket_display_name = \"" + bucketName + "\"";
+                String orderBy = "datetaken DESC";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    null,
-                    searchParams,
-                    null,
-                    orderBy);
+                return new CursorLoader(getContext(),
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        null,
+                        searchParams,
+                        null,
+                        orderBy);
+            } catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -142,8 +147,8 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
 
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            showToast(R.string.error_message);
+        }catch (Exception e) {
+            logError(e);
         }
     }
 
@@ -154,13 +159,17 @@ public class ImagePickFragment extends BaseFragment implements LoaderManager.Loa
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_cancel:
-                mBaseActivity.onBackPressed();
-                break;
-            case R.id.tv_select_count:
-                mBaseActivity.setSelectedImages(imagePickAdapter.getSelectedMedia());
-                break;
+        try {
+            switch (view.getId()) {
+                case R.id.tv_cancel:
+                    mBaseActivity.onBackPressed();
+                    break;
+                case R.id.tv_select_count:
+                    mBaseActivity.setSelectedImages(imagePickAdapter.getSelectedMedia());
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 

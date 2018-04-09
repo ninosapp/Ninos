@@ -152,45 +152,61 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     private void getQuizzes() {
-        service.getActiveQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
-            @Override
-            public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    final List<Quizze> quizzes = response.body().getQuizeData();
+        try {
+            service.getActiveQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
+                @Override
+                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        final List<Quizze> quizzes = response.body().getQuizeData();
 
-                    if (quizzes.size() > 10) {
-                        for (int i = 0; i < 10; i++) {
-                            Quizze quizze = quizzes.get(i);
+                        if (quizzes.size() > 10) {
+                            for (int i = 0; i < 10; i++) {
+                                Quizze quizze = quizzes.get(i);
+                                quizAdapter.addItem(quizze);
+                            }
+
+                            Quizze quizze = new Quizze();
+                            quizze.setQuizTaken(false);
+                            quizze.setTitle("More");
+                            quizze.set_id("More");
                             quizAdapter.addItem(quizze);
-                        }
+                        } else {
+                            for (Quizze quizze : quizzes) {
+                                quizAdapter.addItem(quizze);
+                            }
 
-                        Quizze quizze = new Quizze();
-                        quizze.setQuizTaken(false);
-                        quizze.setTitle("More");
-                        quizze.set_id("More");
-                        quizAdapter.addItem(quizze);
-                    } else {
-                        for (Quizze quizze : quizzes) {
-                            quizAdapter.addItem(quizze);
-                        }
+                            quizAdapter.addItem(null);
 
-                        quizAdapter.addItem(null);
+                            service.getCompletedQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
+                                @Override
+                                public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        quizAdapter.removeItem(null);
 
-                        service.getCompletedQuizzes(0, 10, accessToken).enqueue(new Callback<QuizResponse>() {
-                            @Override
-                            public void onResponse(Call<QuizResponse> call, @NonNull Response<QuizResponse> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    quizAdapter.removeItem(null);
+                                        List<Quizze> quizzes = response.body().getQuizeData();
 
-                                    List<Quizze> quizzes = response.body().getQuizeData();
+                                        for (Quizze quizze : quizzes) {
+                                            if (quizAdapter.getItemCount() >= 10) {
+                                                break;
+                                            }
 
-                                    for (Quizze quizze : quizzes) {
-                                        if (quizAdapter.getItemCount() >= 10) {
-                                            break;
+                                            quizAdapter.addItem(quizze);
                                         }
 
-                                        quizAdapter.addItem(quizze);
+                                        if (quizAdapter.getItemCount() >= 10) {
+                                            Quizze quizze = new Quizze();
+                                            quizze.setQuizTaken(false);
+                                            quizze.setTitle("More");
+                                            quizze.set_id("More");
+                                            quizAdapter.addItem(quizze);
+                                        }
                                     }
+
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
+                                    quizAdapter.removeItem(null);
 
                                     if (quizAdapter.getItemCount() >= 10) {
                                         Quizze quizze = new Quizze();
@@ -200,59 +216,51 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
                                         quizAdapter.addItem(quizze);
                                     }
                                 }
-
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-                                quizAdapter.removeItem(null);
-
-                                if (quizAdapter.getItemCount() >= 10) {
-                                    Quizze quizze = new Quizze();
-                                    quizze.setQuizTaken(false);
-                                    quizze.setTitle("More");
-                                    quizze.set_id("More");
-                                    quizAdapter.addItem(quizze);
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
+
                 }
 
-            }
+                @Override
+                public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
 
-            @Override
-            public void onFailure(@NonNull Call<QuizResponse> call, @NonNull Throwable t) {
-
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void getPosts() {
-        service.searchPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    allChallengeAdapter.removeItem(null);
+        try {
+            service.searchPosts(from, size, accessToken).enqueue(new Callback<PostsResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostsResponse> call, @NonNull Response<PostsResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allChallengeAdapter.removeItem(null);
 
-                    for (final PostInfo postInfo : response.body().getPostInfo()) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                allChallengeAdapter.addItem(postInfo);
-                            }
-                        });
+                        for (final PostInfo postInfo : response.body().getPostInfo()) {
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    allChallengeAdapter.addItem(postInfo);
+                                }
+                            });
+                        }
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostsResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PostsResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
@@ -267,65 +275,73 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     public void newPostAdded(final String postId) {
-        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    boolean postAdded = false;
+        try {
+            service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                    if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
+                        boolean postAdded = false;
 
-                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-                        PostInfo postInfo = allChallengeAdapter.getItem(i);
+                        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                            PostInfo postInfo = allChallengeAdapter.getItem(i);
 
-                        if (postInfo != null && postInfo.get_id().equals(postId)) {
-                            postAdded = true;
+                            if (postInfo != null && postInfo.get_id().equals(postId)) {
+                                postAdded = true;
+                            }
+                        }
+
+                        if (!postAdded) {
+                            PostInfo postInfo = response.body().getPostInfo();
+                            allChallengeAdapter.addItem(postInfo, 0);
+
+                            new Handler().postAtTime(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ns_view.scrollTo(0, 0);
+                                }
+                            }, 1000);
                         }
                     }
-
-                    if (!postAdded) {
-                        PostInfo postInfo = response.body().getPostInfo();
-                        allChallengeAdapter.addItem(postInfo, 0);
-
-                        new Handler().postAtTime(new Runnable() {
-                            @Override
-                            public void run() {
-                                ns_view.scrollTo(0, 0);
-                            }
-                        }, 1000);
-                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<PostResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     public void newCommentAdded(String postId) {
-        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    PostInfo postInfo = response.body().getPostInfo();
+        try {
+            service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                    if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
+                        PostInfo postInfo = response.body().getPostInfo();
 
-                    for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-                        PostInfo pf = allChallengeAdapter.getItem(i);
+                        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                            PostInfo pf = allChallengeAdapter.getItem(i);
 
-                        if (pf.get_id().equals(postInfo.get_id())) {
-                            RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
-                            allChallengeAdapter.updateComment(viewHolder, postInfo.getTotalCommentCount());
-                            break;
+                            if (pf.get_id().equals(postInfo.get_id())) {
+                                RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                                allChallengeAdapter.updateComment(viewHolder, postInfo.getTotalCommentCount());
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<PostResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
@@ -345,73 +361,89 @@ public class AllChallengesFragment extends BaseFragment implements OnLoadMoreLis
     }
 
     public void quizUpdated(String quizId) {
-        for (int i = 0; i < quizAdapter.getItemCount(); i++) {
-            Quizze quizze = quizAdapter.getItem(i);
+        try {
+            for (int i = 0; i < quizAdapter.getItemCount(); i++) {
+                Quizze quizze = quizAdapter.getItem(i);
 
-            if (quizze.get_id().equals(quizId)) {
-                quizze.setQuizTaken(true);
-                quizAdapter.updateItem(i, quizze);
-                break;
+                if (quizze.get_id().equals(quizId)) {
+                    quizze.setQuizTaken(true);
+                    quizAdapter.updateItem(i, quizze);
+                    break;
+                }
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
     public void postUpdated(String postId, String desc, ArrayList<String> links) {
-        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-            PostInfo postInfo = allChallengeAdapter.getItem(i);
+        try {
+            for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                PostInfo postInfo = allChallengeAdapter.getItem(i);
 
-            if (postInfo.get_id().equals(postId)) {
-                postInfo.setTitle(desc);
-                RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
-                allChallengeAdapter.updateTitle(viewHolder, desc);
+                if (postInfo.get_id().equals(postId)) {
+                    postInfo.setTitle(desc);
+                    RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                    allChallengeAdapter.updateTitle(viewHolder, desc);
 
-                if (links.size() > 0) {
-                    postInfo.setLinks(links);
-                    allChallengeAdapter.updateItem(i, postInfo);
+                    if (links.size() > 0) {
+                        postInfo.setLinks(links);
+                        allChallengeAdapter.updateItem(i, postInfo);
+                    }
+
+                    break;
                 }
-
-                break;
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
     public void postDeleted(String postId) {
-        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-            PostInfo postInfo = allChallengeAdapter.getItem(i);
+        try {
+            for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                PostInfo postInfo = allChallengeAdapter.getItem(i);
 
-            if (postInfo.get_id().equals(postId)) {
-                allChallengeAdapter.removeItem(i);
-                break;
+                if (postInfo.get_id().equals(postId)) {
+                    allChallengeAdapter.removeItem(i);
+                    break;
+                }
             }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
 
     public void newClapAdded(String postId) {
-        service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
-                if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
-                    PostInfo postInfo = response.body().getPostInfo();
+        try {
+            service.getPost(postId, accessToken).enqueue(new Callback<PostResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PostResponse> call, @NonNull Response<PostResponse> response) {
+                    if (response.body() != null && response.isSuccessful() && allChallengeAdapter != null) {
+                        PostInfo postInfo = response.body().getPostInfo();
 
-                    if (postInfo != null) {
-                        for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
-                            PostInfo pf = allChallengeAdapter.getItem(i);
+                        if (postInfo != null) {
+                            for (int i = 0; i < allChallengeAdapter.getItemCount(); i++) {
+                                PostInfo pf = allChallengeAdapter.getItem(i);
 
-                            if (pf != null && pf.get_id().equals(postInfo.get_id())) {
-                                RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
-                                allChallengeAdapter.updateClap(viewHolder, postInfo);
-                                break;
+                                if (pf != null && pf.get_id().equals(postInfo.get_id())) {
+                                    RecyclerView.ViewHolder viewHolder = challenge_list.findViewHolderForAdapterPosition(i);
+                                    allChallengeAdapter.updateClap(viewHolder, postInfo);
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<PostResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 }

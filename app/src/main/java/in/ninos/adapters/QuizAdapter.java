@@ -19,6 +19,7 @@ import in.ninos.activities.QuizViewActivity;
 import in.ninos.activities.ScoreActivity;
 import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.models.Quizze;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 08-12-2017.
@@ -66,55 +67,59 @@ public class QuizAdapter extends CommonRecyclerAdapter<Quizze> {
         }
 
         private void bindData(int position) {
-            Quizze quizze = getItem(position);
-            tv_quiz_name.setText(quizze.getTitle());
+            try {
+                Quizze quizze = getItem(position);
+                tv_quiz_name.setText(quizze.getTitle());
 
-            if (quizze.isQuizTaken()) {
-                tv_quiz_name.setTextColor(Color.GRAY);
-            } else {
-                tv_quiz_name.setTextColor(Color.BLACK);
+                if (quizze.isQuizTaken()) {
+                    tv_quiz_name.setTextColor(Color.GRAY);
+                } else {
+                    tv_quiz_name.setTextColor(Color.BLACK);
+                }
+
+                int drawableId;
+
+                switch (quizze.getTitle().toLowerCase()) {
+                    default:
+                    case "general knowledge":
+                        drawableId = R.drawable.ic_gk;
+                        break;
+                    case "science":
+                        drawableId = R.drawable.ic_science;
+                        break;
+                    case "technology":
+                        drawableId = R.drawable.ic_technology;
+                        break;
+                    case "sports":
+                        drawableId = R.drawable.ic_sports;
+                        break;
+                    case "english":
+                        drawableId = R.drawable.ic_english;
+                        break;
+                    case "entertainment":
+                        drawableId = R.drawable.ic_entertainment;
+                        break;
+                    case "india":
+                        drawableId = R.drawable.ic_india;
+                        break;
+                    case "numbers":
+                        drawableId = R.drawable.ic_numbers;
+                        break;
+                    case "puzzles":
+                        drawableId = R.drawable.ic_puzzles;
+                        break;
+                    case "social science":
+                        drawableId = R.drawable.ic_social_science;
+                        break;
+                    case "more":
+                        drawableId = R.drawable.ic_more;
+                        break;
+                }
+
+                iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(context, drawableId));
+            }catch (Exception e) {
+                CrashUtil.report(e);
             }
-
-            int drawableId;
-
-            switch (quizze.getTitle().toLowerCase()) {
-                default:
-                case "general knowledge":
-                    drawableId = R.drawable.ic_gk;
-                    break;
-                case "science":
-                    drawableId = R.drawable.ic_science;
-                    break;
-                case "technology":
-                    drawableId = R.drawable.ic_technology;
-                    break;
-                case "sports":
-                    drawableId = R.drawable.ic_sports;
-                    break;
-                case "english":
-                    drawableId = R.drawable.ic_english;
-                    break;
-                case "entertainment":
-                    drawableId = R.drawable.ic_entertainment;
-                    break;
-                case "india":
-                    drawableId = R.drawable.ic_india;
-                    break;
-                case "numbers":
-                    drawableId = R.drawable.ic_numbers;
-                    break;
-                case "puzzles":
-                    drawableId = R.drawable.ic_puzzles;
-                    break;
-                case "social science":
-                    drawableId = R.drawable.ic_social_science;
-                    break;
-                case "more":
-                    drawableId = R.drawable.ic_more;
-                    break;
-            }
-
-            iv_quiz_background.setImageDrawable(ContextCompat.getDrawable(context, drawableId));
         }
 
         @Override

@@ -36,68 +36,72 @@ public class NinosMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        try {
+            Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            if (remoteMessage.getData().size() > 0) {
+                Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            }
+
+            if (remoteMessage.getNotification() != null) {
+                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            }
+
+            String title = remoteMessage.getData().get("title");
+            String message = remoteMessage.getData().get("message");
+            String imageUri = remoteMessage.getData().get("image");
+            String challengeId = remoteMessage.getData().get("challengeId");
+            String challengeTitle = remoteMessage.getData().get("challengeTitle");
+            String quizId = remoteMessage.getData().get("quizId");
+            String quizDuration = remoteMessage.getData().get("quizDuration");
+            String quizTitle = remoteMessage.getData().get("quizTitle");
+            Bitmap bitmap = getBitmapfromUrl(imageUri);
+
+            Intent intent;
+            if (challengeId == null && quizId == null) {
+                intent = new Intent(this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            } else if (challengeId != null) {
+                intent = new Intent(this, ChallengeActivity.class);
+                intent.putExtra(ChallengeActivity.CHALLENGE_ID, challengeId);
+                intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, challengeTitle);
+
+            } else {
+                intent = new Intent(this, QuizActivity.class);
+                intent.putExtra(QuizActivity.QUIZ_ID, quizId);
+                intent.putExtra(QuizActivity.QUIZ_DURATION, quizDuration);
+                intent.putExtra(QuizActivity.QUIZ_TITLE, quizTitle);
+            }
+
+            NotificationCompat.BigPictureStyle notificationCompat = new NotificationCompat.BigPictureStyle().setBigContentTitle(title).setSummaryText(message);
+
+            if (bitmap != null) {
+                notificationCompat.bigPicture(bitmap);
+            }
+
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setStyle(notificationCompat)
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, notificationBuilder.build());
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
-
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-
-        String title = remoteMessage.getData().get("title");
-        String message = remoteMessage.getData().get("message");
-        String imageUri = remoteMessage.getData().get("image");
-        String challengeId = remoteMessage.getData().get("challengeId");
-        String challengeTitle = remoteMessage.getData().get("challengeTitle");
-        String quizId = remoteMessage.getData().get("quizId");
-        String quizDuration = remoteMessage.getData().get("quizDuration");
-        String quizTitle = remoteMessage.getData().get("quizTitle");
-        Bitmap bitmap = getBitmapfromUrl(imageUri);
-
-        Intent intent;
-        if (challengeId == null && quizId == null) {
-            intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        } else if (challengeId != null) {
-            intent = new Intent(this, ChallengeActivity.class);
-            intent.putExtra(ChallengeActivity.CHALLENGE_ID, challengeId);
-            intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, challengeTitle);
-
-        } else {
-            intent = new Intent(this, QuizActivity.class);
-            intent.putExtra(QuizActivity.QUIZ_ID, quizId);
-            intent.putExtra(QuizActivity.QUIZ_DURATION, quizDuration);
-            intent.putExtra(QuizActivity.QUIZ_TITLE, quizTitle);
-        }
-
-        NotificationCompat.BigPictureStyle notificationCompat = new NotificationCompat.BigPictureStyle().setBigContentTitle(title).setSummaryText(message);
-
-        if (bitmap != null) {
-            notificationCompat.bigPicture(bitmap);
-        }
-
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setStyle(notificationCompat)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0, notificationBuilder.build());
     }
 
     public Bitmap getBitmapfromUrl(String imageUrl) {

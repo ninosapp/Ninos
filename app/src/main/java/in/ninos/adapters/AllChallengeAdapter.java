@@ -62,6 +62,7 @@ import in.ninos.models.PostReport;
 import in.ninos.reterofit.RetrofitInstance;
 import in.ninos.utils.AWSClient;
 import in.ninos.utils.AWSUrls;
+import in.ninos.utils.CrashUtil;
 import in.ninos.utils.DateUtil;
 import in.ninos.utils.PreferenceUtil;
 import in.ninos.views.CircleImageView;
@@ -146,43 +147,47 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            CrashUtil.report(e);
         }
     }
 
     private void setClap(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_clap);
-        iv_clap.setImageDrawable(drawable);
-        int color;
+        try {
+            Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_clap);
+            iv_clap.setImageDrawable(drawable);
+            int color;
 
-        if (postInfo.isMyRating()) {
-            tv_clap.setTextColor(color_accent);
-            color = color_accent;
-        } else {
-            tv_clap.setTextColor(color_dark_grey);
-            color = color_dark_grey;
-        }
-
-        setClapListener(postInfo, iv_clap, tv_clap);
-
-        if (drawable != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                DrawableCompat.setTint(drawable, color);
-
+            if (postInfo.isMyRating()) {
+                tv_clap.setTextColor(color_accent);
+                color = color_accent;
             } else {
-                drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                tv_clap.setTextColor(color_dark_grey);
+                color = color_dark_grey;
             }
+
+            setClapListener(postInfo, iv_clap, tv_clap);
+
+            if (drawable != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    DrawableCompat.setTint(drawable, color);
+
+                } else {
+                    drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                }
+            }
+
+            int clapStringId;
+
+            if (postInfo.getTotalClapsCount() > 1) {
+                clapStringId = R.string.s_claps;
+            } else {
+                clapStringId = R.string.s_clap;
+            }
+
+            tv_clap.setText(String.format(context.getString(clapStringId), postInfo.getTotalClapsCount()));
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
-
-        int clapStringId;
-
-        if (postInfo.getTotalClapsCount() > 1) {
-            clapStringId = R.string.s_claps;
-        } else {
-            clapStringId = R.string.s_clap;
-        }
-
-        tv_clap.setText(String.format(context.getString(clapStringId), postInfo.getTotalClapsCount()));
     }
 
     private void setClapListener(final PostInfo postInfo, final ImageView iv_clap, final TextView tv_clap) {
@@ -220,32 +225,44 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            CrashUtil.report(e);
         }
     }
 
     public void updateClap(RecyclerView.ViewHolder viewHolder, PostInfo postInfo) {
-        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+        try {
+            ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
 
-        if (challengeViewHolder != null) {
-            setClap(postInfo, challengeViewHolder.iv_clap, challengeViewHolder.tv_clap);
+            if (challengeViewHolder != null) {
+                setClap(postInfo, challengeViewHolder.iv_clap, challengeViewHolder.tv_clap);
+            }
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
     }
 
     public void updateComment(RecyclerView.ViewHolder viewHolder, int commentCount) {
-        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+        try {
+            ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
 
-        if (challengeViewHolder != null) {
-            challengeViewHolder.tv_comment.setText(String.format(context.getString(R.string.s_comments), commentCount));
+            if (challengeViewHolder != null) {
+                challengeViewHolder.tv_comment.setText(String.format(context.getString(R.string.s_comments), commentCount));
+            }
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
     }
 
     public void updateTitle(RecyclerView.ViewHolder viewHolder, String title) {
-        ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
+        try {
+            ChallengeViewHolder challengeViewHolder = (ChallengeViewHolder) viewHolder;
 
-        if (challengeViewHolder != null) {
-            challengeViewHolder.tv_title.setText(title);
-            challengeViewHolder.tv_title.setVisibility(View.VISIBLE);
+            if (challengeViewHolder != null) {
+                challengeViewHolder.tv_title.setText(title);
+                challengeViewHolder.tv_title.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
     }
 
@@ -300,113 +317,117 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
 
         private void bindData(final int position) {
-            final PostInfo postInfo = getItem(position);
+            try {
+                final PostInfo postInfo = getItem(position);
 
-            tv_name.setText(postInfo.getUserName());
+                tv_name.setText(postInfo.getUserName());
 
-            if (TextUtils.isEmpty(postInfo.getTitle())) {
-                tv_title.setVisibility(View.GONE);
-            } else {
-                tv_title.setText(postInfo.getTitle().trim());
-                tv_title.setVisibility(View.VISIBLE);
-            }
-
-            if (type.equals(Type.POST) && postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
-                String msg = String.format("<b>%s</b> posted in <b style=\"color:#f76707\"><font color='#f76707'>%s</font></b> challenge", postInfo.getUserName(), postInfo.getChallengeTitle());
-                tv_msg.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
-                tv_msg.setVisibility(View.VISIBLE);
-                tv_msg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, ChallengeActivity.class);
-                        intent.putExtra(ChallengeActivity.CHALLENGE_ID, postInfo.getChallengeId());
-                        intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, postInfo.getChallengeTitle());
-                        context.startActivity(intent);
-                    }
-                });
-            } else {
-                tv_msg.setVisibility(View.GONE);
-                tv_msg.setOnClickListener(null);
-            }
-
-            if (postInfo.getCreatedAt() != null) {
-                String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
-                tv_created_time.setText(date);
-            }
-
-            int commentStringId;
-
-            if (postInfo.getTotalCommentCount() > 0) {
-                commentStringId = R.string.s_comments;
-            } else {
-                commentStringId = R.string.s_comment;
-            }
-
-            tv_comment.setText(String.format(context.getString(commentStringId), postInfo.getTotalCommentCount()));
-
-            int index = position % 10;
-            int resId = typedArray.getResourceId(index, 0);
-            String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
-
-            if (postInfo.isVideo()) {
-                List<String> links = awsClient.getBucket(path);
-                recyclerView.setVisibility(View.GONE);
-                video_view.setVisibility(View.VISIBLE);
-
-                if (postInfo.getLinks() == null) {
-                    new LoadVideo(video_view, position).execute(path);
+                if (TextUtils.isEmpty(postInfo.getTitle())) {
+                    tv_title.setVisibility(View.GONE);
                 } else {
-                    if (links.size() > 0) {
-                        String link = links.get(0);
-                        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-                        Glide.with(context).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
-
-                        video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
-                    }
+                    tv_title.setText(postInfo.getTitle().trim());
+                    tv_title.setVisibility(View.VISIBLE);
                 }
-            } else {
-                video_view.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
 
-                ImageAdapter imageAdapter = new ImageAdapter(activity, resId, postInfo.get_id());
-                recyclerView.setAdapter(imageAdapter);
-
-                if (postInfo.getLinks() == null) {
-                    new LoadImage(imageAdapter, position).execute(path);
-                } else {
-                    for (String link : postInfo.getLinks()) {
-                        imageAdapter.addItem(link);
-                    }
-
-                    if (postInfo.getLinks().size() > 1) {
-                        recyclerView.addItemDecoration(new PagerIndicatorDecoration());
-                    }
-
-                    activity.runOnUiThread(new Runnable() {
+                if (type.equals(Type.POST) && postInfo.getIsChallenge() && postInfo.getChallengeTitle() != null && postInfo.getUserName() != null) {
+                    String msg = String.format("<b>%s</b> posted in <b style=\"color:#f76707\"><font color='#f76707'>%s</font></b> challenge", postInfo.getUserName(), postInfo.getChallengeTitle());
+                    tv_msg.setText(Html.fromHtml(msg), TextView.BufferType.SPANNABLE);
+                    tv_msg.setVisibility(View.VISIBLE);
+                    tv_msg.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
-                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-                            if (postInfo.getLinks().size() > 0) {
-                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                                itemView.setVisibility(View.VISIBLE);
-                            } else {
-                                itemView.setVisibility(View.GONE);
-                                param.height = 0;
-                                param.width = 0;
-                            }
-                            itemView.setLayoutParams(param);
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, ChallengeActivity.class);
+                            intent.putExtra(ChallengeActivity.CHALLENGE_ID, postInfo.getChallengeId());
+                            intent.putExtra(ChallengeActivity.CHALLENGE_TITLE, postInfo.getChallengeTitle());
+                            context.startActivity(intent);
                         }
                     });
+                } else {
+                    tv_msg.setVisibility(View.GONE);
+                    tv_msg.setOnClickListener(null);
                 }
+
+                if (postInfo.getCreatedAt() != null) {
+                    String date = dateUtil.formatDateToString(postInfo.getCreatedAt(), DateUtil.FULL_DATE);
+                    tv_created_time.setText(date);
+                }
+
+                int commentStringId;
+
+                if (postInfo.getTotalCommentCount() > 0) {
+                    commentStringId = R.string.s_comments;
+                } else {
+                    commentStringId = R.string.s_comment;
+                }
+
+                tv_comment.setText(String.format(context.getString(commentStringId), postInfo.getTotalCommentCount()));
+
+                int index = position % 10;
+                int resId = typedArray.getResourceId(index, 0);
+                String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
+
+                if (postInfo.isVideo()) {
+                    List<String> links = awsClient.getBucket(path);
+                    recyclerView.setVisibility(View.GONE);
+                    video_view.setVisibility(View.VISIBLE);
+
+                    if (postInfo.getLinks() == null) {
+                        new LoadVideo(video_view, position).execute(path);
+                    } else {
+                        if (links.size() > 0) {
+                            String link = links.get(0);
+                            RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                            Glide.with(context).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
+
+                            video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
+                        }
+                    }
+                } else {
+                    video_view.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    ImageAdapter imageAdapter = new ImageAdapter(activity, resId, postInfo.get_id());
+                    recyclerView.setAdapter(imageAdapter);
+
+                    if (postInfo.getLinks() == null) {
+                        new LoadImage(imageAdapter, position).execute(path);
+                    } else {
+                        for (String link : postInfo.getLinks()) {
+                            imageAdapter.addItem(link);
+                        }
+
+                        if (postInfo.getLinks().size() > 1) {
+                            recyclerView.addItemDecoration(new PagerIndicatorDecoration());
+                        }
+
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                                if (postInfo.getLinks().size() > 0) {
+                                    param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                    param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                                    itemView.setVisibility(View.VISIBLE);
+                                } else {
+                                    itemView.setVisibility(View.GONE);
+                                    param.height = 0;
+                                    param.width = 0;
+                                }
+                                itemView.setLayoutParams(param);
+                            }
+                        });
+                    }
+                }
+
+                Glide.with(context)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(AWSUrls.GetPI64(context, postInfo.getUserId()))
+                        .into(iv_profile);
+
+                setClap(postInfo, iv_clap, tv_clap);
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
-
-            Glide.with(context)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI64(context, postInfo.getUserId()))
-                    .into(iv_profile);
-
-            setClap(postInfo, iv_clap, tv_clap);
         }
 
         private void clapAnimation(final PostInfo postInfo) {
@@ -656,33 +677,39 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected List<String> doInBackground(String... strings) {
                 String path = strings[0];
 
-                final List<String> links = awsClient.getBucket(path);
+                final List<String> links = new ArrayList<>();
 
-                if (getItemCount() > position) {
-                    PostInfo postInfo = getItem(position);
+                try {
+                    links.addAll(awsClient.getBucket(path));
 
-                    if (postInfo != null) {
-                        postInfo.setLinks(links);
-                    }
-                }
+                    if (getItemCount() > position) {
+                        PostInfo postInfo = getItem(position);
 
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-                        if (links.size() > 0) {
-                            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                            itemView.setVisibility(View.VISIBLE);
-                        } else {
-                            itemView.setVisibility(View.GONE);
-                            param.height = 0;
-                            param.width = 0;
+                        if (postInfo != null) {
+                            postInfo.setLinks(links);
                         }
-                        itemView.setLayoutParams(param);
                     }
-                });
+
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                            if (links.size() > 0) {
+                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                                itemView.setVisibility(View.VISIBLE);
+                            } else {
+                                itemView.setVisibility(View.GONE);
+                                param.height = 0;
+                                param.width = 0;
+                            }
+                            itemView.setLayoutParams(param);
+                        }
+                    });
+                } catch (Exception e) {
+                    CrashUtil.report(e);
+                }
 
                 return links;
             }
@@ -722,30 +749,36 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             protected List<String> doInBackground(String... strings) {
                 String path = strings[0];
 
-                final List<String> links = awsClient.getBucket(path);
+                final List<String> links=new ArrayList<>();
 
-                PostInfo postInfo = getItem(position);
+                try {
+                    links.addAll(awsClient.getBucket(path));
 
-                if (postInfo != null) {
-                    postInfo.setLinks(links);
-                }
+                    PostInfo postInfo = getItem(position);
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-                        if (links.size() > 0) {
-                            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                            itemView.setVisibility(View.VISIBLE);
-                        } else {
-                            itemView.setVisibility(View.GONE);
-                            param.height = 0;
-                            param.width = 0;
-                        }
-                        itemView.setLayoutParams(param);
+                    if (postInfo != null) {
+                        postInfo.setLinks(links);
                     }
-                });
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                            if (links.size() > 0) {
+                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                                itemView.setVisibility(View.VISIBLE);
+                            } else {
+                                itemView.setVisibility(View.GONE);
+                                param.height = 0;
+                                param.width = 0;
+                            }
+                            itemView.setLayoutParams(param);
+                        }
+                    });
+                } catch (Exception e) {
+                    CrashUtil.report(e);
+                }
 
                 return links;
             }

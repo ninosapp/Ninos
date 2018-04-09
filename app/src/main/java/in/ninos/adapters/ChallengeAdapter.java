@@ -19,6 +19,7 @@ import in.ninos.R;
 import in.ninos.activities.ChallengeActivity;
 import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.models.ChallengeInfo;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 04-02-2018.
@@ -60,23 +61,27 @@ public class ChallengeAdapter extends CommonRecyclerAdapter<ChallengeInfo> {
         }
 
         void bindData(int position) {
-            ChallengeInfo postInfo = getItem(position);
-            tv_title.setText(postInfo.getTitle());
+            try {
+                ChallengeInfo postInfo = getItem(position);
+                tv_title.setText(postInfo.getTitle());
 
-            int index = position % 10;
-            int resId = typedArray.getResourceId(index, 0);
+                int index = position % 10;
+                int resId = typedArray.getResourceId(index, 0);
 
-            iv_challenge.setImageDrawable(ContextCompat.getDrawable(context, resId));
+                iv_challenge.setImageDrawable(ContextCompat.getDrawable(context, resId));
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(resId)
-                    .error(resId)
-                    .fallback(resId)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(resId)
+                        .error(resId)
+                        .fallback(resId)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-            Glide.with(context)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(postInfo.getImageUrl()).into(iv_challenge);
+                Glide.with(context)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(postInfo.getImageUrl()).into(iv_challenge);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
 
         @Override

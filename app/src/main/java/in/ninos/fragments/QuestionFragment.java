@@ -101,58 +101,62 @@ public class QuestionFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        int index;
+        try {
+            int id = view.getId();
+            int index;
 
-        tv_option1.setBackgroundColor(Color.WHITE);
-        tv_option2.setBackgroundColor(Color.WHITE);
-        tv_option3.setBackgroundColor(Color.WHITE);
-        tv_option4.setBackgroundColor(Color.WHITE);
+            tv_option1.setBackgroundColor(Color.WHITE);
+            tv_option2.setBackgroundColor(Color.WHITE);
+            tv_option3.setBackgroundColor(Color.WHITE);
+            tv_option4.setBackgroundColor(Color.WHITE);
 
-        switch (id) {
-            default:
-            case R.id.cv_option1:
-                index = 0;
+            switch (id) {
+                default:
+                case R.id.cv_option1:
+                    index = 0;
 
-                if (getContext() != null) {
-                    tv_option1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
-                }
-                break;
-            case R.id.cv_option2:
-                index = 1;
+                    if (getContext() != null) {
+                        tv_option1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                    }
+                    break;
+                case R.id.cv_option2:
+                    index = 1;
 
-                if (getContext() != null) {
-                    tv_option2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
-                }
-                break;
-            case R.id.cv_option3:
-                index = 2;
+                    if (getContext() != null) {
+                        tv_option2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                    }
+                    break;
+                case R.id.cv_option3:
+                    index = 2;
 
-                if (getContext() != null) {
-                    tv_option3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
-                }
-                break;
-            case R.id.cv_option4:
-                index = 3;
+                    if (getContext() != null) {
+                        tv_option3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                    }
+                    break;
+                case R.id.cv_option4:
+                    index = 3;
 
-                if (getContext() != null) {
-                    tv_option4.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
-                }
-                break;
+                    if (getContext() != null) {
+                        tv_option4.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.silver));
+                    }
+                    break;
+            }
+
+            String option = options[index];
+
+            mcqSolution = new MCQSolution();
+
+            if (option.equals(answer)) {
+                mcqSolution.setStatus(QuestionsAdapter.correct);
+            } else {
+                mcqSolution.setStatus(QuestionsAdapter.incorrect);
+            }
+
+            mcqSolution.setQuestionId(quizId);
+            mcqSolution.setAnswer(option);
+        } catch (Exception e) {
+            logError(e);
         }
-
-        String option = options[index];
-
-        mcqSolution = new MCQSolution();
-
-        if (option.equals(answer)) {
-            mcqSolution.setStatus(QuestionsAdapter.correct);
-        } else {
-            mcqSolution.setStatus(QuestionsAdapter.incorrect);
-        }
-
-        mcqSolution.setQuestionId(quizId);
-        mcqSolution.setAnswer(option);
     }
 
     public MCQSolution getMCQSolution() {

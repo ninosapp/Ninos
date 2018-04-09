@@ -24,6 +24,7 @@ import in.ninos.models.Response;
 import in.ninos.models.UserInfo;
 import in.ninos.reterofit.RetrofitInstance;
 import in.ninos.utils.AWSUrls;
+import in.ninos.utils.CrashUtil;
 import in.ninos.utils.PreferenceUtil;
 import in.ninos.views.CircleImageView;
 import retrofit2.Call;
@@ -81,79 +82,87 @@ public class PeopleAdapter extends CommonRecyclerAdapter<UserInfo> {
         }
 
         private void bindData(int position) {
-            UserInfo userInfo = getItem(position);
-            tv_user.setText(userInfo.getChildName());
+            try {
+                UserInfo userInfo = getItem(position);
+                tv_user.setText(userInfo.getChildName());
 
-            int index = position % 10;
-            int resId = typedArray.getResourceId(index, 0);
+                int index = position % 10;
+                int resId = typedArray.getResourceId(index, 0);
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(resId)
-                    .error(R.drawable.ic_account)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true);
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(resId)
+                        .error(R.drawable.ic_account)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true);
 
-            Glide.with(context)
-                    .setDefaultRequestOptions(requestOptions)
-                    .load(AWSUrls.GetPI64(context, userInfo.getUserId()))
-                    .into(iv_user);
+                Glide.with(context)
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(AWSUrls.GetPI64(context, userInfo.getUserId()))
+                        .into(iv_user);
 
-            if (userInfo.isFollowing()) {
-                btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove_user, 0, 0, 0);
-                btn_follow.setText(R.string.unfollow);
-            } else {
-                btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
-                btn_follow.setText(R.string.follow);
+                if (userInfo.isFollowing()) {
+                    btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_remove_user, 0, 0, 0);
+                    btn_follow.setText(R.string.unfollow);
+                } else {
+                    btn_follow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_user, 0, 0, 0);
+                    btn_follow.setText(R.string.follow);
+                }
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
 
         @Override
         public void onClick(View view) {
-            final int position = getAdapterPosition();
-            final UserInfo userInfo = getItem(position);
+            try {
+                final int position = getAdapterPosition();
+                final UserInfo userInfo = getItem(position);
 
-            switch (view.getId()) {
-                case R.id.btn_follow:
-                    if (userInfo.isFollowing()) {
-                        service.unFollow(userInfo.getUserId(), accessToken).enqueue(new Callback<Response>() {
-                            @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                if (response.body() != null && response.isSuccessful()) {
-                                    userInfo.setFollowing(false);
-                                    updateItem(position, userInfo);
+                switch (view.getId()) {
+                    case R.id.btn_follow:
+                        if (userInfo.isFollowing()) {
+                            service.unFollow(userInfo.getUserId(), accessToken).enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    if (response.body() != null && response.isSuccessful()) {
+                                        userInfo.setFollowing(false);
+                                        updateItem(position, userInfo);
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
 
-                            }
-                        });
-                    } else {
-                        service.follow(userInfo.getUserId(), accessToken).enqueue(new Callback<Response>() {
-                            @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                if (response.body() != null && response.isSuccessful()) {
-                                    userInfo.setFollowing(true);
-                                    updateItem(position, userInfo);
                                 }
-                            }
+                            });
+                        } else {
+                            service.follow(userInfo.getUserId(), accessToken).enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    if (response.body() != null && response.isSuccessful()) {
+                                        userInfo.setFollowing(true);
+                                        updateItem(position, userInfo);
+                                    }
+                                }
 
-                            @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    break;
-                default:
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    int resId = typedArray.getResourceId(position, 0);
-                    intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
-                    intent.putExtra(ProfileActivity.PROFILE_ID, userInfo.getUserId());
-                    activity.startActivityForResult(intent, MainActivity.PROFILE_UPDATED);
-                    break;
+                        break;
+                    default:
+                        Intent intent = new Intent(context, ProfileActivity.class);
+                        int resId = typedArray.getResourceId(position, 0);
+                        intent.putExtra(ProfileActivity.PROFILE_PLACE_HOLDER, resId);
+                        intent.putExtra(ProfileActivity.PROFILE_ID, userInfo.getUserId());
+                        activity.startActivityForResult(intent, MainActivity.PROFILE_UPDATED);
+                        break;
+                }
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
     }

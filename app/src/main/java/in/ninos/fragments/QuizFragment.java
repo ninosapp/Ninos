@@ -188,23 +188,31 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
     }
 
     public void finishActivity() {
-        if (getActivity() != null) {
-            Intent intent = new Intent();
-            intent.putExtra(QUIZ_ID, quizId);
-            getActivity().setResult(MainActivity.QUIZ_COMPLETE, intent);
-            getActivity().finish();
+        try {
+            if (getActivity() != null) {
+                Intent intent = new Intent();
+                intent.putExtra(QUIZ_ID, quizId);
+                getActivity().setResult(MainActivity.QUIZ_COMPLETE, intent);
+                getActivity().finish();
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 
     @Override
     public void onDestroy() {
-        if (mTimeCounter != null) {
-            mTimeCounter.pause();
-            mTimeCounter.cancel();
-            mTimeCounter = null;
-        }
+        try {
+            if (mTimeCounter != null) {
+                mTimeCounter.pause();
+                mTimeCounter.cancel();
+                mTimeCounter = null;
+            }
 
-        super.onDestroy();
+            super.onDestroy();
+        }catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override
@@ -251,40 +259,44 @@ public class QuizFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void submitQuiz() {
-        if (mTimeCounter != null && mTimeCounter.isRunning()) {
-            mTimeCounter.cancel();
-        }
+        try {
+            if (mTimeCounter != null && mTimeCounter.isRunning()) {
+                mTimeCounter.cancel();
+            }
 
-        tv_time.setText(R.string._00);
+            tv_time.setText(R.string._00);
 
-        if (questionsAdapter != null) {
-            List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
+            if (questionsAdapter != null) {
+                List<MCQSolution> mcqSolutions = questionsAdapter.getAnswers();
 
-            QuizEvaluateBody quizEvaluateBody = new QuizEvaluateBody();
-            quizEvaluateBody.setEvalutionId(evaluationId);
-            quizEvaluateBody.setMcqSolution(mcqSolutions);
+                QuizEvaluateBody quizEvaluateBody = new QuizEvaluateBody();
+                quizEvaluateBody.setEvalutionId(evaluationId);
+                quizEvaluateBody.setMcqSolution(mcqSolutions);
 
-            service.evaluateResult(quizId, quizEvaluateBody, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<EvaluateResponse>() {
-                @Override
-                public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
-                    if (response.isSuccessful()) {
-                        if (getContext() != null) {
-                            if (getActivity() != null) {
-                                Intent intent = new Intent(getContext(), ScoreActivity.class);
-                                intent.putExtra(ScoreActivity.QUIZ_ID, quizId);
-                                getActivity().startActivityForResult(intent, QuizActivity.QUIZ_CLOSE);
+                service.evaluateResult(quizId, quizEvaluateBody, PreferenceUtil.getAccessToken(getContext())).enqueue(new Callback<EvaluateResponse>() {
+                    @Override
+                    public void onResponse(Call<EvaluateResponse> call, Response<EvaluateResponse> response) {
+                        if (response.isSuccessful()) {
+                            if (getContext() != null) {
+                                if (getActivity() != null) {
+                                    Intent intent = new Intent(getContext(), ScoreActivity.class);
+                                    intent.putExtra(ScoreActivity.QUIZ_ID, quizId);
+                                    getActivity().startActivityForResult(intent, QuizActivity.QUIZ_CLOSE);
+                                }
                             }
+                        } else {
+                            finishActivity();
                         }
-                    } else {
-                        finishActivity();
                     }
-                }
 
-                @Override
-                public void onFailure(Call<EvaluateResponse> call, Throwable t) {
-                    showToast(R.string.error_message);
-                }
-            });
+                    @Override
+                    public void onFailure(Call<EvaluateResponse> call, Throwable t) {
+                        showToast(R.string.error_message);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 

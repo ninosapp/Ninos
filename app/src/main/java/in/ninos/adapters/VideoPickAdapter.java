@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import in.ninos.R;
 import in.ninos.activities.BaseActivity;
 import in.ninos.models.MediaObject;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 01-01-2018.
@@ -64,32 +65,40 @@ public class VideoPickAdapter extends CommonRecyclerAdapter<MediaObject> {
         }
 
         void bindData(MediaObject mediaObject) {
-            Glide.with(baseActivity)
-                    .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .load(mediaObject.getPath())
-                    .into(iv_image);
+            try {
+                Glide.with(baseActivity)
+                        .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                        .load(mediaObject.getPath())
+                        .into(iv_image);
 
-            if (selectedMedia != null && selectedMedia.equals(mediaObject)) {
-                rl_selected.setVisibility(View.VISIBLE);
-            } else {
-                rl_selected.setVisibility(View.GONE);
+                if (selectedMedia != null && selectedMedia.equals(mediaObject)) {
+                    rl_selected.setVisibility(View.VISIBLE);
+                } else {
+                    rl_selected.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
 
         @Override
         public void onClick(View view) {
-            MediaObject mediaObject = getItem(getAdapterPosition());
+            try {
+                MediaObject mediaObject = getItem(getAdapterPosition());
 
-            if (selectedView != null) {
-                selectedView.setVisibility(View.GONE);
-            }
+                if (selectedView != null) {
+                    selectedView.setVisibility(View.GONE);
+                }
 
-            if (selectedMedia != null && selectedMedia == mediaObject) {
-                selectedMedia = null;
-            } else {
-                selectedMedia = mediaObject;
-                selectedView = rl_selected;
-                rl_selected.setVisibility(View.VISIBLE);
+                if (selectedMedia != null && selectedMedia == mediaObject) {
+                    selectedMedia = null;
+                } else {
+                    selectedMedia = mediaObject;
+                    selectedView = rl_selected;
+                    rl_selected.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
     }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import in.ninos.models.CommentResponse;
 import in.ninos.models.Response;
 import in.ninos.reterofit.RetrofitInstance;
 import in.ninos.utils.AWSUrls;
+import in.ninos.utils.CrashUtil;
 import in.ninos.utils.DateUtil;
 import in.ninos.utils.PreferenceUtil;
 import retrofit2.Call;
@@ -96,21 +98,25 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
         }
 
         private void bindData(int position) {
-            Comment comment = getItem(position);
+            try {
+                Comment comment = getItem(position);
 
-            if (comment.getUserId().equals(userId)) {
-                iv_menu.setVisibility(View.VISIBLE);
-            } else {
-                iv_menu.setVisibility(View.GONE);
+                if (comment.getUserId().equals(userId)) {
+                    iv_menu.setVisibility(View.VISIBLE);
+                } else {
+                    iv_menu.setVisibility(View.GONE);
+                }
+
+                tv_comment.setText(comment.getComment());
+                tv_user_name.setText(comment.getUserName());
+
+                String time = dateUtil.formatDateToString(comment.getCreatedAt(), DateUtil.FULL_DATE);
+                tv_time.setText(time);
+
+                Glide.with(context).load(AWSUrls.GetPI64(context, comment.getUserId())).apply(requestOptions).into(iv_image);
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
-
-            tv_comment.setText(comment.getComment());
-            tv_user_name.setText(comment.getUserName());
-
-            String time = dateUtil.formatDateToString(comment.getCreatedAt(), DateUtil.FULL_DATE);
-            tv_time.setText(time);
-
-            Glide.with(context).load(AWSUrls.GetPI64(context, comment.getUserId())).apply(requestOptions).into(iv_image);
         }
 
         @Override
@@ -120,117 +126,121 @@ public class CommentAdapter extends CommonRecyclerAdapter<Comment> {
 
             switch (v.getId()) {
                 case R.id.iv_menu:
-                    MenuBuilder menuBuilder = new MenuBuilder(context);
-                    menuBuilder.setCallback(new MenuBuilder.Callback() {
-                        @Override
-                        public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                    try {
+                        MenuBuilder menuBuilder = new MenuBuilder(context);
+                        menuBuilder.setCallback(new MenuBuilder.Callback() {
+                            @Override
+                            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
 
-                            switch (item.getItemId()) {
-                                case R.id.action_delete:
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                    builder.setMessage(R.string.delete_comment);
-                                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                switch (item.getItemId()) {
+                                    case R.id.action_delete:
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setMessage(R.string.delete_comment);
+                                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
 
-                                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                            service.deleteComment(postId, comment.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
-                                                @Override
-                                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                                    if (response.isSuccessful() && response.body() != null) {
-                                                        removeItem(position);
-                                                    } else {
-                                                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<Response> call, Throwable t) {
-                                                    Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                        }
-                                    });
-                                    builder.create().show();
-
-                                    return true;
-                                case R.id.action_edit:
-                                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                                    LayoutInflater inflater = LayoutInflater.from(context);
-
-                                    View dialogView = inflater.inflate(R.layout.dialog_edit_comment, null);
-                                    dialogBuilder.setView(dialogView);
-
-                                    final EditText et_comment = dialogView.findViewById(R.id.et_comment);
-                                    et_comment.setText(comment.getComment());
-
-                                    dialogBuilder.setMessage(R.string.comment);
-                                    dialogBuilder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            String commentValue = et_comment.getText().toString();
-
-                                            if (commentValue.isEmpty()) {
-                                                Toast.makeText(context, R.string.comment_is_empty, Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                comment.setCommentId(comment.get_id());
-                                                comment.setComment(commentValue);
-
+                                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
                                                 RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                                service.updatePostComment(postId, PreferenceUtil.getAccessToken(context), comment).enqueue(new Callback<CommentResponse>() {
+                                                service.deleteComment(postId, comment.get_id(), PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
                                                     @Override
-                                                    public void onResponse(Call<CommentResponse> call, retrofit2.Response<CommentResponse> response) {
+                                                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                                         if (response.isSuccessful() && response.body() != null) {
-                                                            updateItem(position, comment);
+                                                            removeItem(position);
                                                         } else {
                                                             Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
 
                                                     @Override
-                                                    public void onFailure(Call<CommentResponse> call, Throwable t) {
+                                                    public void onFailure(Call<Response> call, Throwable t) {
                                                         Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
                                             }
-                                        }
-                                    });
-                                    dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                        });
+                                        builder.create().show();
 
-                                    AlertDialog alertDialog = dialogBuilder.create();
-                                    alertDialog.show();
+                                        return true;
+                                    case R.id.action_edit:
+                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                                        LayoutInflater inflater = LayoutInflater.from(context);
 
-                                    return true;
+                                        View dialogView = inflater.inflate(R.layout.dialog_edit_comment, null);
+                                        dialogBuilder.setView(dialogView);
+
+                                        final EditText et_comment = dialogView.findViewById(R.id.et_comment);
+                                        et_comment.setText(comment.getComment());
+
+                                        dialogBuilder.setMessage(R.string.comment);
+                                        dialogBuilder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                String commentValue = et_comment.getText().toString();
+
+                                                if (commentValue.isEmpty()) {
+                                                    Toast.makeText(context, R.string.comment_is_empty, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    comment.setCommentId(comment.get_id());
+                                                    comment.setComment(commentValue);
+
+                                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                                    service.updatePostComment(postId, PreferenceUtil.getAccessToken(context), comment).enqueue(new Callback<CommentResponse>() {
+                                                        @Override
+                                                        public void onResponse(Call<CommentResponse> call, retrofit2.Response<CommentResponse> response) {
+                                                            if (response.isSuccessful() && response.body() != null) {
+                                                                updateItem(position, comment);
+                                                            } else {
+                                                                Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<CommentResponse> call, Throwable t) {
+                                                            Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        AlertDialog alertDialog = dialogBuilder.create();
+                                        alertDialog.show();
+
+                                        return true;
+                                }
+
+                                return false;
                             }
 
-                            return false;
-                        }
+                            @Override
+                            public void onMenuModeChange(MenuBuilder menu) {
 
-                        @Override
-                        public void onMenuModeChange(MenuBuilder menu) {
+                            }
+                        });
 
-                        }
-                    });
+                        MenuInflater inflater = new MenuInflater(context);
+                        inflater.inflate(R.menu.menu_post, menuBuilder);
 
-                    MenuInflater inflater = new MenuInflater(context);
-                    inflater.inflate(R.menu.menu_post, menuBuilder);
+                        menuBuilder.findItem(R.id.action_edit).setVisible(true);
+                        menuBuilder.findItem(R.id.action_report).setVisible(false);
+                        menuBuilder.findItem(R.id.action_delete).setVisible(true);
 
-                    menuBuilder.findItem(R.id.action_edit).setVisible(true);
-                    menuBuilder.findItem(R.id.action_report).setVisible(false);
-                    menuBuilder.findItem(R.id.action_delete).setVisible(true);
-
-                    MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, iv_menu);
-                    optionsMenu.setForceShowIcon(true);
-                    optionsMenu.show();
+                        MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, iv_menu);
+                        optionsMenu.setForceShowIcon(true);
+                        optionsMenu.show();
+                    } catch (Exception e) {
+                        CrashUtil.report(e);
+                    }
                     break;
 
                 default:

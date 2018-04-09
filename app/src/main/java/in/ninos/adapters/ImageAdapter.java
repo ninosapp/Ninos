@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import in.ninos.R;
 import in.ninos.activities.MainActivity;
 import in.ninos.activities.ShowPostActivity;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 04-01-2018.
@@ -70,8 +71,8 @@ public class ImageAdapter extends CommonRecyclerAdapter<String> {
                 Glide.with(activity)
                         .setDefaultRequestOptions(requestOptions)
                         .load(path).into(iv_challenge);
-            } catch (Exception ignored) {
-
+            } catch (Exception e) {
+                CrashUtil.report(e);
             }
         }
 

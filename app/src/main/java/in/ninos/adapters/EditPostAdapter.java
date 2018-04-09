@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import in.ninos.models.PostInfo;
 import in.ninos.models.Response;
 import in.ninos.reterofit.RetrofitInstance;
 import in.ninos.utils.AWSClient;
+import in.ninos.utils.CrashUtil;
 import in.ninos.utils.PreferenceUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -116,44 +118,52 @@ public class EditPostAdapter extends CommonRecyclerAdapter<String> {
                 builder.create().show();
 
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                        .setMessage(R.string.delete_image_will_delete_post)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-                                service.deletePost(postId, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
-                                    @Override
-                                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                        if (response.isSuccessful() && response.body() != null) {
+                try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                            .setMessage(R.string.delete_image_will_delete_post)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                                    service.deletePost(postId, PreferenceUtil.getAccessToken(context)).enqueue(new Callback<Response>() {
+                                        @Override
+                                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                            if (response.isSuccessful() && response.body() != null) {
 
-                                            AWSClient awsClient = new AWSClient(context);
-                                            awsClient.awsInit();
-                                            awsClient.removeImage(postId, getDataSet());
+                                                try {
+                                                    AWSClient awsClient = new AWSClient(context);
+                                                    awsClient.awsInit();
+                                                    awsClient.removeImage(postId, getDataSet());
 
-                                            Intent intent = new Intent();
-                                            intent.putExtra(FilePickerActivity.POST_ID, postId);
-                                            activity.setResult(MainActivity.POST_EDIT, intent);
-                                            activity.finish();
-                                        } else {
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra(FilePickerActivity.POST_ID, postId);
+                                                    activity.setResult(MainActivity.POST_EDIT, intent);
+                                                    activity.finish();
+                                                } catch (Exception e) {
+                                                    CrashUtil.report(e);
+                                                }
+                                            } else {
+                                                Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Response> call, Throwable t) {
                                             Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
                                         }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Response> call, Throwable t) {
-                                        Toast.makeText(context, R.string.error_message, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.create().show();
+                                    });
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }catch (Exception e) {
+                    CrashUtil.report(e);
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ import in.ninos.R;
 import in.ninos.activities.ShowPostActivity;
 import in.ninos.listeners.OnLoadMoreListener;
 import in.ninos.models.PostInfo;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 15-02-2018.
@@ -54,12 +55,16 @@ public class ChallengeImageAdapter extends CommonRecyclerAdapter<PostInfo> {
         }
 
         void bindData(int position) {
-            PostInfo postInfo = getItem(position);
+            try {
+                PostInfo postInfo = getItem(position);
 
-            Glide.with(context)
-                    .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .load(postInfo.getLinks().get(0))
-                    .into(iv_image);
+                Glide.with(context)
+                        .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                        .load(postInfo.getLinks().get(0))
+                        .into(iv_image);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
 
         @Override

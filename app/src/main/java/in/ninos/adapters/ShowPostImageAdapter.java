@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import in.ninos.R;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 04-01-2018.
@@ -57,26 +58,30 @@ public class ShowPostImageAdapter extends CommonRecyclerAdapter<String> {
         }
 
         private void bindData(int position) {
-            String path = getItem(position);
-            iv_challenge.setImageDrawable(ContextCompat.getDrawable(activity, resId));
+            try {
+                String path = getItem(position);
+                iv_challenge.setImageDrawable(ContextCompat.getDrawable(activity, resId));
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(resId)
-                    .error(resId)
-                    .fallback(resId)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(resId)
+                        .error(resId)
+                        .fallback(resId)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-            Glide.with(activity)
-                    .setDefaultRequestOptions(requestOptions)
-                    .asBitmap()
-                    .load(path)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                            iv_challenge.setImageBitmap(resource);
-                            rl_loading.setVisibility(View.GONE);
-                        }
-                    });
+                Glide.with(activity)
+                        .setDefaultRequestOptions(requestOptions)
+                        .asBitmap()
+                        .load(path)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                iv_challenge.setImageBitmap(resource);
+                                rl_loading.setVisibility(View.GONE);
+                            }
+                        });
+            }catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
     }
 }

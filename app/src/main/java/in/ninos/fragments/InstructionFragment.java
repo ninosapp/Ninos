@@ -36,20 +36,24 @@ public class InstructionFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_back:
+        try {
+            switch (v.getId()) {
+                case R.id.iv_back:
 
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
 
-                break;
-            case R.id.tv_start:
-                if (getActivity() != null) {
-                    QuizActivity quizActivity = (QuizActivity) getActivity();
-                    quizActivity.startQuiz();
-                }
-                break;
+                    break;
+                case R.id.tv_start:
+                    if (getActivity() != null) {
+                        QuizActivity quizActivity = (QuizActivity) getActivity();
+                        quizActivity.startQuiz();
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            logError(e);
         }
     }
 }

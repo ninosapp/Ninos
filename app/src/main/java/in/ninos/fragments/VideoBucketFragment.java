@@ -68,20 +68,25 @@ public class VideoBucketFragment extends BaseFragment implements LoaderManager.L
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String[] PROJECTION_BUCKET = {MediaStore.Video.VideoColumns.BUCKET_ID,
-                    MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME, MediaStore.Video.VideoColumns.DATE_TAKEN,
-                    MediaStore.Video.VideoColumns.DATA};
+            try {
+                String[] PROJECTION_BUCKET = {MediaStore.Video.VideoColumns.BUCKET_ID,
+                        MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME, MediaStore.Video.VideoColumns.DATE_TAKEN,
+                        MediaStore.Video.VideoColumns.DATA};
 
-            String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
+                String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
 
-            String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
+                String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                    PROJECTION_BUCKET,
-                    BUCKET_GROUP_BY,
-                    null,
-                    BUCKET_ORDER_BY);
+                return new CursorLoader(getContext(),
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        PROJECTION_BUCKET,
+                        BUCKET_GROUP_BY,
+                        null,
+                        BUCKET_ORDER_BY);
+            } catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -119,7 +124,7 @@ public class VideoBucketFragment extends BaseFragment implements LoaderManager.L
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
-            showToast(R.string.error_message);
+            logError(e);
         }
 
     }

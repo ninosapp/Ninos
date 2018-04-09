@@ -71,45 +71,53 @@ public class PeopleSearchFragment extends BaseFragment implements OnLoadMoreList
     }
 
     public void userSearch(String keyword) {
-        userName = keyword;
-        from = 0;
-        size = 20;
-        peopleAdapter.clearItemsforSearch();
-        getUsers();
+        try {
+            userName = keyword;
+            from = 0;
+            size = 20;
+            peopleAdapter.clearItemsforSearch();
+            getUsers();
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     private void getUsers() {
-        service.searchUsers(from, size, userName, accessToken).enqueue(new Callback<PeopleResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<PeopleResponse> call, @NonNull Response<PeopleResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    peopleAdapter.removeItem(null);
+        try {
+            service.searchUsers(from, size, userName, accessToken).enqueue(new Callback<PeopleResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<PeopleResponse> call, @NonNull Response<PeopleResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        peopleAdapter.removeItem(null);
 
-                    if (response.body().getUsers().size() > 0) {
-                        rl_empty.setVisibility(View.GONE);
+                        if (response.body().getUsers().size() > 0) {
+                            rl_empty.setVisibility(View.GONE);
 
-                        for (final UserInfo userInfo : response.body().getUsers()) {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    peopleAdapter.addItem(userInfo);
-                                }
-                            });
+                            for (final UserInfo userInfo : response.body().getUsers()) {
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        peopleAdapter.addItem(userInfo);
+                                    }
+                                });
+                            }
+                        } else if (from == 0) {
+                            tv_empty.setText(String.format(getString(R.string.unable_to_find_the_user_for_s), userName));
+                            rl_empty.setVisibility(View.VISIBLE);
                         }
-                    } else if (from == 0) {
-                        tv_empty.setText(String.format(getString(R.string.unable_to_find_the_user_for_s), userName));
-                        rl_empty.setVisibility(View.VISIBLE);
+
+                        from = from + size;
                     }
-
-                    from = from + size;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PeopleResponse> call, Throwable t) {
-                logError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PeopleResponse> call, Throwable t) {
+                    logError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            logError(e);
+        }
     }
 
     @Override

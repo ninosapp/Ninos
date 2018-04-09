@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import in.ninos.R;
 import in.ninos.models.Question;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 21-02-2018.
@@ -40,12 +41,16 @@ public class SummaryAdapter extends CommonRecyclerAdapter<Question> {
         }
 
         private void bindData(int position) {
-            Question question = getItem(position);
+            try {
+                Question question = getItem(position);
 
-            int qNo = position + 1;
-            tv_question_count.setText(String.format("%s.", String.valueOf(qNo)));
-            tv_question.setText(question.getQuestion());
-            tv_answer.setText(question.getSolution());
+                int qNo = position + 1;
+                tv_question_count.setText(String.format("%s.", String.valueOf(qNo)));
+                tv_question.setText(question.getQuestion());
+                tv_answer.setText(question.getSolution());
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
     }
 }

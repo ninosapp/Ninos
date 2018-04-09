@@ -89,7 +89,7 @@ public class AWSClient {
             File dir = mContext.getCacheDir();
             mFolder = new File(dir, "images");
         } catch (Exception e) {
-            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -106,7 +106,7 @@ public class AWSClient {
             File dir = mContext.getCacheDir();
             mFolder = new File(dir, "images");
         } catch (Exception e) {
-            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -114,7 +114,7 @@ public class AWSClient {
         try {
             mContext = context;
         } catch (Exception e) {
-            Log.e(TAG, "AWSClient() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -134,7 +134,7 @@ public class AWSClient {
             //provides api for uploading and downloading content
             mTransferUtility = new TransferUtility(mAmazonS3, mContext);
         } catch (Exception e) {
-            Log.e(TAG, "awsInit() - " + e.toString(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -147,10 +147,11 @@ public class AWSClient {
             mTransfer = mTransferUtility.upload(BuildConfig.ams_profile_bucket, userId + mContext.getString(R.string.profile_aws_url_suffix_PI64), path64, CannedAccessControlList.PublicRead);
             mTransfer.setTransferListener(new UploadListener());
         } catch (Exception e) {
-            Log.e(TAG, "upload64Image() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
+    @SuppressLint("CheckResult")
     public void upload192Image() {
         try {
             new Compressor(mContext)
@@ -174,7 +175,7 @@ public class AWSClient {
                         }
                     });
         } catch (Exception e) {
-            Log.e(TAG, "upload192Image() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -200,12 +201,14 @@ public class AWSClient {
             fos.flush();
             fos.close();
 
-        } catch (IOException e) {
-            Log.e(TAG, "resizeImage() - " + e.toString(), e);
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
+
         return file;
     }
 
+    @SuppressLint("CheckResult")
     public void uploadImage(final PostInfo postInfo) {
         try {
             new Compressor(mContext)
@@ -230,7 +233,7 @@ public class AWSClient {
                     });
 
         } catch (Exception e) {
-            Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -266,7 +269,7 @@ public class AWSClient {
                 mProgressDialog.dismiss();
             }
 
-            Log.e(TAG, "uploadImage() - " + e.getMessage(), e);
+            CrashUtil.report(e);
         }
     }
 
@@ -283,7 +286,7 @@ public class AWSClient {
                 links.add(String.format("%s/%s/%s", BuildConfig.AWS_URL, BuildConfig.ams_challenge_bucket, summary.getKey()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            CrashUtil.report(e);
         }
 
         return links;
@@ -291,15 +294,18 @@ public class AWSClient {
 
     /*clearing the cache after completion of upload*/
     private void deleteDir() {
-        if (mFolder != null && mFolder.isDirectory()) {
-            mFolder.delete();
-        }
+        try {
+            if (mFolder != null && mFolder.isDirectory()) {
+                mFolder.delete();
+            }
 
-        if (mPath != null) {
-            File imagePath = new File(mPath);
-            imagePath.delete();
+            if (mPath != null) {
+                File imagePath = new File(mPath);
+                imagePath.delete();
+            }
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
-
     }
 
     public void removeImage(String post, List<String> paths) {
@@ -307,25 +313,29 @@ public class AWSClient {
     }
 
     private void deletePost(final PostInfo postInfo) {
-        if (postInfo != null) {
-            RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
-            service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<in.ninos.models.Response>() {
-                @Override
-                public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
-                    if (response.isSuccessful() && response.body() != null) {
+        try {
+            if (postInfo != null) {
+                RetrofitService service = RetrofitInstance.createService(RetrofitService.class);
+                service.deletePost(postInfo.get_id(), PreferenceUtil.getAccessToken(mContext)).enqueue(new Callback<in.ninos.models.Response>() {
+                    @Override
+                    public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
+                        if (response.isSuccessful() && response.body() != null) {
 
-                        if (postInfo.getLinks().size() > 1) {
-                            removeImage(postInfo.get_id(), postInfo.getLinks());
+                            if (postInfo.getLinks().size() > 1) {
+                                removeImage(postInfo.get_id(), postInfo.getLinks());
+                            }
+
+                        } else {
                         }
-
-                    } else {
                     }
-                }
 
-                @Override
-                public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
-                }
-            });
+                    @Override
+                    public void onFailure(Call<in.ninos.models.Response> call, Throwable t) {
+                    }
+                });
+            }
+        } catch (Exception e) {
+            CrashUtil.report(e);
         }
     }
 
@@ -363,7 +373,7 @@ public class AWSClient {
                 }
             } catch (Exception e) {
                 deleteDir();
-
+                CrashUtil.report(e);
                 Log.e(TAG, "UploadListener() - onStateChanged(): " + e.getMessage(), e);
             }
         }
@@ -384,6 +394,8 @@ public class AWSClient {
             if (mProgressDialog != null && !activity.isFinishing()) {
                 mProgressDialog.dismiss();
             }
+
+            CrashUtil.report(ex);
         }
     }
 
@@ -446,7 +458,7 @@ public class AWSClient {
                     });
                 }
             } catch (Exception e) {
-                Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
+                CrashUtil.report(e);
             }
         }
 
@@ -515,7 +527,7 @@ public class AWSClient {
                     });
                 }
             } catch (Exception e) {
-                Log.e(TAG, "ImageUploadListener() - onStateChanged(): " + e.getMessage(), e);
+                CrashUtil.report(e);
             }
         }
 
@@ -534,7 +546,7 @@ public class AWSClient {
                 mProgressDialog.dismiss();
             }
 
-            Log.e(TAG, ex.toString(), ex);
+           CrashUtil.report(ex);
             Toast.makeText(mContext, "Error : " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -558,8 +570,8 @@ public class AWSClient {
                 String url = link.substring(link.lastIndexOf('/') + 1);
                 try {
                     mAmazonS3.deleteObject(new DeleteObjectRequest(bucket, url));
-                } catch (AmazonClientException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    CrashUtil.report(e);
                 }
             }
 
@@ -611,12 +623,14 @@ public class AWSClient {
                     filePath = paths[0];
                 }
 
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 Activity activity = ((Activity) mContext);
 
                 if (mProgressDialog != null && !activity.isFinishing()) {
                     mProgressDialog.dismiss();
                 }
+
+                CrashUtil.report(e);
             }
 
             return filePath;
@@ -626,15 +640,19 @@ public class AWSClient {
         @Override
         protected void onPostExecute(String compressedFilePath) {
             super.onPostExecute(compressedFilePath);
-            mPath = compressedFilePath;
+            try {
+                mPath = compressedFilePath;
 
-            File file = new File(compressedFilePath);
-            String fileName = file.getName();
-            String userId = Database.getUserId();
-            String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
+                File file = new File(compressedFilePath);
+                String fileName = file.getName();
+                String userId = Database.getUserId();
+                String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
 
-            mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
-            mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+                mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
+                mTransfer.setTransferListener(new VideoUploadListener(postInfo));
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import in.ninos.R;
 import in.ninos.activities.ProfileSelectActivity;
 import in.ninos.models.MediaObject;
+import in.ninos.utils.CrashUtil;
 
 /**
  * Created by FAMILY on 04-01-2018.
@@ -51,10 +52,14 @@ public class ProfilePickAdapter extends CommonRecyclerAdapter<MediaObject> {
         }
 
         void bindData(MediaObject mediaObject) {
-            Glide.with(baseActivity)
-                    .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .load(mediaObject.getPath())
-                    .into(iv_image);
+            try {
+                Glide.with(baseActivity)
+                        .setDefaultRequestOptions(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                        .load(mediaObject.getPath())
+                        .into(iv_image);
+            } catch (Exception e) {
+                CrashUtil.report(e);
+            }
         }
 
         @Override

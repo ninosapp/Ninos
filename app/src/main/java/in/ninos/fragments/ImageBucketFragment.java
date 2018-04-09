@@ -3,6 +3,7 @@ package in.ninos.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -65,23 +66,29 @@ public class ImageBucketFragment extends BaseFragment implements LoaderManager.L
         }
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == URL_LOADER) {
-            String[] PROJECTION_BUCKET = {MediaStore.Images.ImageColumns.BUCKET_ID,
-                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATE_TAKEN,
-                    MediaStore.Images.ImageColumns.DATA};
+            try {
+                String[] PROJECTION_BUCKET = {MediaStore.Images.ImageColumns.BUCKET_ID,
+                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATE_TAKEN,
+                        MediaStore.Images.ImageColumns.DATA};
 
-            String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
+                String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
 
-            String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
+                String BUCKET_ORDER_BY = "MAX(datetaken) ASC";
 
-            return new CursorLoader(getContext(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    PROJECTION_BUCKET,
-                    BUCKET_GROUP_BY,
-                    null,
-                    BUCKET_ORDER_BY);
+                return new CursorLoader(getContext(),
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        PROJECTION_BUCKET,
+                        BUCKET_GROUP_BY,
+                        null,
+                        BUCKET_ORDER_BY);
+            } catch (Exception e) {
+                logError(e);
+                return null;
+            }
         } else {
             return null;
         }
@@ -118,8 +125,8 @@ public class ImageBucketFragment extends BaseFragment implements LoaderManager.L
                     }
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            showToast(R.string.error_message);
+        }catch (Exception e) {
+            logError(e);
         }
     }
 
