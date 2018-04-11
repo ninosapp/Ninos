@@ -183,6 +183,8 @@
     <string name="faq">FAQ</string>
     <string name="_6">6</string>
     <string name="some_questions_may_not_be_suitable_for_non_indian_users">Some questions may not be suitable for non-indian users.</string>
+    <string name="failed_to_follow_user">Failed to follow, Please try again.</string>
+    <string name="failed_to_un_follow_user">Failed to unfollow, Please try again.</string>
 
     <array name="patterns">
         <item>@drawable/pattern</item>

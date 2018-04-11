@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -133,8 +134,13 @@ public class FollowAdapter extends CommonRecyclerAdapter<Follow> {
                                                     @Override
                                                     public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
                                                         if (response.body() != null && response.isSuccessful()) {
-                                                            follow.setFollowing(false);
-                                                            updateItem(position, follow);
+
+                                                            if (response.body().isSuccess()) {
+                                                                follow.setFollowing(false);
+                                                                updateItem(position, follow);
+                                                            } else {
+                                                                Toast.makeText(context, R.string.failed_to_un_follow_user, Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
                                                     }
 
@@ -157,8 +163,12 @@ public class FollowAdapter extends CommonRecyclerAdapter<Follow> {
                                     @Override
                                     public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
                                         if (response.body() != null && response.isSuccessful()) {
-                                            follow.setFollowing(true);
-                                            updateItem(position, follow);
+                                            if (response.body().isSuccess()) {
+                                                follow.setFollowing(true);
+                                                updateItem(position, follow);
+                                            } else {
+                                                Toast.makeText(context, R.string.failed_to_follow_user, Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     }
 

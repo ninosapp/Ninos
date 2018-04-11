@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -125,8 +126,14 @@ public class PeopleAdapter extends CommonRecyclerAdapter<UserInfo> {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                     if (response.body() != null && response.isSuccessful()) {
-                                        userInfo.setFollowing(false);
-                                        updateItem(position, userInfo);
+
+                                        if (response.body().isSuccess()) {
+                                            userInfo.setFollowing(false);
+                                            updateItem(position, userInfo);
+                                        } else {
+                                            Toast.makeText(context, R.string.failed_to_un_follow_user, Toast.LENGTH_SHORT).show();
+                                        }
+
                                     }
                                 }
 
@@ -140,8 +147,12 @@ public class PeopleAdapter extends CommonRecyclerAdapter<UserInfo> {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                     if (response.body() != null && response.isSuccessful()) {
-                                        userInfo.setFollowing(true);
-                                        updateItem(position, userInfo);
+                                        if (response.body().isSuccess()) {
+                                            userInfo.setFollowing(true);
+                                            updateItem(position, userInfo);
+                                        } else {
+                                            Toast.makeText(context, R.string.failed_to_follow_user, Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
 

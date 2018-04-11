@@ -253,8 +253,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             @Override
                             public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
                                 if (response.body() != null && response.isSuccessful()) {
-                                    setFollow(false);
-                                    isProfileUpdated = true;
+
+                                    if (response.body().isSuccess()) {
+                                        setFollow(false);
+                                        isProfileUpdated = true;
+                                    } else {
+                                        showToast(R.string.failed_to_un_follow_user);
+                                    }
                                 }
                             }
 
@@ -268,8 +273,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             @Override
                             public void onResponse(Call<in.ninos.models.Response> call, Response<in.ninos.models.Response> response) {
                                 if (response.body() != null && response.isSuccessful()) {
-                                    setFollow(true);
-                                    isProfileUpdated = true;
+
+                                    if (response.body().isSuccess()) {
+                                        setFollow(true);
+                                        isProfileUpdated = true;
+                                    } else {
+                                        showToast(R.string.failed_to_follow_user);
+                                    }
                                 }
                             }
 
@@ -301,7 +311,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     addFile();
                     break;
             }
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logError(e);
         }
     }
@@ -318,7 +328,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             }
 
             userProfile.setFollowing(isFollowing);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logError(e);
         }
     }
@@ -392,7 +402,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     }
                     break;
             }
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logError(e);
         }
     }
@@ -433,7 +443,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     logError(t.getMessage());
                 }
             });
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logError(e);
         }
     }
@@ -455,7 +465,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
 
                 links = awsClient.getBucket(path);
-            }  catch (Exception e) {
+            } catch (Exception e) {
                 logError(e);
             }
 
