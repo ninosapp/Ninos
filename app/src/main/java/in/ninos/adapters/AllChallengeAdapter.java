@@ -11,8 +11,10 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +47,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -632,15 +638,39 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                     progressDialog.dismiss();
                                     String text = PreferenceUtil.getUserName(context) + " " + context.getString(R.string.share_post) + postInfo.get_id() + context.getString(R.string.encorage);
-                                    Intent sendIntent = new Intent();
-                                    sendIntent.setAction(Intent.ACTION_SEND);
-                                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-                                    sendIntent.setType("text/plain");
-                                    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_to)));
+
+                                    Uri bmpUri = getLocalBitmapUri(resource);
+
+                                    Intent shareIntent = new Intent();
+                                    shareIntent.setAction(Intent.ACTION_SEND);
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                                    shareIntent.setType("image/*");
+                                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_to)));
                                 }
                             });
                     break;
             }
+        }
+
+        private Uri getLocalBitmapUri(Bitmap bmp) {
+            Uri bmpUri = null;
+            File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out;
+            try {
+                out = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bmpUri = Uri.fromFile(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return bmpUri;
         }
 
         private void hideKeyboard(EditText et_report) {

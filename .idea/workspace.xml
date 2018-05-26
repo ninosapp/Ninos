@@ -12,88 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0948022e-4f53-4282-934b-b47b1bd27f80" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ChallengeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ChallengeActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/FilePickerActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/FilePickerActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/MainActivity.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/AllChallengesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/AllChallengesFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/ImagePickFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/ImagePickFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/UploadFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/UploadFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/VideoPickFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/VideoPickFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/AWSClient.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/AWSClient.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/CrashUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/CrashUtil.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/TrimVideoUtils.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/onboarding1.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/onboarding1.png" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_file_picker.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_file_picker.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_show_post.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_show_post.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_image_pick.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_image_pick.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_challenge_all.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_challenge_all.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/videokit/.gitignore" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/build.gradle" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/proguard-rules.pro" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/AndroidManifest.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/AsyncCommandExecutor.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/Command.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/CommandBuilder.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/LogLevel.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/ProcessingListener.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/VideoCommand.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/VideoCommandBuilder.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/VideoKit.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/java/processing/ffmpeg/videokit/VideoProcessingResult.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libavcodec.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libavdevice.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libavfilter.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libavformat.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libavutil.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libswresample.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libswscale.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/arm64-v8a/libvideokit.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libavcodec.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libavdevice.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libavfilter.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libavformat.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libavutil.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libswresample.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libswscale.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi-v7a/libvideokit.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libavcodec.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libavdevice.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libavfilter.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libavformat.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libavutil.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libswresample.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libswscale.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/armeabi/libvideokit.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libavcodec.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libavdevice.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libavfilter.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libavformat.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libavutil.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libswresample.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libswscale.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86/libvideokit.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libavcodec.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libavdevice.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libavfilter.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libavformat.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libavutil.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libswresample.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libswscale.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/jniLibs/x86_64/libvideokit.so" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/main/res/values/strings.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/test/java/processing/ffmpeg/videokit/CommandBuilderTest.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/test/java/processing/ffmpeg/videokit/CommandTest.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/videokit/src/test/resources/test" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -146,7 +67,90 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="AllChallengeAdapter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="469">
+              <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+              <folding>
+                <element signature="docComment;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#addClap#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="class#5131:5937" expanded="false" />
+                <element signature="method#onResponse#0;class#5131:5937" expanded="false" />
+                <element signature="method#onFailure#0;class#5131:5937" expanded="false" />
+                <element signature="method#setClap#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="e#7051#7067#0" expanded="true" />
+                <element signature="e#7121#7136#0" expanded="true" />
+                <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="e#7487#7896#0" expanded="true" />
+                <element signature="e#7895#7896#0" expanded="true" />
+                <element signature="method#removeClap#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="class#8224:9031" expanded="false" />
+                <element signature="method#onResponse#0;class#8224:9031" expanded="false" />
+                <element signature="method#onFailure#0;class#8224:9031" expanded="false" />
+                <element signature="method#updateClap#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#updateComment#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="e#9844#9882#0" expanded="true" />
+                <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="class#Type#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="e#13562#14089#0" expanded="true" />
+                <element signature="e#14088#14089#0" expanded="true" />
+                <element signature="e#14610#14629#0" expanded="true" />
+                <element signature="e#14694#14712#0" expanded="true" />
+                <element signature="e#15768#16631#0" expanded="true" />
+                <element signature="e#16630#16631#0" expanded="true" />
+                <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="class#17234:18077" expanded="false" />
+                <element signature="method#onAnimationStart#0;class#17234:18077" expanded="false" />
+                <element signature="method#onAnimationEnd#0;class#17234:18077" expanded="false" />
+                <element signature="method#onAnimationRepeat#0;class#17234:18077" expanded="false" />
+                <element signature="class#20128:27873" expanded="false" />
+                <element signature="method#onMenuItemSelected#0;class#20128:27873" expanded="false" />
+                <element signature="e#20547#20562#0" expanded="true" />
+                <element signature="e#20620#20641#0" expanded="true" />
+                <element signature="e#20706#20721#0" expanded="true" />
+                <element signature="e#20723#21051#0" expanded="true" />
+                <element signature="e#21050#21051#0" expanded="true" />
+                <element signature="e#21117#21129#0" expanded="true" />
+                <element signature="e#21131#23077#0" expanded="true" />
+                <element signature="class#21577:22995" expanded="false" />
+                <element signature="method#onResponse#0;class#21577:22995" expanded="false" />
+                <element signature="e#22435#22457#0" expanded="true" />
+                <element signature="method#onFailure#0;class#21577:22995" expanded="false" />
+                <element signature="e#22848#22870#0" expanded="true" />
+                <element signature="e#23076#23077#0" expanded="true" />
+                <element signature="e#24701#25064#0" expanded="true" />
+                <element signature="e#25063#25064#0" expanded="true" />
+                <element signature="e#25160#27513#0" expanded="true" />
+                <element signature="e#25548#25582#0" expanded="true" />
+                <element signature="class#26185:27385" expanded="false" />
+                <element signature="method#onResponse#0;class#26185:27385" expanded="false" />
+                <element signature="method#onFailure#0;class#26185:27385" expanded="false" />
+                <element signature="e#27512#27513#0" expanded="true" />
+                <element signature="method#onMenuModeChange#0;class#20128:27873" expanded="false" />
+                <element signature="e#29036#29071#0" expanded="true" />
+                <element signature="e#29264#30487#0" expanded="true" />
+                <element signature="e#29628#29666#0" expanded="true" />
+                <element signature="e#29689#29725#0" expanded="true" />
+                <element signature="e#30384#30420#0" expanded="true" />
+                <element signature="e#30486#30487#0" expanded="true" />
+                <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="e#32496#33345#0" expanded="true" />
+                <element signature="e#33344#33345#0" expanded="true" />
+                <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -169,12 +173,12 @@
       <find>Glide</find>
       <find>india</find>
       <find>cras</find>
-      <find>share</find>
       <find>actionba</find>
       <find>ActionBar</find>
       <find>getSupportActionBar</find>
       <find>file</find>
       <find>toolbar_image_pick</find>
+      <find>share</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -3738,9 +3742,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/models/PostInfo.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_show_post.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_challenge_all.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ChallengeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/AWSClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/MainActivity.java" />
@@ -3758,6 +3760,8 @@
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/CrashUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" />
       </list>
     </option>
   </component>
@@ -3874,7 +3878,7 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="ninos" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="adapters" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
@@ -4102,6 +4106,14 @@
       <option name="presentableId" value="Default" />
       <updated>1522295264716</updated>
     </task>
+    <task id="LOCAL-00001" summary="video removed">
+      <created>1527316966980</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1527316966981</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -4141,6 +4153,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="video removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="video removed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4276,17 +4292,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="82" column="34" lean-forward="true" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
-          <folding>
-            <element signature="class#19953:27698" expanded="false" />
-            <element signature="e#29943#29979#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/utils/AWSClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="404">
@@ -4343,14 +4348,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="34" column="46" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="75" column="107" lean-forward="false" selection-start-line="75" selection-start-column="107" selection-end-line="75" selection-end-column="107" />
           <folding />
         </state>
       </provider>
@@ -4510,7 +4507,7 @@
         <state relative-caret-position="476">
           <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -4528,7 +4525,99 @@
         <state relative-caret-position="476">
           <caret line="51" column="31" lean-forward="false" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="812">
+          <caret line="660" column="29" lean-forward="false" selection-start-line="660" selection-start-column="29" selection-end-line="660" selection-end-column="29" />
+          <folding>
+            <element signature="e#28637#28667#0" expanded="false" />
+            <element signature="e#28690#28718#0" expanded="false" />
+            <element signature="e#29369#29397#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="469">
+          <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#addClap#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="class#5131:5937" expanded="false" />
+            <element signature="method#onResponse#0;class#5131:5937" expanded="false" />
+            <element signature="method#onFailure#0;class#5131:5937" expanded="false" />
+            <element signature="method#setClap#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="e#7051#7067#0" expanded="true" />
+            <element signature="e#7121#7136#0" expanded="true" />
+            <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="e#7487#7896#0" expanded="true" />
+            <element signature="e#7895#7896#0" expanded="true" />
+            <element signature="method#removeClap#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="class#8224:9031" expanded="false" />
+            <element signature="method#onResponse#0;class#8224:9031" expanded="false" />
+            <element signature="method#onFailure#0;class#8224:9031" expanded="false" />
+            <element signature="method#updateClap#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#updateComment#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="e#9844#9882#0" expanded="true" />
+            <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="class#Type#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="e#13562#14089#0" expanded="true" />
+            <element signature="e#14088#14089#0" expanded="true" />
+            <element signature="e#14610#14629#0" expanded="true" />
+            <element signature="e#14694#14712#0" expanded="true" />
+            <element signature="e#15768#16631#0" expanded="true" />
+            <element signature="e#16630#16631#0" expanded="true" />
+            <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="class#17234:18077" expanded="false" />
+            <element signature="method#onAnimationStart#0;class#17234:18077" expanded="false" />
+            <element signature="method#onAnimationEnd#0;class#17234:18077" expanded="false" />
+            <element signature="method#onAnimationRepeat#0;class#17234:18077" expanded="false" />
+            <element signature="class#20128:27873" expanded="false" />
+            <element signature="method#onMenuItemSelected#0;class#20128:27873" expanded="false" />
+            <element signature="e#20547#20562#0" expanded="true" />
+            <element signature="e#20620#20641#0" expanded="true" />
+            <element signature="e#20706#20721#0" expanded="true" />
+            <element signature="e#20723#21051#0" expanded="true" />
+            <element signature="e#21050#21051#0" expanded="true" />
+            <element signature="e#21117#21129#0" expanded="true" />
+            <element signature="e#21131#23077#0" expanded="true" />
+            <element signature="class#21577:22995" expanded="false" />
+            <element signature="method#onResponse#0;class#21577:22995" expanded="false" />
+            <element signature="e#22435#22457#0" expanded="true" />
+            <element signature="method#onFailure#0;class#21577:22995" expanded="false" />
+            <element signature="e#22848#22870#0" expanded="true" />
+            <element signature="e#23076#23077#0" expanded="true" />
+            <element signature="e#24701#25064#0" expanded="true" />
+            <element signature="e#25063#25064#0" expanded="true" />
+            <element signature="e#25160#27513#0" expanded="true" />
+            <element signature="e#25548#25582#0" expanded="true" />
+            <element signature="class#26185:27385" expanded="false" />
+            <element signature="method#onResponse#0;class#26185:27385" expanded="false" />
+            <element signature="method#onFailure#0;class#26185:27385" expanded="false" />
+            <element signature="e#27512#27513#0" expanded="true" />
+            <element signature="method#onMenuModeChange#0;class#20128:27873" expanded="false" />
+            <element signature="e#29036#29071#0" expanded="true" />
+            <element signature="e#29264#30487#0" expanded="true" />
+            <element signature="e#29628#29666#0" expanded="true" />
+            <element signature="e#29689#29725#0" expanded="true" />
+            <element signature="e#30384#30420#0" expanded="true" />
+            <element signature="e#30486#30487#0" expanded="true" />
+            <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+            <element signature="e#32496#33345#0" expanded="true" />
+            <element signature="e#33344#33345#0" expanded="true" />
+            <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
           </folding>
         </state>
       </provider>
