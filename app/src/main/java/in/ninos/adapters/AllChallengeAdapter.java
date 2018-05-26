@@ -3,15 +3,18 @@ package in.ninos.adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.menu.MenuBuilder;
@@ -39,13 +42,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerStandard;
 import in.ninos.R;
 import in.ninos.activities.ChallengeActivity;
 import in.ninos.activities.CommentActivity;
@@ -279,7 +281,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
         LinearLayout ll_comment, ll_options, ll_clap, ll_share;
         View itemView;
         RelativeLayout rl_challenge;
-        JZVideoPlayerStandard video_view;
 
         ChallengeViewHolder(View itemView) {
             super(itemView);
@@ -304,11 +305,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
             tv_name.setOnClickListener(this);
             ll_clap.setOnClickListener(this);
             ll_share.setOnClickListener(this);
-            video_view = itemView.findViewById(R.id.video_view);
-            video_view.batteryLevel.setVisibility(View.GONE);
-            video_view.mRetryLayout.setVisibility(View.GONE);
-            video_view.backButton.setVisibility(View.GONE);
-            video_view.tinyBackImageView.setVisibility(View.GONE);
 
             rl_challenge = itemView.findViewById(R.id.rl_challenge);
             recyclerView = itemView.findViewById(R.id.image_list);
@@ -366,57 +362,38 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                 int resId = typedArray.getResourceId(index, 0);
                 String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
 
-                if (postInfo.isVideo()) {
-                    List<String> links = awsClient.getBucket(path);
-                    recyclerView.setVisibility(View.GONE);
-                    video_view.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
 
-                    if (postInfo.getLinks() == null) {
-                        new LoadVideo(video_view, position).execute(path);
-                    } else {
-                        if (links.size() > 0) {
-                            String link = links.get(0);
-                            RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-                            Glide.with(context).setDefaultRequestOptions(requestOptions).load(link).into(video_view.thumbImageView);
+                ImageAdapter imageAdapter = new ImageAdapter(activity, resId, postInfo.get_id());
+                recyclerView.setAdapter(imageAdapter);
 
-                            video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
-                        }
-                    }
+                if (postInfo.getLinks() == null) {
+                    new LoadImage(imageAdapter, position).execute(path);
                 } else {
-                    video_view.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-
-                    ImageAdapter imageAdapter = new ImageAdapter(activity, resId, postInfo.get_id());
-                    recyclerView.setAdapter(imageAdapter);
-
-                    if (postInfo.getLinks() == null) {
-                        new LoadImage(imageAdapter, position).execute(path);
-                    } else {
-                        for (String link : postInfo.getLinks()) {
-                            imageAdapter.addItem(link);
-                        }
-
-                        if (postInfo.getLinks().size() > 1) {
-                            recyclerView.addItemDecoration(new PagerIndicatorDecoration());
-                        }
-
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-                                if (postInfo.getLinks().size() > 0) {
-                                    param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                                    param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                                    itemView.setVisibility(View.VISIBLE);
-                                } else {
-                                    itemView.setVisibility(View.GONE);
-                                    param.height = 0;
-                                    param.width = 0;
-                                }
-                                itemView.setLayoutParams(param);
-                            }
-                        });
+                    for (String link : postInfo.getLinks()) {
+                        imageAdapter.addItem(link);
                     }
+
+                    if (postInfo.getLinks().size() > 1) {
+                        recyclerView.addItemDecoration(new PagerIndicatorDecoration());
+                    }
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+                            if (postInfo.getLinks().size() > 0) {
+                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                                itemView.setVisibility(View.VISIBLE);
+                            } else {
+                                itemView.setVisibility(View.GONE);
+                                param.height = 0;
+                                param.width = 0;
+                            }
+                            itemView.setLayoutParams(param);
+                        }
+                    });
                 }
 
                 Glide.with(context)
@@ -645,12 +622,23 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
                     break;
 
                 case R.id.ll_share:
-                    String text = PreferenceUtil.getUserName(context) + " " + context.getString(R.string.share_post) + postInfo.get_id() + context.getString(R.string.encorage);
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-                    sendIntent.setType("text/plain");
-                    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_to)));
+                    final ProgressDialog progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage(context.getString(R.string.loading));
+                    progressDialog.show();
+                    Glide.with(context).asBitmap()
+                            .load(postInfo.getLinks().get(0))
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    progressDialog.dismiss();
+                                    String text = PreferenceUtil.getUserName(context) + " " + context.getString(R.string.share_post) + postInfo.get_id() + context.getString(R.string.encorage);
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                                    sendIntent.setType("text/plain");
+                                    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_to)));
+                                }
+                            });
                     break;
             }
         }
@@ -731,77 +719,6 @@ public class AllChallengeAdapter extends CommonRecyclerAdapter<PostInfo> {
 
                 if (links.size() > 1) {
                     recyclerView.addItemDecoration(new PagerIndicatorDecoration());
-                }
-            }
-        }
-
-        public class LoadVideo extends AsyncTask<String, Void, List<String>> {
-
-            WeakReference<JZVideoPlayerStandard> video_view;
-            int position;
-
-            LoadVideo(JZVideoPlayerStandard video_view, int position) {
-                this.video_view = new WeakReference<>(video_view);
-                this.position = position;
-            }
-
-            @Override
-            protected List<String> doInBackground(String... strings) {
-                String path = strings[0];
-
-                final List<String> links=new ArrayList<>();
-
-                try {
-                    links.addAll(awsClient.getBucket(path));
-
-                    PostInfo postInfo = getItem(position);
-
-                    if (postInfo != null) {
-                        postInfo.setLinks(links);
-                    }
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-                            if (links.size() > 0) {
-                                param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                                param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                                itemView.setVisibility(View.VISIBLE);
-                            } else {
-                                itemView.setVisibility(View.GONE);
-                                param.height = 0;
-                                param.width = 0;
-                            }
-                            itemView.setLayoutParams(param);
-                        }
-                    });
-                } catch (Exception e) {
-                    CrashUtil.report(e);
-                }
-
-                return links;
-            }
-
-            @Override
-            protected void onPostExecute(List<String> links) {
-
-                if (links.size() > 0) {
-                    String link = links.get(0);
-                    video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
-                    RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-
-                    if (activity != null && !activity.isFinishing()) {
-                        Glide.with(activity).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
-                    }
-                }
-
-                if (getItemCount() > position) {
-                    PostInfo postInfo = getItem(position);
-
-                    if (postInfo != null) {
-                        postInfo.setLinks(links);
-                    }
                 }
             }
         }

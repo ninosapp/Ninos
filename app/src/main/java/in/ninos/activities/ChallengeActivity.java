@@ -29,7 +29,6 @@ import com.bumptech.glide.request.transition.Transition;
 
 import java.util.List;
 
-import cn.jzvd.JZVideoPlayer;
 import in.ninos.R;
 import in.ninos.adapters.AllChallengeAdapter;
 import in.ninos.listeners.OnLoadMoreListener;
@@ -146,8 +145,6 @@ public class ChallengeActivity extends BaseActivity implements View.OnClickListe
                     } else {
                         iv_move_up.setVisibility(View.GONE);
                     }
-
-                    JZVideoPlayer.releaseAllVideos();
                 }
             });
 

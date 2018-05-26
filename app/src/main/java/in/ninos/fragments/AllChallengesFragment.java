@@ -17,7 +17,6 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.jzvd.JZVideoPlayer;
 import in.ninos.R;
 import in.ninos.activities.MainActivity;
 import in.ninos.adapters.AllChallengeAdapter;

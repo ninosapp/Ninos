@@ -3,7 +3,8 @@ package in.ninos.utils;
 
 import android.util.Log;
 
-import com.google.firebase.crash.FirebaseCrash;
+
+import com.crashlytics.android.Crashlytics;
 
 import in.ninos.BuildConfig;
 
@@ -21,7 +22,7 @@ public class CrashUtil {
             Log.e(TAG, "report: " + ex.getMessage(), ex);
 
             if (!BuildConfig.DEBUG) {
-                FirebaseCrash.report(ex);
+                Crashlytics.log(ex.getMessage());
             }
         }
     }
@@ -33,7 +34,7 @@ public class CrashUtil {
             Log.e(TAG, "report: " + ex);
 
             if (!BuildConfig.DEBUG) {
-                FirebaseCrash.log(ex);
+                Crashlytics.log(ex);
             }
         }
     }

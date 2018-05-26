@@ -2,10 +2,11 @@ package in.ninos.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.menu.MenuBuilder;
@@ -39,15 +41,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerStandard;
 import in.ninos.R;
 import in.ninos.adapters.CommentAdapter;
 import in.ninos.adapters.ShowPostImageAdapter;
@@ -83,7 +84,6 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
     private CommentAdapter commentAdapter;
     private TextView tv_name, tv_created_time, tv_title, tv_clap, tv_comment, tv_comments;
     private ImageView iv_profile, iv_clap, iv_menu, ic_clap_anim, iv_send;
-    private JZVideoPlayerStandard video_view;
     private String accessToken;
     private int color_accent, color_dark_grey;
     private boolean isUpdated;
@@ -126,10 +126,6 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                 awsClient.awsInit();
 
                 ic_clap_anim = findViewById(R.id.ic_clap_anim);
-                video_view = findViewById(R.id.video_view);
-                video_view.batteryLevel.setVisibility(View.GONE);
-                video_view.mRetryLayout.setVisibility(View.GONE);
-                video_view.tinyBackImageView.setVisibility(View.GONE);
                 recyclerView = findViewById(R.id.image_list);
                 rl_loading = findViewById(R.id.rl_loading);
                 rl_loading.setVisibility(View.VISIBLE);
@@ -294,40 +290,16 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
 
                 String path = String.format("%s/%s", postInfo.getUserId(), postInfo.get_id());
 
-                if (postInfo.isVideo()) {
-                    List<String> links = awsClient.getBucket(path);
-                    recyclerView.setVisibility(View.GONE);
-                    video_view.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
 
-                    if (postInfo.getLinks() == null) {
-                        new LoadVideo(video_view, postInfo).execute(path);
-                    } else {
-                        if (links.size() > 0) {
-                            String link = links.get(0);
-                            RequestOptions rO = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                ShowPostImageAdapter imageAdapter = new ShowPostImageAdapter(ShowPostActivity.this, R.drawable.pattern_11, rl_loading);
+                recyclerView.setAdapter(imageAdapter);
 
-                            if (!this.isFinishing()) {
-                                Glide.with(ShowPostActivity.this).setDefaultRequestOptions(rO).load(link).into(video_view.thumbImageView);
-                            }
-
-                            video_view.setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
-                        }
-                    }
-
-                    rl_loading.setVisibility(View.GONE);
+                if (postInfo.getLinks() == null) {
+                    new LoadImage(imageAdapter, postInfo).execute(path);
                 } else {
-                    video_view.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-
-                    ShowPostImageAdapter imageAdapter = new ShowPostImageAdapter(ShowPostActivity.this, R.drawable.pattern_11, rl_loading);
-                    recyclerView.setAdapter(imageAdapter);
-
-                    if (postInfo.getLinks() == null) {
-                        new LoadImage(imageAdapter, postInfo).execute(path);
-                    } else {
-                        for (String link : postInfo.getLinks()) {
-                            imageAdapter.addItem(link);
-                        }
+                    for (String link : postInfo.getLinks()) {
+                        imageAdapter.addItem(link);
                     }
                 }
 
@@ -650,12 +622,23 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
                     optionsMenu.show();
                     break;
                 case R.id.ll_share:
-                    String text = PreferenceUtil.getUserName(this) + " " + getString(R.string.share_post) + postInfo.get_id() + getString(R.string.encorage);
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-                    sendIntent.setType("text/plain");
-                    startActivity(Intent.createChooser(sendIntent, getString(R.string.share_to)));
+                    final ProgressDialog progressDialog = new ProgressDialog(this);
+                    progressDialog.setMessage(getString(R.string.loading));
+                    progressDialog.show();
+                    Glide.with(this).asBitmap()
+                            .load(postInfo.getLinks().get(0))
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    progressDialog.dismiss();
+                                    String text = PreferenceUtil.getUserName(ShowPostActivity.this) + " " + getString(R.string.share_post) + postInfo.get_id() + getString(R.string.encorage);
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                                    sendIntent.setType("text/plain");
+                                    startActivity(Intent.createChooser(sendIntent, getString(R.string.share_to)));
+                                }
+                            });
                     break;
             }
         } catch (Exception e) {
@@ -833,50 +816,6 @@ public class ShowPostActivity extends BaseActivity implements View.OnClickListen
             if (links.size() > 1) {
                 recyclerView.addItemDecoration(new PagerIndicatorDecoration());
             }
-        }
-    }
-
-    public class LoadVideo extends AsyncTask<String, Void, List<String>> {
-
-        WeakReference<JZVideoPlayerStandard> video_view;
-        PostInfo postInfo;
-
-        LoadVideo(JZVideoPlayerStandard video_view, PostInfo postInfo) {
-            this.video_view = new WeakReference<>(video_view);
-            this.postInfo = postInfo;
-        }
-
-        @Override
-        protected List<String> doInBackground(String... strings) {
-            String path = strings[0];
-
-            List<String> links = new ArrayList<>();
-
-            try {
-                links = awsClient.getBucket(path);
-
-                postInfo.setLinks(links);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return links;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> links) {
-
-            if (links.size() > 0) {
-                String link = links.get(0);
-                video_view.get().setUp(link, JZVideoPlayer.SCREEN_WINDOW_LIST);
-                RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
-
-                if (!ShowPostActivity.this.isFinishing()) {
-                    Glide.with(ShowPostActivity.this).setDefaultRequestOptions(requestOptions).load(link).into(video_view.get().thumbImageView);
-                }
-            }
-
-            postInfo.setLinks(links);
         }
     }
 }

@@ -34,7 +34,6 @@ import com.bumptech.glide.signature.ObjectKey;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.jzvd.JZVideoPlayer;
 import in.ninos.R;
 import in.ninos.adapters.NotificationAdapter;
 import in.ninos.firebase.Database;
@@ -494,17 +493,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        JZVideoPlayer.releaseAllVideos();
-    }
-
-    @Override
     public void onBackPressed() {
         try {
-            if (JZVideoPlayer.backPress()) {
-                return;
-            } else if (challengeFragment.isVisible()) {
+            if (challengeFragment.isVisible()) {
                 displayAllChallengeFragment();
             } else if (!doubleBackToExit) {
                 if (PreferenceUtil.isInviteShown(this)) {

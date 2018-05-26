@@ -7,14 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -28,13 +25,10 @@ import com.amazonaws.services.s3.iterable.S3Objects;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +39,6 @@ import in.ninos.activities.FilePickerActivity;
 import in.ninos.activities.MainActivity;
 import in.ninos.activities.ProfileActivity;
 import in.ninos.firebase.Database;
-import in.ninos.listeners.OnTrimVideoListener;
 import in.ninos.listeners.RetrofitService;
 import in.ninos.models.AddPostResponse;
 import in.ninos.models.PostInfo;
@@ -233,42 +226,6 @@ public class AWSClient {
                     });
 
         } catch (Exception e) {
-            CrashUtil.report(e);
-        }
-    }
-
-    public void uploadVideo(final PostInfo postInfo) {
-        try {
-            if (mProgressDialog != null && !mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-            final String folderPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
-
-            new TrimVideoUtils().startTrim(mPath, folderPath, new OnTrimVideoListener() {
-                @Override
-                public void getResult(String uri) {
-                    mFolder = new File(folderPath);
-                    final String outputPath = StorageUtils.getPostPath(mContext, postInfo.get_id());
-                    new VideoCompressAsyncTask(mContext, postInfo).execute(uri, outputPath);
-                }
-
-                @Override
-                public void onError(int message) {
-                    Activity activity = ((Activity) mContext);
-
-                    if (mProgressDialog != null && !activity.isFinishing()) {
-                        mProgressDialog.dismiss();
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Activity activity = ((Activity) mContext);
-
-            if (mProgressDialog != null && !activity.isFinishing()) {
-                mProgressDialog.dismiss();
-            }
-
             CrashUtil.report(e);
         }
     }
@@ -576,83 +533,6 @@ public class AWSClient {
             }
 
             return null;
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
-
-        private Context mContext;
-        private PostInfo postInfo;
-
-        public VideoCompressAsyncTask(Context context, PostInfo postInfo) {
-            mContext = context;
-            this.postInfo = postInfo;
-        }
-
-        @Override
-        protected String doInBackground(String... paths) {
-            if (mProgressDialog != null) {
-                mProgressDialog.show();
-            }
-
-            String filePath = null;
-
-            try {
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                Bitmap bmp;
-                int videoHeight = 0;
-                int videoWidth = 0;
-
-                try {
-                    retriever.setDataSource(paths[0]);
-                    bmp = retriever.getFrameAtTime();
-                    videoHeight = bmp.getHeight() / 5;
-                    videoWidth = bmp.getWidth() / 5;
-                } catch (Exception ignored) {
-
-                }
-
-                if ((videoHeight > 640 && videoWidth > 360) || (videoHeight > 360 && videoWidth > 640)) {
-                    if (videoHeight > videoWidth) {
-                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1], 360, 640, 0);
-                    } else {
-                        filePath = SiliCompressor.with(mContext).compressVideo(Uri.fromFile(new File(paths[0])), paths[1]);
-                    }
-                } else {
-                    filePath = paths[0];
-                }
-
-            } catch (Exception e) {
-                Activity activity = ((Activity) mContext);
-
-                if (mProgressDialog != null && !activity.isFinishing()) {
-                    mProgressDialog.dismiss();
-                }
-
-                CrashUtil.report(e);
-            }
-
-            return filePath;
-        }
-
-
-        @Override
-        protected void onPostExecute(String compressedFilePath) {
-            super.onPostExecute(compressedFilePath);
-            try {
-                mPath = compressedFilePath;
-
-                File file = new File(compressedFilePath);
-                String fileName = file.getName();
-                String userId = Database.getUserId();
-                String path = BuildConfig.ams_challenge_bucket + "/" + userId + "/" + mPostId;
-
-                mTransfer = mTransferUtility.upload(path, fileName, file, CannedAccessControlList.PublicRead);
-                mTransfer.setTransferListener(new VideoUploadListener(postInfo));
-            } catch (Exception e) {
-                CrashUtil.report(e);
-            }
         }
     }
 }

@@ -71,18 +71,6 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
 
             cl_home = mBaseActivity.findViewById(R.id.cl_home);
 
-            Toolbar toolbar_image_pick = view.findViewById(R.id.toolbar_image_pick);
-            toolbar_image_pick.setTitle(R.string.app_name);
-            toolbar_image_pick.setTitleTextColor(ContextCompat.getColor(mBaseActivity, R.color.colorAccent));
-            mBaseActivity.setSupportActionBar(toolbar_image_pick);
-
-            ActionBar actionBar = mBaseActivity.getSupportActionBar();
-
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(mBaseActivity, R.drawable.ic_back));
-            }
-
             GridLayoutManager layoutManager = new GridLayoutManager(mBaseActivity, 3);
 
             final RecyclerView recyclerView = view.findViewById(R.id.bucket_list);
@@ -161,9 +149,6 @@ public class VideoPickFragment extends BaseFragment implements LoaderManager.Loa
         switch (view.getId()) {
             case R.id.tv_cancel:
                 mBaseActivity.onBackPressed();
-                break;
-            case R.id.tv_select_count:
-                mBaseActivity.setSelectedVideo(videoPickAdapter.getSelectedMedia());
                 break;
         }
     }

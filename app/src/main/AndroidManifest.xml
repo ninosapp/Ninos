@@ -51,7 +51,7 @@
             android:theme="@style/AppTheme.EditProfile" />
         <activity
             android:name="in.ninos.activities.FilePickerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DarkActionBar" />
         <activity
             android:name="in.ninos.activities.QuizViewActivity"
             android:theme="@style/AppTheme.DarkActionBar" />

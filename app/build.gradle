@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 def gitTag = 'git describe --abbrev=0 --tags'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
@@ -104,7 +105,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:12.0.0'
     implementation 'com.google.firebase:firebase-database:12.0.0'
     implementation "com.google.firebase:firebase-messaging:12.0.0"
-    implementation 'com.google.firebase:firebase-crash:12.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -119,10 +120,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.github.yalantis:ucrop:2.2.1'
     implementation 'id.zelory:compressor:2.1.0'
-    implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
-    implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.7.0'
-    implementation project(':videokit')
 }
 
 apply plugin: 'com.google.gms.google-services'

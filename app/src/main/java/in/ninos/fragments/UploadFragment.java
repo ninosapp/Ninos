@@ -38,15 +38,11 @@ import retrofit2.Response;
 public class UploadFragment extends BaseFragment implements View.OnClickListener {
 
     public final static String IMAGES = "IMAGES";
-    public final static String VIDEOS = "VIDEOS";
-    private final static String TYPE = "TYPE";
     private final static String CHALLENGE_ID = "CHALLENGE_ID";
     private final static String CHALLENGE_NAME = "CHALLENGE_NAME";
     private View cl_home;
     private ArrayList<String> paths;
     private TextView tv_description;
-    private String path;
-    private String type;
     private String challengeId;
     private String challengeName;
 
@@ -55,20 +51,6 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(IMAGES, paths);
-        bundle.putString(TYPE, IMAGES);
-        bundle.putString(CHALLENGE_ID, challengeId);
-        bundle.putString(CHALLENGE_NAME, challengeName);
-        uploadFragment.setArguments(bundle);
-
-        return uploadFragment;
-    }
-
-    public static UploadFragment newInstance(String path, String challengeId, String challengeName) {
-        UploadFragment uploadFragment = new UploadFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(VIDEOS, path);
-        bundle.putString(TYPE, VIDEOS);
         bundle.putString(CHALLENGE_ID, challengeId);
         bundle.putString(CHALLENGE_NAME, challengeName);
         uploadFragment.setArguments(bundle);
@@ -84,8 +66,6 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
             challengeName = getArguments().getString(CHALLENGE_NAME);
             challengeId = getArguments().getString(CHALLENGE_ID);
-            type = getArguments().getString(TYPE);
-            path = getArguments().getString(VIDEOS);
             paths = getArguments().getStringArrayList(IMAGES);
         }
     }
@@ -105,18 +85,6 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
             cl_home = baseActivity.findViewById(R.id.cl_home);
 
-            Toolbar toolbar_image_pick = view.findViewById(R.id.toolbar_upload);
-            toolbar_image_pick.setTitle(R.string.app_name);
-            toolbar_image_pick.setTitleTextColor(ContextCompat.getColor(baseActivity, R.color.colorAccent));
-            baseActivity.setSupportActionBar(toolbar_image_pick);
-
-            ActionBar actionBar = baseActivity.getSupportActionBar();
-
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(baseActivity, R.drawable.ic_back));
-            }
-
             LinearLayoutManager layoutManager = new LinearLayoutManager(baseActivity, LinearLayoutManager.HORIZONTAL, false);
 
             final RecyclerView recyclerView = view.findViewById(R.id.upload_list);
@@ -126,11 +94,7 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
 
             recyclerView.setAdapter(uploadAdapter);
 
-            if (type.equals(IMAGES)) {
-                for (String path : paths) {
-                    uploadAdapter.addItem(path);
-                }
-            } else {
+            for (String path : paths) {
                 uploadAdapter.addItem(path);
             }
 
@@ -191,17 +155,10 @@ public class UploadFragment extends BaseFragment implements View.OnClickListener
                                                 postInfo.setChallengeId(challengeId);
                                             }
 
-                                            if (type.equals(IMAGES)) {
-                                                for (String path : paths) {
-                                                    AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
-                                                    awsClient.awsInit();
-                                                    awsClient.uploadImage(postInfo);
-                                                }
-                                            } else {
-                                                postInfo.setVideo(true);
+                                            for (String path : paths) {
                                                 AWSClient awsClient = new AWSClient(getContext(), postInfo.get_id(), path);
                                                 awsClient.awsInit();
-                                                awsClient.uploadVideo(postInfo);
+                                                awsClient.uploadImage(postInfo);
                                             }
                                         } else {
                                             showToast(R.string.error_message);
