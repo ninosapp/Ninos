@@ -10,11 +10,19 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0948022e-4f53-4282-934b-b47b1bd27f80" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -67,85 +75,78 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="AllChallengeAdapter.java" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AllChallengeAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
-              <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+            <state relative-caret-position="115">
+              <caret line="662" column="107" selection-start-line="662" selection-start-column="95" selection-end-line="662" selection-end-column="107" />
               <folding>
-                <element signature="docComment;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#addClap#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="class#5131:5937" expanded="false" />
-                <element signature="method#onResponse#0;class#5131:5937" expanded="false" />
-                <element signature="method#onFailure#0;class#5131:5937" expanded="false" />
-                <element signature="method#setClap#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="e#7051#7067#0" expanded="true" />
-                <element signature="e#7121#7136#0" expanded="true" />
-                <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="e#7487#7896#0" expanded="true" />
-                <element signature="e#7895#7896#0" expanded="true" />
-                <element signature="method#removeClap#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="class#8224:9031" expanded="false" />
-                <element signature="method#onResponse#0;class#8224:9031" expanded="false" />
-                <element signature="method#onFailure#0;class#8224:9031" expanded="false" />
-                <element signature="method#updateClap#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#updateComment#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="e#9844#9882#0" expanded="true" />
-                <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="class#Type#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="e#13562#14089#0" expanded="true" />
-                <element signature="e#14088#14089#0" expanded="true" />
-                <element signature="e#14610#14629#0" expanded="true" />
-                <element signature="e#14694#14712#0" expanded="true" />
-                <element signature="e#15768#16631#0" expanded="true" />
-                <element signature="e#16630#16631#0" expanded="true" />
-                <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="class#17234:18077" expanded="false" />
-                <element signature="method#onAnimationStart#0;class#17234:18077" expanded="false" />
-                <element signature="method#onAnimationEnd#0;class#17234:18077" expanded="false" />
-                <element signature="method#onAnimationRepeat#0;class#17234:18077" expanded="false" />
-                <element signature="class#20128:27873" expanded="false" />
-                <element signature="method#onMenuItemSelected#0;class#20128:27873" expanded="false" />
-                <element signature="e#20547#20562#0" expanded="true" />
-                <element signature="e#20620#20641#0" expanded="true" />
-                <element signature="e#20706#20721#0" expanded="true" />
-                <element signature="e#20723#21051#0" expanded="true" />
-                <element signature="e#21050#21051#0" expanded="true" />
-                <element signature="e#21117#21129#0" expanded="true" />
-                <element signature="e#21131#23077#0" expanded="true" />
-                <element signature="class#21577:22995" expanded="false" />
-                <element signature="method#onResponse#0;class#21577:22995" expanded="false" />
-                <element signature="e#22435#22457#0" expanded="true" />
-                <element signature="method#onFailure#0;class#21577:22995" expanded="false" />
-                <element signature="e#22848#22870#0" expanded="true" />
-                <element signature="e#23076#23077#0" expanded="true" />
-                <element signature="e#24701#25064#0" expanded="true" />
-                <element signature="e#25063#25064#0" expanded="true" />
-                <element signature="e#25160#27513#0" expanded="true" />
-                <element signature="e#25548#25582#0" expanded="true" />
-                <element signature="class#26185:27385" expanded="false" />
-                <element signature="method#onResponse#0;class#26185:27385" expanded="false" />
-                <element signature="method#onFailure#0;class#26185:27385" expanded="false" />
-                <element signature="e#27512#27513#0" expanded="true" />
-                <element signature="method#onMenuModeChange#0;class#20128:27873" expanded="false" />
-                <element signature="e#29036#29071#0" expanded="true" />
-                <element signature="e#29264#30487#0" expanded="true" />
-                <element signature="e#29628#29666#0" expanded="true" />
-                <element signature="e#29689#29725#0" expanded="true" />
-                <element signature="e#30384#30420#0" expanded="true" />
-                <element signature="e#30486#30487#0" expanded="true" />
-                <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-                <element signature="e#32496#33345#0" expanded="true" />
-                <element signature="e#33344#33345#0" expanded="true" />
-                <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
+                <element signature="docComment;class#AllChallengeAdapter#0" />
+                <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" />
+                <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" />
+                <element signature="method#addClap#0;class#AllChallengeAdapter#0" />
+                <element signature="class#5131:5937" />
+                <element signature="method#onResponse#0;class#5131:5937" />
+                <element signature="method#onFailure#0;class#5131:5937" />
+                <element signature="method#setClap#0;class#AllChallengeAdapter#0" />
+                <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" />
+                <element signature="method#removeClap#0;class#AllChallengeAdapter#0" />
+                <element signature="class#8224:9031" />
+                <element signature="method#onResponse#0;class#8224:9031" />
+                <element signature="method#onFailure#0;class#8224:9031" />
+                <element signature="method#updateClap#0;class#AllChallengeAdapter#0" />
+                <element signature="method#updateComment#0;class#AllChallengeAdapter#0" />
+                <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" />
+                <element signature="class#Type#0;class#AllChallengeAdapter#0" />
+                <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="class#17234:18077" />
+                <element signature="method#onAnimationStart#0;class#17234:18077" />
+                <element signature="method#onAnimationEnd#0;class#17234:18077" />
+                <element signature="method#onAnimationRepeat#0;class#17234:18077" />
+                <element signature="class#20128:27873" />
+                <element signature="method#onMenuItemSelected#0;class#20128:27873" />
+                <element signature="class#21577:22995" />
+                <element signature="method#onResponse#0;class#21577:22995" />
+                <element signature="method#onFailure#0;class#21577:22995" />
+                <element signature="class#26185:27385" />
+                <element signature="method#onResponse#0;class#26185:27385" />
+                <element signature="method#onFailure#0;class#26185:27385" />
+                <element signature="method#onMenuModeChange#0;class#20128:27873" />
+                <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+                <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShowPostActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="639" selection-start-line="639" selection-end-line="639" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/LoginActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="121">
+              <caret line="174" selection-start-line="174" selection-end-line="174" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="183">
+              <caret line="51" column="116" selection-start-line="51" selection-start-column="116" selection-end-line="51" selection-end-column="116" />
             </state>
           </provider>
         </entry>
@@ -190,7 +191,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\FAMILY\.gradle\wrapper\dists\gradle-4.4-all\9br9xq1tocpiv8o6njlyu5op1\gradle-4.4" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\Sumu\.gradle\wrapper\dists\gradle-4.4-all\9br9xq1tocpiv8o6njlyu5op1\gradle-4.4" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -3722,9 +3723,6 @@
         </entry>
       </map>
     </option>
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
     <option name="projectSyncType">
       <map>
         <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
@@ -3757,36 +3755,61 @@
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/VideoPickFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/UploadFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_image_pick.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/utils/CrashUtil.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="163" />
-    <option name="y" value="221" />
-    <option name="width" value="697" />
-    <option name="height" value="775" />
+    <option name="x" value="162" />
+    <option name="y" value="219" />
+    <option name="width" value="699" />
+    <option name="height" value="777" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="AndroidView" proportions="" version="1">
+    <navigator proportions="" version="1">
       <flattenPackages ProjectPane="false" />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
       <hideEmptyPackages AndroidView="true" ProjectPane="false" />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+            </path>
+            <path>
+              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="ninos" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="ninos" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="adapters" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -3854,63 +3877,19 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="ninos" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="ninos" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="adapters" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="Ninos" type="1abcf292:AndroidViewProjectNode" />
-              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="android.sdk.path" value="G:/android-sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
-    <property name="device.picker.selection" value="96fafa48" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
+    <property name="android.sdk.path" value="G:/android-sdk" />
+    <property name="device.picker.selection" value="c0be3e87" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="sync.plugin.last.upgrade.timestamp" value="1542270186632" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -3931,8 +3910,6 @@
   </component>
   <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" />
@@ -3942,22 +3919,23 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
-      <envs />
       <patterns />
       <method>
+        <option name="Make" enabled="false" />
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="app" />
       <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="ARTIFACT_NAME" value="" />
       <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
@@ -3994,23 +3972,14 @@
       </Native>
       <Profilers>
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sampled (Java)" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
     </configuration>
     <configuration name="Ninos [signingReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -4028,18 +3997,8 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
@@ -4052,15 +4011,12 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
       <option name="USE_DEFAULT_REPORTERS" value="false" />
       <option name="PROPERTIES_FILE" />
-      <envs />
       <properties />
       <listeners />
     </configuration>
@@ -4082,18 +4038,15 @@
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Android App.app" />
-      <item index="1" class="java.lang.String" itemvalue="Gradle.Ninos [signingReport]" />
+    <list>
+      <item itemvalue="Android App.app" />
+      <item itemvalue="Gradle.Ninos [signingReport]" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Gradle.Ninos [signingReport]" />
+      <list>
+        <item itemvalue="Gradle.Ninos [signingReport]" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -4117,38 +4070,38 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5276074" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5030257" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24962178" sideWeight="0.47239265" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7315951" sideWeight="0.4969743" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.398773" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info id="Image Layers" order="2" />
+      <window_info active="true" id="Build Variants" order="2" sideWeight="0.5320197" side_tool="true" visible="true" weight="0.24939272" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5030257" side_tool="true" weight="0.3297546" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3289256" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3289256" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Logcat" order="7" visible="true" weight="0.3289256" />
+      <window_info id="Captures" order="2" weight="0.25" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4679803" visible="true" weight="0.24939272" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4969743" weight="0.55041325" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3297546" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.32955465" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" weight="0.32980332" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3983471" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Preview" order="4" weight="0.32980332" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -4160,9 +4113,22 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/LoginActivity.java</url>
+          <line>121</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/LoginActivity.java</url>
+          <line>159</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="7" />
     </breakpoint-manager>
-    <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
@@ -4174,82 +4140,167 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11254">
+          <caret line="662" column="32" selection-start-line="662" selection-start-column="32" selection-end-line="662" selection-end-column="32" />
+          <folding>
+            <element signature="docComment;class#AllChallengeAdapter#0" />
+            <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" />
+            <element signature="method#addClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#5131:5937" />
+            <element signature="method#onResponse#0;class#5131:5937" />
+            <element signature="method#onFailure#0;class#5131:5937" />
+            <element signature="method#setClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" />
+            <element signature="method#removeClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#8224:9031" />
+            <element signature="method#onResponse#0;class#8224:9031" />
+            <element signature="method#onFailure#0;class#8224:9031" />
+            <element signature="method#updateClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateComment#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" />
+            <element signature="class#Type#0;class#AllChallengeAdapter#0" />
+            <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#17234:18077" />
+            <element signature="method#onAnimationStart#0;class#17234:18077" />
+            <element signature="method#onAnimationEnd#0;class#17234:18077" />
+            <element signature="method#onAnimationRepeat#0;class#17234:18077" />
+            <element signature="class#20128:27873" />
+            <element signature="method#onMenuItemSelected#0;class#20128:27873" />
+            <element signature="class#21577:22995" />
+            <element signature="method#onResponse#0;class#21577:22995" />
+            <element signature="method#onFailure#0;class#21577:22995" />
+            <element signature="class#26185:27385" />
+            <element signature="method#onResponse#0;class#26185:27385" />
+            <element signature="method#onFailure#0;class#26185:27385" />
+            <element signature="method#onMenuModeChange#0;class#20128:27873" />
+            <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4641">
+          <caret line="756" lean-forward="true" selection-start-line="756" selection-end-line="756" />
+          <folding>
+            <element signature="docComment;class#AllChallengeAdapter#0" />
+            <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" />
+            <element signature="method#addClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#5131:5937" />
+            <element signature="method#onResponse#0;class#5131:5937" />
+            <element signature="method#onFailure#0;class#5131:5937" />
+            <element signature="method#setClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" />
+            <element signature="method#removeClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#8224:9031" />
+            <element signature="method#onResponse#0;class#8224:9031" />
+            <element signature="method#onFailure#0;class#8224:9031" />
+            <element signature="method#updateClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateComment#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" />
+            <element signature="class#Type#0;class#AllChallengeAdapter#0" />
+            <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#17234:18077" />
+            <element signature="method#onAnimationStart#0;class#17234:18077" />
+            <element signature="method#onAnimationEnd#0;class#17234:18077" />
+            <element signature="method#onAnimationRepeat#0;class#17234:18077" />
+            <element signature="class#20128:27873" />
+            <element signature="method#onMenuItemSelected#0;class#20128:27873" />
+            <element signature="class#21577:22995" />
+            <element signature="method#onResponse#0;class#21577:22995" />
+            <element signature="method#onFailure#0;class#21577:22995" />
+            <element signature="class#26185:27385" />
+            <element signature="method#onResponse#0;class#26185:27385" />
+            <element signature="method#onFailure#0;class#26185:27385" />
+            <element signature="method#onMenuModeChange#0;class#20128:27873" />
+            <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/CommentActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3281">
-          <caret line="193" column="74" lean-forward="false" selection-start-line="193" selection-start-column="74" selection-end-line="193" selection-end-column="74" />
+          <caret line="193" column="74" selection-start-line="193" selection-start-column="74" selection-end-line="193" selection-end-column="74" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/videokit/proguard-rules.pro" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/NinosApp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/proguard-rules.pro">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="23" lean-forward="false" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ProfileActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="865">
-          <caret line="382" column="17" lean-forward="false" selection-start-line="376" selection-start-column="6" selection-end-line="382" selection-end-column="17" />
+          <caret line="382" column="17" selection-start-line="376" selection-start-column="6" selection-end-line="382" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/listeners/RetrofitService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
+          <caret line="82" column="73" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/CommentAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="52" column="8" lean-forward="false" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
+          <caret line="52" column="8" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/CommentActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="366">
-          <caret line="186" column="0" lean-forward="true" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+          <caret line="186" lean-forward="true" selection-start-line="186" selection-end-line="186" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/models/PostInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
-          <caret line="70" column="38" lean-forward="false" selection-start-line="70" selection-start-column="38" selection-end-line="70" selection-end-column="38" />
+          <caret line="70" column="38" selection-start-line="70" selection-start-column="38" selection-end-line="70" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -4258,46 +4309,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="436">
           <caret line="190" column="40" lean-forward="true" selection-start-line="190" selection-start-column="40" selection-end-line="190" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/AboutActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
-          <caret line="34" column="35" lean-forward="false" selection-start-line="34" selection-start-column="35" selection-end-line="34" selection-end-column="35" />
-          <folding />
+          <caret line="34" column="35" selection-start-line="34" selection-start-column="35" selection-end-line="34" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_show_post.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="101" column="40" lean-forward="false" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="101" column="40" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_challenge_all.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="99" column="16" lean-forward="false" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="99" column="16" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/utils/AWSClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="404">
-          <caret line="398" column="0" lean-forward="true" selection-start-line="398" selection-start-column="0" selection-end-line="398" selection-end-column="0" />
+          <caret line="398" lean-forward="true" selection-start-line="398" selection-end-line="398" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" />
           </folding>
         </state>
       </provider>
@@ -4305,26 +4352,18 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ChallengeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="147" column="0" lean-forward="false" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <caret line="147" selection-start-line="147" selection-end-line="147" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="imports" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/utils/TrimVideoUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="9" column="46" lean-forward="false" selection-start-line="9" selection-start-column="46" selection-end-line="9" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/utils/TrimVideoUtils.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/ProfilePickAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-119">
-          <caret line="22" column="12" lean-forward="false" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
-          <folding />
+          <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -4332,94 +4371,88 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/AllChallengesFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-308">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/FilePickerAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
-          <caret line="34" column="46" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="46" />
-          <folding />
+          <caret line="34" column="46" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/BucketFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
-          <caret line="39" column="76" lean-forward="false" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
-          <folding />
+          <caret line="39" column="76" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="50" column="58" lean-forward="true" selection-start-line="50" selection-start-column="58" selection-end-line="50" selection-end-column="58" />
           <folding>
-            <element signature="e#599#617#0" expanded="false" />
-            <element signature="e#927#966#0" expanded="false" />
-            <element signature="e#1073#1098#0" expanded="false" />
-            <element signature="e#1281#1299#0" expanded="false" />
+            <element signature="e#599#617#0" />
+            <element signature="e#927#966#0" />
+            <element signature="e#1073#1098#0" />
+            <element signature="e#1281#1299#0" />
           </folding>
         </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/ImagePickAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-827">
-          <caret line="30" column="11" lean-forward="false" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
-          <folding />
+          <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2559">
-          <caret line="350" column="52" lean-forward="false" selection-start-line="350" selection-start-column="52" selection-end-line="350" selection-end-column="52" />
+          <caret line="350" column="52" selection-start-line="350" selection-start-column="52" selection-end-line="350" selection-end-column="52" />
           <folding>
-            <element signature="method#getNotifications#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#6280:6882" expanded="false" />
-            <element signature="method#onResponse#0;class#6280:6882" expanded="false" />
-            <element signature="method#onFailure#0;class#6280:6882" expanded="false" />
-            <element signature="method#updateProfile#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#10980:11695" expanded="false" />
-            <element signature="method#onResponse#0;class#10980:11695" expanded="false" />
-            <element signature="method#onFailure#0;class#10980:11695" expanded="false" />
-            <element signature="class#12088:13101" expanded="false" />
-            <element signature="method#onResponse#0;class#12088:13101" expanded="false" />
-            <element signature="method#onFailure#0;class#12088:13101" expanded="false" />
-            <element signature="method#closeDrawer#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#displayAllChallengeFragment#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#displayChallengeFragment#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onRequestPermissionsResult#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onPermissionsGranted#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onPermissionsDenied#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onActivityResult#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#getNotifications#0;class#MainActivity#0" />
+            <element signature="class#6280:6882" />
+            <element signature="method#onResponse#0;class#6280:6882" />
+            <element signature="method#onFailure#0;class#6280:6882" />
+            <element signature="method#updateProfile#0;class#MainActivity#0" />
+            <element signature="class#10980:11695" />
+            <element signature="method#onResponse#0;class#10980:11695" />
+            <element signature="method#onFailure#0;class#10980:11695" />
+            <element signature="class#12088:13101" />
+            <element signature="method#onResponse#0;class#12088:13101" />
+            <element signature="method#onFailure#0;class#12088:13101" />
+            <element signature="method#closeDrawer#0;class#MainActivity#0" />
+            <element signature="method#displayAllChallengeFragment#0;class#MainActivity#0" />
+            <element signature="method#displayChallengeFragment#0;class#MainActivity#0" />
+            <element signature="method#onRequestPermissionsResult#0;class#MainActivity#0" />
+            <element signature="method#onPermissionsGranted#0;class#MainActivity#0" />
+            <element signature="method#onPermissionsDenied#0;class#MainActivity#0" />
+            <element signature="method#onActivityResult#0;class#MainActivity#0" />
+            <element signature="method#onBackPressed#0;class#MainActivity#0" />
+            <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" />
           </folding>
         </state>
       </provider>
@@ -4428,197 +4461,149 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_file_picker.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/BucketAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="86" column="39" lean-forward="true" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/ImagePickFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="55">
-          <caret line="44" column="50" lean-forward="false" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
-          <folding />
+          <caret line="44" column="50" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/UploadFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
-          <caret line="86" column="12" lean-forward="false" selection-start-line="86" selection-start-column="12" selection-end-line="86" selection-end-column="12" />
-          <folding />
+          <caret line="86" column="12" selection-start-line="86" selection-start-column="12" selection-end-line="86" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/VideoPickFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="72" column="12" lean-forward="false" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
-          <folding />
+          <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_image_pick.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="15" column="41" lean-forward="false" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/fragments/ImageBucketFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="15" column="49" lean-forward="false" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
-          <folding />
+          <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/utils/CrashUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
-          <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="97" column="54" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="54" />
-          <folding />
+          <caret line="36" column="34" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/FilePickerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
-          <caret line="51" column="31" lean-forward="false" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
+          <caret line="51" column="31" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="51" column="116" selection-start-line="51" selection-start-column="116" selection-end-line="51" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="174" selection-start-line="174" selection-end-line="174" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="662" column="107" selection-start-line="662" selection-start-column="95" selection-end-line="662" selection-end-column="107" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="docComment;class#AllChallengeAdapter#0" />
+            <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" />
+            <element signature="method#addClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#5131:5937" />
+            <element signature="method#onResponse#0;class#5131:5937" />
+            <element signature="method#onFailure#0;class#5131:5937" />
+            <element signature="method#setClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" />
+            <element signature="method#removeClap#0;class#AllChallengeAdapter#0" />
+            <element signature="class#8224:9031" />
+            <element signature="method#onResponse#0;class#8224:9031" />
+            <element signature="method#onFailure#0;class#8224:9031" />
+            <element signature="method#updateClap#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateComment#0;class#AllChallengeAdapter#0" />
+            <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" />
+            <element signature="class#Type#0;class#AllChallengeAdapter#0" />
+            <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#17234:18077" />
+            <element signature="method#onAnimationStart#0;class#17234:18077" />
+            <element signature="method#onAnimationEnd#0;class#17234:18077" />
+            <element signature="method#onAnimationRepeat#0;class#17234:18077" />
+            <element signature="class#20128:27873" />
+            <element signature="method#onMenuItemSelected#0;class#20128:27873" />
+            <element signature="class#21577:22995" />
+            <element signature="method#onResponse#0;class#21577:22995" />
+            <element signature="method#onFailure#0;class#21577:22995" />
+            <element signature="class#26185:27385" />
+            <element signature="method#onResponse#0;class#26185:27385" />
+            <element signature="method#onFailure#0;class#26185:27385" />
+            <element signature="method#onMenuModeChange#0;class#20128:27873" />
+            <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
+            <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/activities/ShowPostActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="812">
-          <caret line="660" column="29" lean-forward="false" selection-start-line="660" selection-start-column="29" selection-end-line="660" selection-end-column="29" />
-          <folding>
-            <element signature="e#28637#28667#0" expanded="false" />
-            <element signature="e#28690#28718#0" expanded="false" />
-            <element signature="e#29369#29397#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/in/ninos/adapters/AllChallengeAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#AllChallengeAdapter#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#onViewDetachedFromWindow#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#addClap#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="class#5131:5937" expanded="false" />
-            <element signature="method#onResponse#0;class#5131:5937" expanded="false" />
-            <element signature="method#onFailure#0;class#5131:5937" expanded="false" />
-            <element signature="method#setClap#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="e#7051#7067#0" expanded="true" />
-            <element signature="e#7121#7136#0" expanded="true" />
-            <element signature="method#setClapListener#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="e#7487#7896#0" expanded="true" />
-            <element signature="e#7895#7896#0" expanded="true" />
-            <element signature="method#removeClap#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="class#8224:9031" expanded="false" />
-            <element signature="method#onResponse#0;class#8224:9031" expanded="false" />
-            <element signature="method#onFailure#0;class#8224:9031" expanded="false" />
-            <element signature="method#updateClap#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#updateComment#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="e#9844#9882#0" expanded="true" />
-            <element signature="method#updateTitle#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="class#Type#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#ChallengeViewHolder#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="e#13562#14089#0" expanded="true" />
-            <element signature="e#14088#14089#0" expanded="true" />
-            <element signature="e#14610#14629#0" expanded="true" />
-            <element signature="e#14694#14712#0" expanded="true" />
-            <element signature="e#15768#16631#0" expanded="true" />
-            <element signature="e#16630#16631#0" expanded="true" />
-            <element signature="method#clapAnimation#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="class#17234:18077" expanded="false" />
-            <element signature="method#onAnimationStart#0;class#17234:18077" expanded="false" />
-            <element signature="method#onAnimationEnd#0;class#17234:18077" expanded="false" />
-            <element signature="method#onAnimationRepeat#0;class#17234:18077" expanded="false" />
-            <element signature="class#20128:27873" expanded="false" />
-            <element signature="method#onMenuItemSelected#0;class#20128:27873" expanded="false" />
-            <element signature="e#20547#20562#0" expanded="true" />
-            <element signature="e#20620#20641#0" expanded="true" />
-            <element signature="e#20706#20721#0" expanded="true" />
-            <element signature="e#20723#21051#0" expanded="true" />
-            <element signature="e#21050#21051#0" expanded="true" />
-            <element signature="e#21117#21129#0" expanded="true" />
-            <element signature="e#21131#23077#0" expanded="true" />
-            <element signature="class#21577:22995" expanded="false" />
-            <element signature="method#onResponse#0;class#21577:22995" expanded="false" />
-            <element signature="e#22435#22457#0" expanded="true" />
-            <element signature="method#onFailure#0;class#21577:22995" expanded="false" />
-            <element signature="e#22848#22870#0" expanded="true" />
-            <element signature="e#23076#23077#0" expanded="true" />
-            <element signature="e#24701#25064#0" expanded="true" />
-            <element signature="e#25063#25064#0" expanded="true" />
-            <element signature="e#25160#27513#0" expanded="true" />
-            <element signature="e#25548#25582#0" expanded="true" />
-            <element signature="class#26185:27385" expanded="false" />
-            <element signature="method#onResponse#0;class#26185:27385" expanded="false" />
-            <element signature="method#onFailure#0;class#26185:27385" expanded="false" />
-            <element signature="e#27512#27513#0" expanded="true" />
-            <element signature="method#onMenuModeChange#0;class#20128:27873" expanded="false" />
-            <element signature="e#29036#29071#0" expanded="true" />
-            <element signature="e#29264#30487#0" expanded="true" />
-            <element signature="e#29628#29666#0" expanded="true" />
-            <element signature="e#29689#29725#0" expanded="true" />
-            <element signature="e#30384#30420#0" expanded="true" />
-            <element signature="e#30486#30487#0" expanded="true" />
-            <element signature="method#hideKeyboard#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#LoadImage#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="method#doInBackground#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-            <element signature="e#32496#33345#0" expanded="true" />
-            <element signature="e#33344#33345#0" expanded="true" />
-            <element signature="method#onPostExecute#0;class#LoadImage#0;class#ChallengeViewHolder#0;class#AllChallengeAdapter#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="208">
+          <caret line="639" selection-start-line="639" selection-end-line="639" />
         </state>
       </provider>
     </entry>
